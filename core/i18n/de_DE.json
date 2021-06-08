@@ -1,0 +1,83 @@
+{
+    "plugins\/weather\/plugin_info\/configuration.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff",
+        "Clef API OpenWeatherMap": "OpenWeatherMap API-Schlüssel"
+    },
+    "plugins\/weather\/desktop\/php\/weather.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff",
+        "Gestion": "Verwaltung",
+        "Ajouter": "Hinzufügen",
+        "Configuration": "Konfiguration",
+        "Mes Météos": "Meine Wetterberichte",
+        "Rechercher": "Suchen nach",
+        "Configuration avancée": "Erweiterte Konfiguration",
+        "Sauvegarder": "Speichern",
+        "Supprimer": "Löschen",
+        "Equipement": "Gerät",
+        "Commandes": "Befehle",
+        "Nom de l'équipement météo": "Name der Wetterausrüstung",
+        "Objet parent": "Übergeordnetes Objekt",
+        "Aucun": "Ohne",
+        "Catégorie": "Kategorie",
+        "Activer": "Aktivieren",
+        "Visible": "Sichtbar",
+        "Ville": "Stadt",
+        "Affichage complet en mobile": "Mobil Vollansicht",
+        "Mode image": "Bild Modus",
+        "Si vous venez de créer votre clé api il faut peut être patienter quelques heures avant qu'elle soit active (en attendant il peut y avoir une erreur d'authentification)": "Wenn Sie gerade erst Ihren API-Schlüssel erstellt haben, müssen Sie möglicherweise einige Stunden warten, bevor er aktiv ist (bis dahin kann es zu Authentifizierungsfehlern kommen)",
+        "Nom": "Name",
+        "Options": "Optionen"
+    },
+    "plugins\/weather\/desktop\/js\/weather.js": {
+        "Nom": "Name",
+        "Historiser": "Chronik",
+        "Tester": "Test"
+    },
+    "plugins\/weather\/core\/ajax\/weather.ajax.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff",
+        "Weather inconnu verifié l\\'id": "Wetter unbekannt verifizierte ID",
+        "Aucune methode correspondante à : ": "Keine Methode entsprechend:"
+    },
+    "plugins\/weather\/core\/class\/weather.class.php": {
+        "L\\identifiant de la ville ne peut être vide": "Die Stadt-ID darf nicht leer sein",
+        "Température": "Temperatur",
+        "Humidité": "Luftfeuchtigkeit",
+        "Pression": "Druck",
+        "Vitesse du vent": "Windgeschwindigkeit",
+        "Direction du vent": "Windrichtung",
+        "Coucher du soleil": "Sonnenuntergang",
+        "Lever du soleil": "Sonnenaufgang",
+        "Température Min": "Temperatur Min",
+        "Température Max": "Temperatur Max",
+        "Condition": "Zustand",
+        "Numéro condition": "Konditionsnummer",
+        "Pluie": "Regen",
+        "Température Min +1": "Temperatur Min +1",
+        "Température Max +1": "Temperatur Max +1",
+        "Température Min +2": "Temperatur Min +2",
+        "Température Max +2": "Temperatur Max +2",
+        "Température Min +3": "Temperatur Min +3",
+        "Température Max +3": "Temperatur Max +3",
+        "Température Min +4": "Temperatur Min +4",
+        "Température Max +4": "Temperatur Max +4",
+        "Condition +1": "Bedingung +1 ",
+        "Numéro condition +1": "Konditionsnummer +1",
+        "Condition +2": "Bedingung +2",
+        "Numéro condition +2": "Konditionsnummer +2",
+        "Condition +3": "Bedingung +3",
+        "Numéro condition +3": "Konditionsnummer +3",
+        "Condition +4": "Bedingung +4",
+        "Numéro condition +4": "Konditionsnummer +4",
+        "Pluie +1": "Regen +1",
+        "Pluie +2": "Regen +2",
+        "Pluie +3": "Regen +3",
+        "Pluie +4": "Regen +4",
+        "Rafraichir": "Aktualisieren",
+        "La ville ne peut être vide": "Die Stadt kann nicht leer sein",
+        "(1) Impossible de récuperer les informations météo : ": "(1) Wetterinformationen können nicht abgerufen werden:",
+        "(2) Impossible de récuperer les informations météo : ": "(2) Die Wetterinformationen können nicht abgerufen werden :"
+    },
+    "info.json": {
+        "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis.": "Mit diesem Plugin können Sie Wetterinformationen abrufen. Wir finden Informationen wie Bedingungen, Temperaturen, aktuelle und kommende Tage. Sie werden auch die Luftfeuchtigkeit, die Stärke des Windes und seine Richtung, die Zeit von Sonnenaufgang und Sonnenuntergang und viele andere haben. Sie wollten eine Wetterstation kaufen, dieses Plugin kann Sie dazu bringen, Ihre Meinung zu ändern"
+    }
+}

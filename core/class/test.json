@@ -1,0 +1,41 @@
+{
+    "message": "Success",
+    "lat": 48.532,
+    "lng": 7.713,
+    "data": [{
+        "Count": {
+            "grass_pollen": 92,
+            "tree_pollen": 245,
+            "weed_pollen": 30
+        },
+        "Risk": {
+            "grass_pollen": "High",
+            "tree_pollen": "High",
+            "weed_pollen": "Moderate"
+        },
+        "Species": {
+            "Grass": {
+                "Grass / Poaceae": 92 // Herbes / Poacées
+            },
+            "Others": 1,
+            "Tree": { // Arbres
+                "Alder": 0, // Auln
+                "Birch": 58, // Bouleau
+                "Cypress": 0,  // Cyprès
+                "Elm": 0,   // Orm
+                "Hazel": 0, // Noisetier
+                "Oak": 90,  // Chêne
+                "Pine": 75, /// Pin
+                "Plane": 22, // Platane
+                "Poplar / Cottonwood": 0  // Peuplier
+            },
+            "Weed": { // Mauvaise herbers
+                "Chenopod": 0,  // Champi
+                "Mugwort": 0, // Armoise
+                "Nettle": 29, // Ortie
+                "Ragweed": 0  //Ambroisie
+            }
+        },
+        "updatedAt": "2021-06-03T09:12:59.000Z"
+    }]
+}

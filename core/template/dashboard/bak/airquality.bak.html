@@ -1,0 +1,674 @@
+<div class="eqLogic eqLogic-widget allowResize allowReorderCmd" style="border:#border#;border-radius:#border-radius#;
+background-color: #background-color#;
+color: #color#;
+width: #width#;height: #height#;
+#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
+     data-tags="#tags#">
+     <span class="statusCmd"></span>
+     <!-- Refresh -->
+     <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+          <i class="fas fa-sync"></i>
+     </span>
+     <!-- ID hidden -->
+     <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
+     <!-- Titre element -barre du haut  -->
+     <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
+                    <span style="font-size: 0.85em;position: relative;top:-2px;"
+                         hidden>#object_name#</span></a></strong>
+     </center>
+     <!-- Contenu  -->
+     <div style="position: relative; display:flex;flex-wrap: wrap;" class="chart#id#">
+          <div class="col-lg-12 col-sm-12 col-xs-12"
+               style="display:flex;flex-wrap: wrap; justify-content:space-evenly;align-items: center">
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#nh3id#" id="nh3#id#">
+               </div>
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#coid#" id="co#id#">
+               </div>
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#noid#" id="no#id#">
+               </div>
+          </div>
+
+
+          <div class="col-lg-12 col-sm-12 col-xs-12"
+               style="display:flex;flex-wrap: wrap; justify-content:space-evenly;align-items: center">
+               <!-- PM 2 5 -->
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm25id#" id="pm25#id#">
+               </div>
+               <!-- AQI -->
+               <div style="margin: 0 10px;display:flex; flex-direction:column;align-items:center;">
+                    <strong style="font-size:3.5rem; font-family:Source Serif Pro,serif;">AQI</strong>
+                    <strong style="font-size:4rem;font-family:Source Serif Pro,serif;">#aqi#</strong>
+               </div>
+               <!-- PM 10 -->
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm10id#" id="pm10#id#">
+               </div>
+          </div>
+
+
+          <div class="col-lg-12 col-sm-12 col-xs-12"
+               style="display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: center">
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#so2id#" id="so2#id#">
+               </div>
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#o3id#" id="o3#id#">
+               </div>
+               <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#no2id#" id="no2#id#">
+               </div>
+
+          </div>
+     </div>
+     <script>
+          if ('#refresh#' != '') {
+               $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
+                    jeedom.cmd.execute({
+                         id: '#refresh_id#'
+                    });
+               });
+          } else {
+               $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
+          }
+
+
+          if ($('.chart#id#').html() != undefined) {
+
+               let heightPM = 130
+               let WidthPm = 120
+               let yTitle = 85
+
+               Highcharts.themeFull = {
+                    chart: {
+                         type: "gauge",
+                         height: 160,
+                         width: 140,
+                         plotBackgroundColor: null,
+                         plotBackgroundImage: null,
+                         plotBorderWidth: 0,
+                         plotShadow: false,
+                         spacingTop: 0,
+                         spacingLeft: 0,
+                         spacingRight: 0,
+                         spacingBottom: 0
+                    },
+                    credits: {
+                         enabled: false
+                    },
+                    title: {
+                         text: null,
+                    },
+                    legend: {
+                         enabled: false
+                    },
+                    pane: {
+                         startAngle: -150,
+                         endAngle: 150,
+                         background: null
+                    },
+                    exporting: {
+                         enabled: false
+                    },
+                    yAxis: {
+                         min: 0,
+                         minorTickInterval: "auto",
+                         minorTickWidth: 1,
+                         minorTickLength: 8,
+                         minorTickPosition: "outside",
+                         minorTickColor: "#666",
+                         tickPixelInterval: 100,
+                         tickWidth: 2,
+                         tickPosition: "outside",
+                         tickLength: 10,
+                         tickColor: "#666",
+                         labels: {
+                              step: 1,
+                              rotation: "auto",
+                              distance: '60%',
+                         },
+                         title: {
+                              y: 90,
+                              style: {
+                                   fontSize: '110%',
+                                   fontWeight: 'bold',
+                              }
+                         },
+                    },
+                    plotOptions: {
+                         series: {
+                              dataLabels: {
+                                   enabled: false,
+                                   y: 10,
+                                   backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                   className: 'highlight',
+                                   borderWidth: 0,
+                                   shadow: false,
+                                   padding: 5,
+                                   style: {
+                                        textTransform: 'uppercase',
+                                        fontSize: '10px',
+                                        color: '#000',
+                                   }
+                              }
+                         }
+                    },
+
+               };
+
+               Highcharts.setOptions(Highcharts.themeFull);
+               /*  Echelle du cadran */
+               let myThickness = '8%'
+               let plotBandO3 = [{
+                         from: 0,
+                         to: 50,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 50,
+                         to: 100,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 100,
+                         to: 130,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 130,
+                         to: 240,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 240,
+                         to: 380,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 380,
+                         to: 500,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+               let plotBandSO2 = [{
+                         from: 0,
+                         to: 50,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 50,
+                         to: 100,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 100,
+                         to: 150,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 150,
+                         to: 240,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 240,
+                         to: 380,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 380,
+                         to: 500,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+               let plotBandNO2 = [{
+                         from: 0,
+                         to: 40,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 40,
+                         to: 90,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 90,
+                         to: 120,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 120,
+                         to: 230,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 230,
+                         to: 340,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 340,
+                         to: 600,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+               let plotBandPM10 = [{
+                         from: 0,
+                         to: 20,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 20,
+                         to: 40,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 40,
+                         to: 50,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 50,
+                         to: 100,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 100,
+                         to: 150,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 150,
+                         to: 1000,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+               let plotBandPM25 = [{
+                         from: 0,
+                         to: 10,
+                         thickness: myThickness,
+                         color: "#00AEEC", // blue
+                         borderWidth: 10
+                    },
+                    {
+                         from: 10,
+                         to: 20,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+
+                    },
+                    {
+                         from: 20,
+                         to: 25,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 25,
+                         to: 50,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 50,
+                         to: 75,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 75,
+                         to: 1000,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+               // A verifier Non Officiel
+               let plotBandNO = [{
+                         from: 0,
+                         to: 40,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 40,
+                         to: 90,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 90,
+                         to: 120,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 120,
+                         to: 230,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 230,
+                         to: 340,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 340,
+                         to: 400,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+               // A verifier  Non Officiel
+               let plotBandCO = [{
+                         from: 0,
+                         to: 90,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 90,
+                         to: 180,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 180,
+                         to: 250,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 250,
+                         to: 340,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 340,
+                         to: 390,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 390,
+                         to: 4000,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+               // A verifier Non Officiel
+               let plotBandNH3 = [{
+                         from: 0,
+                         to: 8,
+                         thickness: myThickness,
+                         color: "#00AEEC" // blue
+                    },
+                    {
+                         from: 8,
+                         to: 20,
+                         thickness: myThickness,
+                         color: "#00BD01" // green
+                    },
+                    {
+                         from: 20,
+                         to: 35,
+                         thickness: myThickness,
+                         color: "#EFE800" // yellow
+                    },
+                    {
+                         from: 35,
+                         to: 50,
+                         thickness: myThickness,
+                         color: "#E79C00" // orange
+                    },
+                    {
+                         from: 50,
+                         to: 70,
+                         thickness: myThickness,
+                         color: "#B00000" // red
+                    },
+                    {
+                         from: 70,
+                         to: 300,
+                         thickness: myThickness,
+                         color: "#662D91" // purple
+                    }
+               ];
+
+
+               // PM10 
+               Highcharts.chart(
+                    "pm10#id#", {
+                         chart: {
+                              height: heightPM,
+                              width: WidthPm
+                         },
+
+                         yAxis: {
+                              softMax: 160,
+                              title: {
+                                   text: '<h2>PM10</h2>',
+                                   y: yTitle,
+                              },
+                              plotBands: plotBandPM10,
+                              tickPixelInterval: 50,
+                         },
+                         series: [{
+                              name: "Particules Fines<br/>PM10<br/>",
+                              data: [#pm10#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // PM25
+               Highcharts.chart(
+                    "pm25#id#", {
+                         chart: {
+                              height: heightPM,
+                              width: WidthPm
+                         },
+                         yAxis: {
+                              softMax: 80,
+                              title: {
+                                   text: '<h2>PM2.5</h2>',
+                                   y: yTitle,
+                              },
+                              plotBands: plotBandPM25,
+                              tickPixelInterval: 50,
+                         },
+                         series: [{
+                              name: "Particules Fines PM2.5<br/>",
+                              data: [#pm25#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // O3
+               Highcharts.chart(
+                    "o3#id#", {
+
+                         // the value axis
+                         yAxis: {
+                              min: 0,
+                              softMax: 400,
+                              title: {
+                                   text: '<h2>O³</h2>',
+                                   x: 4
+                              },
+                              plotBands: plotBandO3
+                         },
+                         series: [{
+                              name: "Ozone<br/>",
+                              data: [#ozone#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // NO2
+               Highcharts.chart(
+                    "no2#id#", {
+                         yAxis: {
+                              softMax: 400,
+                              title: {
+                                   text: '<h2>NO²</h2>'
+                              },
+                              plotBands: plotBandNO2
+                         },
+                         series: [{
+                              name: "Dioxyde d'azote<br/>",
+                              data: [#dioxydeazote#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // SO²
+               Highcharts.chart(
+                    "so2#id#", {
+                         yAxis: {
+                              softMax: 400,
+                              title: {
+                                   text: '<h2>SO²</h2>',
+                                   x: 4,
+                              },
+                              plotBands: plotBandO3
+                         },
+                         series: [{
+                              name: "Dioxyde de souffre<br/>",
+                              data: [#dioxydesoufre#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // CO
+               Highcharts.chart(
+                    "co#id#", {
+                         yAxis: {
+                              softMax: 400,
+                              title: {
+                                   text: '<h2>CO</h2>',
+                                   x: 0,
+                              },
+                              plotBands: plotBandCO
+                         },
+                         series: [{
+                              name: "Monoxyde de carbone<br/>",
+                              data: [#monoxydecarbone#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // NH3
+               Highcharts.chart(
+                    "nh3#id#", {
+                         yAxis: {
+                              softMax: 100,
+                              title: {
+                                   text: '<h2>NH³</h2>',
+                                   x: 0,
+                              },
+                              plotBands: plotBandNH3
+                         },
+                         series: [{
+                              name: "Ammoniaque<br/>",
+                              data: [#amoniac#],
+                              DataLabelsOverflowValue: 'justify',
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+               // NO
+               Highcharts.chart(
+                    "no#id#", {
+                         yAxis: {
+                              softMax: 400,
+                              title: {
+                                   text: '<h2>NO</h2>',
+                                   x: 0,
+                              },
+                              plotBands: plotBandNO
+                         },
+                         series: [{
+                              name: "Monoxyde d'azote<br/>",
+                              data: [#monoxydeazote#],
+                              tooltip: {
+                                   valueSuffix: " μg/m³"
+                              },
+                              dial: {
+                                   backgroundColor: 'grey'
+                              }
+                         }]
+                    }
+               );
+
+
+          }
+     </script>
+</div>

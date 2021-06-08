@@ -1,0 +1,83 @@
+{
+    "plugins\/weather\/plugin_info\/configuration.php": {
+        "401 - Accès non autorisé": "401 - Akses tidak sah",
+        "Clef API OpenWeatherMap": "API Key OpenWeatherMap"
+    },
+    "plugins\/weather\/desktop\/php\/weather.php": {
+        "401 - Accès non autorisé": "401 - Akses tidak sah",
+        "Gestion": "Manajemen",
+        "Ajouter": "Tambahan",
+        "Configuration": "Konfigurasi",
+        "Mes Météos": "Meteos saya",
+        "Rechercher": "Pencarian",
+        "Configuration avancée": "Konfigurasi lanjutan",
+        "Sauvegarder": "Menyimpan",
+        "Supprimer": "Menghapus",
+        "Equipement": "Peralatan",
+        "Commandes": "Perintah",
+        "Nom de l'équipement météo": "Cuaca peralatan nama",
+        "Objet parent": "Objek induk",
+        "Aucun": "Tak ada",
+        "Catégorie": "Kategori",
+        "Activer": "Mengaktifkan",
+        "Visible": "Terlihat",
+        "Ville": "Kota",
+        "Affichage complet en mobile": "Penuh Mobile Display",
+        "Mode image": "Modus gambar",
+        "Si vous venez de créer votre clé api il faut peut être patienter quelques heures avant qu'elle soit active (en attendant il peut y avoir une erreur d'authentification)": "Jika Anda membuat kunci API Anda, Anda juga harus menunggu beberapa jam sebelum aktif (sementara itu mungkin ada kesalahan otentikasi)",
+        "Nom": "Nama",
+        "Options": "Pilihan"
+    },
+    "plugins\/weather\/desktop\/js\/weather.js": {
+        "Nom": "Nama",
+        "Historiser": "Historicize",
+        "Tester": "Coba"
+    },
+    "plugins\/weather\/core\/ajax\/weather.ajax.php": {
+        "401 - Accès non autorisé": "401 - Akses tidak sah",
+        "Weather inconnu verifié l\\'id": "",
+        "Aucune methode correspondante à : ": "Aucune methode correspondante à :"
+    },
+    "plugins\/weather\/core\/class\/weather.class.php": {
+        "L\\identifiant de la ville ne peut être vide": "",
+        "Température": "Suhu",
+        "Humidité": "Kelembaban",
+        "Pression": "Tekanan",
+        "Vitesse du vent": "Kecepatan angin",
+        "Direction du vent": "Arah angin",
+        "Coucher du soleil": "Matahari terbenam",
+        "Lever du soleil": "Matahari terbit",
+        "Température Min": "Suhu Min",
+        "Température Max": "Suhu Max",
+        "Condition": "Kondisi",
+        "Numéro condition": "",
+        "Pluie": "",
+        "Température Min +1": "Suhu Min 1",
+        "Température Max +1": "Max Suhu 1",
+        "Température Min +2": "Suhu Min 2",
+        "Température Max +2": "Max Suhu 2",
+        "Température Min +3": "Suhu Min 3",
+        "Température Max +3": "Max Suhu 3",
+        "Température Min +4": "Suhu Min 4",
+        "Température Max +4": "Suhu Max 4",
+        "Condition +1": "Kondisi 1",
+        "Numéro condition +1": "",
+        "Condition +2": "Kondisi 2",
+        "Numéro condition +2": "",
+        "Condition +3": "Kondisi 3",
+        "Numéro condition +3": "",
+        "Condition +4": "Kondisi 4",
+        "Numéro condition +4": "",
+        "Pluie +1": "",
+        "Pluie +2": "",
+        "Pluie +3": "",
+        "Pluie +4": "",
+        "Rafraichir": "Dingin",
+        "La ville ne peut être vide": "",
+        "(1) Impossible de récuperer les informations météo : ": "",
+        "(2) Impossible de récuperer les informations météo : ": "(2) Impossible de récuperer les informations météo :"
+    },
+    "info.json": {
+        "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis.": ""
+    }
+}

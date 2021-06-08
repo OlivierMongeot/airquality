@@ -1,0 +1,509 @@
+   <!-- Contenu  I -->
+   <div class="item chart#id#" data-interval="#dataIntervalThree#" data-pause="hover">
+
+     <div class="aqi-#id#-row">
+          <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#so2id#"
+               id="particulesso2#id#">
+          </div>
+          <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#o3id#"
+               id="particuleso3#id#">
+          </div>
+          <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#no2id#"
+               id="particulesno2#id#">
+          </div>
+
+     </div>
+</div>
+
+<!-- Contenu  II -->
+<div id="chart#id#" class="item active" data-interval="#dataIntervalOne#"  data-pause="hover">
+
+     <div class="aqi-#id#-row">
+          <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm25id#"
+               id="particules25#id#">
+          </div>
+          <div class="aqi-#id#-main">
+               <strong class="cmd noRefresh aqi-#id#-aqi">A.Q.I</strong>
+               <strong class="cmd noRefresh aqi-#id#-label">#aqi#</strong>
+               <!-- <span>#test#</span> -->
+          </div>
+
+          <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm10id#"
+               id="particules10#id#">
+          </div>
+     </div>
+</div>
+
+<!-- Contenu  III -->
+<div id="chart#id#" class="item" data-interval="#dataIntervalTwo#"  data-pause="hover">
+     <div class="aqi-#id#-row">
+     <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#nh3id#" id="particulesnh3#id#">
+     </div>
+     <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#coid#" id="particulesco#id#">
+     </div>
+     <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#noid#" id="particulesno#id#">
+     </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+     // O3
+     let chartTree = Highcharts.chart(
+          "particuleso3#id#", {
+
+               // the value axis
+               yAxis: {
+                    min: 0,
+                    softMax: 400,
+                    title: {
+                         text: '<h2>O³</h2>',
+                         x: 0
+                    },
+                    plotBands: plotBand# id# O3
+               },
+               series: [{
+                    name: "Ozone<br/>",
+                    data: [#o3#]
+               }]
+          }
+     );
+
+     // NO2
+     let chartFour = Highcharts.chart(
+          "particulesno2#id#", {
+               yAxis: {
+                    softMax: 400,
+                    title: {
+                         text: '<h2>NO²</h2>'
+                    },
+                    plotBands: plotBand# id# NO2
+               },
+               series: [{
+                    name: "Dioxyde <br/>d'azote<br/>",
+                    data: [#no2#]
+               }]
+          }
+     );
+
+     // SO²
+     let chartFive = Highcharts.chart(
+          "particulesso2#id#", {
+               yAxis: {
+                    softMax: 400,
+                    title: {
+                         text: '<h2>SO²</h2>',
+                         x: 0,
+                    },
+                    plotBands: plotBand# id# O3
+               },
+               series: [{
+                    name: "Dioxyde<br/> de souffre<br/>",
+                    data: [#so2#]
+               }]
+          }
+     );
+
+
+     // CO
+     let chartSix = Highcharts.chart(
+          "particulesco#id#", {
+               yAxis: {
+                    softMax: 500,
+                    title: {
+                         text: '<h2>CO</h2>',
+                         x: 0,
+                    },
+                    plotBands: plotBand# id# CO
+               },
+               series: [{
+                    name: "Monoxyde de carbone<br/>",
+                    data: [#co#]
+               }]
+          }
+     );
+
+     // NH3
+     let chartSeven = Highcharts.chart(
+          "particulesnh3#id#", {
+               yAxis: {
+                    softMax: 100,
+                    title: {
+                         text: '<h2>NH³</h2>',
+                         x: 0,
+                    },
+                    plotBands: plotBand# id# NH3
+               },
+               series: [{
+                    name: "Ammoniac<br/>",
+                    data: [#nh3#],
+                    DataLabelsOverflowValue: 'justify'
+               }]
+          }
+     );
+
+     // NO
+     let chartHeight = Highcharts.chart(
+          "particulesno#id#", {
+               yAxis: {
+                    softMax: 400,
+                    title: {
+                         text: '<h2>NO</h2>',
+                         x: 0,
+                    },
+                    plotBands: plotBand# id# NO
+               },
+               series: [{
+                    name: "Monoxyde d'azote<br/>",
+                    data: [#no#]
+
+               }]
+          }
+     );
+
+     // PM25
+     let chartTwo = Highcharts.chart(
+          "particules25#id#", {
+               yAxis: {
+                    softMax: 100,
+                    title: {
+                         text: '<h2>PM2.5</h2>',
+                         /*  y: yTitle,*/
+                    },
+                    plotBands: plotBand# id# PM25,
+               },
+               series: [{
+                    name: "PM2.5<br/>",
+                    data: [#pm25#]
+               }]
+          }
+     );
+
+
+
+
+     let plotBandPM25 = [{
+               from: 0,
+               to: 10,
+               thickness: myThickness,
+               color: "#00AEEC", // blue
+               borderWidth: 10
+          },
+          {
+               from: 10,
+               to: 20,
+               thickness: myThickness,
+               color: "#00BD01" // green
+
+          },
+          {
+               from: 20,
+               to: 25,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 25,
+               to: 50,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 50,
+               to: 75,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 75,
+               to: 1000,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+     // A verifier Non Officiel
+     let plotBandNO = [{
+               from: 0,
+               to: 40,
+               thickness: myThickness,
+               color: "#00AEEC" // blue
+          },
+          {
+               from: 40,
+               to: 90,
+               thickness: myThickness,
+               color: "#00BD01" // green
+          },
+          {
+               from: 90,
+               to: 120,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 120,
+               to: 230,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 230,
+               to: 340,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 340,
+               to: 400,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+     // A verifier  Non Officiel
+     let plotBandCO = [{
+               from: 0,
+               to: 90,
+               thickness: myThickness,
+               color: "#00AEEC" // blue
+          },
+          {
+               from: 90,
+               to: 180,
+               thickness: myThickness,
+               color: "#00BD01" // green
+          },
+          {
+               from: 180,
+               to: 250,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 250,
+               to: 340,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 340,
+               to: 390,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 390,
+               to: 4000,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+
+
+     let plotBandO3 = [{
+               from: 0,
+               to: 50,
+               thickness: myThickness,
+               color: "#00AEEC" // blue
+          },
+          {
+               from: 50,
+               to: 100,
+               thickness: myThickness,
+               color: "#00BD01" // green
+          },
+          {
+               from: 100,
+               to: 130,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 130,
+               to: 240,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 240,
+               to: 380,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 380,
+               to: 500,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+     let plotBandSO2 = [{
+               from: 0,
+               to: 50,
+               thickness: myThickness,
+               color: "#00AEEC", // blue
+               outerRadius: '125%',
+          },
+          {
+               from: 50,
+               to: 100,
+               thickness: myThickness,
+               color: "#00BD01", // green
+               outerRadius: '125%',
+          },
+          {
+               from: 100,
+               to: 150,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 150,
+               to: 240,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 240,
+               to: 380,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 380,
+               to: 500,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+
+
+     let plotBandNO2 = [{
+               from: 0,
+               to: 40,
+               thickness: myThickness,
+               color: "#00AEEC" // blue
+          },
+          {
+               from: 40,
+               to: 90,
+               thickness: myThickness,
+               color: "#00BD01" // green
+          },
+          {
+               from: 90,
+               to: 120,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 120,
+               to: 230,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 230,
+               to: 340,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 340,
+               to: 600,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+
+     // A verifier Non Officiel
+     let plotBandNH3 = [{
+               from: 0,
+               to: 8,
+               thickness: myThickness,
+               color: "#00AEEC" // blue
+          },
+          {
+               from: 8,
+               to: 20,
+               thickness: myThickness,
+               color: "#00BD01" // green
+          },
+          {
+               from: 20,
+               to: 35,
+               thickness: myThickness,
+               color: "#EFE800" // yellow
+          },
+          {
+               from: 35,
+               to: 50,
+               thickness: myThickness,
+               color: "#E79C00" // orange
+          },
+          {
+               from: 50,
+               to: 70,
+               thickness: myThickness,
+               color: "#B00000" // red
+          },
+          {
+               from: 70,
+               to: 300,
+               thickness: myThickness,
+               color: "#662D91" // purple
+          }
+     ];
+
+
+
+     let plotBand#id#PM25 = [{
+          from: 0,
+          to: 10,
+          thickness: myThickness,
+          color: "#00AEEC", // blue
+          borderWidth: 10
+     },
+     {
+          from: 10,
+          to: 20,
+          thickness: myThickness,
+          color: "#00BD01" // green
+
+     },
+     {
+          from: 20,
+          to: 25,
+          thickness: myThickness,
+          color: "#EFE800" // yellow
+     },
+     {
+          from: 25,
+          to: 50,
+          thickness: myThickness,
+          color: "#E79C00" // orange
+     },
+     {
+          from: 50,
+          to: 75,
+          thickness: myThickness,
+          color: "#B00000" // red
+     },
+     {
+          from: 75,
+          to: 1000,
+          thickness: myThickness,
+          color: "#662D91" // purple
+     }
+];
+
+
+</script>

@@ -1,0 +1,538 @@
+<div class="eqLogic eqLogic-widget allowResize allowReorderCmd" style="border:#border#;border-radius:#border-radius#; background-color: #background-color#; color: #color#; width: #width#;height: #height#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
+ data-tags="#tags#">
+<style>
+     .aqi-#id#-row {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          margin: auto;
+          max-width: 100%;
+          justify-content: center
+     }
+
+     .aqi-#id#-main {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: space-evenly;
+          margin-bottom: 15px;
+          font-size: 200%;
+     }
+
+     .aqi-#id#-unity{
+          position: absolute;
+          bottom: 38%;
+          left: 50%;
+          margin-left: -15px;
+          width: 30px;
+          margin-top: 2px;
+          line-height: 120%;
+          font-size: 70%;
+          z-index: 1000;
+          text-align: center;
+     }
+
+
+     .contain-stat-modal#id# {
+          position: absolute;
+          bottom: 8px;
+          left: 10%;
+          margin-left: -15px;
+          width: 30px;
+     }
+
+     .contain-minmax-modal#id# {
+          position: absolute;
+          bottom: 5px;
+          left: 50%;
+          margin-left: -40px;
+          width: 90px;
+          text-align: center;
+     }
+
+     .contain-info-modal {
+          position: absolute;
+          bottom: 9px;
+          right: 5%;
+          margin-right: -15px;
+          width: 30px;
+          
+     }
+     
+     .replace-#id#-value{
+          position: absolute;
+          bottom: 15%;
+          right: 50%;
+          margin-right: -19px;
+          width: 38px;
+          z-index: 1000;
+          font-size: 100%;
+          font-weight: 400;
+          text-align: center;
+     }
+
+     #airquality#uid#{
+          overflow: hidden;
+          position: relative;
+          top: 10px;
+          width: 100%;
+     }
+
+     #airquality#uid#>.carousel-control {
+          position: absolute;
+          top: 40%;
+          z-index: 5;
+          display: inline-block;
+          margin-top: 0px;
+          width: 30px;
+          height: 50px;
+     }
+     .fa-chart-bar:hover{    	
+     transform: scale(1.1);
+     }
+</style>
+<span class="statusCmd"></span><span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+<i class="fas fa-sync"></i></span>
+<span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
+<center class="widget-name">
+<strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#"><span id="aqi-#id#-city">#name_display#</span> <span style="font-size: 0.85em;position: relative;top:-2px;" hidden>#object_name#</span>
+</a></strong></center> 
+<!-- Contenu -->
+     <div id="airquality#uid#" class="carousel slide" data-ride="carousel" #classCaroussel# data-pause="hover"
+          data-pause="true">
+          <div class="carousel-inner" id="chart#id#">
+             #slide# 
+          </div>
+          <!-- Left and right controls -->
+          <a class="left carousel-control my#id#" href="#airquality#uid#" data-slide="prev"
+               style="background:transparent;">
+               <div> <i class=" fas fa-chevron-left"></i></div>
+          </a>
+          <a class="right carousel-control my#id#" href="#airquality#uid#" data-slide="next"
+               style="background:transparent;">
+               <i class="fas fa-chevron-right"></i>
+          </a>
+     </div>
+<script> 
+      // Config Générale HighChart
+      var mainConfig = {
+           chart: {
+                type: "gauge",
+                height: 150,
+                width: 150,
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                spacingTop:0,
+                spacingRight:0,
+                spacingLeft:0
+           },
+           credits: {
+                enabled: false
+           },
+           title: {
+                text: null,
+           },
+           legend: {
+                enabled: false
+           },
+
+           pane: {
+                center: ['50%', '50%'],
+                size :'90%',
+                startAngle: -150,
+                endAngle: 150,
+                background: null
+           },
+           exporting: {
+                enabled: false
+           },
+           yAxis: {
+                min: 0,
+                minorTickInterval: "auto",
+                minorTickWidth: 1,
+                minorTickLength: 5,
+                minorTickPosition: "outside",
+                minorTickColor: "currentColor",
+                tickPixelInterval: 50,
+                tickWidth: 2,
+                tickPosition: "outside",
+                tickLength: 7,
+                labels: {
+                     step: 1,
+                     rotation: "auto",
+                     distance: '76%',
+                     style: {
+                          fontSize: '65%'
+                     }
+                },
+                title: {
+                     y: 17,
+                     style: {
+                          fontSize: '160%'
+                     }
+                }
+           },
+           plotOptions: {
+                series: {
+                     dataLabels: {
+                          enabled: false,
+                          y: 25,
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          className: 'highlight',
+                          borderWidth: 1,
+                          shadow: false,
+                          style: {
+                               textTransform: 'uppercase',
+                               fontSize: '13px',
+                               color: 'black',
+                          }
+                     }
+                },
+                gauge: {
+                     dial: {
+                          backgroundColor: 'currentColor',
+                          radius: '70%'
+
+                     },
+                     pivot: {
+                          backgroundColor: 'currentColor'
+                     }
+                }
+           }
+      };
+
+      // Config Spécifique à l'élément
+      var particulesConfig = (particle) => {
+
+            switch (particle){
+       
+                case 'pm10':
+                    if (#pm10# > 100){
+                        return {
+                            'title': '<span>PM</span><sub style="font-size:50%">10</sub>',
+                            'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                            'softMax': 180,
+                            'value': #pm10#,
+                            'plotBands': [
+                                ['#00AEEC', [0, 20]],
+                                ['#00BD01', [20, 40]],
+                                ['#EFE800', [40, 50]],
+                                ['#E79C00', [50, 100]],
+                                ['#B00000', [100, 150]],
+                                ['#662D91', [150, 2000]]
+                                ]};
+                    } else {
+                        return {
+                            'title': '<span>PM</span><sub style="font-size:50%">10</sub>',
+                            'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                            'softMax': 110,
+                            'value':  #pm10#,
+                            'plotBands': [
+                                ['#00AEEC', [0, 20]],
+                                ['#00BD01', [20, 40]],
+                                ['#EFE800', [40, 50]],
+                                ['#E79C00', [50, 100]],
+                                ['#B00000', [100, 150]]
+                                ]};
+                    }
+            
+                case 'pm25':
+                    if (#pm25# > 150){
+                        return{
+                            'title': '<span>PM</span><sub style="font-size:50%">25</sub>',
+                            'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                            'softMax': 360,
+                            'value': #pm25#,
+                            'plotBands': [
+                                ['#00AEEC', [0, 30]],
+                                ['#00BD01', [30, 40]],
+                                ['#EFE800', [40, 50]],
+                                ['#E79C00', [50, 100]],
+                                ['#B00000', [100, 350]],
+                                ['#662D91', [350, 450]]
+                                ]};
+                    } else {
+                        return{
+                        'title': '<span>PM</span><sub style="font-size:50%">25</sub>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 110,
+                        'value': #pm25#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 30]],
+                            ['#00BD01', [30, 40]],
+                            ['#EFE800', [40, 50]],
+                            ['#E79C00', [50, 100]],
+                            ['#B00000', [100, 350]],
+                            ]};
+                        }
+            
+                case 'co':
+                    return {
+                        'title': '<span>CO</span>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 400,
+                        'value': #co#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 90]],
+                            ['#00BD01', [90, 180]],
+                            ['#EFE800', [180, 250]],
+                            ['#E79C00', [250, 340]],
+                            ['#B00000', [340, 390]],
+                            ['#662D91', [390, 4000]]]};
+                
+                case 'o3':
+                    return {
+                        'title': '<span>O³</span>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 400,
+                        'value': #o3#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 50]],
+                            ['#00BD01', [50, 100]],
+                            ['#EFE800', [100, 130]],
+                            ['#E79C00', [130, 240]],
+                            ['#B00000', [240, 380]],
+                            ['#662D91', [380, 4000]]]};
+                
+                case 'nh3':
+                    return {
+                        'title': '<span>NH³</span>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 80,
+                        'value': #nh3#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 8]],
+                            ['#00BD01', [8, 20]],
+                            ['#EFE800', [20, 35]],
+                            ['#E79C00', [35, 50]],
+                            ['#B00000', [50, 70]],
+                            ['#662D91', [70, 300]]]};
+                
+                case 'so2':
+                    return {
+                        'title': '<span>SO²</span>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 400,
+                        'value': #so2#,
+                        'plotBands': [
+                        ['#00AEEC', [0, 50]],
+                        ['#00BD01', [50, 100]],
+                        ['#EFE800', [100, 150]],
+                        ['#E79C00', [150, 240]],
+                        ['#B00000', [240, 380]],
+                        ['#662D91', [380, 4000]]]};
+
+                case 'no2': 
+                    return {
+                        'title': '<span>NO²</span>',
+                        'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                        'softMax': 375,
+                        'value': #no2#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 40]],
+                            ['#00BD01', [40, 90]],
+                            ['#EFE800', [90, 120]],
+                            ['#E79C00', [120, 230]],
+                            ['#B00000', [230, 340]],
+                            ['#662D91', [340, 4000]]]};
+                            
+                case 'no':
+                if (#no# > 150)
+                    {
+                            return {
+                            'title': '<span>NO</span>',
+                            'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                            'softMax': 350,
+                            'value': #no#,
+                            'plotBands': [
+                                ['#00AEEC', [0, 40]],
+                                ['#00BD01', [40, 90]],
+                                ['#EFE800', [90, 120]],
+                                ['#E79C00', [120, 230]],
+                                ['#B00000', [230, 340]],
+                                ['#662D91', [340, 4000]]]};
+                    } else {
+                        return {
+                            'title': '<span>NO</span>',
+                            'valueSuffix': '<br style="font-size:0.6rem">μg/m³',
+                            'softMax': 150,
+                            'value': #no#,
+                            'plotBands': [
+                                ['#00AEEC', [0, 40]],
+                                ['#00BD01', [40, 90]],
+                                ['#EFE800', [90, 120]],
+                                ['#E79C00', [120, 230]]
+                                ]};
+                    }
+               
+                case 'aqi': 
+                    return {
+                        'title': '<span>AQI</span>',
+                        'valueSuffix': '',
+                        'softMax': 6.5,
+                        'value': #aqi#,
+                        'plotBands': [
+                            ['#00AEEC', [0, 1.5]],
+                            ['#00BD01', [1.5, 2.5]],
+                            ['#EFE800', [2.5, 3.5]],
+                            ['#E79C00', [3.5, 4.5]],
+                            ['#B00000', [4.5, 5.5]],
+                            ['#662D91', [5.5, 6.5]]]};
+        
+            }
+            
+         
+      }
+
+      // Retourne le Plotband de l'élément
+      var getPlotBands = (plotBandsConfig, thickness = '6%') => {
+           var plotbands = [];
+           for (let element of plotBandsConfig) {
+                let layer = {
+                     from: element[1][0],
+                     to: element[1][1],
+                     thickness: thickness,
+                     color: element[0]
+                }
+                plotbands.push(layer);
+           }
+           return plotbands;
+      };
+
+
+      // Ajout des valeurs spécifiques à la configuration du Chart 
+      var getMainConfig = (element) => {
+           mainConfig.tooltip = {
+                valueSuffix: particulesConfig(element).valueSuffix
+           };
+           mainConfig.yAxis.softMax = particulesConfig(element).softMax;
+           mainConfig.yAxis.title.text = particulesConfig(element).title;
+           mainConfig.series = [{
+                name: particulesConfig(element).title,
+                data: [particulesConfig(element).value]
+           }];
+           mainConfig.yAxis.plotBands = getPlotBands(particulesConfig(element).plotBands);
+           if (element === 'aqi'){
+                mainConfig.yAxis.min = 0.5;
+                mainConfig.yAxis.title.style.fontSize = '220%';
+             /*   mainConfig.plotOptions.series.dataLabels.style.fontSize = '14px'; */    
+                mainConfig.yAxis.minorTickLength = 0;
+                mainConfig.yAxis.tickLength = 0;
+                mainConfig.pane.startAngle = -130;
+                mainConfig.pane.endAngle = 130;
+                mainConfig.yAxis.labels.distance = '105%';
+                mainConfig.plotOptions.series.dataLabels.enabled = false;
+                mainConfig.chart.height = 150;
+                mainConfig.chart.width = 140;
+                mainConfig.chart.spacingTop = 0;
+                mainConfig.chart.spacingBottom = 0;
+           }
+           return mainConfig
+      };
+
+      // Créé un Highchart avec une config particulière + id en param à placer dans le DOM
+      if ('#chart_pm10_state#' == 'enable'){
+             Highcharts.chart('particulespm10#id#', getMainConfig('pm10'));
+      }
+      if ('#chart_pm25_state#' == 'enable'){
+          Highcharts.chart('particulespm25#id#', getMainConfig('pm25'));
+      }
+      if ('#chart_co_state#' == 'enable'){
+      Highcharts.chart('particulesco#id#', getMainConfig('co'));
+    }
+      if ('#chart_o3_state#' == 'enable'){
+      Highcharts.chart('particuleso3#id#', getMainConfig('o3'));
+    }
+      if ('#chart_nh3_state#' == 'enable'){
+      Highcharts.chart('particulesnh3#id#', getMainConfig('nh3'));
+    }
+      if ('#chart_so2_state#' == 'enable'){
+      Highcharts.chart('particulesso2#id#', getMainConfig('so2'));
+    }
+      if ('#chart_no2_state#' == 'enable'){
+      Highcharts.chart('particulesno2#id#', getMainConfig('no2'));
+    }
+      if ('#chart_no_state#' == 'enable'){
+      Highcharts.chart('particulesno#id#', getMainConfig('no'));
+    }
+      if ('#chart_aqi_state#' == 'enable'){
+      Highcharts.chart('particulesaqi#id#', getMainConfig('aqi'));
+    }
+    
+
+ 
+$(document).ready ( () => {
+    
+    // Boite Modal Info 
+    $(document).on ("click", "#info-modal#pm10id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Particules Fines"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=#pm10id#').dialog('open');
+        }); 
+
+    $(document).on ("click", "#info-modal#aqiid#", function () {
+        $('#md_modal2').dialog({
+        title: "Info AQI"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoAqi&id=#id#&logical_id=#aqiid#').dialog('open');
+        });
+    $(document).on ("click", "#info-modal#o3id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Ozone"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
+        });
+    $(document).on ("click", "#info-modal#nh3id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Ammoniac"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
+        });
+    $(document).on ("click", "#info-modal#so2id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Dioxyde de Souffre"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
+        });
+    $(document).on ("click", "#info-modal#no2id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Dioxyde d'Azote"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
+        });
+    $(document).on ("click", "#info-modal#noid#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Monoxyde d'Azote"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
+        });
+
+    if ('#animation#' == 'active') {
+                var t#uid#;
+                var start#uid# = $('#airquality#uid#').find('.active').attr('data-interval');
+                t#uid# = setTimeout("$('#airquality#uid#').carousel({interval: 1000});", start#uid# - 1000);
+                $('#airquality#uid#').on('slid.bs.carousel', function () {
+                clearTimeout(t#uid#);
+                var duration#uid# = $(this).find('.active').attr('data-interval');
+                $('#airquality#uid#').carousel('pause');
+                t#uid# = setTimeout("$('#airquality#uid#').carousel();", duration#uid# - 1000);
+                })
+                $('.right.carousel-control.my#id#').on('click', function () {
+                clearTimeout(t#uid#);
+                });
+                $('.left.carousel-control.my#id#').on('click', function () {
+                clearTimeout(t#uid#);
+                });
+                }
+    
+    $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () { jeedom.cmd.execute({ id: $(this).data('cmd_id') }); });
+
+});
+
+
+
+</script>
+</div>

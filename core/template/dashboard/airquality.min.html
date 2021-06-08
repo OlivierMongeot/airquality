@@ -1,0 +1,222 @@
+<div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#; background-color: #background-color#; color: #color#;width: #width#;height: #height#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
+     data-tags="#tags#"><span class="statusCmd"></span><span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span><span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
+     <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;position: relative;top:-2px;"
+ hidden>#object_name#</span></a></strong></center>
+<style>
+    .aqi-#id#-row {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .aqi-#id#-particule {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .aqi-#id#-space {
+        margin-top: 10px;
+    }
+
+    .aqi-#id#-aqi {
+        margin-top: 5px;
+    }
+
+    .aqi-#id#-value,
+    .aqi-#id#-label,
+    .contain-minmax-#id#{
+        margin-top: 5px;
+    }
+
+    .aqi-#id#-label {
+        max-width: 50px;
+        text-align: center;
+    }
+
+    #airquality-min#uid#>.carousel-control {
+        position: absolute;
+        top: 55%;
+        z-index: 5;
+        display: inline-block;
+        margin-top: 0px;
+        width: 20px;
+    }
+
+    .header-#id#-container {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-around;
+        vertical-align: middle;
+    }
+
+    .header-#id#-min {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .active-aqi-#id#{
+         margin:15px 0;
+    }
+</style>
+<div class="aqi-#id#-container">
+    <div class="header-#id#-container">
+      
+        <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
+            <div title="Cliquez pour + d'info" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
+            <div class="cmd noRefresh aqi-#id#-label-aqi">#uv_name#</div>
+            <div class="cmd noRefresh aqi-#id#-aqi">#uv#</div>
+        </div>
+  
+  
+        <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
+           <!--  -->
+            <div title="Cliquez pour + d'info" id="info-modal#aqiid#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
+           <!--  -->
+            <div style="font-size: 1.8rem;" class="cmd noRefresh  aqi-#id#-aqi">#aqi_name#</div>
+            <div style="font-size: 1.2rem;" class="cmd noRefresh aqi-#id#-space">#aqi#</div>
+        </div>
+
+        <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
+            <div  title="Cliquez pour + d'info" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
+            <div class="cmd noRefresh">#visibility_name#</div>
+            <div title="#visibility#  m" class="cmd noRefresh aqi-#id#-aqi">#visibility#</div>
+        </div>    
+    </div>
+
+
+    <div title="#updatedAt#" class="cmd header-#id#-min active-aqi-#id# ">
+       #index_name# : #aqiinfo# 
+    </div>
+    <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
+        <div class="carousel-inner" id="chart#id#">#mini_slide#</div>
+        <a class="left carousel-control my#id#" href="#airquality-min#uid#" data-slide="prev"
+            style="background:transparent">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="right carousel-control my#id#" href="#airquality-min#uid#" data-slide="next"
+            style="background:transparent">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+</div>
+<script>
+            
+// Boite Modal Info     
+
+    $(document).on ("click", "#info-modal#aqiid#", function () {
+       
+        $('#md_modal2').dialog({
+        title: "Info AQI"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoAqi&id=#id#&logical_id=#aqiid#').dialog('open');
+        });
+    
+    $(document).on ("click", "#info-modal#uvid#", function () {
+       
+        $('#md_modal2').dialog({
+        title: "Info UV"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoUv&id=#id#&logical_id=#uvid#').dialog('open');
+        });
+
+    $(document).on ("click", "#info-modal#visibilityid#", function () {
+       
+        $('#md_modal2').dialog({
+        title: "Info Visibilité"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoVisibility&id=#id#&logical_id=#visibilityid#').dialog('open');
+        });
+    
+
+    $(document).on ("click", ".info-modal#pm10id#", function () {
+    
+        $('#md_modal2').dialog({
+        title: "Info Particules Fines"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=#pm10id#').dialog('open');
+                });
+
+
+    $(document).on ("click", ".info-modal#o3id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Ozone"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
+        });
+
+    // $(document).on ("click", "#info-modal#nh3id#", function () {
+    //     $('#md_modal2').dialog({
+    //     title: "Info Ammoniac"
+    //     });
+    //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
+    //     });
+    // $(document).on ("click", "#info-modal#so2id#", function () {
+    //     $('#md_modal2').dialog({
+    //     title: "Info Dioxyde de Souffre"
+    //     });
+    //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
+    //     });
+    // $(document).on ("click", "#info-modal#no2id#", function () {
+    //     $('#md_modal2').dialog({
+    //     title: "Info Dioxyde d'Azote"
+    //     });
+    //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
+    //     });
+    // $(document).on ("click", "#info-modal#noid#", function () {
+    //     $('#md_modal2').dialog({
+    //     title: "Info Monoxyde d'Azote"
+    //     });
+    //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
+    //     });
+
+              /*   var mySlider#id# = $('#airquality-min#uid#').carousel()
+
+             $('#airquality-min#uid#').hover(function () {
+                    console.log('pause')
+                    mySlider#id#.carousel('pause');
+               }, function () {
+                    mySlider#id#.carousel({
+                         'pause': false
+                    });
+                    console.log('restart')
+               });*/
+$(document).ready(function () {
+
+    
+               if ('#animation#'== 'active') {
+                    var t#uid#;
+
+                    var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
+                    t#uid# = setTimeout("$('#airquality-min#uid#').carousel({interval: 1000});",
+                         start#uid# - 1000);
+
+                    $('#airquality-min#uid#').on('slid.bs.carousel', function () {
+                         clearTimeout(t#uid#);
+                         var duration#uid# = $(this).find('.active').attr('data-interval');
+
+                         $('#airquality-min#uid#').carousel('pause');
+                         t#uid# = setTimeout("$('#airquality-min#uid#').carousel();",
+                              duration#uid# - 1000);
+                    })
+                    $('.right.carousel-control.my#id#').on('click', function () {
+                         clearTimeout(t#uid#);
+                    });
+                    $('.left.carousel-control.my#id#').on('click', function () {
+                         clearTimeout(t#uid#);
+                    });
+               }
+
+
+               $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+                    jeedom.cmd.execute({ id: $(this).data('cmd_id') });
+                    });
+});
+</script>
+</div>
