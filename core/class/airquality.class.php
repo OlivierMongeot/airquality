@@ -193,8 +193,8 @@ class airquality extends eqLogic
             }
         }
     }
+    
     // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
-
     public function postSave()
     {
         // if ($this->getIsEnable()) {
@@ -432,7 +432,7 @@ class airquality extends eqLogic
                     $unitreplace['#mini-label#'] = '';
                 
                     $replace[$commandNameId] = $element->getId();  
-                    
+
                     $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
 
                     $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
