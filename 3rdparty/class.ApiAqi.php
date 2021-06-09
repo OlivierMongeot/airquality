@@ -25,14 +25,14 @@ class ApiAqi
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
                 "Content-type: application/json",
-                "x-api-key:".$this->apiKey
+                "x-api-key:" . $this->apiKey
             ],
         ]);
         $response = curl_exec($curl);
         $error = curl_error($curl);
         curl_close($curl);
         if ($error) {
-            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :'. json_encode($error),__FILE__) );
+            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($error), __FILE__));
         } else {
             $coordinates = json_decode($response);
             return  [$coordinates[0]->lat, $coordinates[0]->lon];
@@ -56,27 +56,27 @@ class ApiAqi
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => [
                     "Content-type: application/json",
-                    "x-api-key:".$this->apiKey
+                    "x-api-key:" . $this->apiKey
                 ],
             ]);
             $response = curl_exec($curl);
             $err = curl_error($curl);
             curl_close($curl);
             if ($err) {
-                    throw new Exception(__('Impossible de récupérer cette ville en reverse geoloc : :'. json_encode($err),__FILE__) );
+                throw new Exception(__('Impossible de récupérer cette ville en reverse geoloc : :' . json_encode($err), __FILE__));
             } else {
                 $data = json_decode($response);
                 $city = $data[0]->name;
                 return  $city;
             }
         } else {
-            throw new Exception(__('Les coordonnées sont vides',__FILE__));
+            throw new Exception(__('Les coordonnées sont vides', __FILE__));
             return null;
         }
     }
 
 
-    public function getAqi($latitude , $longitude )
+    public function getAqi($latitude, $longitude)
     {
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -89,7 +89,7 @@ class ApiAqi
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
                 "Content-type: application/json",
-                "x-api-key:".$this->apiKey
+                "x-api-key:" . $this->apiKey
             ],
         ]);
         $response = curl_exec($curl);
@@ -108,6 +108,7 @@ class ApiAqi
         }
     }
 
+
     // public function setDynGeoLoc($latitude, $longitude)
     // {
     //     config::save('DynLatitude', $latitude, 'airquality');
@@ -118,17 +119,17 @@ class ApiAqi
     //     return  $this->callApiReverseGeoLoc($latitude, $longitude);
     // }
 
-    public function getOneCallApi($latitude , $longitude )
+    public function getOneCallApi($latitude, $longitude)
     {
-              
-        $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude. "&exclude=hourly,daily";
+
+        $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi($url);
         $data = json_decode($response[0]);
 
-        if ($response[1] != null ) {
+        if ($response[1] != null) {
             throw new Exception('Pas de données  UV et visibilité pour l\'instant');
         } else {
-          
+
             if ($data == [] || $data == null) {
                 throw new Exception('Pas de données UV et visibilité avec ces coordonnées');
             } else {
@@ -138,7 +139,8 @@ class ApiAqi
     }
 
 
-    private function curlApi(string $url, int $timeOut = 30){
+    private function curlApi(string $url, int $timeOut = 30)
+    {
 
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -151,14 +153,13 @@ class ApiAqi
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
                 "Content-type: application/json",
-                "x-api-key:".$this->apiKey
+                "x-api-key:" . $this->apiKey
             ],
         ]);
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
         return [$response, $err];
-
     }
 
     // public static function convertToPPM($microGramByM3, $molecule)
@@ -208,4 +209,101 @@ class ApiAqi
         }
     }
 
+
+    function callApiForecastAQI($latitude = null, $longitude = null)
+    {
+        $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
+        $response = $this->curlApi($url, $this->apiKey);
+        $data = json_decode($response[0]);
+        if ($response[1] != '') {
+            echo ('Pas de données  Forecast pour l\'instant');
+        } else {
+            if ($data == [] || $data == null) {
+                echo ('Pas de données Forecast avec ces coordonnées');
+            } else {
+                return $data->list;
+            }
+        }
+    }
+    
+
+    public function pushMinMaxByDay($newTabDay, $element)
+    {
+        $newTabDayElement = $newTabDay[$element];
+        foreach ($newTabDayElement as $k => $value) {
+            // $newTabDay[$element][$k]['min'] = min($value);
+            // $newTabDay[$element][$k]['max'] = max($value);    
+            // $newTab[$element][$k]['min'] = min($value);
+            // $newTab[$element][$k]['max'] = max($value); 
+            $forecast[$element]['day'][] = $k;
+            $forecast[$element]['min'][] = min($value);
+            $forecast[$element]['max'][] = max($value);
+        }
+        return $forecast;
+    }
+
+    public function parseData($response, $component)
+    {
+
+        $beginOfDay = strtotime("today",  time());
+        $day = 86399; // in seconds
+        foreach ($response as $hourCast) {
+
+            if ($hourCast->dt >= $beginOfDay) {
+
+                if (($hourCast->dt) <= ($beginOfDay + $day)) {
+                    $weekday = date('N', ($hourCast->dt + 1000));
+                    $dayName =  $this->getNameDay($weekday);
+                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
+                }
+
+                if (($hourCast->dt) > ($beginOfDay + $day) && ($hourCast->dt) <= ($beginOfDay + (2 * $day))) {
+                    $weekday = date('N', ($hourCast->dt + 1000));
+                    $dayName =  $this->getNameDay($weekday);
+                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
+                }
+
+                if (($hourCast->dt) > ($beginOfDay + 2 * $day) && ($hourCast->dt) <= ($beginOfDay + (3 * $day))) {
+                    $weekday = date('N', ($hourCast->dt + 1000));
+                    $dayName =  $this->getNameDay($weekday);
+                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
+                }
+
+                if (($hourCast->dt) > ($beginOfDay + 3 * $day) && ($hourCast->dt) <= ($beginOfDay + (4 * $day))) {
+                    $weekday = date('N', ($hourCast->dt + 1000));
+                    $dayName =  $this->getNameDay($weekday);
+                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
+                }
+
+                if (($hourCast->dt) > ($beginOfDay + 4 * $day) && ($hourCast->dt) <= ($beginOfDay + 5 * $day)) {
+                    $weekday = date('N', ($hourCast->dt + 1000));
+                    $dayName = $this->getNameDay($weekday);
+                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
+                }
+            }
+        }
+
+        return $newTabAqiDay;
+    }
+
+    private function getNameDay($numDay)
+    {
+        switch ($numDay) {
+                // case 0 : return 'dimanche';
+            case 1:
+                return 'lundi';
+            case 2:
+                return 'mardi';
+            case 3:
+                return 'mercredi';
+            case 4:
+                return 'jeudi';
+            case 5:
+                return 'vendredi';
+            case 6:
+                return 'samedi';
+            case 7:
+                return 'dimanche';
+        }
+    }
 }
