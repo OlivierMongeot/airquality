@@ -108,7 +108,6 @@ class ApiAqi
      */
     public function getOneCallApi($latitude, $longitude)
     {
-
         $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
@@ -173,7 +172,24 @@ class ApiAqi
     }
 
 
-    public function pushMinMaxByDay($newTabDay, $element)
+    public function getForecast($latitude = null, $longitude = null){
+
+        $components = ['co','no','no2','o3','pm2_5','pm10'];
+
+        $dataList = $this->callApiForecastAQI($latitude, $longitude);
+
+        foreach ($components as $component) {
+            $newTabDay = $this->parseData($dataList, $component);
+            $minMaxTab[] = $this->pushMinMaxByDay($newTabDay, $component);
+        }
+        return $minMaxTab;        
+    }
+
+    /**
+     * Return array with min max by day for an element 
+     * This is data preparation for highCharts  
+     */
+    private function pushMinMaxByDay($newTabDay, $element)
     {
         $newTabDayElement = $newTabDay[$element];
         foreach ($newTabDayElement as $k => $value) {
@@ -184,10 +200,12 @@ class ApiAqi
         return $forecast;
     }
 
+
+
     /**
      * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
      */
-    public function parseData($response, $component)
+    private function parseData($response, $component)
     {
         $beginOfDay = strtotime("today",  time());
         $day = 86399; // in seconds

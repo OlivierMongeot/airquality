@@ -14,3 +14,4 @@ Pour les pollens les niveaux de danger généraux sont données par l'API, les a
 
 De la documentation est disponible dans le dossier pdf à la racine du projet.
 
+C'est une version beta actuellement.  

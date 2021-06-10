@@ -203,183 +203,177 @@
 
 <script>
 
-// var data1 = [ [7.0, 6.9, 9.5, 14.5, 18.2]   ]      ;
+var min = '#min#';
+var max = '#max#';
+// var data = [[7.0, 6.9, 9.5, 16.5, 18.2],[ 3.9, 4.2, 5.7, 8.5, 11.9]];
+
+var mintab = min.split(',');
+var maxtab = max.split(',');
 
 
-// ,
-//             'jeudi'=>[ 3.9, 4.2, 5.7, 8.5, 11.9],
-// [ 9.9, 8.2, 7.7, 6.5, 5.9],
-// [ 17.9, 16.2, 14.7, 12.5, 10.9]
-// ];
+var parseMin = mintab.map(function (x) { 
+  return parseInt(x, 10); 
+})
 
-// var data1 = [[7.0, 6.9, 9.5, 14.5, 18.2],
-// [ 3.9, 4.2, 5.7, 8.5, 11.9],
-// [ 9.9, 8.2, 7.7, 6.5, 5.9],
-// [ 17.9, 16.2, 14.7, 12.5, 10.9]
-// ]
-
-var data2 = [[7.0, 6.9, 9.5, 16.5, 18.2],
-[ 3.9, 4.2, 5.7, 8.5, 11.9],
-[ 8.9, 7.2, 5.7, 5.5, 3.9],
-[ 7.9, 6.2, 5.7, 4.5, 1.9]
-]
+var parseMax = maxtab.map(function (y) { 
+  return parseInt(y, 10); 
+})
 
 
 
-var labels = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi'];
+var data = [];
+data.push(parseMin); 
+data.push(parseMax); 
+console.log(data[0]);
+console.log(data[1]);
 
 
+var labels = '#labelday#';
+var labels = labels.split(',');
 
 
-// GiveaChart('container2#id#',data1)
+    GiveaChart('container#id#', data)
 
-GiveaChart('container#id#',data2)
-
-function GiveaChart(container, data){
+    function GiveaChart(container, data) {
 
 
-    Highcharts.chart(container, {
+        Highcharts.chart(container, {
 
-chart: {
-    // margin: ['auto', 'auto', 10, 'auto'],
-  spacingTop: 0,
-    //   marginBottom: 100,
-    //   scrollablePlotArea: {
-    //             minWidth: 500,
-    //             scrollPositionX: 0
-    //         },
+            chart: {
+                spacingTop: 0,
+                //   marginBottom: 100,
+                //   scrollablePlotArea: {
+                //             minWidth: 500,
+                //             scrollPositionX: 0
+                //         },
 
-  type: 'column',
-  height: 220,
-  width:270,
-//   alignTicks: true,
-  borderColor: 'currentcolor',
-//   borderWidth:0,
-//   zoomType: 'x',
-//   panning: true,
-//   panKey: 'shift'
+                type: 'line',
+                height: 220,
+                width: 270,
+                //   alignTicks: true,
+                borderColor: 'currentcolor',
+                //   borderWidth:0,
+                //   zoomType: 'x',
+                //   panning: true,
+                //   panKey: 'shift'
 
-},
-// boost: {
-//         useGPUTranslations: true
-//     },
-exporting: {
-  enabled: false
-},
-credits:{
-  enabled: false
-},
-title: {
-  text: null,
-  y:25,
-  x:0,
-  style :{
-      color:'currentColor'
-  }
-},
+            },
+            // boost: {
+            //         useGPUTranslations: true
+            //     },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: null,
+                y: 25,
+                x: 0,
+                style: {
+                    color: 'currentColor'
+                }
+            },
 
-xAxis: {
-  labels: {
-    rotation: -25,
-        // overflow: 'justify',
-        style:{  fontSize:'10px' },
-        x: 14,
-        y: 15
-      },
-  min:0,
-  categories: labels,
-  tickWidth: 1,
-  gridLineWidth: 0,
-  minorGridLineWidth: 1,
+            xAxis: {
+                labels: {
+                    rotation: -25,
+                    // overflow: 'justify',
+                    style: { fontSize: '10px' },
+                    x: 14,
+                    y: 15
+                },
+                min: 0,
+                categories: labels,
+                tickWidth: 1,
+                gridLineWidth: 0,
+                minorGridLineWidth: 1,
 
-},
-yAxis: [{ // left y axis
-  softMax: 15,
-  softMin: 3,
-  visible:false,
-  title: {
-    text: null
-  },
-  labels: {
-    align: 'center',
-   
-   
-    x: 0,
-    y: 0,
-    format: '{value:.,0f}'
-  },
-//   showFirstLabel: false
-}],
+            },
+            yAxis: [{ // left y axis
+                softMax: 15,
+                softMin: 150,
+                visible: false,
+                title: {
+                    text: null
+                },
+                labels: {
+                    align: 'center',
 
-legend: {
-  align: 'center',
-  verticalAlign: 'bottom',
-  borderWidth:0
-},
 
-tooltip: {
-  shared: true,
-//   crosshairs: true
-        // split: true,
-        // distance: 30,
-        padding: 2,
-        // stickOnContact: true
+                    x: 0,
+                    y: 0,
+                    format: '{value:.,0f}'
+                },
+                //   showFirstLabel: false
+            }],
 
-},
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0
+            },
 
-plotOptions: {
+            tooltip: {
+                shared: true,
+                //   crosshairs: true
+                // split: true,
+                // distance: 30,
+                padding: 2,
+                // stickOnContact: true
 
-  column: {
-    pointPadding: 0.10,
-    borderWidth: 0,
-    width: 5
-  },
-  series: {
-    maxPointWidth: 50,
-    cursor: 'pointer',
-    className: 'popup-on-click',
-    lineWidth: 5,
-    marker: {
-      lineWidth: 0
+            },
+
+            plotOptions: {
+
+                column: {
+                    pointPadding: 0.10,
+                    borderWidth: 0,
+                    width: 5
+                },
+                series: {
+                    maxPointWidth: 50,
+                    cursor: 'pointer',
+                    className: 'popup-on-click',
+                    lineWidth: 5,
+                    marker: {
+                        lineWidth: 0
+                    }
+                }
+            },
+
+            series: [
+
+                {
+                    name: 'CO min',
+                    lineWidth: '4px',
+                    marker: { radius: 2 },
+                    data: data[0]
+                }, {
+                    name: 'CO max',
+                    lineWidth: '4px',
+                    marker: { radius: 2 },
+                    data: data[1]
+                }
+                //   ,
+                //   {
+                //   name: 'PM10 min',
+                //   lineWidth: '4px',
+                //   marker: {radius: 2},
+                //   data: data[1]
+                //   },  {
+                //   name: 'PM10 max',
+                //   lineWidth: '4px',
+                //   marker: {radius: 2},
+                //   data: data[0]
+                //   }
+
+            ]
+        });
+
+
     }
-  }
-},
-
-series: [
-//   {
-//   name: 'AQI',
-//   lineWidth: 3,
-//   marker: {radius: 2},
-//   data: data[0]
-//   },
-{  
-  name: 'PM25 min',
-  lineWidth: '10px',
-  marker: {radius: 1},
-  data: data[2]
-  },  {
-  name: 'PM25 max',
-  lineWidth: '4px',
-  marker: {radius: 2},
-  data: data[3]
-  },
-  {
-  name: 'PM10 min',
-  lineWidth: '4px',
-  marker: {radius: 2},
-  data: data[1]
-  },  {
-  name: 'PM10 max',
-  lineWidth: '4px',
-  marker: {radius: 2},
-  data: data[0]
-  }
-  
-]
-});
-
-
-}
 
             
 

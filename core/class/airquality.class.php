@@ -1,9 +1,10 @@
 <?php
-error_reporting(E_ALL); // Error/Exception engine, always use E_ALL
-ini_set('ignore_repeated_errors', TRUE); // always use TRUE
-ini_set('display_errors', TRUE); // Error/Exception display, use FALSE only in production environment or real server. Use TRUE in development environment
-ini_set('log_errors', TRUE); // Error/Exception file logging engine.
-ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE); 
+ini_set('display_errors', TRUE);
+ini_set('log_errors', TRUE); 
+ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); 
+
 /* This file is part of Jeedom.
  *
  * Jeedom is free software: you can redistribute it and/or modify
@@ -41,8 +42,6 @@ class airquality extends eqLogic
     public static $_widgetPossibility = ['custom' => true, 'custom::layout' => false];
 
 
- 
-
     public static function cron30()
     {
         foreach (self::byType('airquality') as $type) {
@@ -56,7 +55,6 @@ class airquality extends eqLogic
             }
         }
     }
-
 
 
     public static function formatValueForDisplay($value, $style = 'normal')
@@ -110,32 +108,22 @@ class airquality extends eqLogic
         switch ($level) {
             case  'High':
                 return __("Risque haut",__FILE__);
-                // The air quality is good. Enjoy your usual outdoor activities.
-                // 
+                // The air quality is good. Enjoy your usual outdoor activities  
             case 'Moderate':
                 return __("Risque modéré",__FILE__);
                 // Coorect
                 //  Enjoy your usual outdoor activities
-                // 
             case 'Low':
                 return __("Risque bas",__FILE__);
                 // Consider reducing intense outdoor activities, if you experience symptoms.
-                // 
-            
             case 'Very High':
                     return __("Risque très haut",__FILE__);
                     // Consider reducing intense outdoor activities, if you experience symptoms.
-                    // 
-
-
         }
     }
     
-
     public static function getListPollen($category){
-
         switch ($category){
-
             case 'tree_pollen':
                 return __('Aulne',__FILE__).' - '.__('Bouleau',__FILE__).' - '.__('Cyprès',__FILE__).' - '.__('Chêne',__FILE__)
                 .' - '.__('Platane',__FILE__).' - '.__('Noisetier',__FILE__).' - '.__('Orme',__FILE__).' - '.__('Pin',__FILE__);
@@ -163,7 +151,6 @@ class airquality extends eqLogic
     public function preUpdate()
     {
         if ($this->getIsEnable()) {
-
             switch ($this->getConfiguration('searchMode')) {
 
                 case 'city_mode':
@@ -200,11 +187,6 @@ class airquality extends eqLogic
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
     public function preSave()
     {
-        // $themeConfig = trim(config::byKey('default_bootstrap_theme_night'));
-        // if ($this->getConfiguration('searchMode') == 'city_mode') {
-        //     $this->setConfiguration('latitude', '');
-        //     $this->setConfiguration('longitude', '');
-        // }
         if ($this->getConfiguration('displayMode') == 'full_display') {
             $this->setDisplay("width", "250px");
             $this->setDisplay("height", "205px");
@@ -217,7 +199,6 @@ class airquality extends eqLogic
 
     public function postUpdate()
     {
-
         if ($this->getConfiguration('elements') == 'polution') {
             $setup = [
                 ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
@@ -231,10 +212,9 @@ class airquality extends eqLogic
                 ['name' => 'pm25', 'title' => 'PM 2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
                 ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
                 ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
+
             ];
         }
-
-
 
         if ($this->getConfiguration('elements') == 'pollen') {
             $setup = [
@@ -244,11 +224,8 @@ class airquality extends eqLogic
                 ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType'=>'string' ,'order' => 4],
                 ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType'=>'string' ,'order' => 5],
                 ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType'=>'string' ,'order' => 20],
-           
                 ['name' => 'grass', 'title' => 'Herbes/Graminées', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 19],
-
                 ['name' => 'auln', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 6],
-              
                 ['name' => 'boul', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 7],
                 ['name' => 'cypress', 'title' => 'Cyprès', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 8],
                 ['name' => 'orme', 'title' => 'Orme', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 9],
@@ -257,7 +234,6 @@ class airquality extends eqLogic
                 ['name' => 'pin', 'title' => 'Pin', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 12],
                 ['name' => 'platane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 13],
                 ['name' => 'peuplier', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 14],
-              
                 ['name' => 'chenopod', 'title' => 'Chenopod', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 15],
                 ['name' => 'armoise', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 16],
                 ['name' => 'ortie', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 17],
@@ -266,7 +242,7 @@ class airquality extends eqLogic
                 ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType'=>'string' ,'order' => 21],
             ];
 
-            // Voir si autre option a remover 
+            // Voir si autre option a remover todo 
             //  $allCmd = $this->getCmd('info');
             //  foreach ($allCmd as $key => $oldCmd) {
             //      if(in_array($oldCmd, $setup)){
@@ -323,9 +299,7 @@ class airquality extends eqLogic
             return $replace;
         }
         $this->emptyCacheWidget(); //vide le cache. Pour le développement
-
         $version = jeedom::versionAlias($_version);
-
         $activePollen = 0;
 
         foreach ($this->getCmd('info') as $cmd) {
@@ -443,6 +417,18 @@ class airquality extends eqLogic
             }
         }  // Fin foreach 
 
+
+        // Affichage direct du forecast sans passer par l'enregistrement/création d'une commande 
+        $forecast = $this->getData('getForecast');
+        // message::add('debug', $forecast[0]['co']['day']);
+
+        $replace['#labelday#'] = implode(',',$forecast[0]['co']['day']);
+
+        $replace['#min#'] =  implode(',',$forecast[0]['co']['min']);
+        $replace['#max#'] =  implode(',',$forecast[0]['co']['max']);
+      
+        // message::add('debug', implode(',',$forecast[0]['co']['min']));
+
         $replace['#index_name#'] = __('Indice',__FILE__);
         $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
         $replace['#activePollen#'] = $activePollen;
@@ -497,14 +483,18 @@ class airquality extends eqLogic
         }
     }
 
-
+    /**
+     * Pour appel  Ajax
+     */
     public static function fetchReverse($longitude, $latitude)
     {
         $api = new ApiAqi;
         return $api->callApiReverseGeoLoc($longitude, $latitude);
     }
 
-
+    /**
+     * Pour appel  Ajax
+     */
     public static function fetchGeoLoc($city, $country_code, $state_code = null)
     {
         $api = new ApiAqi;
@@ -522,10 +512,8 @@ class airquality extends eqLogic
         return $api->callApiReverseGeoLoc($resLong, $resLat);
     }
 
-    /*     * **********************Getteur Setteur*************************** */
 
-
-    public function getDatas(string $apiName){
+    public function getData(string $apiName){
    
         $api = new ApiAqi();
         switch ($this->getConfiguration('searchMode')) {
@@ -550,35 +538,25 @@ class airquality extends eqLogic
 
             case 'server_mode':
                 return $api->$apiName(config::byKey('info::latitude'), config::byKey('info::longitude'));
-
-        }
-    
+        }   
     }
-
-  
 
 }
 
 
 class airqualityCmd extends cmd
 {
-    /*     * *************************Attributs****************************** */
-
-
+   
     public static $_widgetPossibility = array('custom' => false);
 
-
-    // Exécution d'une commande  
     public function execute($_options = array())
     {
-
         $eqlogic = $this->getEqLogic();
-        // message::add('debug', $eqlogic->getConfiguration('elements'));
-
+    
         switch ($this->getLogicalId()) {
             case 'refresh':
                 if ($eqlogic->getConfiguration('elements') == 'polution') {
-                    $data = $eqlogic->getDatas('getAqi');
+                    $data = $eqlogic->getData('getAqi');
                     $eqlogic->checkAndUpdateCmd('aqi', $data->main->aqi);
                     $eqlogic->checkAndUpdateCmd('no2', $data->components->no2);
                     $eqlogic->checkAndUpdateCmd('no', $data->components->no);
@@ -588,16 +566,39 @@ class airqualityCmd extends cmd
                     $eqlogic->checkAndUpdateCmd('nh3', $data->components->nh3);
                     $eqlogic->checkAndUpdateCmd('pm25', $data->components->pm2_5);
                     $eqlogic->checkAndUpdateCmd('pm10', $data->components->pm10);
-                    $data = $eqlogic->getDatas('getOneCallApi');
+                    $data = $eqlogic->getData('getOneCallApi');
                     $eqlogic->checkAndUpdateCmd('uv', $data->uvi);
                     $eqlogic->checkAndUpdateCmd('visibility', $data->visibility);
+
+
+                    // $forecast =  $eqlogic->getData('getForecast');
+                    // $eqlogic->checkAndUpdateCmd('no2_min', $forecast['no2']['min'][0]);
+                    // $eqlogic->checkAndUpdateCmd('no2_max',  $forecast['no2']['max'][0]);
+                    // $eqlogic->checkAndUpdateCmd('day',  $forecast['no2']['day'][0]);
+
+                    // $eqlogic->checkAndUpdateCmd('no2_min+1',  $forecast['no2']['min'][1]);
+                    // $eqlogic->checkAndUpdateCmd('no2_max+1', $forecast['no2']['max'][1]);
+                    // $eqlogic->checkAndUpdateCmd('day+1', $forecast['no2']['day'][1]);
+
+                    // $eqlogic->checkAndUpdateCmd('no2_min+2',  $forecast['no2']['min'][2]);
+                    // $eqlogic->checkAndUpdateCmd('no2_max+2', $forecast['no2']['max'][2]);
+                    // $eqlogic->checkAndUpdateCmd('day+2', $forecast['no2']['day'][2]);
+
+                    // $eqlogic->checkAndUpdateCmd('no2_min+3',  $forecast['no2']['min'][3]);
+                    // $eqlogic->checkAndUpdateCmd('no2_max+3', $forecast['no2']['max'][3]);
+                    // $eqlogic->checkAndUpdateCmd('day+3', $forecast['no2']['day'][3]);
+
+                    // $eqlogic->checkAndUpdateCmd('no2_min+4',  $forecast['no2']['min'][4]);
+                    // $eqlogic->checkAndUpdateCmd('no2_max+4', $forecast['no2']['max'][4]);
+                    // $eqlogic->checkAndUpdateCmd('day+4', $forecast['no2']['day'][4]);
+
+
                     $eqlogic->refreshWidget();
                     break;
                 }
 
-
                 if ($eqlogic->getConfiguration('elements') == 'pollen') {
-                    $dataAll = $eqlogic->getDatas('getAmbee');
+                    $dataAll = $eqlogic->getData('getAmbee');
                     $dataPollen = $dataAll->data;
                     $eqlogic->checkAndUpdateCmd('grass', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
                     $eqlogic->checkAndUpdateCmd('auln', $dataPollen[0]->Species->Tree->Alder);
