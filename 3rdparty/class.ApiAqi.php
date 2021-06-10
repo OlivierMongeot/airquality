@@ -2,70 +2,77 @@
 
 class ApiAqi
 {
-
+    /**
+     *  OpenWeather API Key
+     */
     private $apiKey;
+    /**
+     * Ambee Aip Key
+     */
+    private $ambeeApiKey;
 
     public function __construct()
     {
         $this->apiKey = trim(config::byKey('apikey', 'airquality'));
+        $this->ambeeApiKey = trim(config::byKey('apikeyAmbee', 'airquality'));
     }
 
-    //  Retourne Longitude et latitude avec la ville et le pays
+    /**
+     * Retourne Longitude et latitude avec la ville et le code pays
+     **/
     public function callApiGeoLoc($city, $country_code, $state_code = null)
     {
-        // message::add('debug','aqi callApiGeoLoc');
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "Content-type: application/json",
-                "x-api-key:" . $this->apiKey
-            ],
-        ]);
-        $response = curl_exec($curl);
-        $error = curl_error($curl);
-        curl_close($curl);
-        if ($error) {
-            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($error), __FILE__));
+        $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
+        $response = $this->curlApi($url, $this->apiKey);
+
+        if ($response[1]) {
+            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($response[1]), __FILE__));
         } else {
-            $coordinates = json_decode($response);
+            $coordinates = json_decode($response[0]);
             return  [$coordinates[0]->lat, $coordinates[0]->lon];
         }
     }
 
+    /**
+     * Methode générique d'appel API
+     */
+    private function curlApi(string $url, string $apiKey, int $timeOut = 30)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => $timeOut,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => [
+                "Content-type: application/json",
+                "x-api-key:" . $apiKey
+            ],
+        ]);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        return [$response, $err];
+    }
 
-    // Recupère nom de la ville avec Lat Long 
+
+    /**
+     * Recupère nom de la ville avec la latitude et longitude 
+     * */
     public function callApiReverseGeoLoc($longitude, $latitude)
     {
-        // message::add('debug','aqi callApiReverseGeoLoc');
         if ($longitude != '' && $latitude != '') {
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_URL => "http://api.openweathermap.org/geo/1.0/reverse?lat=" . $latitude . "&lon=" . $longitude,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => [
-                    "Content-type: application/json",
-                    "x-api-key:" . $this->apiKey
-                ],
-            ]);
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            curl_close($curl);
-            if ($err) {
-                throw new Exception(__('Impossible de récupérer cette ville en reverse geoloc : :' . json_encode($err), __FILE__));
+
+            $url = "http://api.openweathermap.org/geo/1.0/reverse?lat=" . $latitude . "&lon=" . $longitude;
+            $response = $this->curlApi($url, $this->apiKey);
+
+            if ($response[1]) {
+                throw new Exception(__('Impossible de récupérer cette ville en reverse géolocalisation :' . json_encode($response[1]), __FILE__));
             } else {
-                $data = json_decode($response);
+                $data = json_decode($response[0]);
                 $city = $data[0]->name;
                 return  $city;
             }
@@ -75,30 +82,18 @@ class ApiAqi
         }
     }
 
-
+    /**
+     * Appel AQI 
+     */
     public function getAqi($latitude, $longitude)
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "Content-type: application/json",
-                "x-api-key:" . $this->apiKey
-            ],
-        ]);
-        $response = curl_exec($curl);
-        $data = json_decode($response);
-        $err = curl_error($curl);
-        curl_close($curl);
-        if ($err) {
+
+        $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
+        $response = $this->curlApi($url, $this->apiKey);
+        if ($response[1]) {
             throw new Exception('Pas de données de pollution pour l\'instant');
         } else {
+            $data = json_decode($response[0]);
             $result = $data->list[0];
             if ($result == [] || $result == null) {
                 throw new Exception('Pas de données de pollution avec ces coordonnées');
@@ -108,22 +103,14 @@ class ApiAqi
         }
     }
 
-
-    // public function setDynGeoLoc($latitude, $longitude)
-    // {
-    //     config::save('DynLatitude', $latitude, 'airquality');
-    //     config::save('DynLongitude', $longitude, 'airquality');
-    //     $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-    //     $resLong = trim(config::byKey('DynLongitude', 'airquality'));
-    //     // return  self::callApiReverseGeoLoc($resLong,$resLat);
-    //     return  $this->callApiReverseGeoLoc($latitude, $longitude);
-    // }
-
+    /**
+     * Appel OneCall OpenWheather AQI 
+     */
     public function getOneCallApi($latitude, $longitude)
     {
 
         $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
-        $response = $this->curlApi($url);
+        $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
 
         if ($response[1] != null) {
@@ -138,68 +125,25 @@ class ApiAqi
         }
     }
 
-
-    private function curlApi(string $url, int $timeOut = 30)
-    {
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => $timeOut,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "Content-type: application/json",
-                "x-api-key:" . $this->apiKey
-            ],
-        ]);
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-        return [$response, $err];
-    }
-
-    // public static function convertToPPM($microGramByM3, $molecule)
-    // {
-    //     $molecularWeight = [
-    //         'nh3' => 10.03, 'co' => 28.1, 'no2' => 46.01, 'o3' => 48, 'so2' => 64.06, 'no' => 31.01
-    //     ];
-    //     $ppm = 24.45 * ($microGramByM3 / 1000) / $molecularWeight[$molecule];
-    //     return number_format((float)$ppm, 3, '.', '');
-    // }
-
-
+    /**
+     * Appel Pollen Ambee 
+     */
     public function getAmbee($latitude = null, $longitude = null)
     {
-        // message::add('debug','Gat aqi Method Aqi'. $this->apiKey);
+        // message::add('debug','Gat aqi Method Aqi'. $this->ambeeApiKey);
+        // message::add('debug','Latitude'. $latitude);
+        // message::add( 'Debug','Longitude'. $longitude);
         // Param auto pour test clef avant insertion des params
         if ($latitude === null && $longitude === null) {
             $latitude = 50 && $longitude = 50;
         }
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=48.532&lng=7.713",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => [
-                "Content-type: application/json",
-                "x-api-key: hxPAYiCZ021Ipnh3xSbVI1huas2EtCDt71bkvNDV"
-            ],
-        ]);
-        $response = curl_exec($curl);
-        $data = json_decode($response);
-        $err = curl_error($curl);
-        curl_close($curl);
-        if ($err) {
+        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=".trim(round($latitude, 4))."&lng=".trim(round($longitude, 4));
+        $response = $this->curlApi($url, $this->ambeeApiKey);
+        
+        if ($response[1]) {
             throw new Exception('Pas de données de Pollen pour l\'instant');
         } else {
+            $data = json_decode($response[0]);
             $result = $data->data;
             if ($result == [] || $result == null) {
                 throw new Exception('Pas de données de Polen avec ces coordonnées');
@@ -209,7 +153,9 @@ class ApiAqi
         }
     }
 
-
+    /**
+     * Appel Forecast OpenWheather AQI 
+     */
     function callApiForecastAQI($latitude = null, $longitude = null)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
@@ -225,16 +171,12 @@ class ApiAqi
             }
         }
     }
-    
+
 
     public function pushMinMaxByDay($newTabDay, $element)
     {
         $newTabDayElement = $newTabDay[$element];
         foreach ($newTabDayElement as $k => $value) {
-            // $newTabDay[$element][$k]['min'] = min($value);
-            // $newTabDay[$element][$k]['max'] = max($value);    
-            // $newTab[$element][$k]['min'] = min($value);
-            // $newTab[$element][$k]['max'] = max($value); 
             $forecast[$element]['day'][] = $k;
             $forecast[$element]['min'][] = min($value);
             $forecast[$element]['max'][] = max($value);
@@ -242,9 +184,11 @@ class ApiAqi
         return $forecast;
     }
 
+    /**
+     * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
+     */
     public function parseData($response, $component)
     {
-
         $beginOfDay = strtotime("today",  time());
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
@@ -256,25 +200,21 @@ class ApiAqi
                     $dayName =  $this->getNameDay($weekday);
                     $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
                 }
-
                 if (($hourCast->dt) > ($beginOfDay + $day) && ($hourCast->dt) <= ($beginOfDay + (2 * $day))) {
                     $weekday = date('N', ($hourCast->dt + 1000));
                     $dayName =  $this->getNameDay($weekday);
                     $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
                 }
-
                 if (($hourCast->dt) > ($beginOfDay + 2 * $day) && ($hourCast->dt) <= ($beginOfDay + (3 * $day))) {
                     $weekday = date('N', ($hourCast->dt + 1000));
                     $dayName =  $this->getNameDay($weekday);
                     $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
                 }
-
                 if (($hourCast->dt) > ($beginOfDay + 3 * $day) && ($hourCast->dt) <= ($beginOfDay + (4 * $day))) {
                     $weekday = date('N', ($hourCast->dt + 1000));
                     $dayName =  $this->getNameDay($weekday);
                     $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
                 }
-
                 if (($hourCast->dt) > ($beginOfDay + 4 * $day) && ($hourCast->dt) <= ($beginOfDay + 5 * $day)) {
                     $weekday = date('N', ($hourCast->dt + 1000));
                     $dayName = $this->getNameDay($weekday);
@@ -282,14 +222,12 @@ class ApiAqi
                 }
             }
         }
-
         return $newTabAqiDay;
     }
 
     private function getNameDay($numDay)
     {
         switch ($numDay) {
-                // case 0 : return 'dimanche';
             case 1:
                 return 'lundi';
             case 2:
@@ -306,4 +244,30 @@ class ApiAqi
                 return 'dimanche';
         }
     }
+
+    /**
+     * Unuse
+     */
+    public function setDynGeoLoc($latitude, $longitude)
+    {
+        config::save('DynLatitude', $latitude, 'airquality');
+        config::save('DynLongitude', $longitude, 'airquality');
+        $resLat = trim(config::byKey('DynLatitude', 'airquality'));
+        $resLong = trim(config::byKey('DynLongitude', 'airquality'));
+        // return  self::callApiReverseGeoLoc($resLong,$resLat);
+        return  $this->callApiReverseGeoLoc($latitude, $longitude);
+    }
+
+    /**
+     * Unuse 
+     */
+    public static function convertToPPM($microGramByM3, $molecule)
+    {
+        $molecularWeight = [
+            'nh3' => 10.03, 'co' => 28.1, 'no2' => 46.01, 'o3' => 48, 'so2' => 64.06, 'no' => 31.01
+        ];
+        $ppm = 24.45 * ($microGramByM3 / 1000) / $molecularWeight[$molecule];
+        return number_format((float)$ppm, 3, '.', '');
+    }
+
 }
