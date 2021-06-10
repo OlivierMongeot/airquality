@@ -1,11 +1,16 @@
 # Plugin pour Jeedom Air Quality & Pollen
 
-Ce plugin" donne les informations sur la qualité de l'air et les pollen présents dans  **Jeedom**.
+Le plugin Air Quality & Pollen donne des informations sur la qualité de l'air et les pollen présents dans l'air ambiant.
 
-Il est compatible avec la version 4 de Jeedom.
+Il fonctionne sous **Jeedom** et est compatible avec la version 4.
 
+Les données sont récupérées par deux API gratuites: Openwheather et Ambee. 
 
-La documentation générale relative à la conception de plugin est consultable [ici](https://doc.jeedom.com/fr_FR/dev/). Dans le détail :   
+Cela donne accèes aux données live de pollution et pollens et aussi aux prévisions sur 5 jours.
 
-* [Documentation du plugin](https://doc.jeedom.com/fr_FR/dev/documentation_plugin) : Présentation de la mise en place d'une documentation car un bon plugin n'est rien sans documentation adéquate.
-* [Publication du plugin](https://doc.jeedom.com/fr_FR/dev/publication_plugin) : Description des pré-requis indispensables à la publication du plugin.
+Les normes utilisées sont ceux de l'Agence européenne pour l'environnement : https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air
+
+Pour les pollens les niveaux de danger généraux sont données par l'API, les alertes par pollens sont basés sur un Mémoire de l’École Nationale de la Santé Publique. 
+
+De la documentation est disponible dans le dossier pdf à la racine du projet.
+
