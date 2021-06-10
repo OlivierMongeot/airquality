@@ -149,11 +149,6 @@ class airquality extends eqLogic
             case 'autres':
                     return __('Autres pollens d\'origine inconnue',__FILE__);
         }
-
-
-
-
-
     }
 
 
@@ -164,6 +159,7 @@ class airquality extends eqLogic
         $this->setIsVisible(1);
     }
 
+
     public function preUpdate()
     {
         if ($this->getIsEnable()) {
@@ -172,21 +168,16 @@ class airquality extends eqLogic
 
                 case 'city_mode':
                     if ($this->getConfiguration('city') == '' || $this->getConfiguration('country_code') == '') {
-                        throw new Exception('La ville ou le code pays ne peuvent être vide');
                         throw new Exception(__('La ville ou le code pays ne peuvent être vide', __FILE__));
                     }
                     break;
-
                 case 'long_lat_mode':
                     if ($this->getConfiguration('longitude') == '' || $this->getConfiguration('latitude') == '') {
-                        // throw new Exception('La longitude ou la latitude ne peuvent être vide');
                         throw new Exception(__('La longitude ou la latitude ne peuvent être vide', __FILE__));
                     }
                     break;
-
                 case 'dynamic_mode':
                     if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                        // throw new Exception('Probleme de localisation par le navigateur');
                         throw new Exception(__('Probleme de localisation par le navigateur', __FILE__));
                     }
                     break;
@@ -219,7 +210,7 @@ class airquality extends eqLogic
             $this->setDisplay("height", "205px");
         } else if ($this->getConfiguration('displayMode') == 'min_display') {
             $this->setDisplay("width", "270px");
-            $this->setDisplay("height", "255px");
+            $this->setDisplay("height", "455px");
         }
     }
 
@@ -241,19 +232,6 @@ class airquality extends eqLogic
                 ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
                 ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
             ];
-            // $setup = [
-            //     ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
-            //     ['name' => 'no2', 'title' => 'Dioxide d\'azote', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
-            //     ['name' => 'no', 'title' => 'Monoxyde d\'azote', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 4],
-            //     ['name' => 'co', 'title' => 'Monoxyde de carbone', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
-            //     ['name' => 'o3', 'title' => 'Ozone', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
-            //     ['name' => 'so2', 'title' => 'Dioxyde de soufre', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
-            //     ['name' => 'nh3', 'title' => 'Ammoniac', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
-            //     ['name' => 'pm25', 'title' => 'PM 10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
-            //     ['name' => 'pm10', 'title' => 'PM 2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
-            //     ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
-            //     ['name' => 'uv', 'title' => 'Index UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
-            // ];
         }
 
 
@@ -312,6 +290,7 @@ class airquality extends eqLogic
             $info->setOrder($command['order']);
             $info->setTemplate('dashboard', 'tile');
             $info->setSubType($command['subType']);
+            //  To do
             if ($info->getIsHistorized() == 1) {
                 // config::save('displayStatsWidget', 1 , 'airquality' );
                 $info->setDisplay('showStatsOnmobile', 1);
@@ -344,6 +323,7 @@ class airquality extends eqLogic
             return $replace;
         }
         $this->emptyCacheWidget(); //vide le cache. Pour le développement
+
         $version = jeedom::versionAlias($_version);
 
         $activePollen = 0;
@@ -359,11 +339,11 @@ class airquality extends eqLogic
                 $commandValue =  '#' . $nameCmd . '#';
                 $commandNameId =  '#' . $nameCmd . 'id#';
                 $commandName = '#'.$nameCmd.'_name#';
-                // Commande/Element  à afficher et remplacer 
-                $element = $this->getCmd(null, $nameCmd);
                 $info = '#' . $nameCmd . 'info#';
             
-                
+                // Commande/Element  à afficher et remplacer 
+                $element = $this->getCmd(null, $nameCmd);            
+            
                 if (is_object($element)) {
 
                     if ( $this->getConfiguration('elements') == 'polution'){
@@ -416,12 +396,12 @@ class airquality extends eqLogic
                     
                     else {
                      // Multi Template 
+
                     $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;
                    
-                    // $slidersValues[$cmd->getLogicalId()] = $cmd->execCmd();
+            
                     $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
                     $unitreplace['#icone#'] = $newIcon;
-                    // $unitreplace['#icone#'] = '';
                     
                     $unitreplace['#id#'] = $this->getId();
                     $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  self::formatValueForDisplay($element->execCmd()) : $element->execCmd() ;
@@ -438,7 +418,7 @@ class airquality extends eqLogic
                     $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
                
                     // Historique
-                    $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 100 . ' hour'));
+                    $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
                     $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
                     $unitreplace['#minHistoryValue#'] = self::formatValueForDisplay($historyStatistique['min'], 'short');
                     $unitreplace['#maxHistoryValue#'] = self::formatValueForDisplay($historyStatistique['max'], 'short');
@@ -458,7 +438,6 @@ class airquality extends eqLogic
                     // $elementTemplateMini = getTemplate('core', $version, 'element.mini', 'airquality');
                     $slideMini =  template_replace($unitreplace, $elementTemplateMini);
                     $tab[] = $slideMini;
-
                     }
                 }
             }
@@ -472,7 +451,6 @@ class airquality extends eqLogic
         if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
             $replace['#animation#'] = 'disabled';
             $replace['#classCaroussel#'] = 'data-interval="false"';
-
         } else {
             $replace['#animation#'] = 'active';
             $replace['#classCaroussel#'] = '';
@@ -503,7 +481,6 @@ class airquality extends eqLogic
            } else {
                     return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen.min', __CLASS__)));
            }
-           
         }
     }
 
@@ -545,102 +522,41 @@ class airquality extends eqLogic
         return $api->callApiReverseGeoLoc($resLong, $resLat);
     }
 
-
-
-
     /*     * **********************Getteur Setteur*************************** */
 
-    public function getData()
-    {
 
-        if ($this->getIsEnable()) {
-            $api = new ApiAqi();
-            switch ($this->getConfiguration('searchMode')) {
-                case 'city_mode':
-                    // Récuperation de la geoloc pour éviter le double appel API
-                    if (
-                        $this->getConfiguration('city_longitude') || $this->getConfiguration('city_latitude') ||
-                        $this->getConfiguration('city_longitude') != '' || $this->getConfiguration('city_latitude') != ''
-                    ) {
-                        return $api->getAqi($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
-                    } else {
-                        throw new Exception('Les coordonnées sont vides, testez la ville dans la configuration ');
-                    }
-                case 'long_lat_mode':
-                    return $api->getAqi($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
+    public function getDatas(string $apiName){
+   
+        $api = new ApiAqi();
+        switch ($this->getConfiguration('searchMode')) {
+            case 'city_mode':
+                // Récuperation de la geoloc pour éviter le double appel API
+                if (
+                    $this->getConfiguration('city_longitude') || $this->getConfiguration('city_latitude') ||
+                    $this->getConfiguration('city_longitude') != '' || $this->getConfiguration('city_latitude') != ''
+                ) {
+                    return $api->$apiName($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
+                } else {
+                    throw new Exception('Les coordonnées sont vides, testez la ville dans la configuration ');
+                }
+            case 'long_lat_mode':
+                return $api->$apiName($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
 
-                case 'dynamic_mode':
-                    if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                        throw new Exception('Probleme de localisation');
-                    }
-                    return $api->getAqi($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
+            case 'dynamic_mode':
+                if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
+                    throw new Exception('Probleme de localisation');
+                }
+                return $api->$apiName($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
 
-                case 'server_mode':
-                    return $api->getAqi(config::byKey('info::latitude'), config::byKey('info::longitude'));
-            }
+            case 'server_mode':
+                return $api->$apiName(config::byKey('info::latitude'), config::byKey('info::longitude'));
+
         }
+    
     }
 
-    public function getOneCall()
-    {
-        if ($this->getIsEnable()) {
-            $api = new ApiAqi();
-            switch ($this->getConfiguration('searchMode')) {
-                case 'city_mode':
-                    // Récuperation de la geoloc pour éviter le double appel API
-                    if (
-                        $this->getConfiguration('city_longitude') || $this->getConfiguration('city_latitude') ||
-                        $this->getConfiguration('city_longitude') != '' || $this->getConfiguration('city_latitude') != ''
-                    ) {
-                        return $api->getOneCallApi($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
-                    } else {
-                        throw new Exception('Les coordonnées sont vides, testez la ville dans la configuration ');
-                    }
-                case 'long_lat_mode':
-                    return $api->getOneCallApi($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
+  
 
-                case 'dynamic_mode':
-                    if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                        throw new Exception('Probleme de localisation');
-                    }
-                    return $api->getOneCallApi($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
-
-                case 'server_mode':
-                    return $api->getOneCallApi(config::byKey('info::latitude'), config::byKey('info::longitude'));
-            }
-        }
-    }
-
-    public function getDataPollen()
-    {
-
-        if ($this->getIsEnable()) {
-            $api = new ApiAqi();
-            switch ($this->getConfiguration('searchMode')) {
-                case 'city_mode':
-                    // Récuperation de la geoloc pour éviter le double appel API
-                    if (
-                        $this->getConfiguration('city_longitude') || $this->getConfiguration('city_latitude') ||
-                        $this->getConfiguration('city_longitude') != '' || $this->getConfiguration('city_latitude') != ''
-                    ) {
-                        return $api->getAmbee($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
-                    } else {
-                        throw new Exception('Les coordonnées sont vides, testez la ville dans la configuration ');
-                    }
-                case 'long_lat_mode':
-                    return $api->getAmbee($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
-
-                case 'dynamic_mode':
-                    if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                        throw new Exception('Probleme de localisation');
-                    }
-                    return $api->getAmbee($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
-
-                case 'server_mode':
-                    return $api->getAmbee(config::byKey('info::latitude'), config::byKey('info::longitude'));
-            }
-        }
-    }
 }
 
 
@@ -662,7 +578,7 @@ class airqualityCmd extends cmd
         switch ($this->getLogicalId()) {
             case 'refresh':
                 if ($eqlogic->getConfiguration('elements') == 'polution') {
-                    $data = $eqlogic->getData();
+                    $data = $eqlogic->getDatas('getAqi');
                     $eqlogic->checkAndUpdateCmd('aqi', $data->main->aqi);
                     $eqlogic->checkAndUpdateCmd('no2', $data->components->no2);
                     $eqlogic->checkAndUpdateCmd('no', $data->components->no);
@@ -672,7 +588,7 @@ class airqualityCmd extends cmd
                     $eqlogic->checkAndUpdateCmd('nh3', $data->components->nh3);
                     $eqlogic->checkAndUpdateCmd('pm25', $data->components->pm2_5);
                     $eqlogic->checkAndUpdateCmd('pm10', $data->components->pm10);
-                    $data = $eqlogic->getOneCall();
+                    $data = $eqlogic->getDatas('getOneCallApi');
                     $eqlogic->checkAndUpdateCmd('uv', $data->uvi);
                     $eqlogic->checkAndUpdateCmd('visibility', $data->visibility);
                     $eqlogic->refreshWidget();
@@ -681,7 +597,7 @@ class airqualityCmd extends cmd
 
 
                 if ($eqlogic->getConfiguration('elements') == 'pollen') {
-                    $dataAll = $eqlogic->getDataPollen();
+                    $dataAll = $eqlogic->getDatas('getAmbee');
                     $dataPollen = $dataAll->data;
                     $eqlogic->checkAndUpdateCmd('grass', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
                     $eqlogic->checkAndUpdateCmd('auln', $dataPollen[0]->Species->Tree->Alder);
