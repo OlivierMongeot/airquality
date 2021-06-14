@@ -25,6 +25,15 @@ class ComponentAqi
         $endCell ='</div></div>';
         $array = $this->slides;
 
+        if($this->itemByCell ==1) {
+
+
+
+
+        }
+
+
+
         if( $this->itemByCell == 2){
 
             if ( $this->countElements %2 == 0 ){
@@ -62,17 +71,9 @@ class ComponentAqi
 
             foreach ($newTab as $k => $item){
                 $starCell =  $this->getStartCell($k);
-
                 $html[] = $starCell . implode('', $item) . $endCell ;
             }
-
         }
-    
-      
-
-
-
-
         // log::add('airquality', 'debug', json_encode(implode( '', $html)));
         return implode( '', $html); 
 

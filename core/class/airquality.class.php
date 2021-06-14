@@ -298,7 +298,9 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        $this->emptyCacheWidget(); //vide le cache. Pour le développement
+        //vide le cache. Pour le développement
+        $this->emptyCacheWidget();
+
         $version = jeedom::versionAlias($_version);
         $activePollen = 0;
 
@@ -314,6 +316,7 @@ class airquality extends eqLogic
                 $commandNameId =  '#' . $nameCmd . 'id#';
                 $commandName = '#'.$nameCmd.'_name#';
                 $info = '#' . $nameCmd . 'info#';
+                // $nom = '#'.$nameCmd.'#';
             
                 // Commande/Element  à afficher et remplacer 
                 $element = $this->getCmd(null, $nameCmd);            
@@ -366,29 +369,27 @@ class airquality extends eqLogic
                         // message::add('debug', $element->execCmd() );
                         $replace['#updatedAt#'] = $element->execCmd() ;
                    }
-                 
-                    
                     else {
-                     // Multi Template 
-
-                    $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;
-                   
-            
+                 
+                    // Incrémentation Compteur de pollens si actif 
+                    $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;    
+     
+                    // Multi Template 
                     $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
-                    $unitreplace['#icone#'] = $newIcon;
-                    
+                    $unitreplace['#icone#'] = $newIcon;   
                     $unitreplace['#id#'] = $this->getId();
                     $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  self::formatValueForDisplay($element->execCmd()) : $element->execCmd() ;
                     $unitreplace['#name#'] = $cmd->getLogicalId();
                     $unitreplace['#display-name#'] = $cmd->getName();
                     $unitreplace['#cmdid#'] = $cmd->getId();
                     $unitreplace['#history#'] = 'history cursor';
+                    // Todo
                     $unitreplace['#mini-label#'] = '';
                 
                     $replace[$commandNameId] = $element->getId();  
 
                     $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
-
+                    // affichage liste pollens par categorie
                     $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
                
                     // Historique
@@ -408,9 +409,10 @@ class airquality extends eqLogic
                         $unitreplace['#tendance#'] = 'fas fa-minus';
                     }
 
-                    // Remplacement multi slider  
-                    // $elementTemplateMini = getTemplate('core', $version, 'element.mini', 'airquality');
+                    // Remplacement multi slider  unitreplace
                     $slideMini =  template_replace($unitreplace, $elementTemplateMini);
+                    
+                    // Enregistrement dans un tableau de tous les slides
                     $tab[] = $slideMini;
                     }
                 }
@@ -418,14 +420,54 @@ class airquality extends eqLogic
         }  // Fin foreach 
 
 
+        // Choix du layer a finir
+        if ($this->getConfiguration('elements') == 'polution') {
+            $component = new ComponentAqi($tab, $this->getId());
+
+
+        } else {
+            // Pollen 
+            $component = new ComponentAqi($tab, $this->getId(), 2);
+        }
+
+        // log::add('airquality', 'debug', json_encode($res));
+        $replace['#mini_slide#'] =  $component->getLayer();
+
+
+
         // Affichage direct du forecast sans passer par l'enregistrement/création d'une commande 
         $forecast = $this->getData('getForecast');
-        // message::add('debug', $forecast[0]['co']['day']);
+        message::add('debug', json_encode($forecast));
 
-        $replace['#labelday#'] = implode(',',$forecast[0]['co']['day']);
+        // $replace['#labelday#'] = implode(',',$forecast['co']['day']);
+        // $replace['#min#'] =  implode(',',$forecast['co']['min']);
+        // $replace['#max#'] =  implode(',',$forecast['co']['max']);
 
-        $replace['#min#'] =  implode(',',$forecast[0]['co']['min']);
-        $replace['#max#'] =  implode(',',$forecast[0]['co']['max']);
+        // message::add('debug', ($forecast[0]['co']['max']));
+
+        // $replace['#labeldayo3#'] = implode(',',$forecast['o3']['day']);
+        // $replace['#mino3#'] =  implode(',',$forecast['o3']['min']);
+        // $replace['#maxo3#'] =  implode(',',$forecast['o3']['max']);
+
+        // message::add('debug', ($forecast[1]['o3']['max']));
+
+        // message::add("debug", $forecast[0]);
+        //  message::add("debug", $forecast[1]);
+
+        // message::add('debug', ($forecast[0]['o3']['max']));
+        foreach ($forecast as $nameElement => $elementsArray) {
+              message::add("debug", $elementsArray);
+              message::add("debug", $nameElement);
+
+            $indexLabel = '#labelday'.$nameElement.'#';
+            $replace[$indexLabel] = implode(',',$elementsArray['day']);
+            $indexMin = '#min'.$nameElement.'#';
+            $replace[$indexMin] =  implode(',',$elementsArray['min']);
+            $indexMax = '#max'.$nameElement.'#';
+            $replace[$indexMax] =  implode(',',$elementsArray['max']);
+        }
+
+
       
         // message::add('debug', implode(',',$forecast[0]['co']['min']));
 
@@ -446,16 +488,8 @@ class airquality extends eqLogic
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
 
-        // Choix du layer a finir
-        if ( $this->getConfiguration('elements') == 'polution'){
-            $component = new ComponentAqi($tab, $this->getId());
+     
 
-        } else {
-            $component = new ComponentAqi($tab, $this->getId(), 2);
-        }   
-        $res = $component->getLayer();
-        // log::add('airquality', 'debug', json_encode($res));
-        $replace['#mini_slide#'] =  $res;
 
         if ($version == 'mobile') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
@@ -502,15 +536,15 @@ class airquality extends eqLogic
     }
 
 
-    public static function setDynGeoLoc($latitude, $longitude)
-    {
-        config::save('DynLatitude', $latitude, 'airquality');
-        config::save('DynLongitude', $longitude, 'airquality');
-        $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-        $resLong = trim(config::byKey('DynLongitude', 'airquality'));
-        $api = new ApiAqi;
-        return $api->callApiReverseGeoLoc($resLong, $resLat);
-    }
+    // public static function setDynGeoLoc($latitude, $longitude)
+    // {
+    //     config::save('DynLatitude', $latitude, 'airquality');
+    //     config::save('DynLongitude', $longitude, 'airquality');
+    //     $resLat = trim(config::byKey('DynLatitude', 'airquality'));
+    //     $resLong = trim(config::byKey('DynLongitude', 'airquality'));
+    //     $api = new ApiAqi;
+    //     return $api->callApiReverseGeoLoc($resLong, $resLat);
+    // }
 
 
     public function getData(string $apiName){

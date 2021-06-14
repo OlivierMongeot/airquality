@@ -11,6 +11,14 @@ class ApiAqi
      */
     private $ambeeApiKey;
 
+
+    /**
+     * 
+     * Sauvegarede de forecast pour eviter le max appel api en dev 
+     */
+    protected $forecastSave;
+    
+
     public function __construct()
     {
         $this->apiKey = trim(config::byKey('apikey', 'airquality'));
@@ -155,8 +163,13 @@ class ApiAqi
     /**
      * Appel Forecast OpenWheather AQI 
      */
-    function callApiForecastAQI($latitude = null, $longitude = null)
+    public function callApiForecastAQI($latitude = null, $longitude = null)
     {
+        if($this->forecastSave != null){
+            message::add('debug','use property saved');
+            return $this->forecastSave;
+        }
+        message::add('debug','use  api');
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
@@ -166,6 +179,7 @@ class ApiAqi
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast avec ces coordonnées');
             } else {
+                $this->forecastSave = $data->list;
                 return $data->list;
             }
         }
@@ -180,7 +194,7 @@ class ApiAqi
 
         foreach ($components as $component) {
             $newTabDay = $this->parseData($dataList, $component);
-            $minMaxTab[] = $this->pushMinMaxByDay($newTabDay, $component);
+            $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
         }
         return $minMaxTab;        
     }
@@ -193,9 +207,9 @@ class ApiAqi
     {
         $newTabDayElement = $newTabDay[$element];
         foreach ($newTabDayElement as $k => $value) {
-            $forecast[$element]['day'][] = $k;
-            $forecast[$element]['min'][] = min($value);
-            $forecast[$element]['max'][] = max($value);
+            $forecast['day'][] = $k;
+            $forecast['min'][] = min($value);
+            $forecast['max'][] = max($value);
         }
         return $forecast;
     }
@@ -247,24 +261,24 @@ class ApiAqi
     {
         switch ($numDay) {
             case 1:
-                return 'lundi';
+                return __('lundi',__FILE__);
             case 2:
-                return 'mardi';
+                return __('mardi',__FILE__);
             case 3:
-                return 'mercredi';
+                return __('mercredi',__FILE__);
             case 4:
-                return 'jeudi';
+                return __('jeudi',__FILE__);
             case 5:
-                return 'vendredi';
+                return  __('vendredi',__FILE__);
             case 6:
-                return 'samedi';
+                return  __('samedi',__FILE__);
             case 7:
-                return 'dimanche';
+                return __('dimanche',__FILE__);
         }
     }
 
     /**
-     * Unuse
+     * todo
      */
     public function setDynGeoLoc($latitude, $longitude)
     {
@@ -277,7 +291,7 @@ class ApiAqi
     }
 
     /**
-     * Unuse 
+     * todo 
      */
     public static function convertToPPM($microGramByM3, $molecule)
     {

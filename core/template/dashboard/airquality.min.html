@@ -112,8 +112,6 @@
 <div class="aqi-#id#-container">
 
 
-
-
     <div class="header-#id#-container">
       
         <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
@@ -139,58 +137,49 @@
     </div>
 
 
-    <!-- <div title="#updatedAt#" class="cmd header-#id#-min active-aqi-#id# ">
-       #index_name# : #aqiinfo# 
-    </div> -->
+
  
-<!-- <div id="exTab3" class="contain" > -->
-    <!-- <ul class="nav nav-pills">
-        <li class="active">
-            <a href="#1b" id="toggled" data-toggle="tab">Lundi</a>
-        </li>
-        <li><a href="#2b" data-toggle="tab">Mardi</a>
-        </li>
-        <li><a href="#3b" data-toggle="tab">Mercredi</a>
-        </li>
-        <li><a href="#4a" data-toggle="tab">Jeudi</a>
-        </li>
-        <li><a href="#5a" data-toggle="tab">Vendredi</a>
-        </li>
-    </ul> -->
+    <!-- <div > -->
+ 
 
-    <!-- <div class="tab-content clearfix"style="background-color:rgba(var(--eq-bg-color), var(--opacity)) !important;;"> -->
-        <div class="chart-#id#-aqi" >
+    <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
+     
+        <div class="carousel-inner" id="forcast#id#">
+            <!-- #forecast_slide# -->
             <figure class="highcharts-figure">
-                <div id="container#id#"></div>
+                <div id="containerco#id#"></div>
             </figure>
+            
         </div>
-        <!-- <div class="tab-pane" id="2b" style="background-color: transparent;">
-            <figure class="highcharts-figure">
-                <div id="container2#id#"></div>
-            </figure>
-        </div> -->
-        <!-- <div class="tab-pane" id="3b">
-            <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
-        </div>
-        <div class="tab-pane" id="4a">
-            <h3>We use css to change the background color of the content to be equal to the tab</h3>
-        </div>
-        <div class="tab-pane" id="5a">
-            <h3>We the content to be equal to the tab</h3>
-        </div> -->
-    <!-- </div> -->
+     
+        <a class="left carousel-control forecast#id#" href="#forecast-#uid#" data-slide="prev"
+            style="background:transparent">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+     
+        <a class="right carousel-control forecast#id#" href="#forecast-#uid#" data-slide="next"
+            style="background:transparent">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
 
-<!-- </div> -->
+
+
 
 
   
 
     <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
-        <div class="carousel-inner" id="chart#id#">#mini_slide#</div>
+     
+        <div class="carousel-inner" id="chart#id#">
+            #mini_slide#
+        </div>
+     
         <a class="left carousel-control my#id#" href="#airquality-min#uid#" data-slide="prev"
             style="background:transparent">
             <i class="fas fa-chevron-left"></i>
         </a>
+     
         <a class="right carousel-control my#id#" href="#airquality-min#uid#" data-slide="next"
             style="background:transparent">
             <i class="fas fa-chevron-right"></i>
@@ -203,36 +192,53 @@
 
 <script>
 
-var min = '#min#';
-var max = '#max#';
+// var min = '#minco#';
+// var max = '#maxco#';
+// var mintab = min.split(',');
+// var maxtab = max.split(',');
+
+// var parseMin = mintab.map(function (x) { 
+//   return parseInt(x, 10); 
+// })
+
+// var parseMax = maxtab.map(function (y) { 
+//   return parseInt(y, 10); 
+// })
+
+// var data = [];
+// data.push(parseMin); 
+// data.push(parseMax); 
+
+// var labels = '#labeldayco#';
+// labels = labels.split(',');
+
+function parseData(minArray, maxArray) {
+
+        let mintab = minArray.split(',');
+        let maxtab = maxArray.split(',');
+
+        let parseMin = mintab.map(function (x) {
+            return parseInt(x, 10);
+        })
+
+        let parseMax = maxtab.map(function (y) {
+            return parseInt(y, 10);
+        })
+
+        let data = [];
+        data.push(parseMin);
+        data.push(parseMax);
+        return data;
+    }
+
+   
+    var data =  parseData('#minco#', '#maxco#'); 
+    var labels = '#labeldayco#';
+    labels = labels.split(',');
+
+// var labels = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi'];
 // var data = [[7.0, 6.9, 9.5, 16.5, 18.2],[ 3.9, 4.2, 5.7, 8.5, 11.9]];
-
-var mintab = min.split(',');
-var maxtab = max.split(',');
-
-
-var parseMin = mintab.map(function (x) { 
-  return parseInt(x, 10); 
-})
-
-var parseMax = maxtab.map(function (y) { 
-  return parseInt(y, 10); 
-})
-
-
-
-var data = [];
-data.push(parseMin); 
-data.push(parseMax); 
-console.log(data[0]);
-console.log(data[1]);
-
-
-var labels = '#labelday#';
-var labels = labels.split(',');
-
-
-    GiveaChart('container#id#', data)
+    GiveaChart('containerco#id#', data)
 
     function GiveaChart(container, data) {
 
@@ -246,12 +252,12 @@ var labels = labels.split(',');
                 //             minWidth: 500,
                 //             scrollPositionX: 0
                 //         },
-
+                // styledMode: true,
                 type: 'line',
-                height: 220,
-                width: 270,
+                height: 200,
+                width: 260,
                 //   alignTicks: true,
-                borderColor: 'currentcolor',
+                // borderColor: 'currentcolor',
                 //   borderWidth:0,
                 //   zoomType: 'x',
                 //   panning: true,
@@ -268,19 +274,14 @@ var labels = labels.split(',');
                 enabled: false
             },
             title: {
-                text: null,
-                y: 25,
-                x: 0,
-                style: {
-                    color: 'currentColor'
-                }
+                text: null
             },
 
             xAxis: {
                 labels: {
-                    rotation: -25,
+                    rotation: -35,
                     // overflow: 'justify',
-                    style: { fontSize: '10px' },
+                    style: { fontSize: '12px' },
                     x: 14,
                     y: 15
                 },
@@ -288,20 +289,18 @@ var labels = labels.split(',');
                 categories: labels,
                 tickWidth: 1,
                 gridLineWidth: 0,
-                minorGridLineWidth: 1,
+              
 
             },
             yAxis: [{ // left y axis
-                softMax: 15,
-                softMin: 150,
+                // softMax: 250,
+                // softMin: 100,
                 visible: false,
                 title: {
                     text: null
                 },
                 labels: {
                     align: 'center',
-
-
                     x: 0,
                     y: 0,
                     format: '{value:.,0f}'
@@ -311,7 +310,7 @@ var labels = labels.split(',');
 
             legend: {
                 align: 'center',
-                verticalAlign: 'bottom',
+                verticalAlign: 'top',
                 borderWidth: 0
             },
 
@@ -327,15 +326,15 @@ var labels = labels.split(',');
 
             plotOptions: {
 
-                column: {
-                    pointPadding: 0.10,
+                // column: {
+                    pointPadding: 0.20,
                     borderWidth: 0,
-                    width: 5
-                },
+                //     // width: 2
+                // },
                 series: {
-                    maxPointWidth: 50,
-                    cursor: 'pointer',
-                    className: 'popup-on-click',
+                    // maxPointWidth: 50,
+                    // cursor: 'pointer',
+                    // className: 'popup-on-click',
                     lineWidth: 5,
                     marker: {
                         lineWidth: 0
@@ -371,7 +370,6 @@ var labels = labels.split(',');
 
             ]
         });
-
 
     }
 

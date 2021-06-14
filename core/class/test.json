@@ -2,40 +2,196 @@
     "message": "Success",
     "lat": 48.532,
     "lng": 7.713,
-    "data": [{
-        "Count": {
-            "grass_pollen": 92,
-            "tree_pollen": 245,
-            "weed_pollen": 30
-        },
-        "Risk": {
-            "grass_pollen": "High",
-            "tree_pollen": "High",
-            "weed_pollen": "Moderate"
-        },
-        "Species": {
-            "Grass": {
-                "Grass / Poaceae": 92 // Herbes / Poacées
+    "data": [
+        {
+            "Count": {
+                "grass_pollen": 92,
+                "tree_pollen": 245,
+                "weed_pollen": 30
             },
-            "Others": 1,
-            "Tree": { // Arbres
-                "Alder": 0, // Auln
-                "Birch": 58, // Bouleau
-                "Cypress": 0,  // Cyprès
-                "Elm": 0,   // Orm
-                "Hazel": 0, // Noisetier
-                "Oak": 90,  // Chêne
-                "Pine": 75, /// Pin
-                "Plane": 22, // Platane
-                "Poplar / Cottonwood": 0  // Peuplier
+            "Risk": {
+                "grass_pollen": "High",
+                "tree_pollen": "High",
+                "weed_pollen": "Moderate"
             },
-            "Weed": { // Mauvaise herbers
-                "Chenopod": 0,  // Champi
-                "Mugwort": 0, // Armoise
-                "Nettle": 29, // Ortie
-                "Ragweed": 0  //Ambroisie
-            }
-        },
-        "updatedAt": "2021-06-03T09:12:59.000Z"
-    }]
+            "Species": {
+                "Grass": {
+                    "Grass / Poaceae": 92 // Herbes / Poacées
+                },
+                "Others": 1,
+                "Tree": { // Arbres
+                    "Alder": 0, // Auln
+                    "Birch": 58, // Bouleau
+                    "Cypress": 0, // Cyprès
+                    "Elm": 0, // Orm
+                    "Hazel": 0, // Noisetier
+                    "Oak": 90, // Chêne
+                    "Pine": 75, /// Pin
+                    "Plane": 22, // Platane
+                    "Poplar / Cottonwood": 0 // Peuplier
+                },
+                "Weed": { // Mauvaise herbers
+                    "Chenopod": 0, // Champi
+                    "Mugwort": 0, // Armoise
+                    "Nettle": 29, // Ortie
+                    "Ragweed": 0 //Ambroisie
+                }
+            },
+            "updatedAt": "2021-06-03T09:12:59.000Z"
+        }
+    ]
 }
+
+
+[
+    {
+        "co": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                170.23,
+                165.22,
+                163.56,
+                173.57,
+                168.56
+            ],
+            "max": [
+                198.6,
+                250.34,
+                303.75,
+                300.41,
+                210.29
+            ]
+        }
+    },
+    {
+        "no": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "max": [
+                1.66,
+                5.14,
+                5.53,
+                3.16,
+                1.09
+            ]
+        }
+    },
+    {
+        "no2": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                1.15,
+                1.16,
+                1.16,
+                1.16,
+                1.14
+            ],
+            "max": [
+                7.45,
+                16.97,
+                27.76,
+                27.08,
+                7.03
+            ]
+        }
+    },
+    {
+        "o3": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                40.41,
+                15.02,
+                5.99,
+                8.67,
+                23.6
+            ],
+            "max": [
+                130.18,
+                127.32,
+                141.62,
+                144.48,
+                101.57
+            ]
+        }
+    },
+    {
+        "pm2_5": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                3.74,
+                5.35,
+                5.19,
+                8.78,
+                1.42
+            ],
+            "max": [
+                8.45,
+                11.89,
+                20.85,
+                14.36,
+                11.63
+            ]
+        }
+    },
+    {
+        "pm10": {
+            "day": [
+                "lundi",
+                "mardi",
+                "mercredi",
+                "jeudi",
+                "vendredi"
+            ],
+            "min": [
+                5.52,
+                6.3,
+                5.72,
+                10.26,
+                1.55
+            ],
+            "max": [
+                10.25,
+                14.7,
+                23.25,
+                16.78,
+                12.31
+            ]
+        }
+    }
+]
