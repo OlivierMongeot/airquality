@@ -132,7 +132,7 @@
     "info.json": {
         "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez.On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
     },
-    "plugins\/airquality\/3rdparty\/classApi.php": {
+    "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {
         "Impossible de récupérer les coordonnées de cete ville": "Impossible de récupérer les coordonnées de cette ville",
         "Pas de données  UV et visibilité pour l'instant": "Pas de données  UV et visibilité pour l'instant",
         "Pas de données UV et visibilité avec ces coordonnées": "Pas de données UV et visibilité avec ces coordonnées",
@@ -141,8 +141,14 @@
         "Pas de données de pollution pour l'instant":"Pas de données de pollution pour l'instant",
         "Pas de données de pollution avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
         "Pas de données de Pollen pour l'instant":"Pas de données de Pollen pour l'instant",
-        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées"
-
+        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
+        "Lundi":"Lundi",
+        "Mardi":"Mardi",
+        "Mercredi":"Mercredi",  
+        "Jeudi":"Jeudi",
+        "Vendredi":"Vendredi",
+        "Samedi":"Samedi",
+        "Dimanche":"Dimanche"
 
     }
 }

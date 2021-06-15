@@ -20,19 +20,11 @@ class ComponentAqi
 
     public function getLayer(){
 
-    
         $newTab = [];
         $endCell ='</div></div>';
         $array = $this->slides;
-
         if($this->itemByCell ==1) {
-
-
-
-
         }
-
-
 
         if( $this->itemByCell == 2){
 
@@ -53,7 +45,6 @@ class ComponentAqi
                 $starCell =  $this->getStartCell($k);
                 $html[] = $starCell . $item[0] . $endCell ;
             }
-
 
         }
 
@@ -80,7 +71,6 @@ class ComponentAqi
     }
 
     private function getStartCell($k){
-
         if($k == 0){
             $active = 'active'; 
             $interval ='15000';
@@ -88,7 +78,6 @@ class ComponentAqi
             $active = ''; 
             $interval ='5000';
         }
-        
         return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
     }
 

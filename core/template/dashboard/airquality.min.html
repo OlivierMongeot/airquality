@@ -47,7 +47,7 @@
 
     #forecast-#uid#>.carousel-control {
         position: absolute;
-        top: 45%;
+        top: 50%;
         z-index: 5;
         display: inline-block;
         margin-top: 0px;
@@ -76,14 +76,14 @@
 
 
     /*     highchart  */
-    .highcharts-figure, .highcharts-data-table table {
+   .highcharts-data-table table {
     /* min-width: 250px; 
     max-width: 80px; */
-    height: auto;
+    height: 150px;
     margin: 0 auto;
     }
 
-    .highcharts-data-table table {
+    /* .highcharts-data-table table {
         font-family: Verdana, sans-serif;
         border-collapse: collapse;
         border: 1px solid #EBEBEB;
@@ -91,7 +91,7 @@
         text-align: center;
         width: 100%;
         max-width: 500px;
-    }
+    } */
     .highcharts-data-table caption {
     padding: 1em 0;
     font-size: 1.2em;
@@ -147,32 +147,15 @@
 
 
 
- 
-    <!-- <div > -->
- 
 
-  <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
-     
+    <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
         <div class="carousel-inner" id="forcast#id#"> 
             #forecast_slide#
-            <!-- <div class="item #active# #name#" data-interval="#dataInterval#" data-pause="hover"></div>
-            <figure class="highcharts-figure">
-                <div id="containerco#id#"></div>
-            </figure>
-           </div>
-         
-           <div class="item  #name#" data-interval="#dataInterval#" data-pause="hover"></div>
-           <figure class="highcharts-figure">
-               <div id="containerno#id#"></div>
-           </figure>
-          </div> -->
        </div>
-     
         <a class="left carousel-control forecast#id#" href="#forecast-#uid#" data-slide="prev"
             style="background:transparent">
             <i class="fas fa-chevron-left"></i>
         </a>
-     
         <a class="right carousel-control forecast#id#" href="#forecast-#uid#" data-slide="next"
             style="background:transparent">
             <i class="fas fa-chevron-right"></i>
@@ -205,28 +188,8 @@
  
 </div>
 
-
 <script>
 
-// var min = '#minco#';
-// var max = '#maxco#';
-// var mintab = min.split(',');
-// var maxtab = max.split(',');
-
-// var parseMin = mintab.map(function (x) { 
-//   return parseInt(x, 10); 
-// })
-
-// var parseMax = maxtab.map(function (y) { 
-//   return parseInt(y, 10); 
-// })
-
-// var data = [];
-// data.push(parseMin); 
-// data.push(parseMax); 
-
-// var labels = '#labeldayco#';
-// labels = labels.split(',');
 
 function parseData(minArray, maxArray) {
 
@@ -264,30 +227,40 @@ function parseData(minArray, maxArray) {
     var dataPm10 =  parseData('#min_pm10#', '#max_pm10#');
     GiveaChart('container_pm10_#id#', dataPm10, 'PM10');
 
-    // var data =  parseData('#minno#', '#maxno#'); 
-    // var labels = '#labeldayno#';
-   
+    var dataO3 =  parseData('#min_o3#', '#max_o3#');
+    GiveaChart('container_o3_#id#', dataO3, 'O³');
 
+    var dataNo2 =  parseData('#min_no2#', '#max_no2#');
+    GiveaChart('container_no2_#id#', dataNo2, 'NO²');
+   
+    var dataSo2 =  parseData('#min_so2#', '#max_so2#');
+    GiveaChart('container_so2_#id#', dataSo2, 'SO²');
+   
+    var dataNh3 =  parseData('#min_nh3#', '#max_nh3#');
+    GiveaChart('container_nh3_#id#', dataNh3, 'NH³');
+   
+    var dataAqi =  parseData('#min_aqi#', '#max_aqi#');
+    GiveaChart('container_aqi_#id#', dataAqi, 'AQI');
 
     function GiveaChart(container, data, name) {
-
 
         Highcharts.chart(container, {
 
             chart: {
-                spacingTop: 0,
-                //   marginBottom: 100,
+
+                // spacingTop: 15,
+                // marginTop: 15,
                 //   scrollablePlotArea: {
                 //             minWidth: 500,
                 //             scrollPositionX: 0
                 //         },
                 // styledMode: true,
-                type: 'line',
-                height: 200,
-                width: 260,
-                //   alignTicks: true,
-                // borderColor: 'currentcolor',
-                //   borderWidth:0,
+                type: 'column',
+                height: 180,
+                width: 250,
+                alignTicks: true,
+                borderColor: 'currentcolor',
+                  borderWidth:0,
                 //   zoomType: 'x',
                 //   panning: true,
                 //   panKey: 'shift'
@@ -308,9 +281,9 @@ function parseData(minArray, maxArray) {
 
             xAxis: {
                 labels: {
-                    rotation: -35,
-                    // overflow: 'justify',
-                    style: { fontSize: '12px' },
+                    rotation: -40,
+                    overflow: 'justify',
+                    style: { fontSize: '10px' },
                     x: 14,
                     y: 15
                 },
@@ -334,7 +307,6 @@ function parseData(minArray, maxArray) {
                     y: 0,
                     format: '{value:.,0f}'
                 },
-                //   showFirstLabel: false
             }],
 
             legend: {
@@ -345,21 +317,21 @@ function parseData(minArray, maxArray) {
 
             tooltip: {
                 shared: true,
-                //   crosshairs: true
+                // crosshairs: true,
                 // split: true,
                 // distance: 30,
-                padding: 2,
+                padding: 3,
                 // stickOnContact: true
 
             },
 
             plotOptions: {
 
-                // column: {
+                column: {
                     pointPadding: 0.20,
                     borderWidth: 0,
                 //     // width: 2
-                // },
+                 },
                 series: {
                     // maxPointWidth: 50,
                     // cursor: 'pointer',

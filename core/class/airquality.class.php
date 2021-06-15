@@ -446,13 +446,11 @@ class airquality extends eqLogic
             $unitreplaceChart['#id#'] = $this->getId();
             // $indexLabel = '#labelday'.$nameElement.'#';
 
-
             $elementTemplateChart = getTemplate('core', $version, 'elementForecast', 'airquality');
             // log::add('airquality', 'debug', json_encode($elementTemplateChart));
             $slideChart =  template_replace($unitreplaceChart, $elementTemplateChart);
             $tabChart[] = $slideChart;
             $k++;
-
 
             // Replace dans le général 
             $replace['#labels#'] = implode(',',$elementsArray['day']);
@@ -461,8 +459,6 @@ class airquality extends eqLogic
             $indexMax = '#max_'.$nameElement.'#';
             $replace[$indexMax] =  implode(',',$elementsArray['max']);
 
-
-           
         }
 
        
@@ -489,8 +485,6 @@ class airquality extends eqLogic
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
 
      
-
-
         if ($version == 'mobile') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
         }

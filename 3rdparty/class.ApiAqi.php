@@ -16,7 +16,7 @@ class ApiAqi
      * 
      * Sauvegarede de forecast pour eviter le max appel api en dev 
      */
-    protected $forecastSave;
+    public $forecastSave = null;
     
 
     public function __construct()
@@ -137,9 +137,7 @@ class ApiAqi
      */
     public function getAmbee($latitude = null, $longitude = null)
     {
-        // message::add('debug','Gat aqi Method Aqi'. $this->ambeeApiKey);
-        // message::add('debug','Latitude'. $latitude);
-        // message::add( 'Debug','Longitude'. $longitude);
+      
         // Param auto pour test clef avant insertion des params
         if ($latitude === null && $longitude === null) {
             $latitude = 50 && $longitude = 50;
@@ -188,14 +186,15 @@ class ApiAqi
 
     public function getForecast($latitude = null, $longitude = null){
 
-        $components = ['co','no','pm2_5','pm10'];
-
+        $components = ['co','no','pm2_5','pm10','o3','no2','so2','nh3','aqi'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 
         foreach ($components as $component) {
             $newTabDay = $this->parseData($dataList, $component);
             $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
         }
+        // $newTabDay = $this->parseData($dataList, ['aqi']);
+        // $minMaxTab['aqi'] = $this->pushMinMaxByDay($newTabDay, 'aqi');
         return $minMaxTab;        
     }
 
@@ -225,55 +224,34 @@ class ApiAqi
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
 
-            if ($hourCast->dt >= $beginOfDay) {
 
-                if (($hourCast->dt) <= ($beginOfDay + $day)) {
-                    $weekday = date('N', ($hourCast->dt + 1000));
-                    $dayName =  $this->getNameDay($weekday);
-                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
-                }
-                if (($hourCast->dt) > ($beginOfDay + $day) && ($hourCast->dt) <= ($beginOfDay + (2 * $day))) {
-                    $weekday = date('N', ($hourCast->dt + 1000));
-                    $dayName =  $this->getNameDay($weekday);
-                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
-                }
-                if (($hourCast->dt) > ($beginOfDay + 2 * $day) && ($hourCast->dt) <= ($beginOfDay + (3 * $day))) {
-                    $weekday = date('N', ($hourCast->dt + 1000));
-                    $dayName =  $this->getNameDay($weekday);
-                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
-                }
-                if (($hourCast->dt) > ($beginOfDay + 3 * $day) && ($hourCast->dt) <= ($beginOfDay + (4 * $day))) {
-                    $weekday = date('N', ($hourCast->dt + 1000));
-                    $dayName =  $this->getNameDay($weekday);
-                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
-                }
-                if (($hourCast->dt) > ($beginOfDay + 4 * $day) && ($hourCast->dt) <= ($beginOfDay + 5 * $day)) {
-                    $weekday = date('N', ($hourCast->dt + 1000));
-                    $dayName = $this->getNameDay($weekday);
-                    $newTabAqiDay[$component][$dayName][] = $hourCast->components->$component;
-                }
+            if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
+                $weekday = date('N', ($hourCast->dt + 1000));
+                $dayName =  $this->getNameDay($weekday);
+                $newTabAqiDay[$component][$dayName][] = ($component == 'aqi') ?  $hourCast->main->aqi : $hourCast->components->$component;
             }
         }
         return $newTabAqiDay;
     }
 
+
     private function getNameDay($numDay)
     {
         switch ($numDay) {
             case 1:
-                return __('lundi',__FILE__);
+                return __('Lundi',__FILE__);
             case 2:
-                return __('mardi',__FILE__);
+                return __('Mardi',__FILE__);
             case 3:
-                return __('mercredi',__FILE__);
+                return __('Mercredi',__FILE__);
             case 4:
-                return __('jeudi',__FILE__);
+                return __('Jeudi',__FILE__);
             case 5:
-                return  __('vendredi',__FILE__);
+                return  __('Vendredi',__FILE__);
             case 6:
-                return  __('samedi',__FILE__);
+                return  __('Samedi',__FILE__);
             case 7:
-                return __('dimanche',__FILE__);
+                return __('Dimanche',__FILE__);
         }
     }
 
@@ -284,8 +262,8 @@ class ApiAqi
     {
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
-        $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-        $resLong = trim(config::byKey('DynLongitude', 'airquality'));
+        // $resLat = trim(config::byKey('DynLatitude', 'airquality'));
+        // $resLong = trim(config::byKey('DynLongitude', 'airquality'));
         // return  self::callApiReverseGeoLoc($resLong,$resLat);
         return  $this->callApiReverseGeoLoc($latitude, $longitude);
     }
