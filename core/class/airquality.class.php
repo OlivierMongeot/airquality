@@ -420,10 +420,9 @@ class airquality extends eqLogic
         }  // Fin foreach 
 
 
-        // Choix du layer a finir
+        // Choix du layer : todo not finish
         if ($this->getConfiguration('elements') == 'polution') {
             $component = new ComponentAqi($tab, $this->getId());
-
 
         } else {
             // Pollen 
@@ -437,38 +436,39 @@ class airquality extends eqLogic
 
         // Affichage direct du forecast sans passer par l'enregistrement/création d'une commande 
         $forecast = $this->getData('getForecast');
-        message::add('debug', json_encode($forecast));
-
-        // $replace['#labelday#'] = implode(',',$forecast['co']['day']);
-        // $replace['#min#'] =  implode(',',$forecast['co']['min']);
-        // $replace['#max#'] =  implode(',',$forecast['co']['max']);
-
-        // message::add('debug', ($forecast[0]['co']['max']));
-
-        // $replace['#labeldayo3#'] = implode(',',$forecast['o3']['day']);
-        // $replace['#mino3#'] =  implode(',',$forecast['o3']['min']);
-        // $replace['#maxo3#'] =  implode(',',$forecast['o3']['max']);
-
-        // message::add('debug', ($forecast[1]['o3']['max']));
-
-        // message::add("debug", $forecast[0]);
-        //  message::add("debug", $forecast[1]);
-
-        // message::add('debug', ($forecast[0]['o3']['max']));
+        message::add('Forecast', json_encode($forecast));
+        $k = 0;
         foreach ($forecast as $nameElement => $elementsArray) {
-              message::add("debug", $elementsArray);
-              message::add("debug", $nameElement);
+            // replace à l'unité pour slider 
+            $unitreplaceChart['#active#'] = ($k == 0) ? 'active' : '';
+            $unitreplaceChart['#dataInterval#'] = ($k == 0) ? '10000' : '5000';
+            $unitreplaceChart['#name#'] = $nameElement;
+            $unitreplaceChart['#id#'] = $this->getId();
+            // $indexLabel = '#labelday'.$nameElement.'#';
 
-            $indexLabel = '#labelday'.$nameElement.'#';
-            $replace[$indexLabel] = implode(',',$elementsArray['day']);
-            $indexMin = '#min'.$nameElement.'#';
+
+            $elementTemplateChart = getTemplate('core', $version, 'elementForecast', 'airquality');
+            // log::add('airquality', 'debug', json_encode($elementTemplateChart));
+            $slideChart =  template_replace($unitreplaceChart, $elementTemplateChart);
+            $tabChart[] = $slideChart;
+            $k++;
+
+
+            // Replace dans le général 
+            $replace['#labels#'] = implode(',',$elementsArray['day']);
+            $indexMin = '#min_'.$nameElement.'#';
             $replace[$indexMin] =  implode(',',$elementsArray['min']);
-            $indexMax = '#max'.$nameElement.'#';
+            $indexMax = '#max_'.$nameElement.'#';
             $replace[$indexMax] =  implode(',',$elementsArray['max']);
+
+
+           
         }
 
+       
+        $replace['#forecast_slide#'] = implode('', $tabChart) ;
+        log::add('airquality', 'debug', json_encode( implode('', $tabChart)));
 
-      
         // message::add('debug', implode(',',$forecast[0]['co']['min']));
 
         $replace['#index_name#'] = __('Indice',__FILE__);

@@ -45,6 +45,15 @@
         width: 20px;
     }
 
+    #forecast-#uid#>.carousel-control {
+        position: absolute;
+        top: 45%;
+        z-index: 5;
+        display: inline-block;
+        margin-top: 0px;
+        width: 20px;
+    }
+
     .header-#id#-container {
         margin-top: 15px;
         display: flex;
@@ -66,51 +75,52 @@
     }
 
 
-/*     highchart  */
-.highcharts-figure, .highcharts-data-table table {
-  /* min-width: 250px; 
-  max-width: 80px; */
-  height: auto;
-  margin: 0 auto;
-}
+    /*     highchart  */
+    .highcharts-figure, .highcharts-data-table table {
+    /* min-width: 250px; 
+    max-width: 80px; */
+    height: auto;
+    margin: 0 auto;
+    }
 
-.highcharts-data-table table {
-	font-family: Verdana, sans-serif;
-	border-collapse: collapse;
-	border: 1px solid #EBEBEB;
-	margin: 5px auto;
-	text-align: center;
-	width: 100%;
-	max-width: 500px;
-}
-.highcharts-data-table caption {
-  padding: 1em 0;
-  font-size: 1.2em;
-  color: #555;
-}
-.highcharts-data-table th {
-	font-weight: 600;
-  padding: 0.5em;
-}
-.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-  padding: 0.5em;
-}
-.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-  background: #f8f8f8;
-}
-.highcharts-data-table tr:hover {
-  background: #f1f7ff;
-}
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 5px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+    .highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+    }
+    .highcharts-data-table th {
+        font-weight: 600;
+    padding: 0.5em;
+    }
+    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+    }
+    .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+    }
+    .highcharts-data-table tr:hover {
+    background: #f1f7ff;
+    }
 
-.chart-#id#-aqi{
-    margin-top:10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .chart-#id#-aqi{
+        margin-top:10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
 </style>
 <div class="aqi-#id#-container">
-
 
     <div class="header-#id#-container">
       
@@ -120,11 +130,10 @@
             <div class="cmd noRefresh aqi-#id#-aqi">#uv#</div>
         </div>
   
-  
         <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
-           <!--  -->
+        
             <div title="Cliquez pour + d'info" id="info-modal#aqiid#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
-           <!--  -->
+        
             <div style="font-size: 1.8rem;" class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
             <div style="font-size: 1.2rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
         </div>
@@ -142,15 +151,22 @@
     <!-- <div > -->
  
 
-    <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
+  <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
      
-        <div class="carousel-inner" id="forcast#id#">
-            <!-- #forecast_slide# -->
+        <div class="carousel-inner" id="forcast#id#"> 
+            #forecast_slide#
+            <!-- <div class="item #active# #name#" data-interval="#dataInterval#" data-pause="hover"></div>
             <figure class="highcharts-figure">
                 <div id="containerco#id#"></div>
             </figure>
-            
-        </div>
+           </div>
+         
+           <div class="item  #name#" data-interval="#dataInterval#" data-pause="hover"></div>
+           <figure class="highcharts-figure">
+               <div id="containerno#id#"></div>
+           </figure>
+          </div> -->
+       </div>
      
         <a class="left carousel-control forecast#id#" href="#forecast-#uid#" data-slide="prev"
             style="background:transparent">
@@ -232,15 +248,28 @@ function parseData(minArray, maxArray) {
     }
 
    
-    var data =  parseData('#minco#', '#maxco#'); 
-    var labels = '#labeldayco#';
+    
+    var labels = '#labels#';
     labels = labels.split(',');
 
-// var labels = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi'];
-// var data = [[7.0, 6.9, 9.5, 16.5, 18.2],[ 3.9, 4.2, 5.7, 8.5, 11.9]];
-    GiveaChart('containerco#id#', data)
+    var dataCo =  parseData('#min_co#', '#max_co#');
+    GiveaChart('container_co_#id#', dataCo, 'CO');
 
-    function GiveaChart(container, data) {
+    var dataNo =  parseData('#min_no#', '#max_no#');
+    GiveaChart('container_no_#id#', dataNo, 'NO');
+
+    var dataPm25 =  parseData('#min_pm2_5#', '#max_pm2_5#');
+    GiveaChart('container_pm2_5_#id#', dataPm25, 'PM2.5');
+
+    var dataPm10 =  parseData('#min_pm10#', '#max_pm10#');
+    GiveaChart('container_pm10_#id#', dataPm10, 'PM10');
+
+    // var data =  parseData('#minno#', '#maxno#'); 
+    // var labels = '#labeldayno#';
+   
+
+
+    function GiveaChart(container, data, name) {
 
 
         Highcharts.chart(container, {
@@ -345,12 +374,12 @@ function parseData(minArray, maxArray) {
             series: [
 
                 {
-                    name: 'CO min',
+                    name: name + ' min',
                     lineWidth: '4px',
                     marker: { radius: 2 },
                     data: data[0]
                 }, {
-                    name: 'CO max',
+                    name: name + ' max',
                     lineWidth: '4px',
                     marker: { radius: 2 },
                     data: data[1]
@@ -371,6 +400,7 @@ function parseData(minArray, maxArray) {
             ]
         });
 
+    
     }
 
             

@@ -188,7 +188,7 @@ class ApiAqi
 
     public function getForecast($latitude = null, $longitude = null){
 
-        $components = ['co','no','no2','o3','pm2_5','pm10'];
+        $components = ['co','no','pm2_5','pm10'];
 
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 
