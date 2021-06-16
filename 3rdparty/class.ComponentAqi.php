@@ -58,7 +58,7 @@ class ComponentAqi
 
                 
             }
-            log::add('airquality', 'debug', json_encode( $newTab));
+            // log::add('airquality', 'debug', json_encode( $newTab));
 
             foreach ($newTab as $k => $item){
                 $starCell =  $this->getStartCell($k);

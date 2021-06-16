@@ -224,7 +224,6 @@ class ApiAqi
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
 
-
             if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->dt + 1000));
                 $dayName =  $this->getNameDay($weekday);

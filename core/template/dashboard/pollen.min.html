@@ -3,10 +3,10 @@
      <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;position: relative;top:-2px;"
  hidden>#object_name#</span></a></strong></center>
  <style>
-            .aqi-#id#-container{
-                margin-top:5px;
-                padding:5px
-            }
+        .aqi-#id#-container{
+            margin-top:5px;
+            padding:5px
+        }
 
         .aqi-#id#-row {
             display: flex;
@@ -15,89 +15,79 @@
             justify-content: space-around;
         }
 
-
-
-          .aqi-#id#-particule {
-               display: flex;
-               align-items: center;
-               flex-direction: column;
-               justify-content: center;
-            
-          }
+        .aqi-#id#-particule {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
 
     
-          .aqi-#id#-label {
-              margin-top: 4px;
-              display:flex;
-             align-items: center;
-             flex-direction: column;
-             text-align: center;
-          }
+        .aqi-#id#-label {
+            margin-top: 4px;
+            display:flex;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
 
 
-          .aqi-#id#-value {
-              margin: 4px 0px 4px;
-              font-weight:500;
-               font-size: 1.4rem;
-          }
+        .aqi-#id#-value {
+            margin: 4px 0px 4px;
+            font-weight:500;
+            font-size: 1.4rem;
+        }
 
+        #airquality-min#uid#>.carousel-control {
+            position: absolute;
+            top: 55%;
+            z-index: 5;
+            display: inline-block;
+            margin-top: 0px;
+            width: 20px;
+        }
 
+        #airquality-min#uid#{
+            margin-top: 19px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            vertical-align: middle;
+        }
 
-          #airquality-min#uid#>.carousel-control {
-               position: absolute;
-               top: 55%;
-               z-index: 5;
-               display: inline-block;
-               margin-top: 0px;
-               width: 20px;
-          }
-
-          #airquality-min#uid#{
-              margin-top: 19px;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-around;
-              vertical-align: middle;
-          }
-
-
-          .header-#id#-mini, .aqi-#id#-label-header{
-              display: flex;
-              vertical-align: middle;
-              justify-content:center;
-              flex-direction: column;
-              align-items: center;
-              text-align: center;
-          }
+        .header-#id#-mini, .aqi-#id#-label-header{
+            display: flex;
+            vertical-align: middle;
+            justify-content:center;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
         
 
-          .header-#id#-container{
+        .header-#id#-container{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-around;
+            vertical-align: middle;
+        }
 
-               display: flex;
-               align-items: center;
-               flex-direction: row;
-               justify-content: space-around;
-               vertical-align: middle;
-          }
+        .active-pollen-#id#{
+            margin-top:15px;
+        }
 
-          .active-pollen-#id#{
-            margin-top:15px
-          }
-
-          .space-aqi-#id#{
+        .space-aqi-#id#{
               margin-top:5px
-          }
+        }
       
-          .slide#id#{
-              /* display: flex; */
-              width: 90%;
-          }
-      
+        .slide#id#{
+            /* display: flex; */
+            width: 90%;
+        }
 </style>
 <div class="aqi-#id#-container">
-
     <div class="header-#id#-container">
-
         <div class="tooltips header-#id#-mini" >
             <div class="container-#id#-svg ">
                 <div title="#list_grass_pollen#" class="tooltips">#icone_grass_pollen#</div>
@@ -107,7 +97,6 @@
                 <div class="space-aqi-#id#" title="#grass_risk#">#grass_pollen#</div>
             </div>
         </div>
-
         <div class="tooltips header-#id#-mini" >
             <div class="container-#id#-svg ">
                 <div title="#list_tree_pollen#" class="tooltips">#icone_tree_pollen#</div>
@@ -118,7 +107,6 @@
                 <div class="space-aqi-#id#" title="#tree_risk#" >#tree_pollen#</div>
             </div>
         </div>
-
         <div class="tooltips header-#id#-mini" data-type="info" data-subtype="other"
             data-cmd_id="#weed_pollenid#">
             <div class="container-#id#-svg ">
@@ -129,23 +117,13 @@
                 <div class="space-aqi-#id#" title="#weed_risk#" >#weed_pollen#</div>
             </div>
         </div>
-
-       
-
-    
-
     </div>
     <div title="#updatedAt#" class="cmd header-#id#-mini active-pollen-#id# ">
         #active_pollen_label# : #activePollen# / 15
     </div>
-
-
-
     <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover"
         #classCaroussel#>
         <div class="carousel-inner slide#id#">#mini_slide#</div>
-
-
         <a class="left carousel-control my#id#" href="#airquality-min#uid#" data-slide="prev"
             style="background:transparent">
             <i class="fas fa-chevron-left"></i>
