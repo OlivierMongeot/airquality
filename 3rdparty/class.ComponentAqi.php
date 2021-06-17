@@ -8,7 +8,7 @@ class ComponentAqi
     private $countCell ;
     private $id;
  
-    public function __construct($slides, $id, $itemByCell = 2)
+    public function __construct($slides, $id, $itemByCell = 1)
     {
         $this->id = $id;
         $this->countElements = count($slides);
@@ -23,9 +23,20 @@ class ComponentAqi
         $newTab = [];
         $endCell ='</div></div>';
         $array = $this->slides;
-        if($this->itemByCell ==1) {
-        }
 
+        if($this->itemByCell == 1) {
+
+            for ( $i = 0 ; $i < ($this->countCell) ; $i++ ) {
+                $newTab[] = [ $array[$i]  ] ;
+            }
+
+            foreach ($newTab as $k => $item){
+                $starCell =  $this->getStartCell($k);
+                $html[] = $starCell . $item[0] . $endCell ;
+            }
+
+        }
+        //  log::add('airquality', 'debug', json_encode( $newTab));
         if( $this->itemByCell == 2){
 
             if ( $this->countElements %2 == 0 ){
@@ -56,7 +67,6 @@ class ComponentAqi
                 $byCellule = implode('', $cellule);
                 $newTab[] = implode('', $cellule);
 
-                
             }
             // log::add('airquality', 'debug', json_encode( $newTab));
 
@@ -80,8 +90,6 @@ class ComponentAqi
         }
         return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
     }
-
-
 
 }
 

@@ -121,7 +121,7 @@
         "Visibilité":"Visibility",
         "Bon":"Good",
         "Correct":"Correct",
-        "Dégradé":"Dégraded",
+        "Dégradé":"Degraded",
         "Mauvais":"Bad",
         "Très mauvais":"Very bad",
         "Extrême":"Extremely bad",
@@ -150,6 +150,6 @@
         "Jeudi":"Thursday",
         "Vendredi":"Friday",
         "Samedi":"Saturday",
-        "Dimanche":"Monday"
+        "Dimanche":"Sunday"
     }
 }

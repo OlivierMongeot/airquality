@@ -42,7 +42,7 @@ class ApiAqi
     }
 
     /**
-     * Methode générique d'appel API
+     * Methode générique d'appel API avec curl 
      */
     private function curlApi(string $url, string $apiKey, int $timeOut = 30)
     {
@@ -91,7 +91,7 @@ class ApiAqi
     }
 
     /**
-     * Appel AQI 
+     * Appel API AQI 
      */
     public function getAqi($latitude, $longitude)
     {
@@ -99,7 +99,7 @@ class ApiAqi
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         if ($response[1]) {
-            throw new Exception('Pas de données de pollution pour l\'instant');
+            throw new Exception('Pas de données de pollution pour l\'instant : '.$response[1] );
         } else {
             $data = json_decode($response[0]);
             $result = $data->list[0];
@@ -112,7 +112,7 @@ class ApiAqi
     }
 
     /**
-     * Appel OneCall OpenWheather AQI 
+     * Appel API OneCall OpenWheather AQI 
      */
     public function getOneCallApi($latitude, $longitude)
     {
@@ -121,9 +121,8 @@ class ApiAqi
         $data = json_decode($response[0]);
 
         if ($response[1] != null) {
-            throw new Exception('Pas de données  UV et visibilité pour l\'instant');
+            throw new Exception('Pas de données  UV et visibilité pour l\'instant : '. $response[1] );
         } else {
-
             if ($data == [] || $data == null) {
                 throw new Exception('Pas de données UV et visibilité avec ces coordonnées');
             } else {
@@ -178,6 +177,7 @@ class ApiAqi
                 echo ('Pas de données Forecast avec ces coordonnées');
             } else {
                 $this->forecastSave = $data->list;
+                // localStorage.setItem('cart-items', JSON.stringify(Cart.items));
                 return $data->list;
             }
         }
@@ -186,15 +186,13 @@ class ApiAqi
 
     public function getForecast($latitude = null, $longitude = null){
 
-        $components = ['co','no','pm2_5','pm10','o3','no2','so2','nh3','aqi'];
+        $components = ['co','no','o3','no2','so2','nh3','aqi','pm10','pm2_5'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 
         foreach ($components as $component) {
             $newTabDay = $this->parseData($dataList, $component);
             $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
         }
-        // $newTabDay = $this->parseData($dataList, ['aqi']);
-        // $minMaxTab['aqi'] = $this->pushMinMaxByDay($newTabDay, 'aqi');
         return $minMaxTab;        
     }
 
@@ -220,12 +218,13 @@ class ApiAqi
      */
     private function parseData($response, $component)
     {
+        // log::add('airquality','debug', json_encode($response));
         $beginOfDay = strtotime("today",  time());
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
 
             if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
-                $weekday = date('N', ($hourCast->dt + 1000));
+                $weekday = date('N', ($hourCast->dt + 100));
                 $dayName =  $this->getNameDay($weekday);
                 $newTabAqiDay[$component][$dayName][] = ($component == 'aqi') ?  $hourCast->main->aqi : $hourCast->components->$component;
             }

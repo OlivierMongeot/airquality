@@ -4,7 +4,7 @@
     {
 
         private $name;
-        private $height = '35px';
+        private $height;
         private $color;
         private $id;
         private $value;
@@ -23,15 +23,16 @@
 
         ];
 
-        public function getIcon($name,$value, $id ){
+        public function getIcon($name,$value, $id, $height = '34px' ){
             $this->name = $name;
             $this->value = $value;
             $this->id = $id;
+            $this->height = $height;
             $this->getColor();
             return  $this->firstPartIcon().$this->lastPartIcon();
         }
 
-        private function getColor()
+        public function getColor()
         {
             $composants =
                 [
@@ -68,12 +69,12 @@
                         '#662D91' => [600, 10000]
                     ],
                     'co' => [
-                        '#00AEEC' => [0, 40],
-                        '#00BD01' => [40, 90],
-                        '#EFE800' => [90, 120],
-                        '#E79C00' => [120, 230],
-                        '#B00000' => [230, 340],
-                        '#662D91' => [340, 10000]
+                        '#00AEEC' => [0, 100],
+                        '#00BD01' => [100, 200],
+                        '#EFE800' => [200, 300],
+                        '#E79C00' => [300, 500],
+                        '#B00000' => [500, 700],
+                        '#662D91' => [700, 10000]
                     ],
                     'so2' => [
                         '#00AEEC' => [0, 100],
@@ -84,9 +85,9 @@
                         '#662D91' => [750, 10000]
                     ],
                     'nh3' => [
-                        '#00AEEC' => [0, 2],
-                        '#00BD01' => [2, 5],
-                        '#EFE800' => [5, 30],
+                        '#00AEEC' => [0, 3],
+                        '#00BD01' => [3, 7],
+                        '#EFE800' => [7, 30],
                         '#E79C00' => [30, 100],
                         '#B00000' => [100, 300],
                         '#662D91' => [300, 10000]
@@ -128,7 +129,10 @@
             foreach ($composants[$this->name] as $color => $range) {
                 if ($range[0] <= $this->value && $range[1] > $this->value) {
                     $this->color = $color;
+                    return $this->color;
+
                 }
+
             }
         }
 

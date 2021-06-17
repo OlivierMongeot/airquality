@@ -14,7 +14,7 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        justify-content: center;
+        justify-content:center;
     }
 
     .aqi-#id#-space {
@@ -32,17 +32,22 @@
     }
 
     .aqi-#id#-label {
-        max-width: 50px;
+        font-weight:700;
+        font-size: 160%;
         text-align: center;
     }
 
     #airquality-min#uid#>.carousel-control {
         position: absolute;
-        top: 55%;
+        top: 45%;
         z-index: 5;
         display: inline-block;
         margin-top: 0px;
         width: 20px;
+    }
+
+    #airquality-min#uid# {
+        margin-top: 25px;
     }
 
     #forecast-#uid#>.carousel-control {
@@ -79,7 +84,7 @@
    .highcharts-data-table table {
     /* min-width: 250px; 
     max-width: 80px; */
-    height: 150px;
+    /* height: 150px; */
     margin: 0 auto;
     }
 
@@ -97,13 +102,13 @@
     font-size: 1.2em;
     color: #555;
     }
-    .highcharts-data-table th {
+    /* .highcharts-data-table th {
         font-weight: 600;
     padding: 0.5em;
-    }
-    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    } */
+    /* .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
     padding: 0.5em;
-    }
+    } */
     .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
     background: #f8f8f8;
     }
@@ -116,6 +121,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .aqi-#id#-container{
+        padding: 5px;
     }
 
 
@@ -146,26 +155,6 @@
     </div>
 
 
-
-
-    <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
-        <div class="carousel-inner" id="forcast#id#"> 
-            #forecast_slide#
-       </div>
-        <a class="left carousel-control forecast#id#" href="#forecast-#uid#" data-slide="prev"
-            style="background:transparent">
-            <i class="fas fa-chevron-left"></i>
-        </a>
-        <a class="right carousel-control forecast#id#" href="#forecast-#uid#" data-slide="next"
-            style="background:transparent">
-            <i class="fas fa-chevron-right"></i>
-        </a>
-    </div>
-
-
-
-  
-
     <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
      
         <div class="carousel-inner" id="chart#id#">
@@ -183,25 +172,39 @@
         </a>
     </div>
 
+    <!-- <div id="forecast-#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover" #classCaroussel#>
+        <div class="carousel-inner" id="forcast#id#"> 
+            #forecast_slide#
+       </div>
+        <a class="left carousel-control forecast#id#" href="#forecast-#uid#" data-slide="prev"
+            style="background:transparent">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="right carousel-control forecast#id#" href="#forecast-#uid#" data-slide="next"
+            style="background:transparent">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div> -->
+
  
 </div>
 
 <script>
+
+var labels = '#labels#';
+labels = labels.split(',');
 
 
 function parseData(minArray, maxArray) {
 
         let mintab = minArray.split(',');
         let maxtab = maxArray.split(',');
-
         let parseMin = mintab.map(function (x) {
             return parseInt(x, 10);
         })
-
         let parseMax = maxtab.map(function (y) {
             return parseInt(y, 10);
         })
-
         let data = [];
         data.push(parseMin);
         data.push(parseMax);
@@ -209,64 +212,52 @@ function parseData(minArray, maxArray) {
     }
 
    
-    
-    var labels = '#labels#';
-    labels = labels.split(',');
+    $(document).ready(function () {
+
 
     var dataCo =  parseData('#min_co#', '#max_co#');
-    GiveaChart('container_co_#id#', dataCo, 'CO');
+    GiveaChart('container_co_#id#', dataCo, 'CO', '#color_co#');
 
     var dataNo =  parseData('#min_no#', '#max_no#');
-    GiveaChart('container_no_#id#', dataNo, 'NO');
+    GiveaChart('container_no_#id#', dataNo, 'NO','#color_no#');
 
     var dataPm25 =  parseData('#min_pm2_5#', '#max_pm2_5#');
-    GiveaChart('container_pm2_5_#id#', dataPm25, 'PM2.5');
+    GiveaChart('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
 
     var dataPm10 =  parseData('#min_pm10#', '#max_pm10#');
-    GiveaChart('container_pm10_#id#', dataPm10, 'PM10');
+    GiveaChart('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
 
     var dataO3 =  parseData('#min_o3#', '#max_o3#');
-    GiveaChart('container_o3_#id#', dataO3, 'O³');
+    GiveaChart('container_o3_#id#', dataO3, 'O³','#color_o3#');
 
     var dataNo2 =  parseData('#min_no2#', '#max_no2#');
-    GiveaChart('container_no2_#id#', dataNo2, 'NO²');
+    GiveaChart('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
    
     var dataSo2 =  parseData('#min_so2#', '#max_so2#');
-    GiveaChart('container_so2_#id#', dataSo2, 'SO²');
+    GiveaChart('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
    
     var dataNh3 =  parseData('#min_nh3#', '#max_nh3#');
-    GiveaChart('container_nh3_#id#', dataNh3, 'NH³');
+    GiveaChart('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
    
     var dataAqi =  parseData('#min_aqi#', '#max_aqi#');
-    GiveaChart('container_aqi_#id#', dataAqi, 'AQI');
+    GiveaChart('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
 
-    function GiveaChart(container, data, name) {
+
+    })
+  
+
+    function GiveaChart(container, data, name, colorOne = '#00AEEC') {
 
         Highcharts.chart(container, {
 
             chart: {
 
-                // spacingTop: 15,
-                // marginTop: 15,
-                //   scrollablePlotArea: {
-                //             minWidth: 500,
-                //             scrollPositionX: 0
-                //         },
-                // styledMode: true,
                 type: 'column',
                 height: 180,
-                width: 250,
+                width: 240,
                 alignTicks: true,
-                borderColor: 'currentcolor',
-                  borderWidth:0,
-                //   zoomType: 'x',
-                //   panning: true,
-                //   panKey: 'shift'
-
+                  borderWidth:0
             },
-            // boost: {
-            //         useGPUTranslations: true
-            //     },
             exporting: {
                 enabled: false
             },
@@ -292,7 +283,7 @@ function parseData(minArray, maxArray) {
               
 
             },
-            yAxis: [{ // left y axis
+            yAxis: [{
                 // softMax: 250,
                 // softMin: 100,
                 visible: false,
@@ -309,7 +300,7 @@ function parseData(minArray, maxArray) {
 
             legend: {
                 align: 'center',
-                verticalAlign: 'top',
+                verticalAlign: 'bottom',
                 borderWidth: 0
             },
 
@@ -347,26 +338,15 @@ function parseData(minArray, maxArray) {
                     name: name + ' min',
                     lineWidth: '4px',
                     marker: { radius: 2 },
-                    data: data[0]
+                    data: data[0],
+                    color: 'currentColor'
                 }, {
                     name: name + ' max',
                     lineWidth: '4px',
                     marker: { radius: 2 },
-                    data: data[1]
+                    data: data[1],
+                      color: colorOne
                 }
-                //   ,
-                //   {
-                //   name: 'PM10 min',
-                //   lineWidth: '4px',
-                //   marker: {radius: 2},
-                //   data: data[1]
-                //   },  {
-                //   name: 'PM10 max',
-                //   lineWidth: '4px',
-                //   marker: {radius: 2},
-                //   data: data[0]
-                //   }
-
             ]
         });
 
@@ -374,9 +354,6 @@ function parseData(minArray, maxArray) {
     }
 
             
-
-
-
 
 // Boite Modal Info     
 

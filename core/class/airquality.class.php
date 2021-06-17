@@ -208,8 +208,8 @@ class airquality extends eqLogic
                 ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
                 ['name' => 'so2', 'title' => 'SO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
                 ['name' => 'nh3', 'title' => 'NH³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
-                ['name' => 'pm10', 'title' => 'PM 10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
-                ['name' => 'pm25', 'title' => 'PM 2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
+                ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
+                ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
                 ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
                 ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
 
@@ -316,7 +316,6 @@ class airquality extends eqLogic
                 $commandNameId =  '#' . $nameCmd . 'id#';
                 $commandName = '#'.$nameCmd.'_name#';
                 $info = '#' . $nameCmd . 'info#';
-                // $nom = '#'.$nameCmd.'#';
             
                 // Commande/Element  à afficher et remplacer 
                 $element = $this->getCmd(null, $nameCmd);            
@@ -337,24 +336,12 @@ class airquality extends eqLogic
 
 
                     }
-
-
                     // Polution 
-
-
-
-
-
-
-
-
 
                     //Pollen
 
-             
-                   
                     // Pour Affichage central 
-                    if ($nameCmd == 'aqi' || $nameCmd == 'uv' || $nameCmd == 'visibility') {
+                    if ( $nameCmd == 'uv' || $nameCmd == 'visibility') {
                         $replace[$commandValue] = $element->execCmd();
                         $replace[$info] = (self::getAqiName($element->execCmd()));
                         $replace[$commandNameId] = $element->getId();
@@ -375,28 +362,20 @@ class airquality extends eqLogic
                     } 
                     else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk' ) {
                         $replace[$commandValue] = self::getPollenRisk($element->execCmd());
-                        // $replace[$commandNameId] = $element->getId();
                     } 
-                    
-                    // else  if ($nameCmd == 'uv' || $nameCmd == 'visibility'  ) {
-                    //     $replace[$commandValue] = $element->execCmd();
-                    //     $replace[$commandNameId] = $element->getId();
-                    //     $replace[$commandName] =  $element->getName();
-                    //     $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
-                    //     $replace[$nameIcon] = $newIcon;
-                    // } 
-
                     else  if ( $nameCmd == 'updatedAt'){
-                        // message::add('debug', $element->execCmd() );
                         $replace['#updatedAt#'] = $element->execCmd() ;
-                   }
+                    }
                     else {
-                 
+                        
+                        //Pollen 
                     // Incrémentation Compteur de pollens actifs 
                     $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;    
-     
-                    // Multi Template 
-                    $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                    // affichage liste pollens par categorie
+                    $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
+               
+                    // Multi Template Commun
+                    $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId(), '30px');
                     $unitreplace['#icone#'] = $newIcon;   
                     $unitreplace['#id#'] = $this->getId();
                     $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  self::formatValueForDisplay($element->execCmd()) : $element->execCmd() ;
@@ -404,16 +383,12 @@ class airquality extends eqLogic
                     $unitreplace['#display-name#'] = $cmd->getName();
                     $unitreplace['#cmdid#'] = $cmd->getId();
                     $unitreplace['#history#'] = 'history cursor';
-        
-                
-                    $replace[$commandNameId] = $element->getId();  
-
-
                     $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
-                
-                    // affichage liste pollens par categorie
-                    $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
-               
+                    $color = '#color_'.$nameCmd.'#';
+                    $replace[$color] =  $icone->getColor();
+            
+                    $replace[$commandNameId] = $element->getId();  
+                 
                     // Historique
                     $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
                     $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
@@ -432,10 +407,20 @@ class airquality extends eqLogic
                     }
 
                     // Remplacement multi slider  unitreplace
-                    $slideMini =  template_replace($unitreplace, $elementTemplateMini);
+                    // $slideMini =  template_replace($unitreplace, $elementTemplateMini);
                     
                     // Enregistrement dans un tableau de tous les slides
-                    $tab[] = $slideMini;
+                    $tab[] = template_replace($unitreplace, $elementTemplateMini);
+
+                    // Affichage central  pour AQI 
+                        if ($nameCmd == 'aqi') {
+                            $replace[$commandValue] = $element->execCmd();
+                            $replace[$info] = (self::getAqiName($element->execCmd()));
+                            $replace[$commandNameId] = $element->getId();
+                            $replace[$commandName] =  $element->getName();
+                            $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                            $replace[$nameIcon] = $newIcon;
+                        }
                     }
                 }
             }
@@ -444,11 +429,11 @@ class airquality extends eqLogic
 
         // Choix du layer : todo not finish
         if ($this->getConfiguration('elements') == 'polution') {
-            $component = new ComponentAqi($tab, $this->getId());
+            $component = new ComponentAqi($tab, $this->getId(), 1);
 
         } else {
             // Pollen 
-            $component = new ComponentAqi($tab, $this->getId(), 2);
+            $component = new ComponentAqi($tab, $this->getId(), 1);
         }
 
         // log::add('airquality', 'debug', json_encode($res));
@@ -461,20 +446,7 @@ class airquality extends eqLogic
      
         $k = 0;
         foreach ($forecast as $nameElement => $elementsArray) {
-            // replace à l'unité pour slider 
-            $unitreplaceChart['#active#'] = ($k == 0) ? 'active' : '';
-            $unitreplaceChart['#dataInterval#'] = ($k == 0) ? '10000' : '5000';
-            $unitreplaceChart['#name#'] = $nameElement;
-            $unitreplaceChart['#id#'] = $this->getId();
-            // $indexLabel = '#labelday'.$nameElement.'#';
-
-            $elementTemplateChart = getTemplate('core', $version, 'elementForecast', 'airquality');
-            // log::add('airquality', 'debug', json_encode($elementTemplateChart));
-            $slideChart =  template_replace($unitreplaceChart, $elementTemplateChart);
-            $tabChart[] = $slideChart;
-            $k++;
-
-            // Replace dans le général 
+  
             $replace['#labels#'] = implode(',',$elementsArray['day']);
             $indexMin = '#min_'.$nameElement.'#';
             $replace[$indexMin] =  implode(',',$elementsArray['min']);
@@ -484,9 +456,9 @@ class airquality extends eqLogic
         }
 
        
-        $replace['#forecast_slide#'] = implode('', $tabChart) ;
+        // $replace['#forecast_slide#'] = implode('', $tabChart) ;
 
-        log::add('airquality', 'debug', json_encode(implode('', $tabChart)));
+        // log::add('airquality', 'debug', json_encode(implode('', $tabChart)));
 
         $replace['#index_name#'] = __('Indice',__FILE__);
         $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
@@ -502,6 +474,7 @@ class airquality extends eqLogic
         }
 
         // Command Refresh 
+        
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
 

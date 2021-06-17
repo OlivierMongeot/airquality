@@ -42,7 +42,7 @@ class IconesPollen
         return  $this->firstPartIcon() . $this->lastPartIcon();
     }
 
-    private function getColor()
+    public function getColor()
     {
         $composants =
             [
