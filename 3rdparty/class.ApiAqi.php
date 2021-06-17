@@ -1,22 +1,15 @@
-<?PHP
+<?php
 
 class ApiAqi
 {
     /**
-     *  OpenWeather API Key
+     *  OpenWeather Api Key
      */
     private $apiKey;
     /**
-     * Ambee Aip Key
+     * Ambee Api Key
      */
     private $ambeeApiKey;
-
-
-    /**
-     * 
-     * Sauvegarede de forecast pour eviter le max appel api en dev 
-     */
-    public $forecastSave = null;
     
 
     public function __construct()
@@ -95,7 +88,6 @@ class ApiAqi
      */
     public function getAqi($latitude, $longitude)
     {
-
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         if ($response[1]) {
@@ -136,7 +128,6 @@ class ApiAqi
      */
     public function getAmbee($latitude = null, $longitude = null)
     {
-      
         // Param auto pour test clef avant insertion des params
         if ($latitude === null && $longitude === null) {
             $latitude = 50 && $longitude = 50;
@@ -161,12 +152,8 @@ class ApiAqi
      * Appel Forecast OpenWheather AQI 
      */
     public function callApiForecastAQI($latitude = null, $longitude = null)
-    {
-        if($this->forecastSave != null){
-            message::add('debug','use property saved');
-            return $this->forecastSave;
-        }
-        message::add('debug','use  api');
+    { 
+        message::add('debug','use  ApiForecastAQI');
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
@@ -176,8 +163,6 @@ class ApiAqi
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast avec ces coordonnées');
             } else {
-                $this->forecastSave = $data->list;
-                // localStorage.setItem('cart-items', JSON.stringify(Cart.items));
                 return $data->list;
             }
         }
@@ -218,11 +203,9 @@ class ApiAqi
      */
     private function parseData($response, $component)
     {
-        // log::add('airquality','debug', json_encode($response));
         $beginOfDay = strtotime("today",  time());
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
-
             if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->dt + 100));
                 $dayName =  $this->getNameDay($weekday);

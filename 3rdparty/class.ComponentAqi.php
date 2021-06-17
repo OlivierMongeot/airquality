@@ -60,16 +60,12 @@ class ComponentAqi
         }
 
         if( $this->itemByCell == 3){
-
             $res = array_chunk($array,3);
             //  log::add('airquality', 'debug', json_encode( $res));
             foreach ($res as $cellule) {
-                $byCellule = implode('', $cellule);
                 $newTab[] = implode('', $cellule);
-
             }
             // log::add('airquality', 'debug', json_encode( $newTab));
-
             foreach ($newTab as $k => $item){
                 $starCell =  $this->getStartCell($k);
                 $html[] = $starCell . implode('', $item) . $endCell ;

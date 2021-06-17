@@ -56,6 +56,402 @@ class airquality extends eqLogic
         }
     }
 
+    public static function cronDaily()
+    {
+        foreach (self::byType('airquality') as $type) {
+
+            if ($type->getIsEnable() == 1) {
+              
+                $cmd = $type->getCmd(null, 'refresh_forecast');
+                if (!is_object($cmd)) {
+                    continue;
+                }
+                $cmd->execCmd();
+            }
+        }
+    }
+
+
+  
+
+    public function preInsert()
+    {
+        $this->setCategory('heating', 1);
+        $this->setIsEnable(1);
+        $this->setIsVisible(1);
+    }
+
+
+    public function preUpdate()
+    {
+        if ($this->getIsEnable()) {
+            switch ($this->getConfiguration('searchMode')) {
+
+                case 'city_mode':
+                    if ($this->getConfiguration('city') == '' || $this->getConfiguration('country_code') == '') {
+                        throw new Exception(__('La ville ou le code pays ne peuvent être vide', __FILE__));
+                    }
+                    break;
+                case 'long_lat_mode':
+                    if ($this->getConfiguration('longitude') == '' || $this->getConfiguration('latitude') == '') {
+                        throw new Exception(__('La longitude ou la latitude ne peuvent être vide', __FILE__));
+                    }
+                    break;
+                case 'dynamic_mode':
+                    if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
+                        throw new Exception(__('Probleme de localisation par le navigateur', __FILE__));
+                    }
+                    break;
+            }
+        }
+    }
+    
+    // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
+    public function postSave()
+    {
+        // if ($this->getIsEnable()) {
+        //     $cmd = $this->getCmd(null, 'refresh');
+        //     if (is_object($cmd)) {
+        //         $cmd->execCmd();
+        //     }
+        // }
+    }
+
+
+    // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
+    public function preSave()
+    {
+        if ($this->getConfiguration('displayMode') == 'full_display') {
+            $this->setDisplay("width", "250px");
+            $this->setDisplay("height", "205px");
+        } else if ($this->getConfiguration('displayMode') == 'min_display') {
+            $this->setDisplay("width", "270px");
+            $this->setDisplay("height", "455px");
+        }
+    }
+
+
+    public function postUpdate()
+    {
+        if ($this->getConfiguration('elements') == 'polution') {
+            $setup = [
+                ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
+                ['name' => 'no2', 'title' => 'NO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
+                ['name' => 'no', 'title' => 'NO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 4],
+                ['name' => 'co', 'title' => 'CO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
+                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
+                ['name' => 'so2', 'title' => 'SO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
+                ['name' => 'nh3', 'title' => 'NH³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
+                ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
+                ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
+                ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
+                ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
+
+                ['name' => 'days', 'title' => 'Forecast days', 'unit' => '', 'subType'=>'string', 'order' => 12],
+        
+                ['name' => 'no2_min', 'title' => 'NO² Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 13],
+                ['name' => 'no2_max', 'title' => 'NO² Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 14],
+
+                ['name' => 'so2_min', 'title' => 'SO² Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 15],
+                ['name' => 'so2_max', 'title' => 'SO² Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 16],
+
+                ['name' => 'no_min', 'title' => 'NO Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 17],
+                ['name' => 'no_max', 'title' => 'NO Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 18],
+
+                ['name' => 'co_min', 'title' => 'CO Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 19],
+                ['name' => 'co_max', 'title' => 'CO Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 20],
+
+
+                ['name' => 'nh3_min', 'title' => 'NH3 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 21],
+                ['name' => 'nh3_max', 'title' => 'NH3 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 22],
+              
+                ['name' => 'aqi_min', 'title' => 'AQI Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 23],
+                ['name' => 'aqi_max', 'title' => 'AQI Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 24],
+              
+                ['name' => 'o3_min', 'title' => 'O³ Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 23],
+                ['name' => 'o3_max', 'title' => 'O³ Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 24],
+              
+                ['name' => 'pm25_min', 'title' => 'PM2.5 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 25],
+                ['name' => 'pm25_max', 'title' => 'PM2.5 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 26],
+                
+                ['name' => 'pm10_min', 'title' => 'PM10 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 27],
+                ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 28],
+              
+
+             
+            ];
+        }
+
+        if ($this->getConfiguration('elements') == 'pollen') {
+            $setup = [
+                ['name' => 'grass_pollen', 'title' => 'Herbes', 'unit' => 'part/m3', 'subType'=>'numeric', 'order' => 1],
+                ['name' => 'tree_pollen', 'title' => 'Arbres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 2],
+                ['name' => 'weed_pollen', 'title' => 'Mauvaises Herbes', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 3],
+                ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType'=>'string' ,'order' => 4],
+                ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType'=>'string' ,'order' => 5],
+                ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType'=>'string' ,'order' => 20],
+                ['name' => 'grass', 'title' => 'Herbes/Graminées', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 19],
+                ['name' => 'auln', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 6],
+                ['name' => 'boul', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 7],
+                ['name' => 'cypress', 'title' => 'Cyprès', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 8],
+                ['name' => 'orme', 'title' => 'Orme', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 9],
+                ['name' => 'noisetier', 'title' => 'Noisetier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 10],
+                ['name' => 'chene', 'title' => 'Chêne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 11],
+                ['name' => 'pin', 'title' => 'Pin', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 12],
+                ['name' => 'platane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 13],
+                ['name' => 'peuplier', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 14],
+                ['name' => 'chenopod', 'title' => 'Chenopod', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 15],
+                ['name' => 'armoise', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 16],
+                ['name' => 'ortie', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 17],
+                ['name' => 'ambroisie', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 18],
+                ['name' => 'autres', 'title' => 'Autres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 22],
+                ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType'=>'string' ,'order' => 21],
+            ];
+
+            // Voir si autre option a remover todo 
+            //  $allCmd = $this->getCmd('info');
+            //  foreach ($allCmd as $key => $oldCmd) {
+            //      if(in_array($oldCmd, $setup)){
+
+            //      }
+            //  }
+        }
+
+
+        foreach ($setup as $command) {
+
+            $info = $this->getCmd(null, $command['name']);
+
+            if (!is_object($info)) {
+                $info = new airqualityCmd();
+                $info->setName(__($command['title'], __FILE__));
+            }
+            $info->setEqLogic_id($this->getId());
+            $info->setLogicalId($command['name']);
+            $info->setType('info');
+            $info->setOrder($command['order']);
+            $info->setTemplate('dashboard', 'tile');
+            $info->setSubType($command['subType']);
+            //  To do
+            if ($info->getIsHistorized() == 1) {
+                // config::save('displayStatsWidget', 1 , 'airquality' );
+                $info->setDisplay('showStatsOnmobile', 1);
+                $info->setDisplay('showStatsOndashboard', 1);
+            }
+            $info->setUnite($command['unit']);
+            $info->setDisplay('generic_type', 'GENERIC_INFO');
+            $info->save();
+        }
+
+
+
+        $refresh = $this->getCmd(null, 'refresh');
+        if (!is_object($refresh)) {
+            $refresh = new airqualityCmd();
+            $refresh->setName(__('Rafraichir', __FILE__));
+        }
+        $refresh->setEqLogic_id($this->getId());
+        $refresh->setLogicalId('refresh');
+        $refresh->setType('action');
+        $refresh->setOrder(0);
+        $refresh->setTemplate('dashboard', 'tile');
+        $refresh->setSubType('other');
+        $refresh->save();
+
+        $refreshForecast = $this->getCmd(null, 'refresh_forecast');
+        if (!is_object($refreshForecast)) {
+            $refreshForecast = new airqualityCmd();
+            $refreshForecast->setName(__('Rafraichir Forecast', __FILE__));
+        }
+        $refreshForecast->setEqLogic_id($this->getId());
+        $refreshForecast->setLogicalId('refresh_forecast');
+        $refreshForecast->setType('action');
+        $refreshForecast->setOrder(100);
+        $refreshForecast->setTemplate('dashboard', 'tile');
+        $refreshForecast->setSubType('other');
+        $refreshForecast->save();
+
+    }
+
+    public function toHtml($_version = 'dashboard')
+    {
+        $replace = $this->preToHtml($_version);
+        if (!is_array($replace)) {
+            return $replace;
+        }
+        //vide le cache. Pour le développement
+        $this->emptyCacheWidget();
+
+        $version = jeedom::versionAlias($_version);
+        $activePollen = 0;
+      
+        foreach ($this->getCmd('info') as $cmd) {
+
+            // Verification si la valeur doit etre afficher 
+            if ($this->getConfiguration($cmd->getLogicalId(), 0) == 1 || 0 == 0 ){
+            
+                // Preparation des valeurs à remplacer 
+                $nameCmd = $cmd->getLogicalId();
+                $nameIcon = '#icone_' . $nameCmd . '#';
+                $commandValue =  '#' . $nameCmd . '#';
+                $commandNameId =  '#' . $nameCmd . 'id#';
+                $commandName = '#'.$nameCmd.'_name#';
+                $info = '#' . $nameCmd . 'info#';
+            
+                // Commande/Element  à afficher et remplacer 
+                $element = $this->getCmd(null, $nameCmd);            
+            
+                if (is_object($element)) {
+
+                    if ( $this->getConfiguration('elements') == 'polution'){
+                        $icone = new IconesAqi;
+                        $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
+                        $unitreplace['#unity#'] = ($cmd->getLogicalId() != 'aqi') ? 'μg/m³' : '';
+
+                    } else {
+                        $icone = new IconesPollen;
+                        $elementTemplate = getTemplate('core', $version, 'elementPollen', 'airquality');
+                        $unitreplace['#unity#'] = 'particules/m³';
+                    }
+
+                    // Pour Affichage spécial 
+                    if ( $nameCmd == 'uv' || $nameCmd == 'visibility') {
+                        $replace[$commandValue] = $element->execCmd();
+                        $replace[$info] = (self::getAqiName($element->execCmd()));
+                        $replace[$commandNameId] = $element->getId();
+                        $replace[$commandName] =  $element->getName();
+                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                        $replace[$nameIcon] = $newIcon;
+                    
+                    }else  if ( $nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen' ) {
+                        $replace[$commandValue] = $element->execCmd();
+                        $replace[$commandNameId] = $element->getId();
+                        $replace[$commandName] =  $element->getName();
+                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                        $replace[$nameIcon] = $newIcon;
+                        $listPollen ='#list_' . $nameCmd . '#';
+                        $replace[$listPollen] = self::getListPollen($nameCmd);
+
+                    } 
+                    else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk' ) {
+                        $replace[$commandValue] = self::getPollenRisk($element->execCmd());
+                    } 
+                    else  if ( $nameCmd == 'updatedAt'){
+                        $replace['#updatedAt#'] = $element->execCmd() ;
+                    }
+                    else  if ( $nameCmd == 'no2_min' || $nameCmd == 'no2_max' ||$nameCmd == 'so2_min' || $nameCmd == 'so2_max'
+                        || $nameCmd == 'no_min' || $nameCmd == 'no_max' || $nameCmd == 'co_min' ||$nameCmd == 'co_max' 
+                        || $nameCmd == 'nh3_min'|| $nameCmd == 'nh3_max' || $nameCmd == 'aqi_min'|| $nameCmd == 'aqi_max' 
+                        || $nameCmd == 'o3_min'|| $nameCmd == 'o3_max' || $nameCmd == 'pm10_min'|| $nameCmd == 'pm10_max'  || $nameCmd == 'pm25_min'|| $nameCmd == 'pm25_max' 
+                     )
+                    {
+                        $indexMinMax = '#'.$nameCmd.'#';
+                        $replace[$indexMinMax] = $element->execCmd();
+                    } 
+                    else  if ( $nameCmd == 'days'){
+                        $replace['#labels#'] = ($element->execCmd());
+                    }
+                     // Pour Affichage classique 
+                    else {
+                        
+                        //Pollen 
+                        // Incrémentation Compteur de pollens actifs 
+                        $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;    
+                        // affichage liste pollens par categorie
+                        $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
+                
+                        // Multi Template Commun
+                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId(), '30px');
+                        $unitreplace['#icone#'] = $newIcon;   
+                        $unitreplace['#id#'] = $this->getId();
+                        $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  self::formatValueForDisplay($element->execCmd()) : $element->execCmd() ;
+                        $unitreplace['#name#'] = $cmd->getLogicalId();
+                        $unitreplace['#display-name#'] = $cmd->getName();
+                        $unitreplace['#cmdid#'] = $cmd->getId();
+                        $unitreplace['#history#'] = 'history cursor';
+                        $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
+                        $color = '#color_'.$nameCmd.'#';
+                        $replace[$color] =  $icone->getColor();
+                
+                        $replace[$commandNameId] = $element->getId();  
+                    
+                        // Historique Commun
+                        $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
+                        $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
+                        $unitreplace['#minHistoryValue#'] = self::formatValueForDisplay($historyStatistique['min'], 'short');
+                        $unitreplace['#maxHistoryValue#'] = self::formatValueForDisplay($historyStatistique['max'], 'short');
+                        $unitreplace['#averageHistoryValue#'] = self::formatValueForDisplay($historyStatistique['avg'], 'short');
+                        // Tendance Commun
+                        $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 10 . ' hour'));
+                        $tendance = $element->getTendance($startHist, date('Y-m-d H:i:s'));
+                        if ($tendance > config::byKey('historyCalculTendanceThresholddMax')) {
+                            $unitreplace['#tendance#'] = 'fas fa-arrow-up';
+                        } else if ($tendance < config::byKey('historyCalculTendanceThresholddMin')) {
+                            $unitreplace['#tendance#'] = 'fas fa-arrow-down';
+                        } else {
+                            $unitreplace['#tendance#'] = 'fas fa-minus';
+                        }
+                        
+                        // Enregistrement dans un tableau de tous les slides
+                        $tab[] = template_replace($unitreplace, $elementTemplate);
+
+                     // Affichage central pour AQI 
+                        if ($nameCmd == 'aqi') {
+                            $replace[$commandValue] = $element->execCmd();
+                            $replace[$info] = (self::getAqiName($element->execCmd()));
+                            $replace[$commandNameId] = $element->getId();
+                            $replace[$commandName] =  $element->getName();
+                            $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                            $replace[$nameIcon] = $newIcon;
+                        }
+                    }
+                }
+            }
+        }  // Fin foreach 
+
+
+    
+        if ($this->getConfiguration('elements') == 'polution') {
+            // Choix du layer : pour le replace global
+            $component = new ComponentAqi($tab, $this->getId(), 1);
+            $replace['#index_name#'] = __('Indice',__FILE__);
+
+        } else {
+            // Pollen 
+            // Pollen actifs
+            $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
+            $replace['#activePollen#'] = $activePollen;
+            $component = new ComponentAqi($tab, $this->getId(), 2);
+        }
+        // Replace Global 
+        $replace['#mini_slide#'] =  $component->getLayer();
+
+        // Command Refresh 
+        $refresh = $this->getCmd(null, 'refresh');
+        $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
+
+        // Carousel 
+        if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
+            $replace['#animation#'] = 'disabled';
+            $replace['#classCaroussel#'] = 'data-interval="false"';
+        } else {
+            $replace['#animation#'] = 'active';
+            $replace['#classCaroussel#'] = '';
+        }
+
+        if ($version == 'mobile') {
+            return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
+        }
+        else {
+
+           if ( $this->getConfiguration('elements') == 'polution'){
+                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
+           } else {
+                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen', __CLASS__)));
+           }
+        }
+    }
+
 
     public static function formatValueForDisplay($value, $style = 'normal')
     {
@@ -140,359 +536,6 @@ class airquality extends eqLogic
     }
 
 
-    public function preInsert()
-    {
-        $this->setCategory('heating', 1);
-        $this->setIsEnable(1);
-        $this->setIsVisible(1);
-    }
-
-
-    public function preUpdate()
-    {
-        if ($this->getIsEnable()) {
-            switch ($this->getConfiguration('searchMode')) {
-
-                case 'city_mode':
-                    if ($this->getConfiguration('city') == '' || $this->getConfiguration('country_code') == '') {
-                        throw new Exception(__('La ville ou le code pays ne peuvent être vide', __FILE__));
-                    }
-                    break;
-                case 'long_lat_mode':
-                    if ($this->getConfiguration('longitude') == '' || $this->getConfiguration('latitude') == '') {
-                        throw new Exception(__('La longitude ou la latitude ne peuvent être vide', __FILE__));
-                    }
-                    break;
-                case 'dynamic_mode':
-                    if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                        throw new Exception(__('Probleme de localisation par le navigateur', __FILE__));
-                    }
-                    break;
-            }
-        }
-    }
-    
-    // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
-    public function postSave()
-    {
-        // if ($this->getIsEnable()) {
-        //     $cmd = $this->getCmd(null, 'refresh');
-        //     if (is_object($cmd)) {
-        //         $cmd->execCmd();
-        //     }
-        // }
-    }
-
-
-    // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
-    public function preSave()
-    {
-        if ($this->getConfiguration('displayMode') == 'full_display') {
-            $this->setDisplay("width", "250px");
-            $this->setDisplay("height", "205px");
-        } else if ($this->getConfiguration('displayMode') == 'min_display') {
-            $this->setDisplay("width", "270px");
-            $this->setDisplay("height", "455px");
-        }
-    }
-
-
-    public function postUpdate()
-    {
-        if ($this->getConfiguration('elements') == 'polution') {
-            $setup = [
-                ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
-                ['name' => 'no2', 'title' => 'NO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
-                ['name' => 'no', 'title' => 'NO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 4],
-                ['name' => 'co', 'title' => 'CO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
-                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
-                ['name' => 'so2', 'title' => 'SO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
-                ['name' => 'nh3', 'title' => 'NH³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
-                ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
-                ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
-                ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
-                ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
-
-            ];
-        }
-
-        if ($this->getConfiguration('elements') == 'pollen') {
-            $setup = [
-                ['name' => 'grass_pollen', 'title' => 'Herbes', 'unit' => 'part/m3', 'subType'=>'numeric', 'order' => 1],
-                ['name' => 'tree_pollen', 'title' => 'Arbres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 2],
-                ['name' => 'weed_pollen', 'title' => 'Mauvaises Herbes', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 3],
-                ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType'=>'string' ,'order' => 4],
-                ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType'=>'string' ,'order' => 5],
-                ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType'=>'string' ,'order' => 20],
-                ['name' => 'grass', 'title' => 'Herbes/Graminées', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 19],
-                ['name' => 'auln', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 6],
-                ['name' => 'boul', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 7],
-                ['name' => 'cypress', 'title' => 'Cyprès', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 8],
-                ['name' => 'orme', 'title' => 'Orme', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 9],
-                ['name' => 'noisetier', 'title' => 'Noisetier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 10],
-                ['name' => 'chene', 'title' => 'Chêne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 11],
-                ['name' => 'pin', 'title' => 'Pin', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 12],
-                ['name' => 'platane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 13],
-                ['name' => 'peuplier', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 14],
-                ['name' => 'chenopod', 'title' => 'Chenopod', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 15],
-                ['name' => 'armoise', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 16],
-                ['name' => 'ortie', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 17],
-                ['name' => 'ambroisie', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 18],
-                ['name' => 'autres', 'title' => 'Autres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 22],
-                ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType'=>'string' ,'order' => 21],
-            ];
-
-            // Voir si autre option a remover todo 
-            //  $allCmd = $this->getCmd('info');
-            //  foreach ($allCmd as $key => $oldCmd) {
-            //      if(in_array($oldCmd, $setup)){
-
-            //      }
-            //  }
-        }
-
-
-        foreach ($setup as $command) {
-
-            $info = $this->getCmd(null, $command['name']);
-
-            if (!is_object($info)) {
-                $info = new airqualityCmd();
-                $info->setName(__($command['title'], __FILE__));
-            }
-            $info->setEqLogic_id($this->getId());
-            $info->setLogicalId($command['name']);
-            $info->setType('info');
-            $info->setOrder($command['order']);
-            $info->setTemplate('dashboard', 'tile');
-            $info->setSubType($command['subType']);
-            //  To do
-            if ($info->getIsHistorized() == 1) {
-                // config::save('displayStatsWidget', 1 , 'airquality' );
-                $info->setDisplay('showStatsOnmobile', 1);
-                $info->setDisplay('showStatsOndashboard', 1);
-            }
-            $info->setUnite($command['unit']);
-            $info->setDisplay('generic_type', 'GENERIC_INFO');
-            $info->save();
-        }
-
-        $refresh = $this->getCmd(null, 'refresh');
-        if (!is_object($refresh)) {
-            $refresh = new airqualityCmd();
-            $refresh->setName(__('Rafraichir', __FILE__));
-        }
-        $refresh->setEqLogic_id($this->getId());
-        $refresh->setLogicalId('refresh');
-        $refresh->setType('action');
-        $refresh->setOrder(0);
-        $refresh->setTemplate('dashboard', 'tile');
-        $refresh->setSubType('other');
-        $refresh->save();
-    }
-
-
-    public function toHtml($_version = 'dashboard')
-    {
-        $replace = $this->preToHtml($_version);
-        if (!is_array($replace)) {
-            return $replace;
-        }
-        //vide le cache. Pour le développement
-        $this->emptyCacheWidget();
-
-        $version = jeedom::versionAlias($_version);
-        $activePollen = 0;
-
-        foreach ($this->getCmd('info') as $cmd) {
-
-            // Verification si la valeur doit etre afficher 
-            if ($this->getConfiguration($cmd->getLogicalId(), 0) == 1 ){
-          
-                // Preparation des valeurs à remplacer 
-                $nameCmd = $cmd->getLogicalId();
-                $nameIcon = '#icone_' . $nameCmd . '#';
-                $commandValue =  '#' . $nameCmd . '#';
-                $commandNameId =  '#' . $nameCmd . 'id#';
-                $commandName = '#'.$nameCmd.'_name#';
-                $info = '#' . $nameCmd . 'info#';
-            
-                // Commande/Element  à afficher et remplacer 
-                $element = $this->getCmd(null, $nameCmd);            
-            
-                if (is_object($element)) {
-
-
-                    if ( $this->getConfiguration('elements') == 'polution'){
-                        $icone = new IconesAqi;
-                        $elementTemplateMini = getTemplate('core', $version, 'element.mini', 'airquality');
-                        // $unitreplace['#unity#'] = ($cmd->getLogicalId() != 'aqi') ? 'μg/m³' : '';
-
-
-                    } else {
-                        $icone = new IconesPollen;
-                        $elementTemplateMini = getTemplate('core', $version, 'elementPollen.mini', 'airquality');
-                        // $unitreplace['#unity#'] = 'particules/m³';
-
-
-                    }
-                    // Polution 
-
-                    //Pollen
-
-                    // Pour Affichage central 
-                    if ( $nameCmd == 'uv' || $nameCmd == 'visibility') {
-                        $replace[$commandValue] = $element->execCmd();
-                        $replace[$info] = (self::getAqiName($element->execCmd()));
-                        $replace[$commandNameId] = $element->getId();
-                        $replace[$commandName] =  $element->getName();
-                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
-                        $replace[$nameIcon] = $newIcon;
-                        
-
-                    }else  if ( $nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen' ) {
-                        $replace[$commandValue] = $element->execCmd();
-                        $replace[$commandNameId] = $element->getId();
-                        $replace[$commandName] =  $element->getName();
-                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
-                        $replace[$nameIcon] = $newIcon;
-                        $listPollen ='#list_' . $nameCmd . '#';
-                        $replace[$listPollen] = self::getListPollen($nameCmd);
-
-                    } 
-                    else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk' ) {
-                        $replace[$commandValue] = self::getPollenRisk($element->execCmd());
-                    } 
-                    else  if ( $nameCmd == 'updatedAt'){
-                        $replace['#updatedAt#'] = $element->execCmd() ;
-                    }
-                    else {
-                        
-                        //Pollen 
-                    // Incrémentation Compteur de pollens actifs 
-                    $activePollen = ( $element->execCmd() > 0 ) ? $activePollen + 1 : $activePollen;    
-                    // affichage liste pollens par categorie
-                    $unitreplace['#list-info#'] =  ( $nameCmd == 'autres') ?  'class="tooltips" title="'.self::getListPollen($nameCmd).'"' : '';
-               
-                    // Multi Template Commun
-                    $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId(), '30px');
-                    $unitreplace['#icone#'] = $newIcon;   
-                    $unitreplace['#id#'] = $this->getId();
-                    $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  self::formatValueForDisplay($element->execCmd()) : $element->execCmd() ;
-                    $unitreplace['#name#'] = $cmd->getLogicalId();
-                    $unitreplace['#display-name#'] = $cmd->getName();
-                    $unitreplace['#cmdid#'] = $cmd->getId();
-                    $unitreplace['#history#'] = 'history cursor';
-                    $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
-                    $color = '#color_'.$nameCmd.'#';
-                    $replace[$color] =  $icone->getColor();
-            
-                    $replace[$commandNameId] = $element->getId();  
-                 
-                    // Historique
-                    $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
-                    $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
-                    $unitreplace['#minHistoryValue#'] = self::formatValueForDisplay($historyStatistique['min'], 'short');
-                    $unitreplace['#maxHistoryValue#'] = self::formatValueForDisplay($historyStatistique['max'], 'short');
-                    $unitreplace['#averageHistoryValue#'] = self::formatValueForDisplay($historyStatistique['avg'], 'short');
-                    // Tendance
-                    $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 10 . ' hour'));
-                    $tendance = $element->getTendance($startHist, date('Y-m-d H:i:s'));
-                    if ($tendance > config::byKey('historyCalculTendanceThresholddMax')) {
-                        $unitreplace['#tendance#'] = 'fas fa-arrow-up';
-                    } else if ($tendance < config::byKey('historyCalculTendanceThresholddMin')) {
-                        $unitreplace['#tendance#'] = 'fas fa-arrow-down';
-                    } else {
-                        $unitreplace['#tendance#'] = 'fas fa-minus';
-                    }
-
-                    // Remplacement multi slider  unitreplace
-                    // $slideMini =  template_replace($unitreplace, $elementTemplateMini);
-                    
-                    // Enregistrement dans un tableau de tous les slides
-                    $tab[] = template_replace($unitreplace, $elementTemplateMini);
-
-                    // Affichage central  pour AQI 
-                        if ($nameCmd == 'aqi') {
-                            $replace[$commandValue] = $element->execCmd();
-                            $replace[$info] = (self::getAqiName($element->execCmd()));
-                            $replace[$commandNameId] = $element->getId();
-                            $replace[$commandName] =  $element->getName();
-                            $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
-                            $replace[$nameIcon] = $newIcon;
-                        }
-                    }
-                }
-            }
-        }  // Fin foreach 
-
-
-        // Choix du layer : todo not finish
-        if ($this->getConfiguration('elements') == 'polution') {
-            $component = new ComponentAqi($tab, $this->getId(), 1);
-
-        } else {
-            // Pollen 
-            $component = new ComponentAqi($tab, $this->getId(), 1);
-        }
-
-        // log::add('airquality', 'debug', json_encode($res));
-        $replace['#mini_slide#'] =  $component->getLayer();
-
-
-
-        // Affichage direct du forecast sans passer par l'enregistrement/création d'une commande 
-        $forecast = $this->getData('getForecast');
-     
-        $k = 0;
-        foreach ($forecast as $nameElement => $elementsArray) {
-  
-            $replace['#labels#'] = implode(',',$elementsArray['day']);
-            $indexMin = '#min_'.$nameElement.'#';
-            $replace[$indexMin] =  implode(',',$elementsArray['min']);
-            $indexMax = '#max_'.$nameElement.'#';
-            $replace[$indexMax] =  implode(',',$elementsArray['max']);
-
-        }
-
-       
-        // $replace['#forecast_slide#'] = implode('', $tabChart) ;
-
-        // log::add('airquality', 'debug', json_encode(implode('', $tabChart)));
-
-        $replace['#index_name#'] = __('Indice',__FILE__);
-        $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
-        $replace['#activePollen#'] = $activePollen;
-
-        // Carousel 
-        if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
-            $replace['#animation#'] = 'disabled';
-            $replace['#classCaroussel#'] = 'data-interval="false"';
-        } else {
-            $replace['#animation#'] = 'active';
-            $replace['#classCaroussel#'] = '';
-        }
-
-        // Command Refresh 
-        
-        $refresh = $this->getCmd(null, 'refresh');
-        $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
-
-     
-        if ($version == 'mobile') {
-            return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
-        }
-        else {
-
-           if ( $this->getConfiguration('elements') == 'polution'){
-                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.min', __CLASS__)));
-           } else {
-                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen.min', __CLASS__)));
-           }
-        }
-    }
-
-
     public static function postConfig_apikey()
     {
         if (config::byKey('apikey', 'airquality') == '') {
@@ -563,6 +606,7 @@ class airquality extends eqLogic
         }   
     }
 
+
 }
 
 
@@ -578,6 +622,7 @@ class airqualityCmd extends cmd
         switch ($this->getLogicalId()) {
             case 'refresh':
                 if ($eqlogic->getConfiguration('elements') == 'polution') {
+
                     $data = $eqlogic->getData('getAqi');
                     $eqlogic->checkAndUpdateCmd('aqi', $data->main->aqi);
                     $eqlogic->checkAndUpdateCmd('no2', $data->components->no2);
@@ -591,30 +636,6 @@ class airqualityCmd extends cmd
                     $data = $eqlogic->getData('getOneCallApi');
                     $eqlogic->checkAndUpdateCmd('uv', $data->uvi);
                     $eqlogic->checkAndUpdateCmd('visibility', $data->visibility);
-
-
-                    // $forecast =  $eqlogic->getData('getForecast');
-                    // $eqlogic->checkAndUpdateCmd('no2_min', $forecast['no2']['min'][0]);
-                    // $eqlogic->checkAndUpdateCmd('no2_max',  $forecast['no2']['max'][0]);
-                    // $eqlogic->checkAndUpdateCmd('day',  $forecast['no2']['day'][0]);
-
-                    // $eqlogic->checkAndUpdateCmd('no2_min+1',  $forecast['no2']['min'][1]);
-                    // $eqlogic->checkAndUpdateCmd('no2_max+1', $forecast['no2']['max'][1]);
-                    // $eqlogic->checkAndUpdateCmd('day+1', $forecast['no2']['day'][1]);
-
-                    // $eqlogic->checkAndUpdateCmd('no2_min+2',  $forecast['no2']['min'][2]);
-                    // $eqlogic->checkAndUpdateCmd('no2_max+2', $forecast['no2']['max'][2]);
-                    // $eqlogic->checkAndUpdateCmd('day+2', $forecast['no2']['day'][2]);
-
-                    // $eqlogic->checkAndUpdateCmd('no2_min+3',  $forecast['no2']['min'][3]);
-                    // $eqlogic->checkAndUpdateCmd('no2_max+3', $forecast['no2']['max'][3]);
-                    // $eqlogic->checkAndUpdateCmd('day+3', $forecast['no2']['day'][3]);
-
-                    // $eqlogic->checkAndUpdateCmd('no2_min+4',  $forecast['no2']['min'][4]);
-                    // $eqlogic->checkAndUpdateCmd('no2_max+4', $forecast['no2']['max'][4]);
-                    // $eqlogic->checkAndUpdateCmd('day+4', $forecast['no2']['day'][4]);
-
-
                     $eqlogic->refreshWidget();
                     break;
                 }
@@ -647,6 +668,33 @@ class airqualityCmd extends cmd
                     $eqlogic->refreshWidget();
                     break;
                 }
-        }
+      
+            
+            case 'refresh_forecast':
+                message::add('debug','Refresh forecast');
+                if($eqlogic->getConfiguration('elements') == 'polution'){
+                    $forecast =  $eqlogic->getData('getForecast');
+                    $eqlogic->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
+                    $eqlogic->checkAndUpdateCmd('no2_min',json_encode($forecast['no2']['min']));
+                    $eqlogic->checkAndUpdateCmd('no2_max', json_encode( $forecast['no2']['max']));
+                    $eqlogic->checkAndUpdateCmd('no_min', json_encode($forecast['no']['min']));
+                    $eqlogic->checkAndUpdateCmd('no_max',json_encode($forecast['no']['max']));
+                    $eqlogic->checkAndUpdateCmd('so2_min', json_encode($forecast['so2']['min']));
+                    $eqlogic->checkAndUpdateCmd('so2_max',json_encode($forecast['so2']['max']));
+                    $eqlogic->checkAndUpdateCmd('co_min',json_encode($forecast['co']['min']));
+                    $eqlogic->checkAndUpdateCmd('co_max',json_encode($forecast['co']['max']));
+                    $eqlogic->checkAndUpdateCmd('nh3_min',json_encode($forecast['nh3']['min']));
+                    $eqlogic->checkAndUpdateCmd('nh3_max',json_encode($forecast['nh3']['max']));
+                    $eqlogic->checkAndUpdateCmd('aqi_min',json_encode($forecast['aqi']['min']));
+                    $eqlogic->checkAndUpdateCmd('aqi_max',json_encode($forecast['aqi']['max']));
+                    $eqlogic->checkAndUpdateCmd('pm10_min',json_encode($forecast['pm10']['min']));
+                    $eqlogic->checkAndUpdateCmd('pm10_max',json_encode($forecast['pm10']['max']));
+                    $eqlogic->checkAndUpdateCmd('o3_min',json_encode($forecast['o3']['min']));
+                    $eqlogic->checkAndUpdateCmd('o3_max',json_encode($forecast['o3']['max']));
+                    $eqlogic->checkAndUpdateCmd('pm25_min',json_encode($forecast['pm2_5']['min']));
+                    $eqlogic->checkAndUpdateCmd('pm25_max',json_encode($forecast['pm2_5']['max']));
+                    $eqlogic->refreshWidget();
+                }
+            }
     }
 }
