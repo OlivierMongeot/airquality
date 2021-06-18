@@ -1,14 +1,17 @@
 <div class="state aqi-#id#-particule #name#">
+    <!-- Haut  -->
     <div class="aqi-#id#-row" style="width:100%;">
         <!-- Nom -->
         <div style="width:100%;" class="cmd noRefresh aqi-#id#-label tooltips cursor"
             data-type="info" data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
         <!-- Icone -->
         <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
+       
+         <!-- Valeur --> <!-- Historique -->
         <div class="aqi-#id#-particule" style="width:90px;">
-            <!-- Valeur -->
+       
             <div title="#unity#" style="text-align: center;" class="aqi-#id#-value">#value# </div>
-            <!-- Historique -->
+         
             <div class="contain-minmax-#id# #history# state tooltips" style="text-align: center;width:90px;" data-cmd_id="#cmdid#"
                 data-eqlogic_id="#id#" data-type="info" data-subtype="numeric">
                 <div style="font-size: 0.8em;" class="state">
@@ -21,7 +24,8 @@
         </div>
 
     </div>
-    <!-- Graphique -->
+  
+    <!-- Graphique bas  -->
     <div id="container_#name#_#id#">
     </div>
 </div>

@@ -56,13 +56,14 @@ class airquality extends eqLogic
         }
     }
 
-    public static function cronDaily()
+    
+
+    public static function cronHourly()
     {
         foreach (self::byType('airquality') as $type) {
 
             if ($type->getIsEnable() == 1) {
-              
-                $cmd = $type->getCmd(null, 'refresh_forecast');
+                $cmd = $type->getCmd(null, 'refresh_pollen');
                 if (!is_object($cmd)) {
                     continue;
                 }
@@ -72,7 +73,21 @@ class airquality extends eqLogic
     }
 
 
-  
+
+
+
+    public static function cronDaily()
+    {
+        foreach (self::byType('airquality') as $type) {
+            if ($type->getIsEnable() == 1) {
+                $cmd = $type->getCmd(null, 'refresh_forecast');
+                if (!is_object($cmd)) {
+                    continue;
+                }
+                $cmd->execCmd();
+            }
+        }
+    }
 
     public function preInsert()
     {
@@ -126,9 +141,12 @@ class airquality extends eqLogic
             $this->setDisplay("height", "205px");
         } else if ($this->getConfiguration('displayMode') == 'min_display') {
             $this->setDisplay("width", "270px");
-            $this->setDisplay("height", "455px");
+            $this->setDisplay("height", "365px");
         }
     }
+
+
+
 
 
     public function postUpdate()
@@ -136,85 +154,167 @@ class airquality extends eqLogic
         if ($this->getConfiguration('elements') == 'polution') {
             $setup = [
                 ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
+                ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
+                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
                 ['name' => 'no2', 'title' => 'NO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
                 ['name' => 'no', 'title' => 'NO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 4],
                 ['name' => 'co', 'title' => 'CO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
-                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
                 ['name' => 'so2', 'title' => 'SO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
                 ['name' => 'nh3', 'title' => 'NH³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
-                ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
                 ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
                 ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
                 ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
-
+                //Forecast
                 ['name' => 'days', 'title' => 'Forecast days', 'unit' => '', 'subType'=>'string', 'order' => 12],
-        
                 ['name' => 'no2_min', 'title' => 'NO² Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 13],
                 ['name' => 'no2_max', 'title' => 'NO² Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 14],
-
                 ['name' => 'so2_min', 'title' => 'SO² Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 15],
                 ['name' => 'so2_max', 'title' => 'SO² Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 16],
-
                 ['name' => 'no_min', 'title' => 'NO Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 17],
                 ['name' => 'no_max', 'title' => 'NO Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 18],
-
                 ['name' => 'co_min', 'title' => 'CO Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 19],
                 ['name' => 'co_max', 'title' => 'CO Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 20],
-
-
                 ['name' => 'nh3_min', 'title' => 'NH3 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 21],
                 ['name' => 'nh3_max', 'title' => 'NH3 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 22],
-              
                 ['name' => 'aqi_min', 'title' => 'AQI Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 23],
                 ['name' => 'aqi_max', 'title' => 'AQI Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 24],
-              
                 ['name' => 'o3_min', 'title' => 'O³ Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 23],
                 ['name' => 'o3_max', 'title' => 'O³ Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 24],
-              
                 ['name' => 'pm25_min', 'title' => 'PM2.5 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 25],
                 ['name' => 'pm25_max', 'title' => 'PM2.5 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 26],
-                
                 ['name' => 'pm10_min', 'title' => 'PM10 Mini prévision', 'unit' => '', 'subType'=>'string', 'order' => 27],
-                ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 28],
-              
-
-             
+                ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType'=>'string', 'order' => 28]
             ];
+
+
+
+            $refreshForecast = $this->getCmd(null, 'refresh_forecast');
+            if (!is_object($refreshForecast)) {
+                $refreshForecast = new airqualityCmd();
+                $refreshForecast->setName(__('Rafraichir Forecast', __FILE__));
+            }
+            $refreshForecast->setEqLogic_id($this->getId());
+            $refreshForecast->setLogicalId('refresh_forecast');
+            $refreshForecast->setType('action');
+            $refreshForecast->setOrder(100);
+            $refreshForecast->setTemplate('dashboard', 'tile');
+            $refreshForecast->setSubType('other');
+            $refreshForecast->save();
+
+            $refresh = $this->getCmd(null, 'refresh');
+            if (!is_object($refresh)) {
+                $refresh = new airqualityCmd();
+                $refresh->setName(__('Rafraichir', __FILE__));
+            }
+            $refresh->setEqLogic_id($this->getId());
+            $refresh->setLogicalId('refresh');
+            $refresh->setType('action');
+            $refresh->setOrder(0);
+            $refresh->setTemplate('dashboard', 'tile');
+            $refresh->setSubType('other');
+            $refresh->save();
+
         }
 
         if ($this->getConfiguration('elements') == 'pollen') {
             $setup = [
-                ['name' => 'grass_pollen', 'title' => 'Herbes', 'unit' => 'part/m3', 'subType'=>'numeric', 'order' => 1],
-                ['name' => 'tree_pollen', 'title' => 'Arbres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 2],
-                ['name' => 'weed_pollen', 'title' => 'Mauvaises Herbes', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 3],
-                ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType'=>'string' ,'order' => 4],
-                ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType'=>'string' ,'order' => 5],
-                ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType'=>'string' ,'order' => 20],
-                ['name' => 'grass', 'title' => 'Herbes/Graminées', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 19],
-                ['name' => 'auln', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 6],
-                ['name' => 'boul', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 7],
+                ['name' => 'grass_pollen', 'title' => 'Herbes', 'unit' => 'part/m3', 'subType'=>'numeric', 'order' => 58],
+                ['name' => 'tree_pollen', 'title' => 'Arbres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 59],
+                ['name' => 'weed_pollen', 'title' => 'Mauvaises Herbes', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 54],
+                ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType'=>'string' ,'order' => 55],
+                ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType'=>'string' ,'order' => 56],
+                ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType'=>'string' ,'order' => 57],
+                ['name' => 'poaceae', 'title' => 'Graminées', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 19],
+                ['name' => 'alder', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 6],
+                ['name' => 'birch', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 7],
                 ['name' => 'cypress', 'title' => 'Cyprès', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 8],
-                ['name' => 'orme', 'title' => 'Orme', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 9],
-                ['name' => 'noisetier', 'title' => 'Noisetier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 10],
-                ['name' => 'chene', 'title' => 'Chêne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 11],
-                ['name' => 'pin', 'title' => 'Pin', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 12],
-                ['name' => 'platane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 13],
-                ['name' => 'peuplier', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 14],
+                ['name' => 'elm', 'title' => 'Orme', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 9],
+                ['name' => 'hazel', 'title' => 'Noisetier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 10],
+                ['name' => 'oak', 'title' => 'Chêne', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 11],
+                ['name' => 'pine', 'title' => 'Pin', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 12],
+                ['name' => 'plane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 13],
+                ['name' => 'poplar', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 14],
                 ['name' => 'chenopod', 'title' => 'Chenopod', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 15],
-                ['name' => 'armoise', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 16],
-                ['name' => 'ortie', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 17],
-                ['name' => 'ambroisie', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 18],
-                ['name' => 'autres', 'title' => 'Autres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 22],
-                ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType'=>'string' ,'order' => 21],
+                ['name' => 'mugwort', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 16],
+                ['name' => 'nettle', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 17],
+                ['name' => 'ragweed', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 18],
+                ['name' => 'others', 'title' => 'Autres', 'unit' => 'part/m3', 'subType'=>'numeric' ,'order' => 22],
+                ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType'=>'string' ,'order' => 60],
+
+                ['name' => 'days', 'title' => 'Forecast days Pollen', 'unit' => '', 'subType'=>'string', 'order' => 23],
+                ['name' => 'poaceae_min', 'title' => "Grass-Poaceae Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 24],
+                ['name' => 'poaceae_max', 'title' => 'Grass-Poaceae Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 25],
+
+                ['name' => 'alder_min', 'title' => "Alder Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 26],
+                ['name' => 'alder_max', 'title' => 'Alder Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 27],
+
+                ['name' => 'birch_min', 'title' => "Birch Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 28],
+                ['name' => 'birch_max', 'title' => "Birch Maxi prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 29],
+
+                ['name' => 'cypress_min', 'title' => "Cypress Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 30],
+                ['name' => 'cypress_max', 'title' => 'Cypress Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 31],
+             
+                ['name' => 'elm_min', 'title' => "Elm Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 32],
+                ['name' => 'elm_max', 'title' => 'Elm Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 33],
+
+                ['name' => 'hazel_min', 'title' => "Hazel Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 34],
+                ['name' => 'hazel_max', 'title' => 'Hazel Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 35],
+
+                ['name' => 'oak_min', 'title' => "Oak Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 36],
+                ['name' => 'oak_max', 'title' => 'Oak Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 37],
+
+                ['name' => 'pine_min', 'title' => "Pine Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 38],
+                ['name' => 'pine_max', 'title' => 'Pine Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 39],
+
+                ['name' => 'plane_min', 'title' => "Plane Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 40],
+                ['name' => 'plane_max', 'title' => 'Plane Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 41],
+               
+                ['name' => 'poplar_min', 'title' => "Poplar Cottonwood Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 42],
+                ['name' => 'poplar_max', 'title' => 'Poplar Cottonwood Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 43],
+ 
+                ['name' => 'chenopod_min', 'title' => "Chenopod Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 44],
+                ['name' => 'chenopod_max', 'title' => 'Chenopod Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 45],
+
+                ['name' => 'mugwort_min', 'title' => "Mugwort Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 46],
+                ['name' => 'mugwort_max', 'title' => 'Mugwort Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 47],
+
+                ['name' => 'nettle_min', 'title' => "Nettle Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 48],
+                ['name' => 'nettle_max', 'title' => 'Nettle Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 49],
+
+                ['name' => 'ragweed_min', 'title' => "Ragweed Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 50],
+                ['name' => 'ragweed_max', 'title' => 'Ragweed Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 51],
+
+                ['name' => 'others_min', 'title' => "Others Mini prévision", 'unit' => 'part/m³', 'subType'=>'string', 'order' => 52],
+                ['name' => 'others_max', 'title' => 'Others Maxi prévision', 'unit' => 'part/m³', 'subType'=>'string', 'order' => 53],
+
             ];
 
-            // Voir si autre option a remover todo 
-            //  $allCmd = $this->getCmd('info');
-            //  foreach ($allCmd as $key => $oldCmd) {
-            //      if(in_array($oldCmd, $setup)){
 
-            //      }
-            //  }
+            $refreshForecast = $this->getCmd(null, 'refresh_pollen_forecast');
+            if (!is_object($refreshForecast)) {
+                $refreshForecast = new airqualityCmd();
+                $refreshForecast->setName(__('Rafraichir Forecast Pollen', __FILE__));
+            }
+            $refreshForecast->setEqLogic_id($this->getId());
+            $refreshForecast->setLogicalId('refresh_pollen_forecast');
+            $refreshForecast->setType('action');
+            $refreshForecast->setOrder(100);
+            $refreshForecast->setTemplate('dashboard', 'tile');
+            $refreshForecast->setSubType('other');
+            $refreshForecast->save();
+
+            $refresh = $this->getCmd(null, 'refresh_pollen');
+            if (!is_object($refresh)) {
+                $refresh = new airqualityCmd();
+                $refresh->setName(__('Rafraichir Forecast', __FILE__));
+            }
+            $refresh->setEqLogic_id($this->getId());
+            $refresh->setLogicalId('refresh_pollen');
+            $refresh->setType('action');
+            $refresh->setOrder(99);
+            $refresh->setTemplate('dashboard', 'tile');
+            $refresh->setSubType('other');
+            $refresh->save();
         }
 
 
@@ -258,20 +358,10 @@ class airquality extends eqLogic
         $refresh->setSubType('other');
         $refresh->save();
 
-        $refreshForecast = $this->getCmd(null, 'refresh_forecast');
-        if (!is_object($refreshForecast)) {
-            $refreshForecast = new airqualityCmd();
-            $refreshForecast->setName(__('Rafraichir Forecast', __FILE__));
-        }
-        $refreshForecast->setEqLogic_id($this->getId());
-        $refreshForecast->setLogicalId('refresh_forecast');
-        $refreshForecast->setType('action');
-        $refreshForecast->setOrder(100);
-        $refreshForecast->setTemplate('dashboard', 'tile');
-        $refreshForecast->setSubType('other');
-        $refreshForecast->save();
-
+    
     }
+
+
 
     public function toHtml($_version = 'dashboard')
     {
@@ -279,6 +369,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
+
         //vide le cache. Pour le développement
         $this->emptyCacheWidget();
 
@@ -343,7 +434,13 @@ class airquality extends eqLogic
                         || $nameCmd == 'no_min' || $nameCmd == 'no_max' || $nameCmd == 'co_min' ||$nameCmd == 'co_max' 
                         || $nameCmd == 'nh3_min'|| $nameCmd == 'nh3_max' || $nameCmd == 'aqi_min'|| $nameCmd == 'aqi_max' 
                         || $nameCmd == 'o3_min'|| $nameCmd == 'o3_max' || $nameCmd == 'pm10_min'|| $nameCmd == 'pm10_max'  || $nameCmd == 'pm25_min'|| $nameCmd == 'pm25_max' 
-                     )
+                        || $nameCmd == 'poaceae_min'|| $nameCmd == 'poaceae_max' || $nameCmd == 'alder_min'|| $nameCmd == 'alder_max'  || $nameCmd == 'birch_min'
+                        || $nameCmd == 'birch_max'|| $nameCmd == 'cypress_min' || $nameCmd == 'cypress_max'|| $nameCmd == 'elm_min'  || $nameCmd == 'elm_max'
+                        || $nameCmd == 'hazel_min'|| $nameCmd == 'hazel_max' || $nameCmd == 'oak_min'|| $nameCmd == 'oak_max'  || $nameCmd == 'pine_min'
+                        || $nameCmd == 'pine_max'|| $nameCmd == 'plane_min' || $nameCmd == 'plane_max'|| $nameCmd == 'poplar_min'  || $nameCmd == 'poplar_max'
+                        || $nameCmd == 'chenopod_min'|| $nameCmd == 'chenopod_max' || $nameCmd == 'mugwort_min'|| $nameCmd == 'mugwort_max'  || $nameCmd == 'nettle_min'
+                        || $nameCmd == 'nettle_max'|| $nameCmd == 'ragweed_min' || $nameCmd == 'ragweed_max'|| $nameCmd == 'others_min'  || $nameCmd == 'others_max'
+                        )
                     {
                         $indexMinMax = '#'.$nameCmd.'#';
                         $replace[$indexMinMax] = $element->execCmd();
@@ -370,6 +467,7 @@ class airquality extends eqLogic
                         $unitreplace['#cmdid#'] = $cmd->getId();
                         $unitreplace['#history#'] = 'history cursor';
                         $unitreplace['#info-modalcmd#'] = 'info-modal'.$element->getId();
+                        // Couleur du chart assorti au niveau live pour eviter sapin de noel
                         $color = '#color_'.$nameCmd.'#';
                         $replace[$color] =  $icone->getColor();
                 
@@ -421,7 +519,7 @@ class airquality extends eqLogic
             // Pollen actifs
             $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
             $replace['#activePollen#'] = $activePollen;
-            $component = new ComponentAqi($tab, $this->getId(), 2);
+            $component = new ComponentAqi($tab, $this->getId(), 1);
         }
         // Replace Global 
         $replace['#mini_slide#'] =  $component->getLayer();
@@ -439,6 +537,10 @@ class airquality extends eqLogic
             $replace['#classCaroussel#'] = '';
         }
 
+// 
+
+        // $this->refreshforecastPollen();
+
         if ($version == 'mobile') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
         }
@@ -451,6 +553,7 @@ class airquality extends eqLogic
            }
         }
     }
+
 
 
     public static function formatValueForDisplay($value, $style = 'normal')
@@ -607,6 +710,75 @@ class airquality extends eqLogic
     }
 
 
+    public function reorderCmdPollen(){
+
+                    // Replace item Polen by risk 
+                    foreach ($this->getCmd('info') as $cmd){
+
+                        // Fais un tableau avec les valeurs associe au nom 
+                        $index = $cmd->getLogicalId();
+                        switch ($index) {
+                            case 'alder': case 'birch': case 'cypress': case 'elm':case 'alder': case 'hazel': case 'oak': case 'pine': case 'plane':
+                            case 'poplar': case 'chenopod': case 'mugwort': case 'nettle': case 'ragweed': case 'poaceae': case 'others':
+                                $element = $this->getCmd(null, $index);  
+                                $value = $element->execCmd(); 
+                                $tabOrder[$index] = $value;
+                                break;
+                            default:
+                                break;
+                            }
+                    }    
+                    arsort($tabOrder, SORT_REGULAR);
+                    $k = 0;
+                    foreach ($tabOrder as $key => $orderedCmd) {
+                        $cmd = $this->getCmd(null, $key);
+                        $cmd->setOrder($k);
+                        $cmd->save();
+                        $k++;
+                    }
+
+    }
+
+    public function refreshforecastPollen(){
+
+        $forecast =  $this->getData('getForecastPollen');
+        message::add('debug',json_encode($forecast));
+        log::add('airquality', 'debug', json_encode( $forecast));
+        $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
+        $this->checkAndUpdateCmd('poaceae_min',json_encode($forecast['Poaceae']['min']));
+        $this->checkAndUpdateCmd('poaceae_max', json_encode( $forecast['Poaceae']['max']));
+        $this->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));
+        $this->checkAndUpdateCmd('alder_max',json_encode($forecast['Alder']['max']));
+        $this->checkAndUpdateCmd('birch_min', json_encode($forecast['Birch']['min']));
+        $this->checkAndUpdateCmd('birch_max',json_encode($forecast['Birch']['max']));
+        $this->checkAndUpdateCmd('cypress_min',json_encode($forecast['Cypress']['min']));
+        $this->checkAndUpdateCmd('cypress_max',json_encode($forecast['Cypress']['max']));
+        $this->checkAndUpdateCmd('elm_min',json_encode($forecast['Elm']['min']));
+        $this->checkAndUpdateCmd('elm_max',json_encode($forecast['Elm']['max']));
+        $this->checkAndUpdateCmd('hazel_min',json_encode($forecast['Hazel']['min']));
+        $this->checkAndUpdateCmd('hazel_max',json_encode($forecast['Hazel']['max']));
+        $this->checkAndUpdateCmd('oak_min',json_encode($forecast['Oak']['min']));
+        $this->checkAndUpdateCmd('oak_max',json_encode($forecast['Oak']['max']));
+        $this->checkAndUpdateCmd('pine_min',json_encode($forecast['Pine']['min']));
+        $this->checkAndUpdateCmd('pine_max',json_encode($forecast['Pine']['max']));
+        $this->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['min']));
+        $this->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['max']));
+        $this->checkAndUpdateCmd('poplar_min',json_encode($forecast['Poplar']['min']));
+        $this->checkAndUpdateCmd('poplar_max',json_encode($forecast['Poplar']['max']));
+        $this->checkAndUpdateCmd('chenopod_min',json_encode($forecast['Chenopod']['min']));
+        $this->checkAndUpdateCmd('chenopod_max',json_encode($forecast['Chenopod']['max']));
+        $this->checkAndUpdateCmd('mugwort_min',json_encode($forecast['Mugwort']['min']));
+        $this->checkAndUpdateCmd('mugwort_max',json_encode($forecast['Mugwort']['max']));
+        $this->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['min']));
+        $this->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['max']));
+        $this->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['min']));
+        $this->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['max']));
+        $this->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['min']));
+        $this->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['max']));
+        $this->refreshWidget();
+
+    }
+
 }
 
 
@@ -640,12 +812,13 @@ class airqualityCmd extends cmd
                     break;
                 }
 
+            case 'refresh_pollen':
                 if ($eqlogic->getConfiguration('elements') == 'pollen') {
                     $dataAll = $eqlogic->getData('getAmbee');
                     $dataPollen = $dataAll->data;
-                    $eqlogic->checkAndUpdateCmd('grass', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
-                    $eqlogic->checkAndUpdateCmd('auln', $dataPollen[0]->Species->Tree->Alder);
-                    $eqlogic->checkAndUpdateCmd('boul', $dataPollen[0]->Species->Tree->Birch);
+                    $eqlogic->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
+                    $eqlogic->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
+                    $eqlogic->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
                     $eqlogic->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
                     $eqlogic->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
                     $eqlogic->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
@@ -653,18 +826,19 @@ class airqualityCmd extends cmd
                     $eqlogic->checkAndUpdateCmd('grass_risk', $dataPollen[0]->Risk->grass_pollen);
                     $eqlogic->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
                     $eqlogic->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
-                    $eqlogic->checkAndUpdateCmd('orme', $dataPollen[0]->Species->Tree->Elm);
-                    $eqlogic->checkAndUpdateCmd('noisetier', $dataPollen[0]->Species->Tree->Hazel);
-                    $eqlogic->checkAndUpdateCmd('chene', $dataPollen[0]->Species->Tree->Oak);
-                    $eqlogic->checkAndUpdateCmd('pin', $dataPollen[0]->Species->Tree->Pine);
-                    $eqlogic->checkAndUpdateCmd('platane', $dataPollen[0]->Species->Tree->Plane);
-                    $eqlogic->checkAndUpdateCmd('peuplier', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
+                    $eqlogic->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
+                    $eqlogic->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
+                    $eqlogic->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
+                    $eqlogic->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
+                    $eqlogic->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
+                    $eqlogic->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
                     $eqlogic->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
-                    $eqlogic->checkAndUpdateCmd('armoise', $dataPollen[0]->Species->Weed->Mugwort);
-                    $eqlogic->checkAndUpdateCmd('ortie', $dataPollen[0]->Species->Weed->Nettle);
-                    $eqlogic->checkAndUpdateCmd('ambroisie', $dataPollen[0]->Species->Weed->Ragweed);
-                    $eqlogic->checkAndUpdateCmd('autres', $dataPollen[0]->Species->Others);
+                    $eqlogic->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
+                    $eqlogic->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
+                    $eqlogic->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
+                    $eqlogic->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
                     $eqlogic->checkAndUpdateCmd('updatedAt',$dataPollen[0]->updatedAt);
+                    $eqlogic->reorderCmdPollen();
                     $eqlogic->refreshWidget();
                     break;
                 }
@@ -695,6 +869,62 @@ class airqualityCmd extends cmd
                     $eqlogic->checkAndUpdateCmd('pm25_max',json_encode($forecast['pm2_5']['max']));
                     $eqlogic->refreshWidget();
                 }
-            }
+            
+            
+            
+            case 'refresh_pollen_forecast':
+                     message::add('debug','Refresh forecast Pollen');
+             
+                    if($eqlogic->getConfiguration('elements') == 'pollen'){
+                        $forecast =  $eqlogic->getData('getForecastPollen');
+                 
+                        log::add('airquality', 'debug', json_encode( $forecast));
+                        $eqlogic->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
+                        $eqlogic->checkAndUpdateCmd('poaceae_min',json_encode($forecast['Poaceae']['min']));
+                        $eqlogic->checkAndUpdateCmd('poaceae_max', json_encode( $forecast['Poaceae']['max']));
+                        $eqlogic->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));
+                        $eqlogic->checkAndUpdateCmd('alder_max',json_encode($forecast['Alder']['max']));
+                        $eqlogic->checkAndUpdateCmd('birch_min', json_encode($forecast['Birch']['min']));
+                        $eqlogic->checkAndUpdateCmd('birch_max',json_encode($forecast['Birch']['max']));
+                        $eqlogic->checkAndUpdateCmd('cypress_min',json_encode($forecast['Cypress']['min']));
+                        $eqlogic->checkAndUpdateCmd('cypress_max',json_encode($forecast['Cypress']['max']));
+                        $eqlogic->checkAndUpdateCmd('elm_min',json_encode($forecast['Elm']['min']));
+                        $eqlogic->checkAndUpdateCmd('elm_max',json_encode($forecast['Elm']['max']));
+                        $eqlogic->checkAndUpdateCmd('hazel_min',json_encode($forecast['Hazel']['min']));
+                        $eqlogic->checkAndUpdateCmd('hazel_max',json_encode($forecast['Hazel']['max']));
+                        $eqlogic->checkAndUpdateCmd('oak_min',json_encode($forecast['Oak']['min']));
+                        $eqlogic->checkAndUpdateCmd('oak_max',json_encode($forecast['Oak']['max']));
+                        $eqlogic->checkAndUpdateCmd('pine_min',json_encode($forecast['Pine']['min']));
+                        $eqlogic->checkAndUpdateCmd('pine_max',json_encode($forecast['Pine']['max']));
+                        $eqlogic->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['min']));
+                        $eqlogic->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['max']));
+                        $eqlogic->checkAndUpdateCmd('poplar_min',json_encode($forecast['Poplar']['min']));
+                        $eqlogic->checkAndUpdateCmd('poplar_max',json_encode($forecast['Poplar']['max']));
+                        $eqlogic->checkAndUpdateCmd('chenopod_min',json_encode($forecast['Chenopod']['min']));
+                        $eqlogic->checkAndUpdateCmd('chenopod_max',json_encode($forecast['Chenopod']['max']));
+                        $eqlogic->checkAndUpdateCmd('mugwort_min',json_encode($forecast['Mugwort']['min']));
+                        $eqlogic->checkAndUpdateCmd('mugwort_max',json_encode($forecast['Mugwort']['max']));
+                        $eqlogic->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['min']));
+                        $eqlogic->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['max']));
+                        $eqlogic->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['min']));
+                        $eqlogic->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['max']));
+                        $eqlogic->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['min']));
+                        $eqlogic->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['max']));
+                        $eqlogic->refreshWidget();
+                    }
+                
+            
+            
+            
+        
+            
+            
+        }
+
+          
     }
+
+
+   
+
 }

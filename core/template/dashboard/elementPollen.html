@@ -1,21 +1,31 @@
-<div class="cmd_ noRefresh aqi-#id#-particule #history#" data-type="info"
-    data-subtype="numeric" data-cmd_id="#cmdid#">
-       
-   
-    <div class="#info-modalcmd#" #list-info#>#icone#</div>
-   
-    <div class="aqi-#id#-label">#display-name#</div>
-  
-    <div title="#value# #unity#" class="aqi-#id#-value">#value#</div>
+<div class="state aqi-#id#-particule #name#">
 
-    <div class="contain-minmax-#id# #history# state tooltips" data-cmd_id="#cmdid#" data-eqlogic_id="#id#"
-        data-type="info" data-subtype="numeric">
-        <div style="font-size: 0.8em;" class="state">
-            <span title="Mini" class="tooltips">#minHistoryValue#</span> |
-            <span title="Moyenne" class="tooltips">#averageHistoryValue#</span> |
-            <span title="Maxi" class="tooltips">#maxHistoryValue#</span>&nbsp;<i style="font-size: 0.75em;"
-                title="Tendance" class="#tendance#"></i>
+    <div class="aqi-#id#-row" style="width:100%;">
+
+        <!-- Nom -->
+        <div style="min-width:100px;" class="cmd noRefresh aqi-#id#-label tooltips cursor" data-type="info"
+            data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
+
+        <!-- Icone -->
+        <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
+
+        <div class="aqi-#id#-particule" style="width:90px;">
+            <!-- Valeur -->
+            <div title="#value# #unity#" style="text-align: center;" class="aqi-#id#-value">#value#</div>
+            <!-- Historique -->
+            <div class="contain-minmax-#id# #history# state tooltips" style="text-align: center;width:100px;"
+                data-cmd_id="#cmdid#" data-eqlogic_id="#id#" data-type="info" data-subtype="numeric">
+                <div style="font-size: 0.8em;" class="state">
+                    <span title="Mini" class="tooltips">#minHistoryValue#</span> |
+                    <span title="Moyenne" class="tooltips">#averageHistoryValue#</span> |
+                    <span title="Maxi" class="tooltips">#maxHistoryValue#</span>&nbsp;<i style="font-size: 0.75em;"
+                        title="Tendance" class="#tendance#"></i>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Graphique -->
+    <div id="container_#name#_#id#"> </div>
 
 </div>

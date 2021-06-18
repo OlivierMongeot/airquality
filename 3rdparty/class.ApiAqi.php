@@ -53,10 +53,20 @@ class ApiAqi
                 "x-api-key:" . $apiKey
             ],
         ]);
+       
         $response = curl_exec($curl);
+        
+        $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($http_response_code != 200){
+             message::add('Error Http response ',  json_encode($http_response_code). json_encode($url));
+             log::add('airquality','debug','Error Http Code : '.json_encode($http_response_code). ' - Url : '. json_encode($url));
+        }
         $err = curl_error($curl);
+        if ($err != '') {
+            throw new Exception(__('Problème API : ' . json_encode($err), __FILE__));
+        } 
         curl_close($curl);
-        return [$response, $err];
+        return [$response, $err, $http_response_code];
     }
 
 
@@ -158,15 +168,38 @@ class ApiAqi
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-            echo ('Pas de données  Forecast pour l\'instant');
+            echo ('Pas de données Forecast AQI pour l\'instant : '. $response[1]);
         } else {
             if ($data == [] || $data == null) {
-                echo ('Pas de données Forecast avec ces coordonnées');
+                echo ('Pas de données Forecast AQI avec ces coordonnées');
             } else {
                 return $data->list;
             }
         }
     }
+
+
+  /**
+     * Appel Forecast Ambee Pollen AQI 
+     */
+    public function callApiForecastPollen($latitude = null, $longitude = null)
+    { 
+        message::add('debug','use  ApiForecastPollen');
+        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat".trim(round($latitude, 4))."&ln=".trim(round($longitude, 4));
+        $response = $this->curlApi($url, $this->apiKey);
+        log::add('airquality','debug',json_encode($response));
+        $data = json_decode($response[0]);
+        if ($response[1] != '') {
+            echo ('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
+        } else {
+            if ($data == [] || $data == null) {
+                echo ('Pas de données Forecast Pollen : ' . $data->message );
+            } else {
+                return $data->data;
+            }
+        }
+    }
+
 
 
     public function getForecast($latitude = null, $longitude = null){
@@ -180,6 +213,21 @@ class ApiAqi
         }
         return $minMaxTab;        
     }
+
+    public function getForecastPollen($latitude = null, $longitude = null){
+
+        $components = ["Poaceae","Alder","Birch","Cypress","Elm","Hazel","Oak","Pine","Plane", "Poplar", 
+        "Chenopod", "Mugwort","Nettle","Ragweed","Others"];
+        $dataList = $this->callApiForecastPollen($latitude, $longitude);
+        log::add('airquality', 'debug', json_encode( $dataList));
+        foreach ($components as $component) {
+            $newTabDay = $this->parseDataPollen($dataList, $component);
+            $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
+        }
+        return $minMaxTab;        
+    }
+
+
 
     /**
      * Return array with min max by day for an element 
@@ -196,6 +244,46 @@ class ApiAqi
         return $forecast;
     }
 
+
+    /**
+     * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
+     */
+    private function parseDataPollen($response, $component)
+    {
+        $beginOfDay = strtotime("today", time());
+        $day = 86399; // in seconds
+        foreach ($response as $hourCast) {
+            if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
+                $weekday = date('N', ($hourCast->dt + 100));
+                $dayName =  $this->getNameDay($weekday);
+                
+                switch ($component) {
+                    case "Poaceae":
+                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Grass->{"Grass / Poaceae"};
+                        break;
+
+                    case "Poplar":   
+                            $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Tree->{"Poplar / Cottonwood"};
+                        break;
+
+                    case "Alder": case "Birch": case "Cypress": case "Elm":
+                    case "Hazel": case "Oak": case "Pine": case "Plane":    
+                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Tree->{$component};
+                        break;
+                    
+                    case "Chenopod": case "Mugwort": case "Nettle": case "Ragweed":
+                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Weed->{$component};
+                        break;
+                    
+                    case "Others":
+                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Others;
+                        break;
+                }
+               
+            }
+        }
+        return $newTabAqiDay;
+    }
 
 
     /**
