@@ -166,13 +166,10 @@ class airquality extends eqLogic
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
     public function preSave()
     {
-        if ($this->getConfiguration('displayMode') == 'full_display') {
-            $this->setDisplay("width", "250px");
-            $this->setDisplay("height", "205px");
-        } else if ($this->getConfiguration('displayMode') == 'min_display') {
+       
             $this->setDisplay("width", "270px");
-            $this->setDisplay("height", "365px");
-        }
+            $this->setDisplay("height", "auto");
+
     }
 
     public function postUpdate()
@@ -395,6 +392,7 @@ class airquality extends eqLogic
         $this->emptyCacheWidget();
 
         $version = jeedom::versionAlias($_version);
+        // compteur des
         $activePollen = 0;
       
         foreach ($this->getCmd('info') as $cmd) {
@@ -461,6 +459,7 @@ class airquality extends eqLogic
                         || $nameCmd == 'pine_max'|| $nameCmd == 'plane_min' || $nameCmd == 'plane_max'|| $nameCmd == 'poplar_min'  || $nameCmd == 'poplar_max'
                         || $nameCmd == 'chenopod_min'|| $nameCmd == 'chenopod_max' || $nameCmd == 'mugwort_min'|| $nameCmd == 'mugwort_max'  || $nameCmd == 'nettle_min'
                         || $nameCmd == 'nettle_max'|| $nameCmd == 'ragweed_min' || $nameCmd == 'ragweed_max'|| $nameCmd == 'others_min'  || $nameCmd == 'others_max'
+                     
                         )
                     {
                         $indexMinMax = '#'.$nameCmd.'#';
@@ -529,28 +528,21 @@ class airquality extends eqLogic
         }
         // End foreach // 
 
+        $component = new ComponentAqi($tab, $this->getId(), 1, $version);
 
-    
+        // Replace Global 
         if ($this->getConfiguration('elements') == 'polution') {
-            // Choix du layer : pour le replace global
-            $component = new ComponentAqi($tab, $this->getId(), 1);
             $replace['#index_name#'] = __('Indice',__FILE__);
 
         } else {
-            // Pollen 
-            // Pollen actifs
             $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
             $replace['#activePollen#'] = $activePollen;
-            $component = new ComponentAqi($tab, $this->getId(), 1);
+     
         }
-        // Replace Global 
-        $replace['#mini_slide#'] =  $component->getLayer();
 
-        // Command Refresh 
+        $replace['#mini_slide#'] =  $component->getLayer();
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
-
-        // Carousel 
         if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
             $replace['#animation#'] = 'disabled';
             $replace['#classCaroussel#'] = 'data-interval="false"';
@@ -559,22 +551,11 @@ class airquality extends eqLogic
             $replace['#classCaroussel#'] = '';
         }
 
-
-        if ($version == 'mobile') {
-            if ( $this->getConfiguration('elements') == 'polution'){
-                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile', __CLASS__)));
+        if ( $this->getConfiguration('elements') == 'polution'){
+                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
             } else {
-                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen.mobile', __CLASS__)));
+                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen', __CLASS__)));
             }
-        }
-        else {
-
-           if ( $this->getConfiguration('elements') == 'polution'){
-                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
-           } else {
-                    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen', __CLASS__)));
-           }
-        }
     }
 
 

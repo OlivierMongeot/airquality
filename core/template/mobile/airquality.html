@@ -1,19 +1,12 @@
 <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
-background-color: #background-color#;
-color: #color#;
-width: #width#;height: #height#;
-#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
-     data-tags="#tags#">
-     <span class="statusCmd"></span>
-     <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
-     <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
-     <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
-                    <span style="font-size: 0.85em;position: relative;top:-2px;"
-                         hidden>#object_name#</span></a></strong>
-     </center>
-
-
-     <style>
+background-color: #background-color#; color: #color#; width: #width#;height: #height#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
+<span class="statusCmd"></span>
+<span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
+<span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
+<center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
+<span style="font-size: 0.85em;position: relative;top:-2px;" hidden>#object_name#</span></a></strong></center>
+<!-- Mobile -->
+<style>
         .aqi-#id#-row {
             display: flex;
             align-items: center;
@@ -26,6 +19,10 @@ width: #width#;height: #height#;
             align-items: center;
             flex-direction: column;
             justify-content:center;
+        }
+
+        .aqi-#id#-image{
+            max-width: 100%;
         }
     
         .aqi-#id#-space {
@@ -43,8 +40,8 @@ width: #width#;height: #height#;
         }
     
         .aqi-#id#-label {
-            font-weight:700;
-            font-size: 160%;
+            font-weight:600;
+            font-size: 180%;
             text-align: center;
         }
     
@@ -85,43 +82,36 @@ width: #width#;height: #height#;
             flex-direction: column;
             justify-content: center;
         }
+
+        svg > .highcharts-background {
+                fill: rgba(0,0,0,0) !important;
+                fill-opacity: 0;
+            }
     
-        /* .active-aqi-#id#{
-             margin:15px 0 0 0;
-        } */
-    
-    
-        /*     highchart  */
+ 
        .highcharts-data-table table {
         margin: 0 auto;
         }
     
-    
-        .highcharts-data-table caption {
+        /* .highcharts-data-table caption {
         padding: 1em 0;
         font-size: 1.2em;
         color: #555;
-        }
+        } */
     
-        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        /* .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
         background: #f8f8f8;
         }
         .highcharts-data-table tr:hover {
         background: #f1f7ff;
-        }
-    
-        /* .chart-#id#-aqi{
-            margin-top:10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         } */
-            .slider-#id#-aqi {
+    
+        .slider-#id#-aqi {
             width: auto;
-            height: 100%;
-            /*  text-align: center;*/
+            height: auto;
+            margin-top: 25px ;
             overflow: hidden;
-            background-color: rgba(137, 149, 117, 0);
+            background-color:transparent;
         }
 
         .slides-#id#-aqi {
@@ -134,13 +124,13 @@ width: #width#;height: #height#;
             scroll-snap-points-x: repeat(100%);
             scroll-snap-type: mandatory;
             width: auto;
-            height: 90%;
+            height: 100%;
 
         }
 
         .slides-#id#-aqi::-webkit-scrollbar {
             width: 10px;
-            height: 10px;
+            height: 8px;
         }
         
             .slides-#id#-aqi::-webkit-scrollbar-track {
@@ -171,7 +161,6 @@ width: #width#;height: #height#;
         }
     
     </style>
-    <!-- <div class="aqi-#id#-container"> -->
     
         <div class="header-#id#-container">
           
@@ -185,8 +174,8 @@ width: #width#;height: #height#;
             
                 <div title="Cliquez pour + d'info" id="info-modal#aqiid#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
             
-                <div style="font-size: 1.8rem;" class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
-                <div style="font-size: 1.2rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
+                <div  class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
+                <div style="font-size: 1.1rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
             </div>
     
             <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
@@ -198,151 +187,17 @@ width: #width#;height: #height#;
 
 
         <div class="slider-#id#-aqi ">
-        
             <div class="slides-#id#-aqi">
-        
-                <div id="slide-1-#id#-aqi row first-row aqi-#id#-row">
-        
-                  
-
-                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule "
-                            title="Particules fines taille PM 2.5" data-type="info" data-subtype="numeric"
-                            data-cmd_id="#pm2_5id#">
-                        
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_pm25#</div>
-                                <strong class="aqi-#id#-label">PM</strong><sub class="mini-#id#-label">2.5</sub>
-                            </div>
-                            <div>#pm25# μg/m³</div>
-
-
-        
-                        <!-- <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule"
-                            title="Indice de qualité Globale ATMO" data-type="info" data-subtype="numeric"
-                            data-cmd_id="#mainid#">
-
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image add-#id#-space">#icone_aqi#</div>
-                                <strong class="aqi-#id#-label">AQI</strong>
-                            </div>
-                            <div>#aqi#</div>
-
-
-                        </div>
-        
-                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh  aqi-#id#-particule" title="Ozone #ozone_ppm# ppm"
-                            data-type="info" data-subtype="numeric" data-cmd_id="#ozoneid#">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_o3#</div>
-                                <strong class="aqi-#id#-label">O³</strong>
-                            </div>
-                            <div>#o3# μg/m³</div>
-                        </div> -->
-
-                    </div>
-        
-                </div>
-
-                <div id="slide-2-#id#-aqi row second-row aqi-#id#-row">
-        
-                    <!-- <div class=""> -->
-        
-        
-                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh  aqi-#id#-particule"
-                            title="Particules fines taille PM 10" data-type="info" data-subtype="numeric"
-                            data-cmd_id="#pm10id#">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_pm10#</div>
-                                <strong class="aqi-#id#-label">PM</strong>
-                                <sub class="mini-#id#-label">10</sub>
-                            </div>
-                            <div>#pm10# μg/m³</div>
-                        </div>
-        
-<!--         
-                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
-                            data-subtype="string" data-cmd_id="#dioxydeazoteid#"
-                            title="Dioxyde d'azote : #dioxydeazote_ppm# ppm">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image add-#id#-space">#icone_no2#</div>
-                                <strong class="aqi-#id#-label">NO²</strong>
-                            </div>
-                            <div>#no2# μg/m³</div>
-                        </div> -->
-        
-                        <!-- <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule" data-type="info"
-                            data-subtype="string" data-cmd_id="#monoxydecarboneid#"
-                            title="Monoxide de carbone : #monoxydecarbone_ppm# ppm">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_co#</div>
-                                <strong class="aqi-#id#-label">CO</strong>
-                            </div>
-                            <div> #co# μg/m³</div>
-                        </div> -->
-                    
-                    <!-- </div> -->
-
-                </div>
-        
-        
-                <div id="slide-3-#id#-aqi row third-row aqi-#id#-row">
-                    <!-- <div class=""> -->
-        
-                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule" data-type="info"
-                            data-subtype="string" data-cmd_id="#amoniacid#" title="Ammoniac : #amoniac_ppm# ppm">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_nh3#</div>
-                                <strong class="aqi-#id#-label">NH³</strong>
-                            </div>
-                            <div>#nh3# μg/m³</div>
-                        </div>
-<!--         
-                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
-                            data-subtype="string" data-cmd_id="#dioxydesoufreid#" title="Dioxyde de souffre">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image add-#id#-space">#icone_so2#</div>
-                                <strong class="aqi-#id#-label">SO²</strong>
-                            </div>
-                            <div>#so2# μg/m³</div>
-                        </div>
-        
-                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
-                            data-subtype="string" data-cmd_id="#monoxydeazoteid#" title="Monoxyde d'azote">
-                            <div class="aqi-#id#-inline">
-                                <div class="aqi-#id#-image">#icone_no#</div>
-                                <strong class="aqi-#id#-label">NO</strong>
-                            </div>
-                            <div>#no# μg/m³</div>
-                        </div> -->
-
-                    <!-- </div> -->
-
-                </div>
+                #mini_slide#
             </div>
         </div>
     
     
-     
-    
-     
-    <!-- </div> -->
-    
     <script>
     
     var labels = #labels#;
-    // labels = labels.split(',');
-    
     
     function parseData(minArray, maxArray) {
-    
-            // let mintab = minArray.split(',');
-            // let maxtab = maxArray.split(',');
-            // let parseMin = mintab.map(function (x) {
-            //     return parseInt(x, 10);
-            // })
-            // let parseMax = maxtab.map(function (y) {
-            //     return parseInt(y, 10);
-            // })
             let data = [];
             data.push(minArray);
             data.push(maxArray);
@@ -353,47 +208,45 @@ width: #width#;height: #height#;
         $(document).ready(function () {
     
     
-        var dataCo =  parseData(#co_min#, #co_max#);
-        GiveaChart('container_co_#id#', dataCo, 'CO', '#color_co#');
+        var dataCo = parseData(#co_min#, #co_max#);
+        GiveaChart_#id#('container_co_#id#', dataCo, 'CO', '#color_co#');
     
-        // var dataNo =  parseData('#min_no#', '#max_no#');
         var dataNo =  parseData(#no_min#, #no_max#);
-        GiveaChart('container_no_#id#', dataNo, 'NO','#color_no#');
+        GiveaChart_#id#('container_no_#id#', dataNo, 'NO','#color_no#');
     
         var dataPm25 =  parseData( #pm25_min# , #pm25_max#);
-        GiveaChart('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
+        GiveaChart_#id#('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
     
         var dataPm10 =  parseData(#pm10_min#, #pm10_max#);
-        GiveaChart('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
+        GiveaChart_#id#('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
     
         var dataO3 =  parseData(#o3_min#, #o3_max#);
-        GiveaChart('container_o3_#id#', dataO3, 'O³','#color_o3#');
+        GiveaChart_#id#('container_o3_#id#', dataO3, 'O³','#color_o3#');
     
         var dataNo2 =  parseData(#no2_min#, #no2_max#);
-        GiveaChart('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
+        GiveaChart_#id#('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
        
         var dataSo2 =  parseData(#so2_min#, #so2_max#);
-        GiveaChart('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
+        GiveaChart_#id#('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
        
         var dataNh3 =  parseData(#nh3_min#, #nh3_max#);
-        GiveaChart('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
+        GiveaChart_#id#('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
        
         var dataAqi =  parseData(#aqi_min#, #aqi_max#);
-        GiveaChart('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
+        GiveaChart_#id#('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
     
     
         })
       
     
-        function GiveaChart(container, data, name, colorOne = '#00AEEC') {
+        function GiveaChart_#id#(container, data, name, colorOne = '#00AEEC') {
     
             Highcharts.chart(container, {
     
                 chart: {
-    
                     type: 'column',
-                    height: 180,
-                    width: 250,
+                    height: 170,
+                    width: 300,
                     alignTicks: true,
                       borderWidth:0
                 },
@@ -457,22 +310,19 @@ width: #width#;height: #height#;
     
                     column: {
                         pointPadding: 0.20,
-                        borderWidth: 0,
-                    //     // width: 2
+                        borderWidth: 0
                      },
                     series: {
-                        // maxPointWidth: 50,
-                        // cursor: 'pointer',
-                        // className: 'popup-on-click',
+                        maxPointWidth: 50,
+                        cursor: 'pointer',
                         lineWidth: 5,
                         marker: {
                             lineWidth: 0
-                        }
+                        },
+                        borderRadius: 2
                     }
                 },
-    
                 series: [
-    
                     {
                         name: name + ' min',
                         lineWidth: '4px',
@@ -562,47 +412,12 @@ width: #width#;height: #height#;
         //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
         //     });
     
-                  /*   var mySlider#id# = $('#airquality-min#uid#').carousel()
-    
-                 $('#airquality-min#uid#').hover(function () {
-                        console.log('pause')
-                        mySlider#id#.carousel('pause');
-                   }, function () {
-                        mySlider#id#.carousel({
-                             'pause': false
-                        });
-                        console.log('restart')
-                   });*/
-    $(document).ready(function () {
-    
-        
-                   if ('#animation#'== 'active') {
-                        var t#uid#;
-    
-                        var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
-                        t#uid# = setTimeout("$('#airquality-min#uid#').carousel({interval: 1000});",
-                             start#uid# - 1000);
-    
-                        $('#airquality-min#uid#').on('slid.bs.carousel', function () {
-                             clearTimeout(t#uid#);
-                             var duration#uid# = $(this).find('.active').attr('data-interval');
-    
-                             $('#airquality-min#uid#').carousel('pause');
-                             t#uid# = setTimeout("$('#airquality-min#uid#').carousel();",
-                                  duration#uid# - 1000);
-                        })
-                        $('.right.carousel-control.my#id#').on('click', function () {
-                             clearTimeout(t#uid#);
-                        });
-                        $('.left.carousel-control.my#id#').on('click', function () {
-                             clearTimeout(t#uid#);
-                        });
-                   }
-    
+         
+            
     
                    $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
                         jeedom.cmd.execute({ id: $(this).data('cmd_id') });
                         });
-    });
+ 
     </script>
     </div>

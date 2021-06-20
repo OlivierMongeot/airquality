@@ -3,6 +3,7 @@
      <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;position: relative;top:-2px;"
  hidden>#object_name#</span></a></strong></center>
 <style>
+/* Desktop */
     .aqi-#id#-row {
         display: flex;
         align-items: center;
@@ -284,7 +285,8 @@ function parseData(minArray, maxArray) {
                     lineWidth: 5,
                     marker: {
                         lineWidth: 0
-                    }
+                    },
+                    borderRadius: 2
                 }
             },
 
@@ -377,7 +379,7 @@ function parseData(minArray, maxArray) {
     //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
     //     });
 
-              /*   var mySlider#id# = $('#airquality-min#uid#').carousel()
+                 var mySlider#id# = $('#airquality-min#uid#').carousel()
 
              $('#airquality-min#uid#').hover(function () {
                     console.log('pause')
@@ -387,7 +389,7 @@ function parseData(minArray, maxArray) {
                          'pause': false
                     });
                     console.log('restart')
-               });*/
+               });
 $(document).ready(function () {
 
     

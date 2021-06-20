@@ -7,15 +7,16 @@ class ComponentAqi
     private $slides = [];
     private $countCell ;
     private $id;
+    private $gender;
  
-    public function __construct($slides, $id, $itemByCell = 1)
+    public function __construct($slides, $id, $itemByCell = 1, $gender)
     {
         $this->id = $id;
         $this->countElements = count($slides);
         $this->slides = $slides;
         $this->itemByCell = $itemByCell;
         $this->countCell = ceil($this->countElements/$this->itemByCell);
-      
+        $this->gender = $gender;
     }
 
     public function getLayer(){
@@ -29,10 +30,8 @@ class ComponentAqi
             for ( $i = 0 ; $i < ($this->countCell) ; $i++ ) {
                 $newTab[] = [ $array[$i]  ] ;
             }
-
             foreach ($newTab as $k => $item){
-                $starCell =  $this->getStartCell($k);
-                $html[] = $starCell . $item[0] . $endCell ;
+                $html[] =  $this->getStartCell($k) . $item[0] . $this->getEndCell();
             }
 
         }
@@ -68,7 +67,7 @@ class ComponentAqi
             // log::add('airquality', 'debug', json_encode( $newTab));
             foreach ($newTab as $k => $item){
                 $starCell =  $this->getStartCell($k);
-                $html[] = $starCell . implode('', $item) . $endCell ;
+                $html[] = $starCell . implode('', $item) . $this->getEndCell();
             }
         }
         // log::add('airquality', 'debug', json_encode(implode( '', $html)));
@@ -76,15 +75,31 @@ class ComponentAqi
 
     }
 
-    private function getStartCell($k){
-        if($k == 0){
-            $active = 'active'; 
-            $interval ='15000';
+    private function getEndCell(){
+
+        if ($this->gender == 'mobile'){
+            return ' </div>';
         } else {
-            $active = ''; 
-            $interval ='5000';
+            return '</div></div>';
         }
-        return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
+    }
+
+    private function getStartCell($k){
+       
+        if ($this->gender == 'mobile'){
+            return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row first-row aqi-'.$this->id.'-row">';
+        }
+        else {
+            if($k == 0){
+                $active = 'active'; 
+                $interval ='15000';
+            } else {
+                $active = ''; 
+                $interval ='5000';
+            } 
+            return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
+        }
+      
     }
 
 }
