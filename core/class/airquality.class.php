@@ -44,6 +44,7 @@ class airquality extends eqLogic
 
     public static function cron30()
     {
+        message::add('debug','cron 30');
         foreach (self::byType('airquality') as $type) {
 
             if ($type->getIsEnable() == 1) {
@@ -56,10 +57,9 @@ class airquality extends eqLogic
         }
     }
 
-    
-
     public static function cronHourly()
     {
+        message::add('debug','cron Hourly');
         foreach (self::byType('airquality') as $type) {
 
             if ($type->getIsEnable() == 1) {
@@ -71,10 +71,6 @@ class airquality extends eqLogic
             }
         }
     }
-
-
-
-
 
     public static function cronDaily()
     {
@@ -88,6 +84,37 @@ class airquality extends eqLogic
             }
         }
     }
+
+
+    // public static function cron() {
+
+	// 	foreach (self::byType('airquality', true) as $airQuality) {
+	// 		// $autorefresh = '0 0 1 * * ?';
+    //         $autorefresh = '0 * * ? * *'; // Chaque Minute
+    //         try {
+    //             $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
+    //             if ($c->isDue()) {
+    //                 log::add('airquality', 'debug','is due');
+    //                 try {
+    //                     $refresh = $airQuality->getCmd(null, 'refresh');
+    //                     if(is_object($refresh)) {
+    //                         // $refresh->execCmd();
+    //                         message::add('debug','refresh Cron Custom test ');
+    //                     } else {
+    //                         log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+    //                     }
+    //                 } catch (Exception $exc) {
+    //                     log::add('swisairqualitysmeteo', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+    //                 }
+    //             }
+    //         } catch (Exception $exc) {
+    //             log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+    //         }
+	// 	}
+
+
+        
+	// }
 
     public function preInsert()
     {
@@ -124,14 +151,17 @@ class airquality extends eqLogic
     // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
     public function postSave()
     {
-        // if ($this->getIsEnable()) {
-        //     $cmd = $this->getCmd(null, 'refresh');
-        //     if (is_object($cmd)) {
-        //         $cmd->execCmd();
-        //     }
-        // }
+        if ($this->getIsEnable()) {
+            $cmd = $this->getCmd(null, 'refresh');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
+            $cmd = $this->getCmd(null, 'refresh_forecast');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
+        }
     }
-
 
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
     public function preSave()
@@ -144,10 +174,6 @@ class airquality extends eqLogic
             $this->setDisplay("height", "365px");
         }
     }
-
-
-
-
 
     public function postUpdate()
     {
@@ -197,7 +223,6 @@ class airquality extends eqLogic
             $refreshForecast->setLogicalId('refresh_forecast');
             $refreshForecast->setType('action');
             $refreshForecast->setOrder(100);
-            $refreshForecast->setTemplate('dashboard', 'tile');
             $refreshForecast->setSubType('other');
             $refreshForecast->save();
 
@@ -209,8 +234,7 @@ class airquality extends eqLogic
             $refresh->setEqLogic_id($this->getId());
             $refresh->setLogicalId('refresh');
             $refresh->setType('action');
-            $refresh->setOrder(0);
-            $refresh->setTemplate('dashboard', 'tile');
+            $refresh->setOrder(99);
             $refresh->setSubType('other');
             $refresh->save();
 
@@ -299,20 +323,19 @@ class airquality extends eqLogic
             $refreshForecast->setLogicalId('refresh_pollen_forecast');
             $refreshForecast->setType('action');
             $refreshForecast->setOrder(100);
-            $refreshForecast->setTemplate('dashboard', 'tile');
             $refreshForecast->setSubType('other');
             $refreshForecast->save();
+
 
             $refresh = $this->getCmd(null, 'refresh_pollen');
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
-                $refresh->setName(__('Rafraichir Forecast', __FILE__));
+                $refresh->setName(__('Rafraichir Pollen', __FILE__));
             }
             $refresh->setEqLogic_id($this->getId());
             $refresh->setLogicalId('refresh_pollen');
             $refresh->setType('action');
             $refresh->setOrder(99);
-            $refresh->setTemplate('dashboard', 'tile');
             $refresh->setSubType('other');
             $refresh->save();
         }
@@ -345,23 +368,21 @@ class airquality extends eqLogic
 
 
 
-        $refresh = $this->getCmd(null, 'refresh');
-        if (!is_object($refresh)) {
-            $refresh = new airqualityCmd();
-            $refresh->setName(__('Rafraichir', __FILE__));
-        }
-        $refresh->setEqLogic_id($this->getId());
-        $refresh->setLogicalId('refresh');
-        $refresh->setType('action');
-        $refresh->setOrder(0);
-        $refresh->setTemplate('dashboard', 'tile');
-        $refresh->setSubType('other');
-        $refresh->save();
+        // $refresh = $this->getCmd(null, 'refresh');
+        // if (!is_object($refresh)) {
+        //     $refresh = new airqualityCmd();
+        //     $refresh->setName(__('Rafraichir', __FILE__));
+        // }
+        // $refresh->setEqLogic_id($this->getId());
+        // $refresh->setLogicalId('refresh');
+        // $refresh->setType('action');
+        // $refresh->setOrder(0);
+        // $refresh->setTemplate('dashboard', 'tile');
+        // $refresh->setSubType('other');
+        // $refresh->save();
 
     
     }
-
-
 
     public function toHtml($_version = 'dashboard')
     {
@@ -505,7 +526,8 @@ class airquality extends eqLogic
                     }
                 }
             }
-        }  // Fin foreach 
+        }
+        // End foreach // 
 
 
     
@@ -537,12 +559,13 @@ class airquality extends eqLogic
             $replace['#classCaroussel#'] = '';
         }
 
-// 
-
-        // $this->refreshforecastPollen();
 
         if ($version == 'mobile') {
-            return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile.min', __CLASS__)));
+            if ( $this->getConfiguration('elements') == 'polution'){
+                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality.mobile', __CLASS__)));
+            } else {
+                return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen.mobile', __CLASS__)));
+            }
         }
         else {
 
@@ -740,7 +763,9 @@ class airquality extends eqLogic
     }
 
     public function refreshforecastPollen(){
-
+ 
+        $d = new DateTime('2011-01-01T15:03:01.012345Z');
+        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d\TH:i:s')));
         $forecast =  $this->getData('getForecastPollen');
         message::add('debug',json_encode($forecast));
         log::add('airquality', 'debug', json_encode( $forecast));
@@ -794,7 +819,8 @@ class airqualityCmd extends cmd
         switch ($this->getLogicalId()) {
             case 'refresh':
                 if ($eqlogic->getConfiguration('elements') == 'polution') {
-
+                    $d = new DateTime('2011-01-01T15:03:01.012345Z');
+                    message::add('refresh AQI', json_encode($d->format('Y-m-d\TH:i:s')));
                     $data = $eqlogic->getData('getAqi');
                     $eqlogic->checkAndUpdateCmd('aqi', $data->main->aqi);
                     $eqlogic->checkAndUpdateCmd('no2', $data->components->no2);
@@ -813,6 +839,8 @@ class airqualityCmd extends cmd
                 }
 
             case 'refresh_pollen':
+                $d = new DateTime('2011-01-01T15:03:01.012345Z');
+                message::add('refresh Pollen', json_encode($d->format('Y-m-d\TH:i:s')));
                 if ($eqlogic->getConfiguration('elements') == 'pollen') {
                     $dataAll = $eqlogic->getData('getAmbee');
                     $dataPollen = $dataAll->data;
@@ -845,7 +873,8 @@ class airqualityCmd extends cmd
       
             
             case 'refresh_forecast':
-                message::add('debug','Refresh forecast');
+                $d = new DateTime('2011-01-01T15:03:01.012345Z');
+                message::add('refresh Forecast AQI', json_encode($d->format('Y-m-d\TH:i:s')));
                 if($eqlogic->getConfiguration('elements') == 'polution'){
                     $forecast =  $eqlogic->getData('getForecast');
                     $eqlogic->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
@@ -873,7 +902,9 @@ class airqualityCmd extends cmd
             
             
             case 'refresh_pollen_forecast':
-                     message::add('debug','Refresh forecast Pollen');
+               
+                $d = new DateTime('2011-01-01T15:03:01.012345Z');
+                message::add('refresh Forecast Pollen from cmd', json_encode($d->format('Y-m-d\TH:i:s')));
              
                     if($eqlogic->getConfiguration('elements') == 'pollen'){
                         $forecast =  $eqlogic->getData('getForecastPollen');

@@ -1,851 +1,608 @@
-<div class="eqLogic eqLogic-widget allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
+<div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
 background-color: #background-color#;
-color: #color#;  #width#;height: 30vh;
-#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#"
- data-version="#version#" data-category="#category#" data-tags="#tags#">
+color: #color#;
+width: #width#;height: #height#;
+#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
+     data-tags="#tags#">
      <span class="statusCmd"></span>
-     <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
-          <i class="fas fa-sync"></i>
-     </span>
+     <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
      <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
-
      <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
                     <span style="font-size: 0.85em;position: relative;top:-2px;"
                          hidden>#object_name#</span></a></strong>
      </center>
+
+
      <style>
-     
-          .aqi-#id#-row,
-          .aqi-#id#-inline {
-               display: flex;
-               align-items: center;
-               flex-direction: row;
-               justify-content: space-evenly;
-          }
-          .aqi-#id#-row{
-               margin: auto;
-               max-width: 100%;
-               justify-content: center
-          }
+        .aqi-#id#-row {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+    
+        .aqi-#id#-particule {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content:center;
+        }
+    
+        .aqi-#id#-space {
+            margin-top: 10px;
+        }
+    
+        .aqi-#id#-aqi {
+            margin-top: 5px;
+        }
+    
+        .aqi-#id#-value,
+        .aqi-#id#-label,
+        .contain-minmax-#id#{
+            margin-top: 5px;
+        }
+    
+        .aqi-#id#-label {
+            font-weight:700;
+            font-size: 160%;
+            text-align: center;
+        }
+    
+        #airquality-min#uid#>.carousel-control {
+            position: absolute;
+            top: 30%;
+            z-index: 5;
+            display: inline-block;
+            margin-top: 0px;
+            width: 15px;
+        }
+    
+        #airquality-min#uid# {
+            margin-top: 25px;
+        }
+    
+        #forecast-#uid#>.carousel-control {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            display: inline-block;
+            margin-top: 0px;
+            width: 20px;
+        }
+    
+        .header-#id#-container {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-around;
+            vertical-align: middle;
+        }
+    
+        .header-#id#-min {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
+    
+        /* .active-aqi-#id#{
+             margin:15px 0 0 0;
+        } */
+    
+    
+        /*     highchart  */
+       .highcharts-data-table table {
+        margin: 0 auto;
+        }
+    
+    
+        .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+        }
+    
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+        }
+        .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+        }
+    
+        /* .chart-#id#-aqi{
+            margin-top:10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        } */
+            .slider-#id#-aqi {
+            width: auto;
+            height: 100%;
+            /*  text-align: center;*/
+            overflow: hidden;
+            background-color: rgba(137, 149, 117, 0);
+        }
 
-          .aqi-#id#-main {
-               display: flex;
-               align-items: center;
-               flex-direction: column;
-               justify-content: space-evenly;
-               margin-bottom: 15px;
-          }
+        .slides-#id#-aqi {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-points-x: repeat(100%);
+            scroll-snap-type: mandatory;
+            width: auto;
+            height: 90%;
 
-          .aqi-#id#-aqi {
-               font-weight: bolder;
-               font-size: 2rem;
-               line-height: 2.5rem;
-          }
+        }
 
-          .aqi-#id#-label {
-               font-weight: bolder;
-               font-size: 3rem;
-               line-height: 3.5rem;
-               text-align: center;
-          }
+        .slides-#id#-aqi::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+            .slides-#id#-aqi::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-      /*    .info-modal {
-               display: relative;
-               top: 0px;
-               left: 4px;
-          }*/
-          .slider-#id#-aqi {
-               width: auto;
-               height: 100%;
-               /*  text-align: center;*/
-               overflow: hidden;
-               background-color: rgba(137, 149, 117, 0);
-          }
+        .slides-#id#-aqi>div {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            /*margin-right: 50px;
+            border-radius: 10px; */
+            background: rgba(238, 238, 238, 0);
+            transform-origin: center center;
+            transform: scale(1);
+            transition: transform 0.8s;
+            position: relative;
 
-          .slides-#id#-aqi {
-               display: flex;
-               overflow-x: auto;
-               overflow-y: hidden;
-               scroll-snap-type: x mandatory;
-               scroll-behavior: smooth;
-               -webkit-overflow-scrolling: touch;
-               scroll-snap-points-x: repeat(100%);
-               scroll-snap-type: mandatory;
-               width: auto;
-               height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-          }
+        }
 
-          .slides-#id#-aqi::-webkit-scrollbar {
-               width: 10px;
-               height: 10px;
-          }
-
-            .slides::-webkit-scrollbar-thumb {
-               background: rgb(241, 0, 0);
-               border-radius: 5px;
-          }
-
-          .slides-#id#-aqi::-webkit-scrollbar-track {
-               background: transparent;
-          }
-
-          .slides-#id#-aqi>div {
-               scroll-snap-align: start;
-               flex-shrink: 0;
-               width: 100%;
-               height: 100%;
-               /*margin-right: 50px;
-                 border-radius: 10px; */
-               background: rgba(238, 238, 238, 0);
-               transform-origin: center center;
-               transform: scale(1);
-               transition: transform 0.8s;
-               position: relative;
-
-               display: flex;
-               justify-content: center;
-               align-items: center;
-          }
-
-          .slides-#id#-aqi>div:target {
-               transform: scale(0.8);
-          }
-
-         .aqi-#id#-row>div>*>svg>rect.highcharts-background {
-          fill: rgba(0, 0, 0, 0) !important;
-          fill-opacity: var(0);
-     }
-     </style>
-          <!-- Wrapper for slides -->
-          <div class="slider-#id#-aqi">
-               <div class="slides-#id#-aqi" id="chart#id#">
-                     <!-- Contenu  II -->
-                     <div class="row second-row" id="slide-2-#id#-aqi">
+        .slides-#id#-aqi>div:target {
+            transform: scale(0.8);
+        }
+    
+    </style>
+    <!-- <div class="aqi-#id#-container"> -->
+    
+        <div class="header-#id#-container">
+          
+            <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
+                <div title="Cliquez pour + d'info" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
+                <div class="cmd noRefresh aqi-#id#-label-aqi">#uv_name#</div>
+                <div class="cmd noRefresh aqi-#id#-aqi">#uv#</div>
+            </div>
+      
+            <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
+            
+                <div title="Cliquez pour + d'info" id="info-modal#aqiid#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
+            
+                <div style="font-size: 1.8rem;" class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
+                <div style="font-size: 1.2rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
+            </div>
+    
+            <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
+                <div  title="Cliquez pour + d'info" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
+                <div class="cmd noRefresh">#visibility_name#</div>
+                <div title="#visibility#  m" class="cmd noRefresh aqi-#id#-aqi">#visibility#</div>
+            </div>    
+        </div>
 
 
+        <div class="slider-#id#-aqi ">
+        
+            <div class="slides-#id#-aqi">
+        
+                <div id="slide-1-#id#-aqi row first-row aqi-#id#-row">
+        
+                  
+
+                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule "
+                            title="Particules fines taille PM 2.5" data-type="info" data-subtype="numeric"
+                            data-cmd_id="#pm2_5id#">
                         
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#coid#"
-                                   id="particulesco#id#">
-                              </div>
-                         </div>
-                      
-                    </div>
-                    <!-- Contenu  I -->
-                    <div  class="row first-row"  id="slide-1-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                            <!-- <div class="aqi-#id#-main">
-                                   <strong class="cmd noRefresh aqi-#id#-aqi">A.Q.I</strong>
-                                   <strong class="cmd noRefresh aqi-#id#-label">#aqi#</strong> -->
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_pm25#</div>
+                                <strong class="aqi-#id#-label">PM</strong><sub class="mini-#id#-label">2.5</sub>
+                            </div>
+                            <div>#pm25# μg/m³</div>
 
-                                   <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#nh3id#"
-                                   id="aqi-chart#id#" >
-                                  </div>
-                                 
-                                   <!-- <span>#test#</span> 
-                              </div>-->
-                         </div>
-                    </div>
-                    <!-- Contenu  III -->
-                    <div class="row third-row" id="slide-3-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#nh3id#"
-                                   id="particulesnh3#id#" >
-                              </div>
-                         </div>
-                    </div>
-                    <!-- Contenu  4 -->
-                    <div class="row four-row" id="slide-4-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#noid#"
-                                   id="particulesno#id#">
-                              </div>
-                         </div>
-                    </div>
-                    <!-- Contenu  5 -->
-                    <div class="row five-row" id="slide-5-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm25id#"
-                                   id="particules25#id#">
-                              </div>
-                         </div>
-                    </div>
-                      <!-- Contenu  6 -->
-                    <div class="row six-row" id="slide-6-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#no2id#"
-                                   id="particulesno2#id#">
-                              </div>
-                         </div>
-                    </div>
-                    <!-- Contenu  7 -->
-                    <div class="row six-row" id="slide-7-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#o3id#"
-                                   id="particuleso3#id#">
-                              </div>
-                         </div>
-                    </div>
-                    <!-- Contenu  8 -->
-                    <div class="row six-row" id="slide-8-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#so2id#"
-                                   id="particulesso2#id#">
-                              </div>
-                         </div>
-                    </div>
-                       <!-- Contenu  9 -->
-                       <div class="row six-row" id="slide-9-#id#-aqi">
-                         <div class="aqi-#id#-row">
-                              <div class="cmd noRefresh" data-type="info" data-subtype="numeric" data-cmd_id="#pm10id#"
-                                   id="particules10#id#">
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     <script>
+
         
+                        <!-- <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule"
+                            title="Indice de qualité Globale ATMO" data-type="info" data-subtype="numeric"
+                            data-cmd_id="#mainid#">
 
-          $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
-               jeedom.cmd.execute({
-                    id: $(this).data('cmd_id')
-               });
-          });
-
-          console.log('read airqulity.html')
-
-     /*     $('#info-aqi-modal#id#').on('click', function () {
-               $('#md_modal').dialog({
-                    title: "Vos informations"
-               });
-               $('#md_modal').load('index.php?v=d&plugin=airquality&modal=infoAqiModal&id=#id#').dialog(
-                    'open');
-          });*/
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image add-#id#-space">#icone_aqi#</div>
+                                <strong class="aqi-#id#-label">AQI</strong>
+                            </div>
+                            <div>#aqi#</div>
 
 
-          if ($('#chart#id#').html() != undefined) {
+                        </div>
+        
+                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh  aqi-#id#-particule" title="Ozone #ozone_ppm# ppm"
+                            data-type="info" data-subtype="numeric" data-cmd_id="#ozoneid#">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_o3#</div>
+                                <strong class="aqi-#id#-label">O³</strong>
+                            </div>
+                            <div>#o3# μg/m³</div>
+                        </div> -->
 
-               Highcharts.themeFull#id# = {
-                    chart: {
-                         type: "gauge",
-                         height: 210,
-                         width: 210,
-                         plotBackgroundColor: 'transparent',
-                         plotBackgroundImage: null,
-                         plotBorderWidth: 0,
-                         plotShadow: false,
-                         spacingTop: 10,
-                         spacingLeft: 0,
-                         spacingRight: 0,
-                         spacingBottom: 10
+                    </div>
+        
+                </div>
+
+                <div id="slide-2-#id#-aqi row second-row aqi-#id#-row">
+        
+                    <!-- <div class=""> -->
+        
+        
+                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh  aqi-#id#-particule"
+                            title="Particules fines taille PM 10" data-type="info" data-subtype="numeric"
+                            data-cmd_id="#pm10id#">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_pm10#</div>
+                                <strong class="aqi-#id#-label">PM</strong>
+                                <sub class="mini-#id#-label">10</sub>
+                            </div>
+                            <div>#pm10# μg/m³</div>
+                        </div>
+        
+<!--         
+                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
+                            data-subtype="string" data-cmd_id="#dioxydeazoteid#"
+                            title="Dioxyde d'azote : #dioxydeazote_ppm# ppm">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image add-#id#-space">#icone_no2#</div>
+                                <strong class="aqi-#id#-label">NO²</strong>
+                            </div>
+                            <div>#no2# μg/m³</div>
+                        </div> -->
+        
+                        <!-- <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule" data-type="info"
+                            data-subtype="string" data-cmd_id="#monoxydecarboneid#"
+                            title="Monoxide de carbone : #monoxydecarbone_ppm# ppm">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_co#</div>
+                                <strong class="aqi-#id#-label">CO</strong>
+                            </div>
+                            <div> #co# μg/m³</div>
+                        </div> -->
+                    
+                    <!-- </div> -->
+
+                </div>
+        
+        
+                <div id="slide-3-#id#-aqi row third-row aqi-#id#-row">
+                    <!-- <div class=""> -->
+        
+                        <div class="col-lg-12 col-sm-12 col-xs-12 cmd noRefresh aqi-#id#-particule" data-type="info"
+                            data-subtype="string" data-cmd_id="#amoniacid#" title="Ammoniac : #amoniac_ppm# ppm">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_nh3#</div>
+                                <strong class="aqi-#id#-label">NH³</strong>
+                            </div>
+                            <div>#nh3# μg/m³</div>
+                        </div>
+<!--         
+                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
+                            data-subtype="string" data-cmd_id="#dioxydesoufreid#" title="Dioxyde de souffre">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image add-#id#-space">#icone_so2#</div>
+                                <strong class="aqi-#id#-label">SO²</strong>
+                            </div>
+                            <div>#so2# μg/m³</div>
+                        </div>
+        
+                        <div class="col-lg-4 col-sm-4 col-xs-4 cmd noRefresh aqi-#id#-particule" data-type="info"
+                            data-subtype="string" data-cmd_id="#monoxydeazoteid#" title="Monoxyde d'azote">
+                            <div class="aqi-#id#-inline">
+                                <div class="aqi-#id#-image">#icone_no#</div>
+                                <strong class="aqi-#id#-label">NO</strong>
+                            </div>
+                            <div>#no# μg/m³</div>
+                        </div> -->
+
+                    <!-- </div> -->
+
+                </div>
+            </div>
+        </div>
+    
+    
+     
+    
+     
+    <!-- </div> -->
+    
+    <script>
+    
+    var labels = #labels#;
+    // labels = labels.split(',');
+    
+    
+    function parseData(minArray, maxArray) {
+    
+            // let mintab = minArray.split(',');
+            // let maxtab = maxArray.split(',');
+            // let parseMin = mintab.map(function (x) {
+            //     return parseInt(x, 10);
+            // })
+            // let parseMax = maxtab.map(function (y) {
+            //     return parseInt(y, 10);
+            // })
+            let data = [];
+            data.push(minArray);
+            data.push(maxArray);
+            return data;
+        }
+    
+       
+        $(document).ready(function () {
+    
+    
+        var dataCo =  parseData(#co_min#, #co_max#);
+        GiveaChart('container_co_#id#', dataCo, 'CO', '#color_co#');
+    
+        // var dataNo =  parseData('#min_no#', '#max_no#');
+        var dataNo =  parseData(#no_min#, #no_max#);
+        GiveaChart('container_no_#id#', dataNo, 'NO','#color_no#');
+    
+        var dataPm25 =  parseData( #pm25_min# , #pm25_max#);
+        GiveaChart('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
+    
+        var dataPm10 =  parseData(#pm10_min#, #pm10_max#);
+        GiveaChart('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
+    
+        var dataO3 =  parseData(#o3_min#, #o3_max#);
+        GiveaChart('container_o3_#id#', dataO3, 'O³','#color_o3#');
+    
+        var dataNo2 =  parseData(#no2_min#, #no2_max#);
+        GiveaChart('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
+       
+        var dataSo2 =  parseData(#so2_min#, #so2_max#);
+        GiveaChart('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
+       
+        var dataNh3 =  parseData(#nh3_min#, #nh3_max#);
+        GiveaChart('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
+       
+        var dataAqi =  parseData(#aqi_min#, #aqi_max#);
+        GiveaChart('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
+    
+    
+        })
+      
+    
+        function GiveaChart(container, data, name, colorOne = '#00AEEC') {
+    
+            Highcharts.chart(container, {
+    
+                chart: {
+    
+                    type: 'column',
+                    height: 180,
+                    width: 250,
+                    alignTicks: true,
+                      borderWidth:0
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: null
+                },
+    
+                xAxis: {
+                    labels: {
+                        rotation: -40,
+                        overflow: 'justify',
+                        style: { fontSize: '10px' },
+                        x: 14,
+                        y: 15
                     },
-                    credits: {
-                         enabled: false
-                    },
+                    min: 0,
+                    categories: labels,
+                    tickWidth: 1,
+                    gridLineWidth: 0,
+                  
+    
+                },
+                yAxis: [{
+                    // softMax: 250,
+                    // softMin: 100,
+                    visible: false,
                     title: {
-                         text: null,
+                        text: null
                     },
-                    legend: {
-                         enabled: false
+                    labels: {
+                        align: 'center',
+                        x: 0,
+                        y: 0,
+                        format: '{value:.,0f}'
                     },
-
-                    pane: {
-                         startAngle: -150,
-                         endAngle: 150,
-                         background: null
-                    },
-                    exporting: {
-                         enabled: false
-                    },
-                    tooltip: {
-                         valueSuffix: "<br style='font-size:0.6rem'>μg/m³"
-
-                    },
-                    yAxis: {
-                         min: 0,
-                         minorTickInterval: "auto",
-                         minorTickWidth: 1,
-                         minorTickLength: 5,
-                         minorTickPosition: "outside",
-                         minorTickColor: "#666",
-                         tickPixelInterval: 50,
-                         tickWidth: 2,
-                         tickPosition: "outside",
-                         tickLength: 8,
-                         tickColor: "#666",
-                         labels: {
-                              step: 1,
-                              rotation: "auto",
-                              distance: '75%',
-                         },
-                         title: {
-                              y: 80,
-                              style: {
-                                   fontSize: '180%'
-                              }
-                         },
-                         plotBands: [{
-                            
-                              outerRadius: '125%',
-                          }]
-
-                    },
-                    plotOptions: {
-                         series: {
-                              dataLabels: {
-                                   enabled: true,
-                                   y: -38,
-                                   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                                   className: 'highlight',
-                                   borderWidth: 1,
-                                   shadow: false,
-                                  /* padding:4,*/
-                                   style: {
-                                        textTransform: 'uppercase',
-                                     /*   fontSize: '13px',
-                                        color: '#000',*/
-                                   }
-                              }
-                         },
-                         gauge: {
-                              dial: {
-                                   backgroundColor: 'currenColor'
-                              },
-                              pivot: {
-                                   backgroundColor: 'rgba(200, 200, 200, 0.9)'
-                              }
-                         }
-                    },
-
-               };
-
-               Highcharts.setOptions(Highcharts.themeFull#id#);
-         
-               /*  Echelle du cadran */
-               let myThickness = '7%'
+                }],
+    
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                },
+    
+                tooltip: {
+                    shared: true,
+                    // crosshairs: true,
+                    // split: true,
+                    // distance: 30,
+                    padding: 3,
+                    // stickOnContact: true
+    
+                },
+    
+                plotOptions: {
+    
+                    column: {
+                        pointPadding: 0.20,
+                        borderWidth: 0,
+                    //     // width: 2
+                     },
+                    series: {
+                        // maxPointWidth: 50,
+                        // cursor: 'pointer',
+                        // className: 'popup-on-click',
+                        lineWidth: 5,
+                        marker: {
+                            lineWidth: 0
+                        }
+                    }
+                },
+    
+                series: [
+    
+                    {
+                        name: name + ' min',
+                        lineWidth: '4px',
+                        marker: { radius: 2 },
+                        data: data[0],
+                        color: 'currentColor'
+                    }, {
+                        name: name + ' max',
+                        lineWidth: '4px',
+                        marker: { radius: 2 },
+                        data: data[1],
+                          color: colorOne
+                    }
+                ]
+            });
+    
         
-               let plotBandO3 = [{
-                         from: 0,
-                         to: 50,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 50,
-                         to: 100,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 100,
-                         to: 130,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 130,
-                         to: 240,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 240,
-                         to: 380,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 380,
-                         to: 500,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               let plotBandSO2 = [{
-                         from: 0,
-                         to: 50,
-                         thickness: myThickness,
-                         color: "#00AEEC", // blue
-                         outerRadius: '125%',
-                    },
-                    {
-                         from: 50,
-                         to: 100,
-                         thickness: myThickness,
-                         color: "#00BD01", // green
-                         outerRadius: '125%',
-                    },
-                    {
-                         from: 100,
-                         to: 150,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 150,
-                         to: 240,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 240,
-                         to: 380,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 380,
-                         to: 500,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               let plotBandNO2 = [{
-                         from: 0,
-                         to: 40,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 40,
-                         to: 90,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 90,
-                         to: 120,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 120,
-                         to: 230,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 230,
-                         to: 340,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 340,
-                         to: 600,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               let plotBandPM10 = [{
-                         from: 0,
-                         to: 20,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 20,
-                         to: 40,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 40,
-                         to: 50,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 50,
-                         to: 100,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 100,
-                         to: 150,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 150,
-                         to: 1000,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               let plotBandPM25 = [{
-                         from: 0,
-                         to: 10,
-                         thickness: myThickness,
-                         color: "#00AEEC", // blue
-                         borderWidth: 10
-                    },
-                    {
-                         from: 10,
-                         to: 20,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-
-                    },
-                    {
-                         from: 20,
-                         to: 25,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 25,
-                         to: 50,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 50,
-                         to: 75,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 75,
-                         to: 1000,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               // A verifier Non Officiel
-               let plotBandNO = [{
-                         from: 0,
-                         to: 40,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 40,
-                         to: 90,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 90,
-                         to: 120,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 120,
-                         to: 230,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 230,
-                         to: 340,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 340,
-                         to: 400,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-               // A verifier  Non Officiel
-               let plotBandCO = [{
-                         from: 0,
-                         to: 90,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 90,
-                         to: 180,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 180,
-                         to: 250,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 250,
-                         to: 340,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 340,
-                         to: 390,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 390,
-                         to: 4000,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-               // A verifier Non Officiel
-               let plotBandNH3 = [{
-                         from: 0,
-                         to: 8,
-                         thickness: myThickness,
-                         color: "#00AEEC" // blue
-                    },
-                    {
-                         from: 8,
-                         to: 20,
-                         thickness: myThickness,
-                         color: "#00BD01" // green
-                    },
-                    {
-                         from: 20,
-                         to: 35,
-                         thickness: myThickness,
-                         color: "#EFE800" // yellow
-                    },
-                    {
-                         from: 35,
-                         to: 50,
-                         thickness: myThickness,
-                         color: "#E79C00" // orange
-                    },
-                    {
-                         from: 50,
-                         to: 70,
-                         thickness: myThickness,
-                         color: "#B00000" // red
-                    },
-                    {
-                         from: 70,
-                         to: 300,
-                         thickness: myThickness,
-                         color: "#662D91" // purple
-                    }
-               ];
-
-               
-               let plotBandAqi = [{
-                    from: 0,
-                    to: 1,
-                    thickness: myThickness,
-                    color: "#00AEEC", // blue
-                    borderWidth: 10
-               },
-               {
-                    from: 1,
-                    to: 2,
-                    thickness: myThickness,
-                    color: "#00BD01" // green
-
-               },
-               {
-                    from: 2,
-                    to: 3,
-                    thickness: myThickness,
-                    color: "#EFE800" // yellow
-               },
-               {
-                    from: 3,
-                    to: 4,
-                    thickness: myThickness,
-                    color: "#E79C00" // orange
-               },
-               {
-                    from: 4,
-                    to: 5,
-                    thickness: myThickness,
-                    color: "#B00000" // red
-               },
-               {
-                    from: 5,
-                    to: 6,
-                    thickness: myThickness,
-                    color: "#662D91" // purple
-               }
-          ];
-
-               // PM10 
-               Highcharts.chart(
-                    "particules10#id#", {
-                         yAxis: {
-                              softMax: 160,
-                              title: {
-                                   text: 'PM<span style="font-size:60%">10</span>',
-                              },
-                              plotBands: plotBandPM10
-                         },
-                         series: [{
-                              name: "PM10<br>",
-                              data: [#pm10#]
-                         }]
-                    }
-               )
-                   
-               // AQI 
-               Highcharts.chart(
-                    "aqi-chart#id#", {
-                         yAxis: {
-                              softMax: 6,
-                              title: {
-                                   text: '<h2>AQI</h2>'
-                              },
-                              plotBands: plotBandAqi
-                         },
-                         series: [{
-                              name: "AQI<br>",
-                              data: [#aqi#]
-                         }]
-                    }
-               )
-
-               // PM25
-               Highcharts.chart(
-                    "particules25#id#", {
-                         /*  chart: {
-                              height: heightPM,
-                              width: WidthPm
-                         },*/
-                         yAxis: {
-                              softMax: 80,
-                              title: {
-                                   text: 'PM<span style="font-size:60%">2.5</span>',
-                                   /*  y: yTitle,*/
-                              },
-                              plotBands: plotBandPM25
-                         },
-                         series: [{
-                              name: "PM<sub>2.5</sub><br/>",
-                              data: [#pm25#]
-                         }]
-                    }
-               );
-
-               // O3
-               Highcharts.chart(
-                    "particuleso3#id#", {
-
-                         // the value axis
-                         yAxis: {
-                              min: 0,
-                              softMax: 400,
-                              title: {
-                                   text: '<h2>O³</h2>',
-                                   x: 0
-                              },
-                              plotBands: plotBandO3
-                         },
-                         series: [{
-                              name: "Ozone<br/>",
-                              data: [#o3#]
-                         }]
-                    }
-               );
-
-               // NO2
-               Highcharts.chart(
-                    "particulesno2#id#", {
-                         yAxis: {
-                              softMax: 400,
-                              title: {
-                                   text: '<h2>NO²</h2>'
-                              },
-                              plotBands: plotBandNO2
-                         },
-                         series: [{
-                              name: "Dioxyde <br/>d'azote<br/>",
-                              data: [#no2#]
-                         }]
-                    }
-               );
-
-               // SO²
-               Highcharts.chart(
-                    "particulesso2#id#", {
-                         yAxis: {
-                              softMax: 400,
-                              title: {
-                                   text: '<h2>SO²</h2>',
-                                   x: 0,
-                              },
-                              plotBands: plotBandO3
-                         },
-                         series: [{
-                              name: "Dioxyde<br/> de souffre<br/>",
-                              data: [#so2#]
-                         }]
-                    }
-               );
-
-              
-               // CO
-               Highcharts.chart(
-                    "particulesco#id#", {
-                         yAxis: {
-                              softMax: 450,
-                              title: {
-                                   text: '<h2>CO</h2>',
-                                   x: 0,
-                              },
-                              plotBands: plotBandCO
-                         },
-                         series: [{
-                              name: "Monoxyde de carbone<br/>",
-                              data: [#co#]
-                         }]
-                    }
-               );
-
-               // NH3
-               Highcharts.chart(
-                    "particulesnh3#id#", {
-                         yAxis: {
-                              softMax: 100,
-                              title: {
-                                   text: '<h2>NH³</h2>',
-                                   x: 0,
-                              },
-                              plotBands: plotBandNH3
-                         },
-                         series: [{
-                              name: "Ammoniac<br/>",
-                              data: [#nh3#],
-                              DataLabelsOverflowValue: 'justify'
-                         }]
-                    }
-               );
-
-               // NO
-               Highcharts.chart(
-                    "particulesno#id#", {
-                         yAxis: {
-                              softMax: 400,
-                              title: {
-                                   text: '<h2>NO</h2>',
-                                   x: 0,
-                              },
-                              plotBands: plotBandNO
-                         },
-                         series: [{
-                              name: "Monoxyde d'azote<br/>",
-                              data: [#no#]
-                             
-                         }]
-                    }
-               );
-
-
-          }
-     </script>
-</div>
+        }
+    
+                
+    
+    // Boite Modal Info     
+    
+        $(document).on ("click", "#info-modal#aqiid#", function () {
+           
+            $('#md_modal2').dialog({
+            title: "Info AQI"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoAqi&id=#id#&logical_id=#aqiid#').dialog('open');
+            });
+        
+        $(document).on ("click", "#info-modal#uvid#", function () {
+           
+            $('#md_modal2').dialog({
+            title: "Info UV"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoUv&id=#id#&logical_id=#uvid#').dialog('open');
+            });
+    
+        $(document).on ("click", "#info-modal#visibilityid#", function () {
+           
+            $('#md_modal2').dialog({
+            title: "Info Visibilité"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoVisibility&id=#id#&logical_id=#visibilityid#').dialog('open');
+            });
+        
+    
+        $(document).on ("click", ".info-modal#pm10id#", function () {
+        
+            $('#md_modal2').dialog({
+            title: "Info Particules Fines"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=#pm10id#').dialog('open');
+                    });
+    
+    
+        $(document).on ("click", ".info-modal#o3id#", function () {
+            $('#md_modal2').dialog({
+            title: "Info Ozone"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
+            });
+    
+        // $(document).on ("click", "#info-modal#nh3id#", function () {
+        //     $('#md_modal2').dialog({
+        //     title: "Info Ammoniac"
+        //     });
+        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
+        //     });
+        // $(document).on ("click", "#info-modal#so2id#", function () {
+        //     $('#md_modal2').dialog({
+        //     title: "Info Dioxyde de Souffre"
+        //     });
+        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
+        //     });
+        // $(document).on ("click", "#info-modal#no2id#", function () {
+        //     $('#md_modal2').dialog({
+        //     title: "Info Dioxyde d'Azote"
+        //     });
+        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
+        //     });
+        // $(document).on ("click", "#info-modal#noid#", function () {
+        //     $('#md_modal2').dialog({
+        //     title: "Info Monoxyde d'Azote"
+        //     });
+        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
+        //     });
+    
+                  /*   var mySlider#id# = $('#airquality-min#uid#').carousel()
+    
+                 $('#airquality-min#uid#').hover(function () {
+                        console.log('pause')
+                        mySlider#id#.carousel('pause');
+                   }, function () {
+                        mySlider#id#.carousel({
+                             'pause': false
+                        });
+                        console.log('restart')
+                   });*/
+    $(document).ready(function () {
+    
+        
+                   if ('#animation#'== 'active') {
+                        var t#uid#;
+    
+                        var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
+                        t#uid# = setTimeout("$('#airquality-min#uid#').carousel({interval: 1000});",
+                             start#uid# - 1000);
+    
+                        $('#airquality-min#uid#').on('slid.bs.carousel', function () {
+                             clearTimeout(t#uid#);
+                             var duration#uid# = $(this).find('.active').attr('data-interval');
+    
+                             $('#airquality-min#uid#').carousel('pause');
+                             t#uid# = setTimeout("$('#airquality-min#uid#').carousel();",
+                                  duration#uid# - 1000);
+                        })
+                        $('.right.carousel-control.my#id#').on('click', function () {
+                             clearTimeout(t#uid#);
+                        });
+                        $('.left.carousel-control.my#id#').on('click', function () {
+                             clearTimeout(t#uid#);
+                        });
+                   }
+    
+    
+                   $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+                        jeedom.cmd.execute({ id: $(this).data('cmd_id') });
+                        });
+    });
+    </script>
+    </div>
