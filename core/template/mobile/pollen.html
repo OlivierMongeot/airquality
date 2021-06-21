@@ -5,6 +5,7 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
 <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
 <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
 <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;position: relative;top:-2px;" hidden>#object_name#</span></a></strong></center>
+<!-- Pollen Mobile -->
 <style>
        .aqi-#id#-row {
             display: flex;
@@ -71,68 +72,239 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
         }
       
 </style>
-<div class="aqi-#id#-container">
-    <div class="header-#id#-container">
-        <div class="tooltips header-#id#-mini" title="#grass_risk# : #list_grass_pollen#">
-            <div class="container-#id#-svg ">
-                <div class="tooltips">#icone_grass_pollen#</div>
+    <div class="aqi-#id#-container">
+        <div class="header-#id#-container">
+            <div class="tooltips header-#id#-mini" title="#grass_risk# : #list_grass_pollen#">
+                <div class="container-#id#-svg ">
+                    <div class="tooltips">#icone_grass_pollen#</div>
+                </div>
+                <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
+                    data-cmd_id="#grass_pollenid#">
+                    <div>#grass_pollen_name#</div>
+                    <div class="space-aqi-#id#">#grass_pollen#</div>
+                </div>
             </div>
-            <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
-                data-cmd_id="#grass_pollenid#">
-                <div>#grass_pollen_name#</div>
-                <div class="space-aqi-#id#">#grass_pollen#</div>
+            <div class="tooltips header-#id#-mini" title="#tree_risk# : #list_tree_pollen#">
+                <div class="container-#id#-svg ">
+                    <div>#icone_tree_pollen#</div>
+                </div>
+                <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
+                    data-cmd_id="#tree_pollenid#">
+                    <div>#tree_pollen_name#</div>
+                    <div class="space-aqi-#id#">#tree_pollen#</div>
+                </div>
+            </div>
+            <div class="tooltips header-#id#-mini" title="#weed_risk# : #list_weed_pollen#">
+                <div class="container-#id#-svg ">
+                    <div class="tooltips">#icone_weed_pollen#</div>
+                </div>
+                <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
+                    data-cmd_id="#weed_pollenid#">
+                    <div>#weed_pollen_name#</div>
+                    <div class="space-aqi-#id#">#weed_pollen#</div>
+                </div>
             </div>
         </div>
-        <div class="tooltips header-#id#-mini" title="#tree_risk# : #list_tree_pollen#">
-            <div class="container-#id#-svg ">
-                <div>#icone_tree_pollen#</div>
-            </div>
-            <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
-                data-cmd_id="#tree_pollenid#">
-                <div>#tree_pollen_name#</div>
-                <div class="space-aqi-#id#">#tree_pollen#</div>
-            </div>
+        <div title="#updatedAt#" class="cmd header-#id#-mini active-pollen-#id# ">
+            #active_pollen_label# : #activePollen# / 15
         </div>
-        <div class="tooltips header-#id#-mini" title="#weed_risk# : #list_weed_pollen#">
-            <div class="container-#id#-svg ">
-                <div class="tooltips">#icone_weed_pollen#</div>
-            </div>
-            <div class="#history# cursor cmd noRefresh aqi-#id#-label-header" data-type="info" data-subtype="other"
-                data-cmd_id="#weed_pollenid#">
-                <div>#weed_pollen_name#</div>
-                <div class="space-aqi-#id#">#weed_pollen#</div>
+
+        <div class="slider-#id#-aqi ">
+            <div class="slides-#id#-aqi">
+                #mini_slide#
             </div>
         </div>
     </div>
-    <div title="#updatedAt#" class="cmd header-#id#-mini active-pollen-#id# ">
-        #active_pollen_label# : #activePollen# / 15
-    </div>
-    <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="hover"
-        #classCaroussel#>
-        <div class="carousel-inner slide#id#">#mini_slide#</div>
-        <a class="left carousel-control my#id#" href="#airquality-min#uid#" data-slide="prev"
-            style="background:transparent">
-            <i class="fas fa-chevron-left"></i>
-        </a>
-        <a class="right carousel-control my#id#" href="#airquality-min#uid#" data-slide="next"
-            style="background:transparent">
-            <i class="fas fa-chevron-right"></i>
-        </a>
-    </div>
-</div>
 
 
 
+    <script>
 
+        var labels#id# =["Vendredie","Samedi","Dimanche","Lundi","Mardi"];
+        
+        function parseData(minArray, maxArray) {
+        
+                let data = [];
+                data.push(minArray);
+                data.push(maxArray);
+                return data;
+            }
+        
+           
+        $(document).ready(function () {
+        
+        
+            var dataPoaceae =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
+            GiveaChart#id#('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
+        
+            var dataAlder =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
+            GiveaChart#id#('container_alder_#id#', dataAlder, 'Alder','#color_alder#');
+        
+            var dataBirch =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
+            GiveaChart#id#('container_birch_#id#', dataBirch, 'Birch','#color_birch#');
+        
+            var dataCypress =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
+            GiveaChart#id#('container_cypress_#id#', dataCypress, 'PM10','#color_cypress#');
+        
+            var dataElm =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
+            GiveaChart#id#('container_elm_#id#', dataElm, 'Elm','#color_elm#');
+        
+            // var dataHazel =  parseData(#hazel_min#, #hazel_max#);
+            var dataHazel =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_hazel_#id#', dataHazel, 'Hazel','#color_hazel#');
+           
+            var dataOak =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
+            GiveaChart#id#('container_oak_#id#', dataOak, 'Oak','#color_oak#');
+           
+            var dataPine =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_pine_#id#', dataPine, 'Pine','#color_pine#');
+           
+            var dataPlane = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_plane_#id#', dataPlane, 'Plane','#color_plane#');
+        
+            var dataPoplar = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_poplar_#id#', dataPoplar, 'Poplar','#color_poplar#');
+        
+            var dataChenopod = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_chenopod_#id#', dataChenopod, 'Chenopod','#color_chenopod#');
+        
+            var dataMugwort = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            GiveaChart#id#('container_mugwort_#id#', dataMugwort, 'Mugwort','#color_mugwort#');
+        
+            var dataNettle = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
+            GiveaChart#id#('container_nettle_#id#', dataNettle, 'Nettle','#color_nettle#');
+        
+            var dataRagweed = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
+            GiveaChart#id#('container_ragweed_#id#', dataRagweed, 'Ragweed','#color_ragweed#');
+            
+            var dataOthers = parseData([1,2,1,2,1.77], [4.08,2.6,8.28,7.38,2.01]);
+            GiveaChart#id#('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
+        
+        
+            })
+          
+        
+            function GiveaChart#id#(container, data, name, colorOne = '#00AEEC') {
+        
+                Highcharts.chart(container, {
+        
+                    chart: {
+        
+                        type: 'column',
+                        height: 170,
+                        width: 260,
+                        alignTicks: true,
+                          borderWidth:0
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: null
+                    },
+        
+                    xAxis: {
+                        labels: {
+                            rotation: -40,
+                            overflow: 'justify',
+                            style: { fontSize: '10px' },
+                            x: 14,
+                            y: 15
+                        },
+                        min: 0,
+                        categories: labels#id#,
+                        tickWidth: 1,
+                        gridLineWidth: 0,
+                      
+        
+                    },
+                    yAxis: [{
+                        // softMax: 250,
+                        // softMin: 100,
+                        visible: false,
+                        title: {
+                            text: null
+                        },
+                        labels: {
+                            align: 'center',
+                            x: 0,
+                            y: 0,
+                            format: '{value:.,0f}'
+                        },
+                    }],
+        
+                    legend: {
+                        align: 'center',
+                        verticalAlign: 'bottom',
+                        borderWidth: 0,
+                        padding: 2,
+                        margin: 0
+                    },
+        
+                    tooltip: {
+                        shared: true,
+                        // crosshairs: true,
+                        // split: true,
+                        // distance: 30,
+                        padding: 3,
+                        // stickOnContact: true
+        
+                    },
+        
+                    plotOptions: {
+        
+                        column: {
+                            pointPadding: 0.20,
+                            borderWidth: 0,
+                        //     // width: 2
+                         },
+                        series: {
+                            // maxPointWidth: 50,
+                            // cursor: 'pointer',
+                            // className: 'popup-on-click',
+                            lineWidth: 5,
+                            marker: {
+                                lineWidth: 0
+                            }
+                        }
+                    },
+        
+                    series: [
+        
+                        {
+                            name: name + ' min',
+                            lineWidth: '4px',
+                            marker: { radius: 2 },
+                            data: data[0],
+                            color: 'currentColor'
+                        }, {
+                            name: name + ' max',
+                            lineWidth: '4px',
+                            marker: { radius: 2 },
+                            data: data[1],
+                              color: colorOne
+                        }
+                    ]
+                });
+        
+            
+            }
 
-
-
-
-
-
-
-
-
-
-
+        
+                      
+    
+                
+    
+        
+                       $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+                            jeedom.cmd.execute({
+                                 id: $(this).data('cmd_id')
+                            });
+        
+                       });
+               
+             </script>
 </div>

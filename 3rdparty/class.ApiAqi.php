@@ -52,14 +52,17 @@ class ApiAqi
                 "Content-type: application/json",
                 "x-api-key:" . $apiKey
             ],
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false
         ]);
        
         $response = curl_exec($curl);
-        
+      
         $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if ($http_response_code != 200){
-             message::add('Error Http response ',  json_encode($http_response_code). json_encode($url));
-             log::add('airquality','debug','Error Http Code : '.json_encode($http_response_code). ' - Url : '. json_encode($url));
+            $curlInfo = curl_getinfo($curl);
+            log::add('airquality','debug',' Curl Info : '.json_encode($curlInfo). ' - Url : '. json_encode($url));
+            
         }
         $err = curl_error($curl);
         if ($err != '') {

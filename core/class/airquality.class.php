@@ -95,25 +95,24 @@ class airquality extends eqLogic
     //             $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
     //             if ($c->isDue()) {
     //                 log::add('airquality', 'debug','is due');
+    //                 message::add('debug','refresh Cron is due test ');
     //                 try {
     //                     $refresh = $airQuality->getCmd(null, 'refresh');
     //                     if(is_object($refresh)) {
     //                         // $refresh->execCmd();
-    //                         message::add('debug','refresh Cron Custom test ');
+    //                         message::add('debug','refresh Cron Custom test execCmd');
     //                     } else {
     //                         log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
     //                     }
     //                 } catch (Exception $exc) {
-    //                     log::add('swisairqualitysmeteo', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+    //                     log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
     //                 }
     //             }
     //         } catch (Exception $exc) {
     //             log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
     //         }
 	// 	}
-
-
-        
+   
 	// }
 
     public function preInsert()
@@ -166,7 +165,7 @@ class airquality extends eqLogic
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
     public function preSave()
     {
-       
+        
             $this->setDisplay("width", "270px");
             $this->setDisplay("height", "auto");
 
@@ -324,13 +323,13 @@ class airquality extends eqLogic
             $refreshForecast->save();
 
 
-            $refresh = $this->getCmd(null, 'refresh_pollen');
+            $refresh = $this->getCmd(null, 'refresh');
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
-                $refresh->setName(__('Rafraichir Pollen', __FILE__));
+                $refresh->setName(__('Rafraichir', __FILE__));
             }
             $refresh->setEqLogic_id($this->getId());
-            $refresh->setLogicalId('refresh_pollen');
+            $refresh->setLogicalId('refresh');
             $refresh->setType('action');
             $refresh->setOrder(99);
             $refresh->setSubType('other');
@@ -363,21 +362,6 @@ class airquality extends eqLogic
             $info->save();
         }
 
-
-
-        // $refresh = $this->getCmd(null, 'refresh');
-        // if (!is_object($refresh)) {
-        //     $refresh = new airqualityCmd();
-        //     $refresh->setName(__('Rafraichir', __FILE__));
-        // }
-        // $refresh->setEqLogic_id($this->getId());
-        // $refresh->setLogicalId('refresh');
-        // $refresh->setType('action');
-        // $refresh->setOrder(0);
-        // $refresh->setTemplate('dashboard', 'tile');
-        // $refresh->setSubType('other');
-        // $refresh->save();
-
     
     }
 
@@ -388,16 +372,15 @@ class airquality extends eqLogic
             return $replace;
         }
 
-        //vide le cache. Pour le développement
-        $this->emptyCacheWidget();
+        $this->emptyCacheWidget();//vide le cache. Pour le développement
 
         $version = jeedom::versionAlias($_version);
-        // compteur des
+        // compteur pollen actif
         $activePollen = 0;
       
         foreach ($this->getCmd('info') as $cmd) {
 
-            // Verification si la valeur doit etre afficher 
+            // Verification si la valeur doit etre afficher todo
             if ($this->getConfiguration($cmd->getLogicalId(), 0) == 1 || 0 == 0 ){
             
                 // Preparation des valeurs à remplacer 
@@ -537,12 +520,15 @@ class airquality extends eqLogic
         } else {
             $replace['#active_pollen_label#'] = __('Pollens actifs',__FILE__);
             $replace['#activePollen#'] = $activePollen;
-     
         }
 
         $replace['#mini_slide#'] =  $component->getLayer();
+
+        
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
+       
+
         if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
             $replace['#animation#'] = 'disabled';
             $replace['#classCaroussel#'] = 'data-interval="false"';
@@ -743,10 +729,99 @@ class airquality extends eqLogic
 
     }
 
+    public function refreshData(){
+        if ($this->getConfiguration('elements') == 'polution') {
+            $this->getPollution();
+          } 
+          else if ($this->getConfiguration('elements') == 'pollen'){
+            $this->getPollen();
+          }
+    }
+
+    public function getPollen(){
+
+        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
+        message::add('refresh Pollen', json_encode($d->format("Y-m-d H:i:s")));
+        $dataAll = $this->getData('getAmbee');
+        $dataPollen = $dataAll->data;
+        $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
+        $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
+        $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
+        $this->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
+        $this->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
+        $this->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
+        $this->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
+        $this->checkAndUpdateCmd('grass_risk', $dataPollen[0]->Risk->grass_pollen);
+        $this->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
+        $this->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
+        $this->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
+        $this->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
+        $this->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
+        $this->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
+        $this->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
+        $this->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
+        $this->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
+        $this->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
+        $this->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
+        $this->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
+        $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
+        $this->checkAndUpdateCmd('updatedAt',$dataPollen[0]->updatedAt);
+        $this->reorderCmdPollen();
+        $this->refreshWidget();
+
+    }
+
+    public function getPollution(){
+
+        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
+        message::add('refresh AQI', json_encode($d->format("Y-m-d H:i:s")));
+        $data = $this->getData('getAqi');
+        $this->checkAndUpdateCmd('aqi', $data->main->aqi);
+        $this->checkAndUpdateCmd('no2', $data->components->no2);
+        $this->checkAndUpdateCmd('no', $data->components->no);
+        $this->checkAndUpdateCmd('co', $data->components->co);
+        $this->checkAndUpdateCmd('o3', $data->components->o3);
+        $this->checkAndUpdateCmd('so2', $data->components->so2);
+        $this->checkAndUpdateCmd('nh3', $data->components->nh3);
+        $this->checkAndUpdateCmd('pm25', $data->components->pm2_5);
+        $this->checkAndUpdateCmd('pm10', $data->components->pm10);
+        $data = $this->getData('getOneCallApi');
+        $this->checkAndUpdateCmd('uv', $data->uvi);
+        $this->checkAndUpdateCmd('visibility', $data->visibility);
+        $this->refreshWidget();
+
+    }
+
+    public function refreshforecastAQI(){
+        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
+        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d \ H:i:s')));
+        $forecast =  $this->getData('getForecast');
+        $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
+        $this->checkAndUpdateCmd('no2_min',json_encode($forecast['no2']['min']));
+        $this->checkAndUpdateCmd('no2_max', json_encode( $forecast['no2']['max']));
+        $this->checkAndUpdateCmd('no_min', json_encode($forecast['no']['min']));
+        $this->checkAndUpdateCmd('no_max',json_encode($forecast['no']['max']));
+        $this->checkAndUpdateCmd('so2_min', json_encode($forecast['so2']['min']));
+        $this->checkAndUpdateCmd('so2_max',json_encode($forecast['so2']['max']));
+        $this->checkAndUpdateCmd('co_min',json_encode($forecast['co']['min']));
+        $this->checkAndUpdateCmd('co_max',json_encode($forecast['co']['max']));
+        $this->checkAndUpdateCmd('nh3_min',json_encode($forecast['nh3']['min']));
+        $this->checkAndUpdateCmd('nh3_max',json_encode($forecast['nh3']['max']));
+        $this->checkAndUpdateCmd('aqi_min',json_encode($forecast['aqi']['min']));
+        $this->checkAndUpdateCmd('aqi_max',json_encode($forecast['aqi']['max']));
+        $this->checkAndUpdateCmd('pm10_min',json_encode($forecast['pm10']['min']));
+        $this->checkAndUpdateCmd('pm10_max',json_encode($forecast['pm10']['max']));
+        $this->checkAndUpdateCmd('o3_min',json_encode($forecast['o3']['min']));
+        $this->checkAndUpdateCmd('o3_max',json_encode($forecast['o3']['max']));
+        $this->checkAndUpdateCmd('pm25_min',json_encode($forecast['pm2_5']['min']));
+        $this->checkAndUpdateCmd('pm25_max',json_encode($forecast['pm2_5']['max']));
+        $this->refreshWidget();
+    }
+
     public function refreshforecastPollen(){
  
-        $d = new DateTime('2011-01-01T15:03:01.012345Z');
-        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d\TH:i:s')));
+        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
+        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d \ H:i:s')));
         $forecast =  $this->getData('getForecastPollen');
         message::add('debug',json_encode($forecast));
         log::add('airquality', 'debug', json_encode( $forecast));
@@ -795,148 +870,12 @@ class airqualityCmd extends cmd
 
     public function execute($_options = array())
     {
-        $eqlogic = $this->getEqLogic();
-    
-        switch ($this->getLogicalId()) {
-            case 'refresh':
-                if ($eqlogic->getConfiguration('elements') == 'polution') {
-                    $d = new DateTime('2011-01-01T15:03:01.012345Z');
-                    message::add('refresh AQI', json_encode($d->format('Y-m-d\TH:i:s')));
-                    $data = $eqlogic->getData('getAqi');
-                    $eqlogic->checkAndUpdateCmd('aqi', $data->main->aqi);
-                    $eqlogic->checkAndUpdateCmd('no2', $data->components->no2);
-                    $eqlogic->checkAndUpdateCmd('no', $data->components->no);
-                    $eqlogic->checkAndUpdateCmd('co', $data->components->co);
-                    $eqlogic->checkAndUpdateCmd('o3', $data->components->o3);
-                    $eqlogic->checkAndUpdateCmd('so2', $data->components->so2);
-                    $eqlogic->checkAndUpdateCmd('nh3', $data->components->nh3);
-                    $eqlogic->checkAndUpdateCmd('pm25', $data->components->pm2_5);
-                    $eqlogic->checkAndUpdateCmd('pm10', $data->components->pm10);
-                    $data = $eqlogic->getData('getOneCallApi');
-                    $eqlogic->checkAndUpdateCmd('uv', $data->uvi);
-                    $eqlogic->checkAndUpdateCmd('visibility', $data->visibility);
-                    $eqlogic->refreshWidget();
-                    break;
-                }
-
-            case 'refresh_pollen':
-                $d = new DateTime('2011-01-01T15:03:01.012345Z');
-                message::add('refresh Pollen', json_encode($d->format('Y-m-d\TH:i:s')));
-                if ($eqlogic->getConfiguration('elements') == 'pollen') {
-                    $dataAll = $eqlogic->getData('getAmbee');
-                    $dataPollen = $dataAll->data;
-                    $eqlogic->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
-                    $eqlogic->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
-                    $eqlogic->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
-                    $eqlogic->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
-                    $eqlogic->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
-                    $eqlogic->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
-                    $eqlogic->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
-                    $eqlogic->checkAndUpdateCmd('grass_risk', $dataPollen[0]->Risk->grass_pollen);
-                    $eqlogic->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
-                    $eqlogic->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
-                    $eqlogic->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
-                    $eqlogic->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
-                    $eqlogic->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
-                    $eqlogic->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
-                    $eqlogic->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
-                    $eqlogic->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
-                    $eqlogic->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
-                    $eqlogic->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
-                    $eqlogic->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
-                    $eqlogic->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
-                    $eqlogic->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
-                    $eqlogic->checkAndUpdateCmd('updatedAt',$dataPollen[0]->updatedAt);
-                    $eqlogic->reorderCmdPollen();
-                    $eqlogic->refreshWidget();
-                    break;
-                }
-      
-            
-            case 'refresh_forecast':
-                $d = new DateTime('2011-01-01T15:03:01.012345Z');
-                message::add('refresh Forecast AQI', json_encode($d->format('Y-m-d\TH:i:s')));
-                if($eqlogic->getConfiguration('elements') == 'polution'){
-                    $forecast =  $eqlogic->getData('getForecast');
-                    $eqlogic->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
-                    $eqlogic->checkAndUpdateCmd('no2_min',json_encode($forecast['no2']['min']));
-                    $eqlogic->checkAndUpdateCmd('no2_max', json_encode( $forecast['no2']['max']));
-                    $eqlogic->checkAndUpdateCmd('no_min', json_encode($forecast['no']['min']));
-                    $eqlogic->checkAndUpdateCmd('no_max',json_encode($forecast['no']['max']));
-                    $eqlogic->checkAndUpdateCmd('so2_min', json_encode($forecast['so2']['min']));
-                    $eqlogic->checkAndUpdateCmd('so2_max',json_encode($forecast['so2']['max']));
-                    $eqlogic->checkAndUpdateCmd('co_min',json_encode($forecast['co']['min']));
-                    $eqlogic->checkAndUpdateCmd('co_max',json_encode($forecast['co']['max']));
-                    $eqlogic->checkAndUpdateCmd('nh3_min',json_encode($forecast['nh3']['min']));
-                    $eqlogic->checkAndUpdateCmd('nh3_max',json_encode($forecast['nh3']['max']));
-                    $eqlogic->checkAndUpdateCmd('aqi_min',json_encode($forecast['aqi']['min']));
-                    $eqlogic->checkAndUpdateCmd('aqi_max',json_encode($forecast['aqi']['max']));
-                    $eqlogic->checkAndUpdateCmd('pm10_min',json_encode($forecast['pm10']['min']));
-                    $eqlogic->checkAndUpdateCmd('pm10_max',json_encode($forecast['pm10']['max']));
-                    $eqlogic->checkAndUpdateCmd('o3_min',json_encode($forecast['o3']['min']));
-                    $eqlogic->checkAndUpdateCmd('o3_max',json_encode($forecast['o3']['max']));
-                    $eqlogic->checkAndUpdateCmd('pm25_min',json_encode($forecast['pm2_5']['min']));
-                    $eqlogic->checkAndUpdateCmd('pm25_max',json_encode($forecast['pm2_5']['max']));
-                    $eqlogic->refreshWidget();
-                }
-            
-            
-            
-            case 'refresh_pollen_forecast':
-               
-                $d = new DateTime('2011-01-01T15:03:01.012345Z');
-                message::add('refresh Forecast Pollen from cmd', json_encode($d->format('Y-m-d\TH:i:s')));
-             
-                    if($eqlogic->getConfiguration('elements') == 'pollen'){
-                        $forecast =  $eqlogic->getData('getForecastPollen');
-                 
-                        log::add('airquality', 'debug', json_encode( $forecast));
-                        $eqlogic->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
-                        $eqlogic->checkAndUpdateCmd('poaceae_min',json_encode($forecast['Poaceae']['min']));
-                        $eqlogic->checkAndUpdateCmd('poaceae_max', json_encode( $forecast['Poaceae']['max']));
-                        $eqlogic->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));
-                        $eqlogic->checkAndUpdateCmd('alder_max',json_encode($forecast['Alder']['max']));
-                        $eqlogic->checkAndUpdateCmd('birch_min', json_encode($forecast['Birch']['min']));
-                        $eqlogic->checkAndUpdateCmd('birch_max',json_encode($forecast['Birch']['max']));
-                        $eqlogic->checkAndUpdateCmd('cypress_min',json_encode($forecast['Cypress']['min']));
-                        $eqlogic->checkAndUpdateCmd('cypress_max',json_encode($forecast['Cypress']['max']));
-                        $eqlogic->checkAndUpdateCmd('elm_min',json_encode($forecast['Elm']['min']));
-                        $eqlogic->checkAndUpdateCmd('elm_max',json_encode($forecast['Elm']['max']));
-                        $eqlogic->checkAndUpdateCmd('hazel_min',json_encode($forecast['Hazel']['min']));
-                        $eqlogic->checkAndUpdateCmd('hazel_max',json_encode($forecast['Hazel']['max']));
-                        $eqlogic->checkAndUpdateCmd('oak_min',json_encode($forecast['Oak']['min']));
-                        $eqlogic->checkAndUpdateCmd('oak_max',json_encode($forecast['Oak']['max']));
-                        $eqlogic->checkAndUpdateCmd('pine_min',json_encode($forecast['Pine']['min']));
-                        $eqlogic->checkAndUpdateCmd('pine_max',json_encode($forecast['Pine']['max']));
-                        $eqlogic->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['min']));
-                        $eqlogic->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['max']));
-                        $eqlogic->checkAndUpdateCmd('poplar_min',json_encode($forecast['Poplar']['min']));
-                        $eqlogic->checkAndUpdateCmd('poplar_max',json_encode($forecast['Poplar']['max']));
-                        $eqlogic->checkAndUpdateCmd('chenopod_min',json_encode($forecast['Chenopod']['min']));
-                        $eqlogic->checkAndUpdateCmd('chenopod_max',json_encode($forecast['Chenopod']['max']));
-                        $eqlogic->checkAndUpdateCmd('mugwort_min',json_encode($forecast['Mugwort']['min']));
-                        $eqlogic->checkAndUpdateCmd('mugwort_max',json_encode($forecast['Mugwort']['max']));
-                        $eqlogic->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['min']));
-                        $eqlogic->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['max']));
-                        $eqlogic->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['min']));
-                        $eqlogic->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['max']));
-                        $eqlogic->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['min']));
-                        $eqlogic->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['max']));
-                        $eqlogic->refreshWidget();
-                    }
-                
-            
-            
-            
-        
-            
-            
-        }
+        if ($this->getLogicalId() == 'refresh') {
+            $this->getEqLogic()->refreshData();
+          }
 
           
     }
-
-
    
 
 }

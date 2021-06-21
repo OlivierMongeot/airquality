@@ -45,27 +45,27 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
             text-align: center;
         }
     
-        #airquality-min#uid#>.carousel-control {
+        /* #airquality-min#uid#>.carousel-control {
             position: absolute;
             top: 30%;
             z-index: 5;
             display: inline-block;
             margin-top: 0px;
             width: 15px;
-        }
+        } */
     
-        #airquality-min#uid# {
+        /* #airquality-min#uid# {
             margin-top: 25px;
-        }
+        } */
     
-        #forecast-#uid#>.carousel-control {
+        /* #forecast-#uid#>.carousel-control {
             position: absolute;
             top: 50%;
             z-index: 5;
             display: inline-block;
             margin-top: 0px;
             width: 20px;
-        }
+        } */
     
         .header-#id#-container {
             margin-top: 15px;
@@ -259,7 +259,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                 title: {
                     text: null
                 },
-    
                 xAxis: {
                     labels: {
                         rotation: -40,
@@ -271,9 +270,7 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                     min: 0,
                     categories: labels,
                     tickWidth: 1,
-                    gridLineWidth: 0,
-                  
-    
+                    gridLineWidth: 0
                 },
                 yAxis: [{
                     // softMax: 250,
@@ -289,21 +286,14 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                         format: '{value:.,0f}'
                     },
                 }],
-    
                 legend: {
                     align: 'center',
                     verticalAlign: 'bottom',
                     borderWidth: 0
                 },
-    
                 tooltip: {
                     shared: true,
-                    // crosshairs: true,
-                    // split: true,
-                    // distance: 30,
                     padding: 3,
-                    // stickOnContact: true
-    
                 },
     
                 plotOptions: {
@@ -419,5 +409,5 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                         jeedom.cmd.execute({ id: $(this).data('cmd_id') });
                         });
  
-    </script>
-    </div>
+</script>
+</div>
