@@ -1,6 +1,6 @@
 <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
-background-color: #background-color#; color: #color#; width: #width#;height: #height#;
-#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
+background-color: #background-color#; color: #color#; width: #width#;  #style#; height: auto;"
+data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
 <span class="statusCmd"></span>
 <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
 <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
@@ -31,19 +31,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
             margin-top: 10px;
        }
 
-        #airquality-min#uid#>.carousel-control {
-            position: absolute;
-            top: 30%;
-            z-index: 5;
-            display: inline-block;
-            margin-top: 0px;
-            width: 15px;
-        }
-
-        #airquality-min#uid#{
-            margin-top: 20px;
-        }
-
         .header-#id#-mini, .aqi-#id#-label-header{
             display: flex;
             vertical-align: middle;
@@ -69,6 +56,60 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
 
         .space-aqi-#id#{
               margin-top:5px
+        }
+
+        .slider-#id#-aqi {
+            width: auto;
+            height: auto;
+            margin-top: 25px ;
+            overflow: hidden;
+            background-color:transparent;
+        }
+
+        .slides-#id#-aqi {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-points-x: repeat(100%);
+            scroll-snap-type: mandatory;
+            width: auto;
+            height: 100%;
+
+        }
+
+        .slides-#id#-aqi::-webkit-scrollbar {
+            width: 10px;
+            height: 8px;
+        }
+        
+            .slides-#id#-aqi::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slides-#id#-aqi>div {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            /*margin-right: 50px;
+            border-radius: 10px; */
+            background: rgba(238, 238, 238, 0);
+            transform-origin: center center;
+            transform: scale(1);
+            transition: transform 0.8s;
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .slides-#id#-aqi>div:target {
+            transform: scale(0.8);
         }
       
 </style>
@@ -120,7 +161,7 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
 
     <script>
 
-        var labels#id# =["Vendredie","Samedi","Dimanche","Lundi","Mardi"];
+        var labels#id# = #labels#;
         
         function parseData(minArray, maxArray) {
         
@@ -134,50 +175,49 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
         $(document).ready(function () {
         
         
-            var dataPoaceae =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
+            var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
             GiveaChart#id#('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
         
-            var dataAlder =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
+            var dataAlder =  parseData(#alder_min#, #alder_max#);
             GiveaChart#id#('container_alder_#id#', dataAlder, 'Alder','#color_alder#');
         
-            var dataBirch =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
+            var dataBirch = parseData(#birch_min#, #birch_max#);
             GiveaChart#id#('container_birch_#id#', dataBirch, 'Birch','#color_birch#');
         
-            var dataCypress =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
-            GiveaChart#id#('container_cypress_#id#', dataCypress, 'PM10','#color_cypress#');
+            var dataCypress = parseData(#cypress_min#, #cypress_max#);
+            GiveaChart#id#('container_cypress_#id#', dataCypress, 'Cypress','#color_cypress#');
         
-            var dataElm =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
+            var dataElm = parseData(#elm_min#, #elm_max#);
             GiveaChart#id#('container_elm_#id#', dataElm, 'Elm','#color_elm#');
         
-            // var dataHazel =  parseData(#hazel_min#, #hazel_max#);
-            var dataHazel =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataHazel = parseData(#hazel_min#, #hazel_max#);
             GiveaChart#id#('container_hazel_#id#', dataHazel, 'Hazel','#color_hazel#');
            
-            var dataOak =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
+            var dataOak =  parseData(#oak_min#, #oak_max#);
             GiveaChart#id#('container_oak_#id#', dataOak, 'Oak','#color_oak#');
            
-            var dataPine =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataPine = parseData(#pine_min#, #pine_max#);
             GiveaChart#id#('container_pine_#id#', dataPine, 'Pine','#color_pine#');
            
-            var dataPlane = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataPlane = parseData(#pine_min#, #pine_max#);
             GiveaChart#id#('container_plane_#id#', dataPlane, 'Plane','#color_plane#');
         
-            var dataPoplar = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataPoplar = parseData(#poplar_min#, #poplar_max#);
             GiveaChart#id#('container_poplar_#id#', dataPoplar, 'Poplar','#color_poplar#');
         
-            var dataChenopod = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataChenopod = parseData(#chenopod_min#, #chenopod_max#);
             GiveaChart#id#('container_chenopod_#id#', dataChenopod, 'Chenopod','#color_chenopod#');
         
-            var dataMugwort = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
+            var dataMugwort = parseData(#mugwort_min#, #mugwort_max#);
             GiveaChart#id#('container_mugwort_#id#', dataMugwort, 'Mugwort','#color_mugwort#');
         
-            var dataNettle = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
+            var dataNettle = parseData(#nettle_min#, #nettle_max#);
             GiveaChart#id#('container_nettle_#id#', dataNettle, 'Nettle','#color_nettle#');
         
-            var dataRagweed = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
+            var dataRagweed = parseData(#ragweed_min#, #ragweed_max#);
             GiveaChart#id#('container_ragweed_#id#', dataRagweed, 'Ragweed','#color_ragweed#');
             
-            var dataOthers = parseData([1,2,1,2,1.77], [4.08,2.6,8.28,7.38,2.01]);
+            var dataOthers = parseData(#others_min#, #others_max#);
             GiveaChart#id#('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
         
         

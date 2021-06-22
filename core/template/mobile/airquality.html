@@ -1,5 +1,5 @@
 <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
-background-color: #background-color#; color: #color#; width: #width#;height: #height#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
+background-color: #background-color#; color: #color#; width: #width#; height:auto; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
 <span class="statusCmd"></span>
 <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
 <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
@@ -23,6 +23,7 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
 
         .aqi-#id#-image{
             max-width: 100%;
+            height: auto;
         }
     
         .aqi-#id#-space {
@@ -45,28 +46,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
             text-align: center;
         }
     
-        /* #airquality-min#uid#>.carousel-control {
-            position: absolute;
-            top: 30%;
-            z-index: 5;
-            display: inline-block;
-            margin-top: 0px;
-            width: 15px;
-        } */
-    
-        /* #airquality-min#uid# {
-            margin-top: 25px;
-        } */
-    
-        /* #forecast-#uid#>.carousel-control {
-            position: absolute;
-            top: 50%;
-            z-index: 5;
-            display: inline-block;
-            margin-top: 0px;
-            width: 20px;
-        } */
-    
         .header-#id#-container {
             margin-top: 15px;
             display: flex;
@@ -87,25 +66,7 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                 fill: rgba(0,0,0,0) !important;
                 fill-opacity: 0;
             }
-    
- 
-       .highcharts-data-table table {
-        margin: 0 auto;
-        }
-    
-        /* .highcharts-data-table caption {
-        padding: 1em 0;
-        font-size: 1.2em;
-        color: #555;
-        } */
-    
-        /* .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-        background: #f8f8f8;
-        }
-        .highcharts-data-table tr:hover {
-        background: #f1f7ff;
-        } */
-    
+        
         .slider-#id#-aqi {
             width: auto;
             height: auto;
@@ -142,8 +103,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
             flex-shrink: 0;
             width: 100%;
             height: 100%;
-            /*margin-right: 50px;
-            border-radius: 10px; */
             background: rgba(238, 238, 238, 0);
             transform-origin: center center;
             transform: scale(1);
@@ -159,6 +118,10 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
         .slides-#id#-aqi>div:target {
             transform: scale(0.8);
         }
+
+        .hidden{
+        display: none;
+    }
     
     </style>
     
@@ -184,7 +147,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                 <div title="#visibility#  m" class="cmd noRefresh aqi-#id#-aqi">#visibility#</div>
             </div>    
         </div>
-
 
         <div class="slider-#id#-aqi ">
             <div class="slides-#id#-aqi">
@@ -273,8 +235,6 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
                     gridLineWidth: 0
                 },
                 yAxis: [{
-                    // softMax: 250,
-                    // softMin: 100,
                     visible: false,
                     title: {
                         text: null
@@ -377,35 +337,34 @@ background-color: #background-color#; color: #color#; width: #width#;height: #he
             $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
             });
     
-        // $(document).on ("click", "#info-modal#nh3id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Ammoniac"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#so2id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Dioxyde de Souffre"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#no2id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Dioxyde d'Azote"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#noid#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Monoxyde d'Azote"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
-        //     });
+        $(document).on ("click", "#info-modal#nh3id#", function () {
+            $('#md_modal2').dialog({
+            title: "Info Ammoniac"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
+            });
+        $(document).on ("click", "#info-modal#so2id#", function () {
+            $('#md_modal2').dialog({
+            title: "Info Dioxyde de Souffre"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
+            });
+        $(document).on ("click", "#info-modal#no2id#", function () {
+            $('#md_modal2').dialog({
+            title: "Info Dioxyde d'Azote"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
+            });
+        $(document).on ("click", "#info-modal#noid#", function () {
+            $('#md_modal2').dialog({
+            title: "Info Monoxyde d'Azote"
+            });
+            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
+            });
     
          
-            
-    
-                   $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+        
+            $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
                         jeedom.cmd.execute({ id: $(this).data('cmd_id') });
                         });
  

@@ -3,7 +3,7 @@
      <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;position: relative;top:-2px;"
  hidden>#object_name#</span></a></strong></center>
  <style>
- 
+ /* Dashboard */
         .aqi-#id#-row {
             display: flex;
             align-items: center;
@@ -119,7 +119,7 @@
 </div>
 <script>
 
-var labels#id# =["Vendredie","Samedi","Dimanche","Lundi","Mardi"];
+var labels#id# = #labels#;
 
 function parseData(minArray, maxArray) {
 
@@ -133,65 +133,62 @@ function parseData(minArray, maxArray) {
 $(document).ready(function () {
 
 
-    var dataPoaceae =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
-    GiveaChart('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
-
-    var dataAlder =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
-    GiveaChart('container_alder_#id#', dataAlder, 'Alder','#color_alder#');
-
-    var dataBirch =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
-    GiveaChart('container_birch_#id#', dataBirch, 'Birch','#color_birch#');
-
-    var dataCypress =  parseData([0,0,0,0,0.77], [4.08,2.6,0.28,0.38,1.01]);
-    GiveaChart('container_cypress_#id#', dataCypress, 'PM10','#color_cypress#');
-
-    var dataElm =  parseData([173.57,165.22,176.91,173.57,180.24], [226.97,195.27,195.27,193.6,208.62]);
-    GiveaChart('container_elm_#id#', dataElm, 'Elm','#color_elm#');
-
-    // var dataHazel =  parseData(#hazel_min#, #hazel_max#);
-    var dataHazel =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_hazel_#id#', dataHazel, 'Hazel','#color_hazel#');
-   
-    var dataOak =  parseData([13.57,16.22,76.91,73.57,180.24], [206.97,195.27,195.27,193.6,208.62]);
-    GiveaChart('container_oak_#id#', dataOak, 'Oak','#color_oak#');
-   
-    var dataPine =   parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_pine_#id#', dataPine, 'Pine','#color_pine#');
-   
-    var dataPlane = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_plane_#id#', dataPlane, 'Plane','#color_plane#');
-
-    var dataPoplar = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_poplar_#id#', dataPoplar, 'Poplar','#color_poplar#');
-
-    var dataChenopod = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_chenopod_#id#', dataChenopod, 'Chenopod','#color_chenopod#');
-
-    var dataMugwort = parseData([1,2,0,0,0.77], [4.08,2.6,1.28,0.38,1.01]);
-    GiveaChart('container_mugwort_#id#', dataMugwort, 'Mugwort','#color_mugwort#');
-
-    var dataNettle = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
-    GiveaChart('container_nettle_#id#', dataNettle, 'Nettle','#color_nettle#');
-
-    var dataRagweed = parseData([1,2,1,2,0.77], [4.08,4.6,8.28,7.38,2.01]);
-    GiveaChart('container_ragweed_#id#', dataRagweed, 'Ragweed','#color_ragweed#');
-    
-    var dataOthers = parseData([1,2,1,2,1.77], [4.08,2.6,8.28,7.38,2.01]);
-    GiveaChart('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
-
-
+    var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
+        GiveaChart#id#('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
+        
+        var dataAlder =  parseData(#alder_min#, #alder_max#);
+        GiveaChart#id#('container_alder_#id#', dataAlder, 'Alder','#color_alder#');
+        
+        var dataBirch = parseData(#birch_min#, #birch_max#);
+        GiveaChart#id#('container_birch_#id#', dataBirch, 'Birch','#color_birch#');
+        
+        var dataCypress = parseData(#cypress_min#, #cypress_max#);
+        GiveaChart#id#('container_cypress_#id#', dataCypress, 'Cypress','#color_cypress#');
+        
+        var dataElm = parseData(#elm_min#, #elm_max#);
+        GiveaChart#id#('container_elm_#id#', dataElm, 'Elm','#color_elm#');
+        
+        var dataHazel = parseData(#hazel_min#, #hazel_max#);
+        GiveaChart#id#('container_hazel_#id#', dataHazel, 'Hazel','#color_hazel#');
+           
+        var dataOak =  parseData(#oak_min#, #oak_max#);
+        GiveaChart#id#('container_oak_#id#', dataOak, 'Oak','#color_oak#');
+           
+        var dataPine = parseData(#pine_min#, #pine_max#);
+        GiveaChart#id#('container_pine_#id#', dataPine, 'Pine','#color_pine#');
+           
+        var dataPlane = parseData(#plane_min#, #plane_max#);
+        GiveaChart#id#('container_plane_#id#', dataPlane, 'Plane','#color_plane#');
+        
+        var dataPoplar = parseData(#poplar_min#, #poplar_max#);
+        GiveaChart#id#('container_poplar_#id#', dataPoplar, 'Poplar','#color_poplar#');
+        
+        var dataChenopod = parseData(#chenopod_min#, #chenopod_max#);
+        GiveaChart#id#('container_chenopod_#id#', dataChenopod, 'Chenopod','#color_chenopod#');
+        
+        var dataMugwort = parseData(#mugwort_min#, #mugwort_max#);
+        GiveaChart#id#('container_mugwort_#id#', dataMugwort, 'Mugwort','#color_mugwort#');
+        
+        var dataNettle = parseData(#nettle_min#, #nettle_max#);
+        GiveaChart#id#('container_nettle_#id#', dataNettle, 'Nettle','#color_nettle#');
+        
+        var dataRagweed = parseData(#ragweed_min#, #ragweed_max#);
+        GiveaChart#id#('container_ragweed_#id#', dataRagweed, 'Ragweed','#color_ragweed#');
+            
+        var dataOthers = parseData(#others_min#, #others_max#);
+        GiveaChart#id#('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
+        
     })
   
 
-    function GiveaChart(container, data, name, colorOne = '#00AEEC') {
+    function GiveaChart#id#(container, data, name, colorOne = '#00AEEC') {
 
         Highcharts.chart(container, {
 
             chart: {
-
                 type: 'column',
                 height: 170,
-                width: 260,
+                width: 245,
                 alignTicks: true,
                   borderWidth:0
             },
@@ -204,7 +201,6 @@ $(document).ready(function () {
             title: {
                 text: null
             },
-
             xAxis: {
                 labels: {
                     rotation: -40,
@@ -216,13 +212,9 @@ $(document).ready(function () {
                 min: 0,
                 categories: labels#id#,
                 tickWidth: 1,
-                gridLineWidth: 0,
-              
-
+                gridLineWidth: 0
             },
             yAxis: [{
-                // softMax: 250,
-                // softMin: 100,
                 visible: false,
                 title: {
                     text: null
@@ -234,7 +226,6 @@ $(document).ready(function () {
                     format: '{value:.,0f}'
                 },
             }],
-
             legend: {
                 align: 'center',
                 verticalAlign: 'bottom',
@@ -242,37 +233,24 @@ $(document).ready(function () {
                 padding: 2,
                 margin: 0
             },
-
             tooltip: {
                 shared: true,
-                // crosshairs: true,
-                // split: true,
-                // distance: 30,
                 padding: 3,
-                // stickOnContact: true
-
-            },
-
+           },
             plotOptions: {
 
                 column: {
-                    pointPadding: 0.20,
-                    borderWidth: 0,
-                //     // width: 2
+                    pointPadding: 0.30,
+                    borderWidth: 0
                  },
                 series: {
-                    // maxPointWidth: 50,
-                    // cursor: 'pointer',
-                    // className: 'popup-on-click',
                     lineWidth: 5,
                     marker: {
                         lineWidth: 0
                     }
                 }
             },
-
             series: [
-
                 {
                     name: name + ' min',
                     lineWidth: '4px',

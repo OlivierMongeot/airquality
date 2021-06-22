@@ -58,18 +58,18 @@ class ComponentAqi
 
         }
 
-        if( $this->itemByCell == 3){
-            $res = array_chunk($array,3);
-            //  log::add('airquality', 'debug', json_encode( $res));
-            foreach ($res as $cellule) {
-                $newTab[] = implode('', $cellule);
-            }
-            // log::add('airquality', 'debug', json_encode( $newTab));
-            foreach ($newTab as $k => $item){
-                $starCell =  $this->getStartCell($k);
-                $html[] = $starCell . implode('', $item) . $this->getEndCell();
-            }
-        }
+        // if( $this->itemByCell == 3){
+        //     $res = array_chunk($array,3);
+        //     //  log::add('airquality', 'debug', json_encode( $res));
+        //     foreach ($res as $cellule) {
+        //         $newTab[] = implode('', $cellule);
+        //     }
+        //     // log::add('airquality', 'debug', json_encode( $newTab));
+        //     foreach ($newTab as $k => $item){
+        //         $starCell =  $this->getStartCell($k);
+        //         $html[] = $starCell . implode('', $item) . $this->getEndCell();
+        //     }
+        // }
         // log::add('airquality', 'debug', json_encode(implode( '', $html)));
         return implode( '', $html); 
 
@@ -95,7 +95,7 @@ class ComponentAqi
                 $interval ='15000';
             } else {
                 $active = ''; 
-                $interval ='5000';
+                $interval ='12000';
             } 
             return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
         }

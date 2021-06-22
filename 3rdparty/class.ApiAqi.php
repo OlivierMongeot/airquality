@@ -62,7 +62,7 @@ class ApiAqi
         if ($http_response_code != 200){
             $curlInfo = curl_getinfo($curl);
             log::add('airquality','debug',' Curl Info : '.json_encode($curlInfo). ' - Url : '. json_encode($url));
-            
+
         }
         $err = curl_error($curl);
         if ($err != '') {
@@ -188,9 +188,9 @@ class ApiAqi
     public function callApiForecastPollen($latitude = null, $longitude = null)
     { 
         message::add('debug','use  ApiForecastPollen');
-        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat".trim(round($latitude, 4))."&ln=".trim(round($longitude, 4));
-        $response = $this->curlApi($url, $this->apiKey);
-        log::add('airquality','debug',json_encode($response));
+        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=".trim(round($latitude, 4))."&lng=".trim(round($longitude, 4));
+        $response = $this->curlApi($url, $this->ambeeApiKey);
+
         $data = json_decode($response[0]);
         if ($response[1] != '') {
             echo ('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
@@ -221,7 +221,10 @@ class ApiAqi
 
         $components = ["Poaceae","Alder","Birch","Cypress","Elm","Hazel","Oak","Pine","Plane", "Poplar", 
         "Chenopod", "Mugwort","Nettle","Ragweed","Others"];
-        $dataList = $this->callApiForecastPollen($latitude, $longitude);
+
+        // $dataList = $this->callApiForecastPollen($latitude, $longitude);
+        $dataList = $this->JsonFakeForecastPollen();
+
         log::add('airquality', 'debug', json_encode( $dataList));
         foreach ($components as $component) {
             $newTabDay = $this->parseDataPollen($dataList, $component);
@@ -230,6 +233,18 @@ class ApiAqi
         return $minMaxTab;        
     }
 
+        /**
+         * Fonction pour le dev uniquement
+         */
+        public function JsonFakeForecastPollen(){
+            if (!is_file(__DIR__ . '/../core/config/forecastPollen.json')) {
+                throw new Exception('Pas de json, vérifier le chemin et le fichier');
+                return;
+            }
+            $content = file_get_contents(__DIR__ . '/../core/config/forecastPollen.json');
+            return json_decode($content, true);
+
+        }
 
 
     /**
@@ -256,33 +271,32 @@ class ApiAqi
         $beginOfDay = strtotime("today", time());
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
-            if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
-                $weekday = date('N', ($hourCast->dt + 100));
+            if ($hourCast['time'] >= $beginOfDay && $hourCast['time'] <= ($beginOfDay + 5 * $day)) {
+                $weekday = date('N', ($hourCast['time'] + 100));
                 $dayName =  $this->getNameDay($weekday);
                 
                 switch ($component) {
                     case "Poaceae":
-                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Grass->{"Grass / Poaceae"};
+                        $newTabAqiDay[$component][$dayName][] =  $hourCast['Species']['Grass']["Grass / Poaceae"];
                         break;
 
                     case "Poplar":   
-                            $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Tree->{"Poplar / Cottonwood"};
+                            $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Tree']["Poplar / Cottonwood"];
                         break;
 
                     case "Alder": case "Birch": case "Cypress": case "Elm":
                     case "Hazel": case "Oak": case "Pine": case "Plane":    
-                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Tree->{$component};
+                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Tree'][$component];
                         break;
                     
                     case "Chenopod": case "Mugwort": case "Nettle": case "Ragweed":
-                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Weed->{$component};
+                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Weed'][$component];
                         break;
                     
                     case "Others":
-                        $newTabAqiDay[$component][$dayName][] = $hourCast->Species->Others;
+                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Others'];
                         break;
                 }
-               
             }
         }
         return $newTabAqiDay;

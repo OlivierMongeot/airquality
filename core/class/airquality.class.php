@@ -41,79 +41,77 @@ class airquality extends eqLogic
 
     public static $_widgetPossibility = ['custom' => true, 'custom::layout' => false];
 
-
     public static function cron30()
     {
-        message::add('debug','cron 30');
-        foreach (self::byType('airquality') as $type) {
-
-            if ($type->getIsEnable() == 1) {
-                $cmd = $type->getCmd(null, 'refresh');
-                if (!is_object($cmd)) {
-                    continue;
+            foreach (eqLogic::byType(__CLASS__, true) as $airQuality) {
+                if ($airQuality->getConfiguration('elements') == 'polution') {
+                  $airQuality->updatePollution();
                 }
-                $cmd->execCmd();
-            }
-        }
+              }
     }
 
     public static function cronHourly()
     {
-        message::add('debug','cron Hourly');
-        foreach (self::byType('airquality') as $type) {
-
-            if ($type->getIsEnable() == 1) {
-                $cmd = $type->getCmd(null, 'refresh_pollen');
-                if (!is_object($cmd)) {
-                    continue;
-                }
-                $cmd->execCmd();
+        foreach (eqLogic::byType(__CLASS__, true) as $airQuality) {
+            if ($airQuality->getConfiguration('elements') == 'pollen') {
+              $airQuality->updatePollen();
             }
-        }
-    }
-
-    public static function cronDaily()
-    {
-        foreach (self::byType('airquality') as $type) {
-            if ($type->getIsEnable() == 1) {
-                $cmd = $type->getCmd(null, 'refresh_forecast');
-                if (!is_object($cmd)) {
-                    continue;
-                }
-                $cmd->execCmd();
-            }
-        }
+          }
     }
 
 
-    // public static function cron() {
 
-	// 	foreach (self::byType('airquality', true) as $airQuality) {
-	// 		// $autorefresh = '0 0 1 * * ?';
-    //         $autorefresh = '0 * * ? * *'; // Chaque Minute
-    //         try {
-    //             $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
-    //             if ($c->isDue()) {
-    //                 log::add('airquality', 'debug','is due');
-    //                 message::add('debug','refresh Cron is due test ');
-    //                 try {
-    //                     $refresh = $airQuality->getCmd(null, 'refresh');
-    //                     if(is_object($refresh)) {
-    //                         // $refresh->execCmd();
-    //                         message::add('debug','refresh Cron Custom test execCmd');
-    //                     } else {
-    //                         log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
-    //                     }
-    //                 } catch (Exception $exc) {
-    //                     log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
-    //                 }
-    //             }
-    //         } catch (Exception $exc) {
-    //             log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
-    //         }
-	// 	}
+    public static function cron() {
+    
+		foreach (self::byType('airquality') as $airQuality) {
+            if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
+                      
+                        $autorefresh = '1 7 * * *';
+                        try {
+                            $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
+                            if ($c->isDue()) {
+                                try {
+                                    $refresh = $airQuality->getCmd(null, 'refresh_forecast');
+                                    if(is_object($refresh)) {
+                                        $refresh->execCmd();
+                                
+                                    } else {
+                                        log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour '. $airQuality->getHumanName());
+                                    }
+                                } catch (Exception $exc) {
+                                    log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+                                }
+                            }
+                        } catch (Exception $exc) {
+                            log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                        }
+            }
+            if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
+            
+                $autorefresh = '0 7 * * *';
+              
+                try {
+                    $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
+                    if ($c->isDue()) {
+                        try {
+                            $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
+                            if(is_object($refresh)) {
+                                $refresh->execCmd();
+                        
+                            } else {
+                                log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour '. $airQuality->getHumanName());
+                            }
+                        } catch (Exception $exc) {
+                            log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+                        }
+                    }
+                } catch (Exception $exc) {
+                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                }
+    }
+		}
    
-	// }
+	}
 
     public function preInsert()
     {
@@ -155,19 +153,18 @@ class airquality extends eqLogic
             if (is_object($cmd)) {
                 $cmd->execCmd();
             }
-            $cmd = $this->getCmd(null, 'refresh_forecast');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
-            }
+            // $cmd = $this->getCmd(null, 'refresh_forecast');
+            // if (is_object($cmd)) {
+            //     $cmd->execCmd();
+            // }
         }
     }
 
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
     public function preSave()
     {
-        
             $this->setDisplay("width", "270px");
-            $this->setDisplay("height", "auto");
+            $this->setDisplay("height", "450px");
 
     }
 
@@ -177,13 +174,13 @@ class airquality extends eqLogic
             $setup = [
                 ['name' => 'aqi', 'title' => 'AQI', 'unit' => '', 'subType'=>'numeric', 'order' => 1],
                 ['name' => 'pm10', 'title' => 'PM10', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 2],
-                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
-                ['name' => 'no2', 'title' => 'NO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
+                ['name' => 'o3', 'title' => 'O³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
+                ['name' => 'no2', 'title' => 'NO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
                 ['name' => 'no', 'title' => 'NO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 4],
-                ['name' => 'co', 'title' => 'CO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 7],
+                ['name' => 'co', 'title' => 'CO', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 6],
                 ['name' => 'so2', 'title' => 'SO²', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 8],
                 ['name' => 'nh3', 'title' => 'NH³', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 9],
-                ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 5],
+                ['name' => 'pm25', 'title' => 'PM2.5', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 3],
                 ['name' => 'visibility', 'title' => 'Visibilité', 'unit' => 'm', 'subType'=>'numeric', 'order' => 10],
                 ['name' => 'uv', 'title' => 'Indice UV', 'unit' => 'μg/m3', 'subType'=>'numeric', 'order' => 11],
                 //Forecast
@@ -439,15 +436,13 @@ class airquality extends eqLogic
                         || $nameCmd == 'poaceae_min'|| $nameCmd == 'poaceae_max' || $nameCmd == 'alder_min'|| $nameCmd == 'alder_max'  || $nameCmd == 'birch_min'
                         || $nameCmd == 'birch_max'|| $nameCmd == 'cypress_min' || $nameCmd == 'cypress_max'|| $nameCmd == 'elm_min'  || $nameCmd == 'elm_max'
                         || $nameCmd == 'hazel_min'|| $nameCmd == 'hazel_max' || $nameCmd == 'oak_min'|| $nameCmd == 'oak_max'  || $nameCmd == 'pine_min'
-                        || $nameCmd == 'pine_max'|| $nameCmd == 'plane_min' || $nameCmd == 'plane_max'|| $nameCmd == 'poplar_min'  || $nameCmd == 'poplar_max'
+                        || $nameCmd == 'pine_max'|| $nameCmd == 'plane_min' || $nameCmd == 'plane_max' || $nameCmd == 'poplar_min'  || $nameCmd == 'poplar_max'
                         || $nameCmd == 'chenopod_min'|| $nameCmd == 'chenopod_max' || $nameCmd == 'mugwort_min'|| $nameCmd == 'mugwort_max'  || $nameCmd == 'nettle_min'
-                        || $nameCmd == 'nettle_max'|| $nameCmd == 'ragweed_min' || $nameCmd == 'ragweed_max'|| $nameCmd == 'others_min'  || $nameCmd == 'others_max'
-                     
-                        )
-                    {
-                        $indexMinMax = '#'.$nameCmd.'#';
-                        $replace[$indexMinMax] = $element->execCmd();
-                    } 
+                        || $nameCmd == 'nettle_max'|| $nameCmd == 'ragweed_min' || $nameCmd == 'ragweed_max'|| $nameCmd == 'others_min'  || $nameCmd == 'others_max')
+                            {
+                                $indexMinMax = '#'.$nameCmd.'#';
+                                $replace[$indexMinMax] = $element->execCmd();
+                            } 
                     else  if ( $nameCmd == 'days'){
                         $replace['#labels#'] = ($element->execCmd());
                     }
@@ -477,20 +472,26 @@ class airquality extends eqLogic
                         $replace[$commandNameId] = $element->getId();  
                     
                         // Historique Commun
-                        $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
-                        $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
-                        $unitreplace['#minHistoryValue#'] = self::formatValueForDisplay($historyStatistique['min'], 'short');
-                        $unitreplace['#maxHistoryValue#'] = self::formatValueForDisplay($historyStatistique['max'], 'short');
-                        $unitreplace['#averageHistoryValue#'] = self::formatValueForDisplay($historyStatistique['avg'], 'short');
-                        // Tendance Commun
-                        $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 10 . ' hour'));
-                        $tendance = $element->getTendance($startHist, date('Y-m-d H:i:s'));
-                        if ($tendance > config::byKey('historyCalculTendanceThresholddMax')) {
-                            $unitreplace['#tendance#'] = 'fas fa-arrow-up';
-                        } else if ($tendance < config::byKey('historyCalculTendanceThresholddMin')) {
-                            $unitreplace['#tendance#'] = 'fas fa-arrow-down';
+                        if ($element->getIsHistorized() == 1) {
+                            // Historique Commun
+                            $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
+                            $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
+                            $unitreplace['#minHistoryValue#'] = self::formatValueForDisplay($historyStatistique['min'], 'short');
+                            $unitreplace['#maxHistoryValue#'] = self::formatValueForDisplay($historyStatistique['max'], 'short');
+                            $unitreplace['#averageHistoryValue#'] = self::formatValueForDisplay($historyStatistique['avg'], 'short');
+                            // Tendance Commun
+                            $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 10 . ' hour'));
+                            $tendance = $element->getTendance($startHist, date('Y-m-d H:i:s'));
+                            if ($tendance > config::byKey('historyCalculTendanceThresholddMax')) {
+                                $unitreplace['#tendance#'] = 'fas fa-arrow-up';
+                            } else if ($tendance < config::byKey('historyCalculTendanceThresholddMin')) {
+                                $unitreplace['#tendance#'] = 'fas fa-arrow-down';
+                            } else {
+                                $unitreplace['#tendance#'] = 'fas fa-minus';
+                            }
+                            $unitreplace['#display#'] = '';
                         } else {
-                            $unitreplace['#tendance#'] = 'fas fa-minus';
+                        $unitreplace['#display#'] = 'hidden';
                         }
                         
                         // Enregistrement dans un tableau de tous les slides
@@ -660,18 +661,7 @@ class airquality extends eqLogic
     }
 
 
-    // public static function setDynGeoLoc($latitude, $longitude)
-    // {
-    //     config::save('DynLatitude', $latitude, 'airquality');
-    //     config::save('DynLongitude', $longitude, 'airquality');
-    //     $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-    //     $resLong = trim(config::byKey('DynLongitude', 'airquality'));
-    //     $api = new ApiAqi;
-    //     return $api->callApiReverseGeoLoc($resLong, $resLat);
-    // }
-
-
-    public function getData(string $apiName){
+    public function getApiData(string $apiName){
    
         $api = new ApiAqi();
         switch ($this->getConfiguration('searchMode')) {
@@ -729,20 +719,18 @@ class airquality extends eqLogic
 
     }
 
-    public function refreshData(){
+    public function updateData(){
         if ($this->getConfiguration('elements') == 'polution') {
-            $this->getPollution();
+            $this->updatePollution();
           } 
           else if ($this->getConfiguration('elements') == 'pollen'){
-            $this->getPollen();
+            $this->updatePollen();
           }
     }
 
-    public function getPollen(){
+    public function updatePollen(){
 
-        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
-        message::add('refresh Pollen', json_encode($d->format("Y-m-d H:i:s")));
-        $dataAll = $this->getData('getAmbee');
+        $dataAll = $this->getApiData('getAmbee');
         $dataPollen = $dataAll->data;
         $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
         $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
@@ -771,11 +759,9 @@ class airquality extends eqLogic
 
     }
 
-    public function getPollution(){
+    public function updatePollution(){
 
-        $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
-        message::add('refresh AQI', json_encode($d->format("Y-m-d H:i:s")));
-        $data = $this->getData('getAqi');
+        $data = $this->getApiData('getAqi');
         $this->checkAndUpdateCmd('aqi', $data->main->aqi);
         $this->checkAndUpdateCmd('no2', $data->components->no2);
         $this->checkAndUpdateCmd('no', $data->components->no);
@@ -785,17 +771,17 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('nh3', $data->components->nh3);
         $this->checkAndUpdateCmd('pm25', $data->components->pm2_5);
         $this->checkAndUpdateCmd('pm10', $data->components->pm10);
-        $data = $this->getData('getOneCallApi');
+        $data = $this->getApiData('getOneCallApi');
         $this->checkAndUpdateCmd('uv', $data->uvi);
         $this->checkAndUpdateCmd('visibility', $data->visibility);
         $this->refreshWidget();
 
     }
 
-    public function refreshforecastAQI(){
+    public function updateForecastAQI(){
         $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
-        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d \ H:i:s')));
-        $forecast =  $this->getData('getForecast');
+        message::add('refresh Forecast AQI ', json_encode($d->format('Y-m-d \ H:i:s')));
+        $forecast =  $this->getApiData('getForecast');
         $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
         $this->checkAndUpdateCmd('no2_min',json_encode($forecast['no2']['min']));
         $this->checkAndUpdateCmd('no2_max', json_encode( $forecast['no2']['max']));
@@ -818,12 +804,12 @@ class airquality extends eqLogic
         $this->refreshWidget();
     }
 
-    public function refreshforecastPollen(){
+    public function updateForecastPollen(){
  
         $d = new DateTime(strtotime(time()), new DateTimeZone('Europe/London'));
-        message::add('refresh Forecast Pollen from fction', json_encode($d->format('Y-m-d \ H:i:s')));
-        $forecast =  $this->getData('getForecastPollen');
-        message::add('debug',json_encode($forecast));
+        message::add('refresh Forecast Pollen', json_encode($d->format('Y-m-d \ H:i:s')));
+      
+        $forecast =  $this->getApiData('getForecastPollen');
         log::add('airquality', 'debug', json_encode( $forecast));
         $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
         $this->checkAndUpdateCmd('poaceae_min',json_encode($forecast['Poaceae']['min']));
@@ -843,7 +829,7 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('pine_min',json_encode($forecast['Pine']['min']));
         $this->checkAndUpdateCmd('pine_max',json_encode($forecast['Pine']['max']));
         $this->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['min']));
-        $this->checkAndUpdateCmd('plane_min',json_encode($forecast['Plane']['max']));
+        $this->checkAndUpdateCmd('plane_max',json_encode($forecast['Plane']['max']));
         $this->checkAndUpdateCmd('poplar_min',json_encode($forecast['Poplar']['min']));
         $this->checkAndUpdateCmd('poplar_max',json_encode($forecast['Poplar']['max']));
         $this->checkAndUpdateCmd('chenopod_min',json_encode($forecast['Chenopod']['min']));
@@ -851,31 +837,33 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('mugwort_min',json_encode($forecast['Mugwort']['min']));
         $this->checkAndUpdateCmd('mugwort_max',json_encode($forecast['Mugwort']['max']));
         $this->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['min']));
-        $this->checkAndUpdateCmd('nettle_min',json_encode($forecast['Nettle']['max']));
+        $this->checkAndUpdateCmd('nettle_max',json_encode($forecast['Nettle']['max']));
         $this->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['min']));
-        $this->checkAndUpdateCmd('ragweed_min',json_encode($forecast['Ragweed']['max']));
+        $this->checkAndUpdateCmd('ragweed_max',json_encode($forecast['Ragweed']['max']));
         $this->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['min']));
-        $this->checkAndUpdateCmd('others_min',json_encode($forecast['Others']['max']));
+        $this->checkAndUpdateCmd('others_max',json_encode($forecast['Others']['max']));
         $this->refreshWidget();
-
     }
-
 }
 
 
 class airqualityCmd extends cmd
 {
-   
+
     public static $_widgetPossibility = array('custom' => false);
 
     public function execute($_options = array())
     {
         if ($this->getLogicalId() == 'refresh') {
-            $this->getEqLogic()->refreshData();
-          }
+            $this->getEqLogic()->updateData();
+        }
 
-          
+        if ($this->getLogicalId() == 'refresh_forecast') {
+            $this->getEqLogic()->updateForecastAQI();
+        }
+
+        if ($this->getLogicalId() == 'refresh_pollen_forecast') {
+            $this->getEqLogic()->updateForecastPollen();
+        }
     }
-   
-
 }
