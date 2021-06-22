@@ -119,21 +119,18 @@
 </div>
 <script>
 
-var labels#id# = #labels#;
+    var labels#id# = #labels#;
 
-function parseData(minArray, maxArray) {
-
+    var parseData = (minArray, maxArray) => {
         let data = [];
         data.push(minArray);
         data.push(maxArray);
         return data;
     }
-
+    
    
-$(document).ready(function () {
 
-
-    var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
+        var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
         GiveaChart#id#('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
         
         var dataAlder =  parseData(#alder_min#, #alder_max#);
@@ -178,12 +175,12 @@ $(document).ready(function () {
         var dataOthers = parseData(#others_min#, #others_max#);
         GiveaChart#id#('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
         
-    })
   
 
-    function GiveaChart#id#(container, data, name, colorOne = '#00AEEC') {
 
-        Highcharts.chart(container, {
+    var  GiveaChart#id# = (container, data, name, colorOne = '#00AEEC') => {
+
+    Highcharts.chart(container, {
 
             chart: {
                 type: 'column',
@@ -266,189 +263,9 @@ $(document).ready(function () {
                 }
             ]
         });
-
-    
     }
-////////////////////////////////////////////////////////////////////////
-// var labels = #labels#;
-// // labels = labels.split(',');
-
-
-// function parseData(minArray, maxArray) {
-
-//         let data = [];
-//         data.push(minArray);
-//         data.push(maxArray);
-//         return data;
-//     }
-
-   
-// $(document).ready(function () {
-
-
-//     var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
-//     GiveaChart('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
-
-//     // var dataNo =  parseData('#min_no#', '#max_no#');
-//     var dataNo =  parseData(#no_min#, #no_max#);
-//     GiveaChart('container_no_#id#', dataNo, 'NO','#color_no#');
-
-//     var dataPm25 =  parseData( #pm25_min# , #pm25_max#);
-//     GiveaChart('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
-
-//     var dataPm10 =  parseData(#pm10_min#, #pm10_max#);
-//     GiveaChart('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
-
-//     var dataO3 =  parseData(#o3_min#, #o3_max#);
-//     GiveaChart('container_o3_#id#', dataO3, 'O³','#color_o3#');
-
-//     var dataNo2 =  parseData(#no2_min#, #no2_max#);
-//     GiveaChart('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
-   
-//     var dataSo2 =  parseData(#so2_min#, #so2_max#);
-//     GiveaChart('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
-   
-//     var dataNh3 =  parseData(#nh3_min#, #nh3_max#);
-//     GiveaChart('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
-   
-//     var dataAqi =  parseData(#aqi_min#, #aqi_max#);
-//     GiveaChart('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
-
-
-//     })
-  
-
-//     function GiveaChart(container, data, name, colorOne = '#00AEEC') {
-
-//         Highcharts.chart(container, {
-
-//             chart: {
-
-//                 type: 'column',
-//                 height: 180,
-//                 width: 250,
-//                 alignTicks: true,
-//                   borderWidth:0
-//             },
-//             exporting: {
-//                 enabled: false
-//             },
-//             credits: {
-//                 enabled: false
-//             },
-//             title: {
-//                 text: null
-//             },
-
-//             xAxis: {
-//                 labels: {
-//                     rotation: -40,
-//                     overflow: 'justify',
-//                     style: { fontSize: '10px' },
-//                     x: 14,
-//                     y: 15
-//                 },
-//                 min: 0,
-//                 categories: labels,
-//                 tickWidth: 1,
-//                 gridLineWidth: 0,
-              
-
-//             },
-//             yAxis: [{
-//                 // softMax: 250,
-//                 // softMin: 100,
-//                 visible: false,
-//                 title: {
-//                     text: null
-//                 },
-//                 labels: {
-//                     align: 'center',
-//                     x: 0,
-//                     y: 0,
-//                     format: '{value:.,0f}'
-//                 },
-//             }],
-
-//             legend: {
-//                 align: 'center',
-//                 verticalAlign: 'bottom',
-//                 borderWidth: 0
-//             },
-
-//             tooltip: {
-//                 shared: true,
-//                 // crosshairs: true,
-//                 // split: true,
-//                 // distance: 30,
-//                 padding: 3,
-//                 // stickOnContact: true
-
-//             },
-
-//             plotOptions: {
-
-//                 column: {
-//                     pointPadding: 0.20,
-//                     borderWidth: 0,
-//                 //     // width: 2
-//                  },
-//                 series: {
-//                     // maxPointWidth: 50,
-//                     // cursor: 'pointer',
-//                     // className: 'popup-on-click',
-//                     lineWidth: 5,
-//                     marker: {
-//                         lineWidth: 0
-//                     }
-//                 }
-//             },
-
-//             series: [
-
-//                 {
-//                     name: name + ' min',
-//                     lineWidth: '4px',
-//                     marker: { radius: 2 },
-//                     data: data[0],
-//                     color: 'currentColor'
-//                 }, {
-//                     name: name + ' max',
-//                     lineWidth: '4px',
-//                     marker: { radius: 2 },
-//                     data: data[1],
-//                       color: colorOne
-//                 }
-//             ]
-//         });
-
-    
-//     }
-
-      
-
-
-
-    $(document).ready(function () {
-
-
-         
-        // var mySlider#id# = $('#airquality-min#uid#').carousel()
-
-        //      $('#airquality-min#uid#').hover(function () {
-        //             console.log('pause')
-        //             mySlider#id#.carousel('pause');
-        //        }, function () {
-        //             mySlider#id#.carousel({
-        //                  'pause': false
-        //             });
-        //             console.log('restart')
-        //        });
-
-
-        
-
-               if ('#animation#' == 'active') {
+       
+    if ('#animation#' == 'active') {
                     var t#uid#;
 
                     var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
@@ -469,15 +286,14 @@ $(document).ready(function () {
                     $('.left.carousel-control.my#id#').on('click', function () {
                          clearTimeout(t#uid#);
                     });
-               }
+        }
 
+    $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+            jeedom.cmd.execute({
+            id: $(this).data('cmd_id')
+                });
 
-               $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
-                    jeedom.cmd.execute({
-                         id: $(this).data('cmd_id')
-                    });
+        });
 
-               });
-          });
      </script>
 </div>

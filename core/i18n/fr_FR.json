@@ -82,6 +82,9 @@
         "Particules fines PM 2.5": "Particules fines PM 2.5",
         "Particules fines PM 10": "Particules fines PM 10",
         "Rafraichir": "Rafraichir",
+        "Rafraichir Forecast":"Rafraichir Forecast",
+        "Rafraichir Forecast Pollen":"Rafraichir Forecast Pollen",
+
         "AQI":"AQI",
         "NO²":"NO²",
         "NO":"NO",
@@ -98,12 +101,12 @@
         "Herbes": "Herbes",
         "Arbres": "Arbres",
         "Mauvaises Herbes": "Mauvaises Herbes",
-        "Graminées": "Graminées",
         "Herbes/Graminées": "Herbes/Graminées",
         "Poacées":"Poacées",
         "Aulne":"Aulne",
         "Bouleau":"Bouleau",
         "Cyprès":"Cyprès",
+        "Graminées": "Graminées",
         "Orme":"Orme",
         "Noisetier":"Noisetier",
         "Chêne":"Chêne",
@@ -115,6 +118,16 @@
         "Ortie":"Ortie",
         "Ambroisie":"Ambroisie",
         "Autres":"Autres",
+        "Erreur pour":"Erreur pour",
+        "Expression cron non valide pour":"Expression cron non valide pour",
+        "Forecast days":"Forecast days",
+        "NO² Mini prévision":"NO² Mini forecast"
+
+    },
+    "info.json": {
+        "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez.On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
+    },
+    "plugins\/airquality\/3rdparty\/class.DisplayInfo.php": {
         "Bon":"Bon",
         "Correct":"Correct",
         "Dégradé":"Dégradé",
@@ -124,13 +137,25 @@
         "Risque haut":"Risque haut",
         "Risque modéré":"Risque modéré",
         "Risque bas":"Risque bas",
-        "Risque très haut":"Risque très haut"
-   
+        "Risque très haut":"Risque très haut",
+        "Poacées":"Poacées",
+        "Aulne":"Aulne",
+        "Bouleau":"Bouleau",
+        "Cyprès":"Cyprès",
+        "Graminées": "Graminées",
+        "Orme":"Orme",
+        "Noisetier":"Noisetier",
+        "Chêne":"Chêne",
+        "Pin":"Pin",
+        "Platane":"Platane",
+        "Peuplier":"Peuplier",
+        "Chenopod":"Chenopod",
+        "Armoise":"Armoise",
+        "Ortie":"Ortie",
+        "Ambroisie":"Ambroisie",
+        "Autres":"Autres"
 
 
-    },
-    "info.json": {
-        "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez.On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
     },
     "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {
         "Impossible de récupérer les coordonnées de cete ville": "Impossible de récupérer les coordonnées de cette ville",

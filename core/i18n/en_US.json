@@ -118,7 +118,10 @@
         "Autres":"Others",
 
         "Indice UV":"UV index",
-        "Visibilité":"Visibility",
+        "Visibilité":"Visibility"
+   
+
+    }, "plugins\/airquality\/3rdparty\/class.DisplayInfo.php": {
         "Bon":"Good",
         "Correct":"Correct",
         "Dégradé":"Degraded",
@@ -128,8 +131,24 @@
         "Risque haut":"High risk",
         "Risque modéré":"Moderate risk",
         "Risque bas":"Low Risk",
-        "Risque très haut":"Very High risk"
-   
+        "Risque très haut":"Very High risk",
+        "Poacées":"Poaceae",
+        "Aulne":"Alder",
+        "Bouleau":"Birch",
+        "Cyprès":"Cypress",
+        "Orme":"Elm",
+        "Noisetier":"Hazel",
+        "Chêne":"Oak",
+        "Pin":"Pine",
+        "Platane":"Plane",
+        "Peuplier":"Poplar",
+        "Chenopod":"Chenopod",
+        "Armoise":"Mugwort",
+        "Ortie":"Nettle",
+        "Ambroisie":"Ragweed",
+        "Autres":"Others",
+        "Autres pollens d'origine inconnue":"Autres pollens d'origine inconnue"
+
 
     },
     "info.json": {
