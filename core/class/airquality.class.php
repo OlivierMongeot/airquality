@@ -61,7 +61,6 @@ class airquality extends eqLogic
 
         foreach (self::byType('airquality') as $airQuality) {
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
-
                 $autorefresh = '2 7 * * *';
                 try {
                     $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
@@ -70,21 +69,21 @@ class airquality extends eqLogic
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
                                 $refresh->execCmd();
+                                log::add('airquality', 'debug', 'Refresh Cron Day 7h02' . $airQuality->getHumanName());
                             } else {
                                 log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
                             }
-                        } catch (Exception $exc) {
-                            log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+                        } catch (Exception $e) {
+                            log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $e->getMessage());
                         }
                     }
-                } catch (Exception $exc) {
+                } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
                 }
             }
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
 
                 $autorefresh = '1 7 * * *';
-
                 try {
                     $c = new Cron\CronExpression($autorefresh, new Cron\FieldFactory);
                     if ($c->isDue()) {
@@ -95,12 +94,12 @@ class airquality extends eqLogic
                             } else {
                                 log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
                             }
-                        } catch (Exception $exc) {
-                            log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $exc->getMessage());
+                        } catch (Exception $e) {
+                            log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $e->getMessage());
                         }
                     }
-                } catch (Exception $exc) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                } catch (Exception $e) {
+                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh. ' - ' .  $e->getMessage());
                 }
             }
         }
@@ -141,16 +140,22 @@ class airquality extends eqLogic
     // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement 
     public function postSave()
     {
-        if ($this->getIsEnable()) {
+
+       
+        if ($this->getIsEnable() && $this->getConfiguration('elements') == 'polution'  ) {
             $cmd = $this->getCmd(null, 'refresh');
             if (is_object($cmd)) {
                 $cmd->execCmd();
             }
-            // $cmd = $this->getCmd(null, 'refresh_forecast');
-            // if (is_object($cmd)) {
-            //     $cmd->execCmd();
-            // }
+            $cmd = $this->getCmd(null, 'refresh_forecast');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
         }
+
+
+
+        
     }
 
     // Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement 
@@ -248,53 +253,38 @@ class airquality extends eqLogic
                 ['name' => 'ragweed', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 18],
                 ['name' => 'others', 'title' => 'Autres', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 22],
                 ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType' => 'string', 'order' => 60],
-
+            
                 ['name' => 'days', 'title' => 'Forecast days Pollen', 'unit' => '', 'subType' => 'string', 'order' => 23],
                 ['name' => 'poaceae_min', 'title' => "Grass-Poaceae Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 24],
                 ['name' => 'poaceae_max', 'title' => 'Grass-Poaceae Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 25],
-
                 ['name' => 'alder_min', 'title' => "Alder Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 26],
                 ['name' => 'alder_max', 'title' => 'Alder Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 27],
-
                 ['name' => 'birch_min', 'title' => "Birch Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 28],
                 ['name' => 'birch_max', 'title' => "Birch Maxi prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 29],
-
                 ['name' => 'cypress_min', 'title' => "Cypress Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 30],
                 ['name' => 'cypress_max', 'title' => 'Cypress Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 31],
-
                 ['name' => 'elm_min', 'title' => "Elm Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 32],
                 ['name' => 'elm_max', 'title' => 'Elm Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 33],
-
                 ['name' => 'hazel_min', 'title' => "Hazel Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 34],
                 ['name' => 'hazel_max', 'title' => 'Hazel Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 35],
-
                 ['name' => 'oak_min', 'title' => "Oak Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 36],
                 ['name' => 'oak_max', 'title' => 'Oak Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 37],
-
                 ['name' => 'pine_min', 'title' => "Pine Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 38],
                 ['name' => 'pine_max', 'title' => 'Pine Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 39],
-
                 ['name' => 'plane_min', 'title' => "Plane Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 40],
                 ['name' => 'plane_max', 'title' => 'Plane Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 41],
-
                 ['name' => 'poplar_min', 'title' => "Poplar Cottonwood Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 42],
                 ['name' => 'poplar_max', 'title' => 'Poplar Cottonwood Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 43],
-
                 ['name' => 'chenopod_min', 'title' => "Chenopod Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 44],
                 ['name' => 'chenopod_max', 'title' => 'Chenopod Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 45],
-
                 ['name' => 'mugwort_min', 'title' => "Mugwort Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 46],
                 ['name' => 'mugwort_max', 'title' => 'Mugwort Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 47],
-
                 ['name' => 'nettle_min', 'title' => "Nettle Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 48],
                 ['name' => 'nettle_max', 'title' => 'Nettle Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 49],
-
                 ['name' => 'ragweed_min', 'title' => "Ragweed Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 50],
                 ['name' => 'ragweed_max', 'title' => 'Ragweed Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 51],
-
                 ['name' => 'others_min', 'title' => "Others Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 52],
                 ['name' => 'others_max', 'title' => 'Others Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 53],
-
             ];
 
 
@@ -310,7 +300,6 @@ class airquality extends eqLogic
             $refreshForecast->setSubType('other');
             $refreshForecast->save();
 
-
             $refresh = $this->getCmd(null, 'refresh');
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
@@ -324,11 +313,8 @@ class airquality extends eqLogic
             $refresh->save();
         }
 
-
         foreach ($setup as $command) {
-
             $info = $this->getCmd(null, $command['name']);
-
             if (!is_object($info)) {
                 $info = new airqualityCmd();
                 $info->setName(__($command['title'], __FILE__));
@@ -339,12 +325,6 @@ class airquality extends eqLogic
             $info->setOrder($command['order']);
             $info->setTemplate('dashboard', 'tile');
             $info->setSubType($command['subType']);
-            //  To do
-            if ($info->getIsHistorized() == 1) {
-                // config::save('displayStatsWidget', 1 , 'airquality' );
-                $info->setDisplay('showStatsOnmobile', 1);
-                $info->setDisplay('showStatsOndashboard', 1);
-            }
             $info->setUnite($command['unit']);
             $info->setDisplay('generic_type', 'GENERIC_INFO');
             $info->save();
@@ -367,7 +347,7 @@ class airquality extends eqLogic
         foreach ($this->getCmd('info') as $cmd) {
             $display = new DisplayInfo;
             // Verification si la valeur doit etre afficher todo
-            if ($this->getConfiguration($cmd->getLogicalId(), 0) == 1 || 0 == 0) {
+            if ($this->getConfiguration($cmd->getLogicalId(), 0) === 1 || 0 === 0) {
 
                 // Preparation des valeurs à remplacer 
                 $nameCmd = $cmd->getLogicalId();
@@ -448,13 +428,11 @@ class airquality extends eqLogic
                         $unitreplace['#cmdid#'] = $cmd->getId();
                         $unitreplace['#history#'] = 'history cursor';
                         $unitreplace['#info-modalcmd#'] = 'info-modal' . $element->getId();
-                        // Couleur du chart assorti au niveau live pour eviter sapin de noel
+                        // Couleur du chart assorti au niveau live pour eviter l'effet tannenbaum
                         $color = '#color_' . $nameCmd . '#';
                         $replace[$color] =  $icone->getColor();
-
                         $replace[$commandNameId] = $element->getId();
 
-                        // Historique Commun
                         if ($element->getIsHistorized() == 1) {
                             // Historique Commun
                             $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
@@ -493,12 +471,12 @@ class airquality extends eqLogic
                 }
             }
         }
-        // End foreach // 
+        // End Big foreach // 
 
         $component = new CreateHtmlAqi($tab, $this->getId(), 1, $version);
 
         // Replace Global 
-        if ($this->getConfiguration('elements') == 'polution') {
+        if ($this->getConfiguration('elements') === 'polution') {
             $replace['#index_name#'] = __('Indice', __FILE__);
         } else {
             $replace['#active_pollen_label#'] = __('Pollens actifs', __FILE__);
@@ -507,12 +485,11 @@ class airquality extends eqLogic
 
         $replace['#mini_slide#'] =  $component->getLayer();
 
-
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
 
 
-        if ($this->getConfiguration('animation_aqi') == 'disable_anim') {
+        if ($this->getConfiguration('animation_aqi') === 'disable_anim') {
             $replace['#animation#'] = 'disabled';
             $replace['#classCaroussel#'] = 'data-interval="false"';
         } else {

@@ -222,8 +222,8 @@ class ApiAqi
         $components = ["Poaceae","Alder","Birch","Cypress","Elm","Hazel","Oak","Pine","Plane", "Poplar", 
         "Chenopod", "Mugwort","Nettle","Ragweed","Others"];
 
-        // $dataList = $this->callApiForecastPollen($latitude, $longitude);
-        $dataList = $this->JsonFakeForecastPollen();
+        $dataList = $this->callApiForecastPollen($latitude, $longitude);
+        // $dataList = $this->JsonFakeForecastPollen();
 
         log::add('airquality', 'debug', json_encode( $dataList));
         foreach ($components as $component) {
@@ -266,35 +266,31 @@ class ApiAqi
     /**
      * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
      */
-    private function parseDataPollen($response, $component)
+    private function parseDataPollen($response, $element)
     {
         $beginOfDay = strtotime("today", time());
         $day = 86399; // in seconds
         foreach ($response as $hourCast) {
-            if ($hourCast['time'] >= $beginOfDay && $hourCast['time'] <= ($beginOfDay + 5 * $day)) {
-                $weekday = date('N', ($hourCast['time'] + 100));
+            if ($hourCast->time >= $beginOfDay && $hourCast->time <= ($beginOfDay + 5 * $day)) {
+                $weekday = date('N', ($hourCast->time + 100));
                 $dayName =  $this->getNameDay($weekday);
                 
-                switch ($component) {
+                switch ($element) {
                     case "Poaceae":
-                        $newTabAqiDay[$component][$dayName][] =  $hourCast['Species']['Grass']["Grass / Poaceae"];
+                        $newTabAqiDay[$element][$dayName][] =  $hourCast->Species->Grass->{"Grass / Poaceae"};
                         break;
-
                     case "Poplar":   
-                            $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Tree']["Poplar / Cottonwood"];
+                            $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Tree->{"Poplar / Cottonwood"};
                         break;
-
                     case "Alder": case "Birch": case "Cypress": case "Elm":
                     case "Hazel": case "Oak": case "Pine": case "Plane":    
-                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Tree'][$component];
+                        $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Tree->$element;
                         break;
-                    
                     case "Chenopod": case "Mugwort": case "Nettle": case "Ragweed":
-                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Weed'][$component];
+                        $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Weed->$element;
                         break;
-                    
                     case "Others":
-                        $newTabAqiDay[$component][$dayName][] = $hourCast['Species']['Others'];
+                        $newTabAqiDay[$element][$dayName][] = $hourCast->Species->$element;
                         break;
                 }
             }
