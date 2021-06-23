@@ -24,3 +24,89 @@
     <div id="container_#name#_#id#">
     </div>
 </div>
+<script>
+
+    Highcharts.chart(container_#name#_#id#, {
+        chart: {
+            type: 'column',
+            height: 170,
+            width: 245,
+            alignTicks: true,
+              borderWidth:0
+        },
+        exporting: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: null
+        },
+        xAxis: {
+            labels: {
+                rotation: -40,
+                overflow: 'justify',
+                style: { fontSize: '10px' },
+                x: 14,
+                y: 15
+            },
+            min: 0,
+            categories: #labels#,
+            tickWidth: 1,
+            gridLineWidth: 0
+        },
+        yAxis: [{
+            visible: false,
+            title: {
+                text: null
+            },
+            labels: {
+                align: 'center',
+                x: 0,
+                y: 0,
+                format: '{value:.,0f}'
+            },
+        }],
+        legend: {
+            align: 'center',
+            verticalAlign: 'bottom',
+            borderWidth: 0,
+            padding: 2,
+            margin: 0
+        },
+        tooltip: {
+            shared: true,
+            padding: 3,
+       },
+        plotOptions: {
+
+            column: {
+                pointPadding: 0.30,
+                borderWidth: 0
+             },
+            series: {
+                lineWidth: 5,
+                marker: {
+                    lineWidth: 0
+                },
+                borderRadius: 2
+            }
+        },
+        series: [
+            {
+                name: '#name#' + ' min',
+                lineWidth: '4px',
+                marker: { radius: 2 },
+                data: #min#,
+                color: 'currentColor'
+            }, {
+                name: '#name#' + ' max',
+                lineWidth: '4px',
+                marker: { radius: 2 },
+                data: #max#,
+                color: '#color#'
+            }
+        ]
+    });
+</script>

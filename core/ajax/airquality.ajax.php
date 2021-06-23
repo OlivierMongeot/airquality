@@ -30,24 +30,19 @@ try {
   switch (init('action')) {
 
     case 'getcity':
-    //   $city = airquality::callApiReverseGeoLoc(init('longitude'), init('latitude'));
-      $city = airquality::fetchReverse(init('longitude'), init('latitude'));
-    //   $api = new ApiAqi();
-    //   $city =  $api->callApiReverseGeoLoc(init('longitude'), init('latitude'));
+      $city = airquality::fetchReverseGeoLoc(init('longitude'), init('latitude'));
       ajax::success($city);
       break;
 
     case 'getCoordinates':
       $coordinates =  airquality::fetchGeoLoc(init('cityName'), init('cityCode'));
-    //   $coordinates =  airquality::callApiGeoLoc(init('cityName'), init('cityCode'));
-
       ajax::success($coordinates);
       break;
 
-    // case 'setDynGeoloc':
-    //   $setup =  airquality::setDynGeoLoc(init('longitude'), init('latitude'));
-    //   ajax::success($setup);
-    //   break;
+    case 'setDynGeoloc':
+      $setup =  airquality::setDynGeoLoc(init('longitude'), init('latitude'));
+      ajax::success($setup);
+      break;
 
     case 'getApiKeyWeather':
       $apiKeyWheather = config::byKey('apikey', 'weather');

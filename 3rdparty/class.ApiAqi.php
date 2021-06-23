@@ -10,28 +10,12 @@ class ApiAqi
      * Ambee Api Key
      */
     private $ambeeApiKey;
-    
+
 
     public function __construct()
     {
         $this->apiKey = trim(config::byKey('apikey', 'airquality'));
         $this->ambeeApiKey = trim(config::byKey('apikeyAmbee', 'airquality'));
-    }
-
-    /**
-     * Retourne Longitude et latitude avec la ville et le code pays
-     **/
-    public function callApiGeoLoc($city, $country_code, $state_code = null)
-    {
-        $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
-        $response = $this->curlApi($url, $this->apiKey);
-
-        if ($response[1]) {
-            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($response[1]), __FILE__));
-        } else {
-            $coordinates = json_decode($response[0]);
-            return  [$coordinates[0]->lat, $coordinates[0]->lon];
-        }
     }
 
     /**
@@ -55,21 +39,38 @@ class ApiAqi
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false
         ]);
-       
-        $response = curl_exec($curl);
-      
-        $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ($http_response_code != 200){
-            $curlInfo = curl_getinfo($curl);
-            log::add('airquality','debug',' Curl Info : '.json_encode($curlInfo). ' - Url : '. json_encode($url));
 
+        $response = curl_exec($curl);
+
+        $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($http_response_code != 200) {
+            $curlInfo = curl_getinfo($curl);
+            log::add('airquality', 'debug', ' Curl Info : ' . json_encode($curlInfo) . ' - Url : ' . json_encode($url));
         }
         $err = curl_error($curl);
         if ($err != '') {
             throw new Exception(__('Problème API : ' . json_encode($err), __FILE__));
-        } 
+        }
         curl_close($curl);
         return [$response, $err, $http_response_code];
+    }
+
+
+
+    /**
+     * Retourne Longitude et latitude avec la ville et le code pays
+     **/
+    public function callApiGeoLoc($city, $country_code, $state_code = null)
+    {
+        $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
+        $response = $this->curlApi($url, $this->apiKey);
+
+        if ($response[1]) {
+            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($response[1]), __FILE__));
+        } else {
+            $coordinates = json_decode($response[0]);
+            return  [$coordinates[0]->lat, $coordinates[0]->lon];
+        }
     }
 
 
@@ -79,10 +80,8 @@ class ApiAqi
     public function callApiReverseGeoLoc($longitude, $latitude)
     {
         if ($longitude != '' && $latitude != '') {
-
             $url = "http://api.openweathermap.org/geo/1.0/reverse?lat=" . $latitude . "&lon=" . $longitude;
             $response = $this->curlApi($url, $this->apiKey);
-
             if ($response[1]) {
                 throw new Exception(__('Impossible de récupérer cette ville en reverse géolocalisation :' . json_encode($response[1]), __FILE__));
             } else {
@@ -97,14 +96,14 @@ class ApiAqi
     }
 
     /**
-     * Appel API AQI 
+     * Appel API AQI Pollution Live
      */
     public function getAqi($latitude, $longitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         if ($response[1]) {
-            throw new Exception('Pas de données de pollution pour l\'instant : '.$response[1] );
+            throw new Exception('Pas de données de pollution pour l\'instant : ' . $response[1]);
         } else {
             $data = json_decode($response[0]);
             $result = $data->list[0];
@@ -117,7 +116,7 @@ class ApiAqi
     }
 
     /**
-     * Appel API OneCall OpenWheather AQI 
+     * Appel API OneCall OpenWheather UV et Visibilité
      */
     public function getOneCallApi($latitude, $longitude)
     {
@@ -126,7 +125,7 @@ class ApiAqi
         $data = json_decode($response[0]);
 
         if ($response[1] != null) {
-            throw new Exception('Pas de données  UV et visibilité pour l\'instant : '. $response[1] );
+            throw new Exception('Pas de données  UV et visibilité pour l\'instant : ' . $response[1]);
         } else {
             if ($data == [] || $data == null) {
                 throw new Exception('Pas de données UV et visibilité avec ces coordonnées');
@@ -137,7 +136,7 @@ class ApiAqi
     }
 
     /**
-     * Appel Pollen Ambee 
+     * Appel Pollen Ambee Live
      */
     public function getAmbee($latitude = null, $longitude = null)
     {
@@ -145,9 +144,9 @@ class ApiAqi
         if ($latitude === null && $longitude === null) {
             $latitude = 50 && $longitude = 50;
         }
-        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=".trim(round($latitude, 4))."&lng=".trim(round($longitude, 4));
+        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey);
-        
+
         if ($response[1]) {
             throw new Exception('Pas de données de Pollen pour l\'instant');
         } else {
@@ -162,16 +161,16 @@ class ApiAqi
     }
 
     /**
-     * Appel Forecast OpenWheather AQI 
+     * Appel Forecast OpenWheather AQI Pollution
      */
     public function callApiForecastAQI($latitude = null, $longitude = null)
-    { 
-        message::add('debug','use  ApiForecastAQI');
+    {
+        message::add('debug', 'use  ApiForecastAQI');
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-            echo ('Pas de données Forecast AQI pour l\'instant : '. $response[1]);
+            echo ('Pas de données Forecast AQI pour l\'instant : ' . $response[1]);
         } else {
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast AQI avec ces coordonnées');
@@ -182,13 +181,13 @@ class ApiAqi
     }
 
 
-  /**
+    /**
      * Appel Forecast Ambee Pollen AQI 
      */
     public function callApiForecastPollen($latitude = null, $longitude = null)
-    { 
-        message::add('debug','use  ApiForecastPollen');
-        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=".trim(round($latitude, 4))."&lng=".trim(round($longitude, 4));
+    {
+        message::add('debug', 'use  ApiForecastPollen');
+        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey);
 
         $data = json_decode($response[0]);
@@ -196,7 +195,7 @@ class ApiAqi
             echo ('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
         } else {
             if ($data == [] || $data == null) {
-                echo ('Pas de données Forecast Pollen : ' . $data->message );
+                echo ('Pas de données Forecast Pollen : ' . $data->message);
             } else {
                 return $data->data;
             }
@@ -204,47 +203,41 @@ class ApiAqi
     }
 
 
+    /**
+     * Retourne Forecast parsé min/max/jour AQI 
+     */
+    public function getForecast($latitude = null, $longitude = null)
+    {
 
-    public function getForecast($latitude = null, $longitude = null){
-
-        $components = ['co','no','o3','no2','so2','nh3','aqi','pm10','pm2_5'];
+        $components = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 
         foreach ($components as $component) {
             $newTabDay = $this->parseData($dataList, $component);
             $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
         }
-        return $minMaxTab;        
+        return $minMaxTab;
     }
 
-    public function getForecastPollen($latitude = null, $longitude = null){
+    /**
+     * Retourne Forecast parsé min/max/jour Pollen 
+     */
+    public function getForecastPollen($latitude = null, $longitude = null)
+    {
 
-        $components = ["Poaceae","Alder","Birch","Cypress","Elm","Hazel","Oak","Pine","Plane", "Poplar", 
-        "Chenopod", "Mugwort","Nettle","Ragweed","Others"];
+        $components = [
+            "Poaceae", "Alder", "Birch", "Cypress", "Elm", "Hazel", "Oak", "Pine", "Plane", "Poplar",
+            "Chenopod", "Mugwort", "Nettle", "Ragweed", "Others"
+        ];
 
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
-        // $dataList = $this->JsonFakeForecastPollen();
-
-        log::add('airquality', 'debug', json_encode( $dataList));
+        log::add('airquality', 'debug', json_encode($dataList));
         foreach ($components as $component) {
             $newTabDay = $this->parseDataPollen($dataList, $component);
             $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
         }
-        return $minMaxTab;        
+        return $minMaxTab;
     }
-
-        /**
-         * Fonction pour le dev uniquement
-         */
-        public function JsonFakeForecastPollen(){
-            if (!is_file(__DIR__ . '/../core/config/forecastPollen.json')) {
-                throw new Exception('Pas de json, vérifier le chemin et le fichier');
-                return;
-            }
-            $content = file_get_contents(__DIR__ . '/../core/config/forecastPollen.json');
-            return json_decode($content, true);
-
-        }
 
 
     /**
@@ -264,7 +257,7 @@ class ApiAqi
 
 
     /**
-     * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
+     * Combine les données en tableau avec un index par jour + recupération du nom du jour de la semaine avec le timestamp
      */
     private function parseDataPollen($response, $element)
     {
@@ -274,19 +267,28 @@ class ApiAqi
             if ($hourCast->time >= $beginOfDay && $hourCast->time <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->time + 100));
                 $dayName =  $this->getNameDay($weekday);
-                
+
                 switch ($element) {
                     case "Poaceae":
                         $newTabAqiDay[$element][$dayName][] =  $hourCast->Species->Grass->{"Grass / Poaceae"};
                         break;
-                    case "Poplar":   
-                            $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Tree->{"Poplar / Cottonwood"};
+                    case "Poplar":
+                        $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Tree->{"Poplar / Cottonwood"};
                         break;
-                    case "Alder": case "Birch": case "Cypress": case "Elm":
-                    case "Hazel": case "Oak": case "Pine": case "Plane":    
+                    case "Alder":
+                    case "Birch":
+                    case "Cypress":
+                    case "Elm":
+                    case "Hazel":
+                    case "Oak":
+                    case "Pine":
+                    case "Plane":
                         $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Tree->$element;
                         break;
-                    case "Chenopod": case "Mugwort": case "Nettle": case "Ragweed":
+                    case "Chenopod":
+                    case "Mugwort":
+                    case "Nettle":
+                    case "Ragweed":
                         $newTabAqiDay[$element][$dayName][] = $hourCast->Species->Weed->$element;
                         break;
                     case "Others":
@@ -321,37 +323,26 @@ class ApiAqi
     {
         switch ($numDay) {
             case 1:
-                return __('Lundi',__FILE__);
+                return __('Lundi', __FILE__);
             case 2:
-                return __('Mardi',__FILE__);
+                return __('Mardi', __FILE__);
             case 3:
-                return __('Mercredi',__FILE__);
+                return __('Mercredi', __FILE__);
             case 4:
-                return __('Jeudi',__FILE__);
+                return __('Jeudi', __FILE__);
             case 5:
-                return  __('Vendredi',__FILE__);
+                return  __('Vendredi', __FILE__);
             case 6:
-                return  __('Samedi',__FILE__);
+                return  __('Samedi', __FILE__);
             case 7:
-                return __('Dimanche',__FILE__);
+                return __('Dimanche', __FILE__);
         }
     }
 
-    /**
-     * todo
-     */
-    public function setDynGeoLoc($latitude, $longitude)
-    {
-        config::save('DynLatitude', $latitude, 'airquality');
-        config::save('DynLongitude', $longitude, 'airquality');
-        // $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-        // $resLong = trim(config::byKey('DynLongitude', 'airquality'));
-        // return  self::callApiReverseGeoLoc($resLong,$resLat);
-        return  $this->callApiReverseGeoLoc($latitude, $longitude);
-    }
+ 
 
     /**
-     * todo 
+     * Unuse 
      */
     public static function convertToPPM($microGramByM3, $molecule)
     {
@@ -361,5 +352,4 @@ class ApiAqi
         $ppm = 24.45 * ($microGramByM3 / 1000) / $molecularWeight[$molecule];
         return number_format((float)$ppm, 3, '.', '');
     }
-
 }

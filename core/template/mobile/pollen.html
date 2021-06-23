@@ -94,18 +94,14 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
             flex-shrink: 0;
             width: 100%;
             height: 100%;
-            /*margin-right: 50px;
-            border-radius: 10px; */
             background: rgba(238, 238, 238, 0);
             transform-origin: center center;
             transform: scale(1);
             transition: transform 0.8s;
             position: relative;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
         }
 
         .slides-#id#-aqi>div:target {
@@ -149,7 +145,6 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
         <div title="#updatedAt#" class="cmd header-#id#-mini active-pollen-#id# ">
             #active_pollen_label# : #activePollen# / 15
         </div>
-
         <div class="slider-#id#-aqi ">
             <div class="slides-#id#-aqi">
                 #mini_slide#
@@ -157,194 +152,14 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
         </div>
     </div>
 
+<script>
 
+    $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+        jeedom.cmd.execute({
+            id: $(this).data('cmd_id')
+        });
 
-    <script>
+    });
 
-        var labels#id# = #labels#;
-        
-        function parseData(minArray, maxArray) {
-        
-                let data = [];
-                data.push(minArray);
-                data.push(maxArray);
-                return data;
-            }
-        
-           
-        $(document).ready(function () {
-        
-        
-            var dataPoaceae =  parseData(#poaceae_min#, #poaceae_max#);
-            GiveaChart#id#('container_poaceae_#id#', dataPoaceae, 'Poaceae', '#color_poaceae#');
-        
-            var dataAlder =  parseData(#alder_min#, #alder_max#);
-            GiveaChart#id#('container_alder_#id#', dataAlder, 'Alder','#color_alder#');
-        
-            var dataBirch = parseData(#birch_min#, #birch_max#);
-            GiveaChart#id#('container_birch_#id#', dataBirch, 'Birch','#color_birch#');
-        
-            var dataCypress = parseData(#cypress_min#, #cypress_max#);
-            GiveaChart#id#('container_cypress_#id#', dataCypress, 'Cypress','#color_cypress#');
-        
-            var dataElm = parseData(#elm_min#, #elm_max#);
-            GiveaChart#id#('container_elm_#id#', dataElm, 'Elm','#color_elm#');
-        
-            var dataHazel = parseData(#hazel_min#, #hazel_max#);
-            GiveaChart#id#('container_hazel_#id#', dataHazel, 'Hazel','#color_hazel#');
-           
-            var dataOak =  parseData(#oak_min#, #oak_max#);
-            GiveaChart#id#('container_oak_#id#', dataOak, 'Oak','#color_oak#');
-           
-            var dataPine = parseData(#pine_min#, #pine_max#);
-            GiveaChart#id#('container_pine_#id#', dataPine, 'Pine','#color_pine#');
-           
-            var dataPlane = parseData(#pine_min#, #pine_max#);
-            GiveaChart#id#('container_plane_#id#', dataPlane, 'Plane','#color_plane#');
-        
-            var dataPoplar = parseData(#poplar_min#, #poplar_max#);
-            GiveaChart#id#('container_poplar_#id#', dataPoplar, 'Poplar','#color_poplar#');
-        
-            var dataChenopod = parseData(#chenopod_min#, #chenopod_max#);
-            GiveaChart#id#('container_chenopod_#id#', dataChenopod, 'Chenopod','#color_chenopod#');
-        
-            var dataMugwort = parseData(#mugwort_min#, #mugwort_max#);
-            GiveaChart#id#('container_mugwort_#id#', dataMugwort, 'Mugwort','#color_mugwort#');
-        
-            var dataNettle = parseData(#nettle_min#, #nettle_max#);
-            GiveaChart#id#('container_nettle_#id#', dataNettle, 'Nettle','#color_nettle#');
-        
-            var dataRagweed = parseData(#ragweed_min#, #ragweed_max#);
-            GiveaChart#id#('container_ragweed_#id#', dataRagweed, 'Ragweed','#color_ragweed#');
-            
-            var dataOthers = parseData(#others_min#, #others_max#);
-            GiveaChart#id#('container_others_#id#', dataOthers, 'Ragweed','#color_others#');
-        
-        
-            })
-          
-        
-            function GiveaChart#id#(container, data, name, colorOne = '#00AEEC') {
-        
-                Highcharts.chart(container, {
-        
-                    chart: {
-        
-                        type: 'column',
-                        height: 170,
-                        width: 260,
-                        alignTicks: true,
-                          borderWidth:0
-                    },
-                    exporting: {
-                        enabled: false
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    title: {
-                        text: null
-                    },
-        
-                    xAxis: {
-                        labels: {
-                            rotation: -40,
-                            overflow: 'justify',
-                            style: { fontSize: '10px' },
-                            x: 14,
-                            y: 15
-                        },
-                        min: 0,
-                        categories: labels#id#,
-                        tickWidth: 1,
-                        gridLineWidth: 0,
-                      
-        
-                    },
-                    yAxis: [{
-                        // softMax: 250,
-                        // softMin: 100,
-                        visible: false,
-                        title: {
-                            text: null
-                        },
-                        labels: {
-                            align: 'center',
-                            x: 0,
-                            y: 0,
-                            format: '{value:.,0f}'
-                        },
-                    }],
-        
-                    legend: {
-                        align: 'center',
-                        verticalAlign: 'bottom',
-                        borderWidth: 0,
-                        padding: 2,
-                        margin: 0
-                    },
-        
-                    tooltip: {
-                        shared: true,
-                        // crosshairs: true,
-                        // split: true,
-                        // distance: 30,
-                        padding: 3,
-                        // stickOnContact: true
-        
-                    },
-        
-                    plotOptions: {
-        
-                        column: {
-                            pointPadding: 0.20,
-                            borderWidth: 0,
-                        //     // width: 2
-                         },
-                        series: {
-                            // maxPointWidth: 50,
-                            // cursor: 'pointer',
-                            // className: 'popup-on-click',
-                            lineWidth: 5,
-                            marker: {
-                                lineWidth: 0
-                            }
-                        }
-                    },
-        
-                    series: [
-        
-                        {
-                            name: name + ' min',
-                            lineWidth: '4px',
-                            marker: { radius: 2 },
-                            data: data[0],
-                            color: 'currentColor'
-                        }, {
-                            name: name + ' max',
-                            lineWidth: '4px',
-                            marker: { radius: 2 },
-                            data: data[1],
-                              color: colorOne
-                        }
-                    ]
-                });
-        
-            
-            }
-
-        
-                      
-    
-                
-    
-        
-                       $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
-                            jeedom.cmd.execute({
-                                 id: $(this).data('cmd_id')
-                            });
-        
-                       });
-               
-             </script>
+</script>
 </div>

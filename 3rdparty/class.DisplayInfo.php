@@ -1,9 +1,7 @@
 <?php
 
-
 class DisplayInfo
 {
-
 
     public function formatValueForDisplay($value, $style = 'normal')
     {
@@ -87,5 +85,7 @@ class DisplayInfo
                 return __("Autres pollens d'origine inconnue", __FILE__);
         }
     }
+
+ 
 
 }
