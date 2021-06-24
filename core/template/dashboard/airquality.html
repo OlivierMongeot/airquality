@@ -44,12 +44,16 @@
         width: 20px;
     }
 
+    .historique-#id#{
+        text-align: center;width:100%;
+    }
+
     #airquality-min#uid# {
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
     .aqi-#id#-space {
-        margin-top: 10px;
+        margin-top: 5px;
     }
 
     .aqi-#id#-aqi, .aqi-#id#-value,
@@ -59,12 +63,17 @@
 
     .aqi-#id#-label {
         font-weight:400;
-        font-size: 160%;
+        font-size: 120%;
         text-align: center;
     }
 
     .hidden{
         display: none;
+    }
+
+    .display-aqi {
+        font-size: 12px; line-height: 12px;
+        color: var(--link-color) !important;
     }
    
 </style>
@@ -73,19 +82,21 @@
     <div class="header-#id#-container">
         <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
             <div title="Cliquez pour + d'info" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
-            <div class="cmd noRefresh aqi-#id#-label-aqi">#uv_name#</div>
-            <div class="cmd noRefresh aqi-#id#-aqi">#uv#</div>
+            <div class="display-aqi aqi-#id#-label-aqi">#uv_name#</div>
+            <div class="display-aqi aqi-#id#-aqi">#uv#</div>
+            <div class="display-aqi aqi-#id#-aqi">#uv_level#</div>
         </div>
         <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
         
-            <div title="Cliquez pour + d'info" id="info-modal-aqi#id#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
-            <div style="font-size: 1.8rem;" class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
-            <div style="font-size: 1.2rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
+            <div title="Info" id="info-modal-aqi#id#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
+            <div style="font-size: 1.8rem;" class="display-aqi aqi-#id#-aqi">#aqi_name# #aqi#</div>
+            <div style="font-size: 1.2rem;" class="display-aqi aqi-#id#-space">#aqiinfo#</div>
         </div>
         <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
             <div  title="Cliquez pour + d'info" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
-            <div class="cmd noRefresh">#visibility_name#</div>
-            <div title="#visibility#  m" class="cmd noRefresh aqi-#id#-aqi">#visibility#</div>
+            <div class="display-aqi">#visibility_name#</div>
+            <div title="#visibility#  m" class="display-aqi aqi-#id#-aqi">#visibility#</div>
+            <div class="display-aqi aqi-#id#-aqi">#visibility_level#</div>
         </div>    
     </div>
 
@@ -130,43 +141,43 @@
         $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoVisibility&id=#id#&logical_id=#visibilityid#').dialog('open');
         });
     
-    $(document).on ("click", ".info-modal#pm10id#", function () {    
+    $(document).on ("click", ".info-modalpm10#id#", function () {    
         $('#md_modal2').dialog({
         title: "Info Particules Fines"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=#pm10id#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=pm10#id#').dialog('open');
                 });
 
-    $(document).on ("click", ".info-modal#o3id#", function () {
+    $(document).on ("click", ".info-modalo3#id#", function () {
         $('#md_modal2').dialog({
         title: "Info Ozone"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=o3#id#').dialog('open');
         });
 
-    $(document).on ("click", "#info-modal#nh3id#", function () {
+    $(document).on ("click", ".info-modalnh3#id#", function () {
         $('#md_modal2').dialog({
         title: "Info Ammoniac"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=nh3#id#').dialog('open');
         });
-    $(document).on ("click", "#info-modal#so2id#", function () {
+    $(document).on ("click", ".info-modalso2#id#", function () {
         $('#md_modal2').dialog({
         title: "Info Dioxyde de Souffre"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=so2#id#').dialog('open');
         });
-    $(document).on ("click", "#info-modal#no2id#", function () {
+    $(document).on ("click", ".info-modalno2#id#", function () {
         $('#md_modal2').dialog({
         title: "Info Dioxyde d'Azote"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=no2#id#').dialog('open');
         });
-    $(document).on ("click", "#info-modal#noid#", function () {
+    $(document).on ("click", ".info-modalno#id#", function () {
         $('#md_modal2').dialog({
         title: "Info Monoxyde d'Azote"
         });
-        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=no#id#').dialog('open');
         });
         
             var  mySlider#id# = $('#airquality-min#uid#').carousel({pause: "true"});

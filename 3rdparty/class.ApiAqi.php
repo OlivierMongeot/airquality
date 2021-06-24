@@ -49,7 +49,7 @@ class ApiAqi
         }
         $err = curl_error($curl);
         if ($err != '') {
-            throw new Exception(__('Problème API : ' . json_encode($err), __FILE__));
+            log::add('airquality', 'debug', __('Problème API : ' . json_encode($err), __FILE__));
         }
         curl_close($curl);
         return [$response, $err, $http_response_code];
@@ -186,7 +186,6 @@ class ApiAqi
      */
     public function callApiForecastPollen($latitude = null, $longitude = null)
     {
-        message::add('debug', 'use  ApiForecastPollen');
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey);
 
@@ -224,12 +223,10 @@ class ApiAqi
      */
     public function getForecastPollen($latitude = null, $longitude = null)
     {
-
         $components = [
             "Poaceae", "Alder", "Birch", "Cypress", "Elm", "Hazel", "Oak", "Pine", "Plane", "Poplar",
             "Chenopod", "Mugwort", "Nettle", "Ragweed", "Others"
         ];
-
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
         log::add('airquality', 'debug', json_encode($dataList));
         foreach ($components as $component) {

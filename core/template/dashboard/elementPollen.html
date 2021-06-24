@@ -2,8 +2,12 @@
      <!-- /* Dashboard */ -->
     <div class="aqi-#id#-row" style="width:100%;">
         <!-- Nom -->
-        <div style="min-width:100px;" class="cmd noRefresh aqi-#id#-label tooltips cursor" data-type="info"
+        <div class="state aqi-#id#-particule">
+             <div style="min-width:100px;" class="cmd noRefresh aqi-#id#-label tooltips cursor" data-type="info"
             data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
+            <div style="font-size: 0.8em;">#risk#</div>
+        </div>
+       
         <!-- Icone -->
         <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
         <div class="aqi-#id#-particule" style="width:90px;">
@@ -31,9 +35,9 @@
         chart: {
             type: 'column',
             height: 170,
-            width: 245,
+            width: 205,
             alignTicks: true,
-              borderWidth:0
+            borderWidth:0
         },
         exporting: {
             enabled: false
@@ -74,7 +78,7 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 0
+            margin: 2
         },
         tooltip: {
             shared: true,
@@ -83,7 +87,7 @@
         plotOptions: {
 
             column: {
-                pointPadding: 0.30,
+                pointPadding: 0.20,
                 borderWidth: 0
              },
             series: {
@@ -91,7 +95,8 @@
                 marker: {
                     lineWidth: 0
                 },
-                borderRadius: 2
+                borderRadius: 2,
+                pointWidth: 10
             }
         },
         series: [

@@ -49,22 +49,106 @@ class DisplayInfo
         }
     }
 
+    public function getElementRiskPollen($color){
+
+        switch ($color) {
+
+            case '#00BD01':
+                return 'Risque Bas';
+                break;
+            case '#EFE800':
+                return 'Risque modéré';
+                break;
+            case '#E79C00':
+                return 'Risque élevé';
+                break;
+            default :
+                return 'Risque très élevé';
+        }
+    }
+
+    public function getElementRiskAqi($color){
+
+        switch ($color) {
+
+            case '#00AEEC':
+                return __("Bon", __FILE__);
+                break;
+            case '#00BD01':
+                return __("Correct", __FILE__);
+                break;
+            case '#EFE800':
+                return  __("Dégradé", __FILE__);
+                break;
+            case '#E79C00':
+                return __("Mauvais", __FILE__);
+                break;
+            case '#B00000':
+                return __("Très mauvais", __FILE__);
+                break;
+            case '#B00000':
+                return __("Extrême", __FILE__);
+                break;
+        }
+    }
+
+    /**
+     * Basé sur l'indice UV officiel
+     */
+    public function getUVRapport($level){
+        switch ($level) {
+        case $level > 0  && $level < 3:
+            $alert = 'Faible';
+            break;
+        case $level >= 3  && $level < 6:
+            $alert = 'Modéré';
+            break;
+        case $level >= 6  && $level < 8:
+            $alert = 'Élevé';
+            break;
+        case $level >= 8  && $level < 11:
+            $alert = 'Très élevé';
+            break;
+        case $level >= 11 :
+            $alert = 'Extrême';
+            break;
+        }
+        return $alert;
+    }
+
+    /**
+     * Basé sur les info Météo Marine Française
+     */
+    public function getVisibilityRapport($level){
+        switch ($level) {
+        case $level > 0  && $level < 700:
+                $alert = 'Très Mauvaise';
+                break;
+        case $level >= 700  && $level < 3210:
+            $alert = 'Mauvaise';
+            break;
+        case $level >= 3210  && $level < 8000:
+            $alert = 'Moyenne';
+            break;
+        case $level >= 8000 :
+            $alert = 'Bonne';
+            break;
+        }
+        return $alert;
+    }
+
+
     public function getPollenRisk(string $level)
     {
         switch ($level) {
             case  'High':
                 return __("Risque haut", __FILE__);
-                // The air quality is good. Enjoy your usual outdoor activities  
             case 'Moderate':
                 return __("Risque modéré", __FILE__);
-                // Coorect
-                //  Enjoy your usual outdoor activities
             case 'Low':
                 return __("Risque bas", __FILE__);
-                // Consider reducing intense outdoor activities, if you experience symptoms.
             case 'Very High':
                 return __("Risque très haut", __FILE__);
-                // Consider reducing intense outdoor activities, if you experience symptoms.
         }
     }
 

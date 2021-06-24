@@ -137,7 +137,8 @@ class IconesAqi
     private function firstPartIcon()
     {
         return '<?xml version="1.0" encoding="utf-8"?>
-                <svg version="1.1" class="gaze' . $this->id . $this->name . '" id="id-gaze' . $this->id . $this->name . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                <svg version="1.1" class="gaze' . $this->id . $this->name . '" id="id-gaze' . $this->id .
+                $this->name . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                 viewBox="' . $this->viewBox[$this->name] . '">
                 <style type="text/css">
                     .gaze' . $this->id . $this->name . '{
@@ -322,6 +323,8 @@ class IconesPollen
         return  $this->firstPartIcon() . $this->lastPartIcon();
     }
 
+  
+
     public function getColor()
     {
         $composants =
@@ -350,18 +353,18 @@ class IconesPollen
                 ],
                 'grass_pollen' => [
 
-                    '#00BD01' => [0, 30],
-                    '#EFE800' => [30, 60],
+                    '#00BD01' => [0, 40],
+                    '#EFE800' => [40, 60],
                     '#E79C00' => [60, 1000]
                 ],
                 'tree_pollen' => [
-                    '#00BD01' => [0, 90],
-                    '#EFE800' => [90, 200],
+                    '#00BD01' => [0, 80],
+                    '#EFE800' => [80, 200],
                     '#E79C00' => [200, 10000]
                 ],
                 'weed_pollen' => [
-                    '#00BD01' => [0, 25],
-                    '#EFE800' => [25, 80],
+                    '#00BD01' => [0, 30],
+                    '#EFE800' => [30, 80],
                     '#E79C00' => [80, 10000]
                 ],
                 'cypress' => [
@@ -437,13 +440,7 @@ class IconesPollen
         return '<?xml version="1.0" encoding="utf-8"?>
             <svg version="1.1" class="pollen' . $this->id . $this->name . '" id="id-pollen' . $this->id . $this->name . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
             viewBox="' . $this->viewBox[$this->name] . '">
-            <style type="text/css">
-                .pollen' . $this->id . $this->name . '{
-                    fill:' . $this->color . ';
-                    height:' . $this->height . ';
-                    width: 100%;
-            }
-            </style>';
+            <style type="text/css"> .pollen' . $this->id . $this->name . '{ fill:' . $this->color . '; height:' . $this->height . '; width: 100%; }</style>';
     }
 
     private function lastPartIcon()

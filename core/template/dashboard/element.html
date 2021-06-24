@@ -2,14 +2,17 @@
     <!--  Version DasBoard -->
     <div class="aqi-#id#-row" style="width:100%;">
         <!-- Nom -->
-        <div style="width:100%;" class="cmd noRefresh aqi-#id#-label tooltips cursor"
+        <div class="state aqi-#id#-particule historique-#id#" >
+        <div class="cmd noRefresh aqi-#id#-label tooltips cursor"
             data-type="info" data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
+            <div class="aqi-#id#-space">#level-particule#</div>
+        </div>
         <!-- Icone -->
         <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
          <!-- Valeur --> <!-- Historique -->
-        <div class="aqi-#id#-particule" style="text-align: center;width:100%;" >
-            <div title="#unity#" style="text-align: center;width:100%;" class="aqi-#id#-value">#value# </div>
-            <div class="contain-minmax-#id# #history# state tooltips #display#" style="text-align: center;width:100%;" data-cmd_id="#cmdid#"
+        <div class="aqi-#id#-particule historique-#id#" >
+            <div title="#unity#"  class="historique-#id# aqi-#id#-value">#value# </div>
+            <div class="contain-minmax-#id# #history# state tooltips #display# historique-#id#" data-cmd_id="#cmdid#"
                 data-eqlogic_id="#id#" data-type="info" data-subtype="numeric">
                 <div style="font-size: 0.8em;" class="state">
                     <span title="Min" class="tooltips">#minHistoryValue#</span> |
@@ -30,9 +33,9 @@
         chart: {
             type: 'column',
             height: 170,
-            width: 245,
+            width: 235,
             alignTicks: true,
-              borderWidth:0
+            borderWidth:0
         },
         exporting: {
             enabled: false
@@ -73,7 +76,8 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 0
+            margin: 2,
+           
         },
         tooltip: {
             shared: true,
@@ -82,7 +86,7 @@
         plotOptions: {
 
             column: {
-                pointPadding: 0.30,
+                pointPadding: 0.20,
                 borderWidth: 0
              },
             series: {
@@ -90,7 +94,8 @@
                 marker: {
                     lineWidth: 0
                 },
-                borderRadius: 2
+                borderRadius: 2,
+                pointWidth: 10
             }
         },
         series: [

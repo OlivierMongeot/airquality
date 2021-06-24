@@ -19,7 +19,10 @@ Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 202
 L'AQI en Europe est calculé de 1 (Bon) à 6 (Extrèmement mauvais) 
 
 Pour les pollens les niveaux de danger généraux sont données par l'API ( de 1 Risque Null à 4 Risque très élevé ) pour les familles de pollens,
-J'ai ajouté des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique. 
+J'ai ajouté des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP.
+
+Les alertes sont basé sur des seuils de 40 particules/m³, ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.
+
 
 De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
 

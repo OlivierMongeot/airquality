@@ -21,11 +21,8 @@ ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log');
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
-// if (!class_exists('ApiAqi')) {
 require_once dirname(__FILE__) . '/../../3rdparty/class.ApiAqi.php';
-// }
 require_once dirname(__FILE__) . '/../../3rdparty/class.CreateHtmlAqi.php';
 require_once dirname(__FILE__) . '/../../3rdparty/class.IconesAqi.php';
 require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
@@ -67,9 +64,8 @@ class airquality extends eqLogic
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
                                 $refresh->execCmd();
-                                log::add('airquality', 'debug', 'Refresh Cron Day 7h02' . $airQuality->getHumanName());
                             } else {
-                                log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
+                                log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ',__FILE__) . $airQuality->getHumanName());
                             }
                         } catch (Exception $e) {
                             log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $e->getMessage());
@@ -164,7 +160,7 @@ class airquality extends eqLogic
     public function preSave()
     {
         $this->setDisplay("width", "265px");
-        $this->setDisplay("height", "390px");
+        $this->setDisplay("height", "380px");
     }
 
     public function postUpdate()
@@ -358,9 +354,6 @@ class airquality extends eqLogic
 
         foreach ($this->getCmd('info') as $cmd) {
          
-            // Verification si la valeur doit etre afficher todo
-            // if ($this->getConfiguration($cmd->getLogicalId(), 0) === 1 || 0 === 0) {
-              
                 // Preparation des valeurs à remplacer 
                 $nameCmd = $cmd->getLogicalId();
                 $nameIcon = '#icone_' . $nameCmd . '#';
@@ -369,34 +362,38 @@ class airquality extends eqLogic
                 $commandName = '#' . $nameCmd . '_name#';
                 $info = '#' . $nameCmd . 'info#';
 
-                // Commande/Element  à afficher et remplacer 
-                $element = $this->getCmd(null, $nameCmd);
+                if (is_object($cmd)) {
 
-                if (is_object($element)) {
-
-                    // Pour Affichage spécial 
-                    if ($nameCmd == 'uv' || $nameCmd == 'visibility') {
-                        // $replace[$info] = $display->getAqiName($element->execCmd());
-                        $replace[$commandValue] = $element->execCmd();
-                        $replace[$commandNameId] = $element->getId();
-                        $replace[$commandName] =  $element->getName();
-                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                    // Pour Affichage Haut
+                    if ($nameCmd == 'uv' ) {
+                        $replace[$commandValue] = $cmd->execCmd();
+                        $replace[$commandNameId] = $cmd->getId();
+                        $replace[$commandName] =  $cmd->getName();
+                        $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                         $replace[$nameIcon] = $newIcon;
-
-                    } else  if ($nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen') {
-
-                        $replace[$commandValue] = $element->execCmd();
-                        $replace[$commandNameId] = $element->getId();
-                        $replace[$commandName] =  $element->getName();
-                        $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                        $replace['#uv_level#'] = $display->getUVRapport( $cmd->execCmd());
+                       
+                    } else if ($nameCmd == 'visibility'){
+                        $replace[$commandValue] = $cmd->execCmd();
+                        $replace[$commandNameId] = $cmd->getId();
+                        $replace[$commandName] =  $cmd->getName();
+                        $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
+                        $replace[$nameIcon] = $newIcon;
+                        $replace['#visibility_level#'] = $display->getVisibilityRapport( $cmd->execCmd());
+                    }
+                    else  if ($nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen') {
+                        $replace[$commandValue] = $cmd->execCmd();
+                        $replace[$commandNameId] = $cmd->getId();
+                        $replace[$commandName] =  $cmd->getName();
+                        $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                         $replace[$nameIcon] = $newIcon;
 
                         $listPollen = '#list_' . $nameCmd . '#';
                         $replace[$listPollen] =  $display->getListPollen($nameCmd);
                     } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
-                        $replace[$commandValue] = $display->getPollenRisk($element->execCmd());
+                        $replace[$commandValue] = $display->getPollenRisk($cmd->execCmd());
                     } else  if ($nameCmd == 'updatedAt') {
-                        $replace['#updatedAt#'] = $element->execCmd();
+                        $replace['#updatedAt#'] = $cmd->execCmd();
                     } else  if (
                         $nameCmd == 'days' || $nameCmd == 'no2_min' || $nameCmd == 'no2_max' || $nameCmd == 'so2_min' || $nameCmd == 'so2_max'
                         || $nameCmd == 'no_min' || $nameCmd == 'no_max' || $nameCmd == 'co_min' || $nameCmd == 'co_max'
@@ -411,26 +408,33 @@ class airquality extends eqLogic
                     ) {
                         // rien 
                     }
-                  
-                    else {
-                     
+        
+                    else {             
                         // Incrémentation Compteur de pollens actifs 
-                        $activePollen = ($element->execCmd() > 0) ? $activePollen + 1 : $activePollen;
+                        $activePollen = ($cmd->execCmd() > 0) ? $activePollen + 1 : $activePollen;
 
-                        // if ($element->execCmd() > 0 && $this->getConfiguration('elements') == 'pollen' ||
-                        //  $this->getConfiguration('elements') == 'polution' &&   $this->getConfiguration($cmd->getLogicalId(), 0) == 1   ){
+                        // Check si les previsons pollen sont > 0 
+                        $maxCmd = $this->getCmd(null, $nameCmd.'_max');
+                        $max = $maxCmd->execCmd();
+                        $max = str_replace(['[',']'],'', $max);
+                        $max = array_map( 'self::toInt' , explode(",", $max));
+                        $displaySlide = (array_sum($max) > 0) ? true : false;
                         
-                        if ($element->execCmd() > 0 && $this->getConfiguration('elements') == 'pollen' && $element->getIsVisible() == 1 || $this->getConfiguration('elements') == 'polution' && $element->getIsVisible() == 1 ){   
-                            $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId(), '30px');
+
+                        if ($cmd->execCmd() > 0 && $this->getConfiguration('elements') == 'pollen' && $cmd->getIsVisible() == 1
+                         || $this->getConfiguration('elements') == 'polution' && $cmd->getIsVisible() == 1
+                         ||  $displaySlide === true && $this->getConfiguration('elements') == 'pollen'
+                          ){   
+                            $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
                             $unitreplace['#icone#'] = $newIcon;
                             $unitreplace['#id#'] = $this->getId();
-                            $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  $display->formatValueForDisplay($element->execCmd()) : $element->execCmd();
+                            $unitreplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  $display->formatValueForDisplay($cmd->execCmd()) : $cmd->execCmd();
                             $unitreplace['#name#'] = $cmd->getLogicalId();
                             $unitreplace['#display-name#'] = $cmd->getName();
                             $unitreplace['#cmdid#'] = $cmd->getId();
                             $unitreplace['#history#'] = 'history cursor';
-                            $unitreplace['#info-modalcmd#'] = 'info-modal' . $element->getId();
-                            $unitreplace['#unity#'] = $element->getUnite();
+                            $unitreplace['#info-modalcmd#'] = 'info-modal'.$cmd->getLogicalId(). $this->getId();
+                            $unitreplace['#unity#'] = $cmd->getUnite();
                         
                             $maxCmd = $this->getCmd(null, $nameCmd.'_max');
                             $unitreplace['#max#'] = $maxCmd->execCmd() ;
@@ -439,18 +443,18 @@ class airquality extends eqLogic
                             $unitreplace['#color#'] =  $icone->getColor();
                             $labels = $this->getCmd(null, 'days');
                             $unitreplace['#labels#'] =  $labels->execCmd();
-                    
-
-                            if ($element->getIsHistorized() == 1) {
+                            $unitreplace['#risk#'] =  $display->getElementRiskPollen($icone->getColor());
+                            $unitreplace['#level-particule#'] =  $display->getElementRiskAqi($icone->getColor());
+                            if ($cmd->getIsHistorized() == 1) {
                                 // Historique Commun
                                 $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
-                                $historyStatistique = $element->getStatistique($startHist, date('Y-m-d H:i:s'));
+                                $historyStatistique = $cmd->getStatistique($startHist, date('Y-m-d H:i:s'));
                                 $unitreplace['#minHistoryValue#'] =  $display->formatValueForDisplay($historyStatistique['min'], 'short');
                                 $unitreplace['#maxHistoryValue#'] =  $display->formatValueForDisplay($historyStatistique['max'], 'short');
                                 $unitreplace['#averageHistoryValue#'] =  $display->formatValueForDisplay($historyStatistique['avg'], 'short');
                                 // Tendance Commun
                                 $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 10 . ' hour'));
-                                $tendance = $element->getTendance($startHist, date('Y-m-d H:i:s'));
+                                $tendance = $cmd->getTendance($startHist, date('Y-m-d H:i:s'));
                                 if ($tendance > config::byKey('historyCalculTendanceThresholddMax')) {
                                     $unitreplace['#tendance#'] = 'fas fa-arrow-up';
                                 } else if ($tendance < config::byKey('historyCalculTendanceThresholddMin')) {
@@ -467,19 +471,17 @@ class airquality extends eqLogic
 
                         // Affichage central pour AQI 
                         if ($nameCmd == 'aqi') {
-                            $replace[$commandValue] = $element->execCmd();
-                            $replace[$info] = $display->getAqiName($element->execCmd());
-                            $replace[$commandNameId] = $element->getId();
-                            $replace[$commandName] =  $element->getName();
-                            $newIcon = $icone->getIcon($nameCmd, $element->execCmd(), $element->getId());
+                            $replace[$commandValue] = $cmd->execCmd();
+                            $replace[$info] = $display->getAqiName($cmd->execCmd());
+                            $replace[$commandNameId] = $cmd->getId();
+                            $replace[$commandName] =  $cmd->getName();
+                            $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                             $replace[$nameIcon] = $newIcon;
                         }
                     }
                 }
-            // }
         }
-        // End foreach // 
-
+      
 
         // Replace Global 
         if ($this->getConfiguration('elements') === 'polution') {
@@ -495,7 +497,6 @@ class airquality extends eqLogic
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
 
-
         if ($this->getConfiguration('animation_aqi') === 'disable_anim') {
             $replace['#animation#'] = 'disabled';
             $replace['#classCaroussel#'] = 'data-interval="false"';
@@ -504,12 +505,16 @@ class airquality extends eqLogic
             $replace['#classCaroussel#'] = '';
         }
 
-
         if ($this->getConfiguration('elements') == 'polution') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
         } else {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen', __CLASS__)));
         }
+    }
+
+
+    public static function toInt($string){
+        return (int)($string);
     }
 
 
@@ -573,14 +578,14 @@ class airquality extends eqLogic
                 ) {
                     return $api->$apiName($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
                 } else {
-                    throw new Exception('Les coordonnées sont vides, testez la ville dans la configuration ');
+                    throw new Exception(__('Les coordonnées sont vides, testez la ville dans la configuration',__FILE__));
                 }
             case 'long_lat_mode':
                 return $api->$apiName($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
 
             case 'dynamic_mode':
                 if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
-                    throw new Exception('Probleme de localisation');
+                    throw new Exception(__('Probleme de localisation dynamique',__FILE__));
                 }
                 return $api->$apiName($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
 
@@ -730,7 +735,6 @@ class airquality extends eqLogic
      */
     public function reorderCmdPollen()
     {
-
         foreach ($this->getCmd('info') as $cmd) {
             $index = $cmd->getLogicalId();
             switch ($index) {
@@ -788,5 +792,6 @@ class airqualityCmd extends cmd
         if ($this->getLogicalId() == 'refresh_pollen_forecast') {
             $this->getEqLogic()->updateForecastPollen();
         }
+
     }
 }

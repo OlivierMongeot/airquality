@@ -75,6 +75,16 @@
         "La ville ou le code pays ne peuvent être vide": "City or country code can't be empty",
         "La longitude ou la latitude ne peuvent être vide": "Longitude or latitude can't be empty",
         "Probleme de localisation par le navigateur": "Probleme with navigator location",
+     
+        "Les coordonnées sont vides, testez la ville dans la configuration":"Coordinates are empty, test the city in configuration",
+        "Probleme de localisation dynamique":"Dynamique Location problem",
+      
+        "Impossible de trouver la commande refresh pour ":"Unable to find refresh command for ",
+        "Erreur pour ":"Error for ",
+        "Expression cron non valide pour ":"Invalid CRON expression for ",
+        "La clef API ne peut être vide":"API key is empty",
+        "La clef API n'est pas valide ou pas encore active":"The API key is not valid or not yet active",
+        
         "Indice de qualité": "Quality Index",
         "Dioxide d'azote": "Dioxide d'azote",
         "Monoxyde d'azote": "Monoxyde d'azote",
