@@ -463,6 +463,30 @@ class airquality extends eqLogic
                             }
                             $tab[] = template_replace($unitreplace, $elementTemplate);                           
                         }
+                        else {
+                            // Cas Pollen à ZERO ou Pollution notVisible ////////////////////////////////////////
+                            if ($this->getConfiguration('elements') == 'pollen'){
+                            
+                                $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '10px');
+                                $pollenZeroReplace['#icone#'] = $newIcon;
+                                $pollenZeroReplace['#id#'] = $this->getId();
+                                $pollenZeroReplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  $display->formatValueForDisplay($cmd->execCmd()) : $cmd->execCmd();
+                                $pollenZeroReplace['#name#'] = $cmd->getLogicalId();
+                                $pollenZeroReplace['#display-name#'] = __($cmd->getName(),__FILE__);
+                                $pollenZeroReplace['#cmdid#'] = $cmd->getId();
+                                $pollenZeroReplace['#info-modalcmd#'] = 'info-modal'.$cmd->getLogicalId(). $this->getId();
+                                $pollenZeroReplace['#message#'] = __('Aucune Détection',__FILE__);
+                                $elementTemplate2 = getTemplate('core', $version, 'elementPollenZero', 'airquality');
+                                $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2); 
+                             
+                              
+                               
+                            }
+
+                        }
+                      
+                      
+                    
 
                         // Affichage central pour AQI 
                         if ($nameCmd == 'aqi') {
@@ -476,19 +500,32 @@ class airquality extends eqLogic
                     }
                 }
         }
-      
+
+        $k = 0;
+        if ($this->getConfiguration('elements') == 'pollen'){
+            // log::add(__CLASS__,'debug', json_encode($tabZero));
+               $newArray = array_chunk($tabZero, 3);
+               foreach ($newArray as $arr) {
+                    $tab[] = implode('',$arr);
+                    $k++;
+                    }
+              }
 
         // Replace Global 
         if ($this->getConfiguration('elements') === 'polution') {
             $replace['#index_name#'] = __('Indice', __FILE__);
         } else {
+
+          
+
+
             $replace['#active_pollen_label#'] = __('Pollens actifs', __FILE__);
             $replace['#activePollen#'] = $activePollen;
         }
 
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info",__FILE__);
 
-        $elementHtml = new CreateHtmlAqi($tab, $this->getId(), 1, $version);
+        $elementHtml = new CreateHtmlAqi($tab, $this->getId(), 1, $version, $this->getConfiguration('elements'), $k);
         $replace['#mini_slide#'] =  $elementHtml->getLayer();
 
         $refresh = $this->getCmd(null, 'refresh');

@@ -23,7 +23,5 @@ J'ai ajouté des niveaux alertes par pollens, ils sont basés sur un Mémoire de
 
 Les alertes sont basé sur des seuils de 40 particules/m³, ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.
 
-
 De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
 
-Si vous souhaitez améliorer le projet de n'importe quel façon, n'hésitez pas, le projet est ouvert !! Spécialement pour les traductions !! :}

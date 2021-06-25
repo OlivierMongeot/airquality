@@ -134,7 +134,8 @@
         "Mini":"Mini",
         "Maxi":"Maxi",
         "Tendance":"Tendance",
-        "Moyenne":"Moyenne"
+        "Moyenne":"Moyenne",
+        "Aucune Détection":"Aucune Détection"
 
     },
     "info.json": {
@@ -185,7 +186,9 @@
         "Jeudi":"Jeudi",
         "Vendredi":"Vendredi",
         "Samedi":"Samedi",
-        "Dimanche":"Dimanche"
+        "Dimanche":"Dimanche",
+        "Mise à jour le ":"Mise à jour le ",
+        " à ":" à "
 
     },
     "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {
@@ -197,15 +200,7 @@
         "Pas de données de pollution pour l'instant":"Pas de données de pollution pour l'instant",
         "Pas de données de pollution avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
         "Pas de données de Pollen pour l'instant":"Pas de données de Pollen pour l'instant",
-        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
-        "Lundi":"Lundi",
-        "Mardi":"Mardi",
-        "Mercredi":"Mercredi",  
-        "Jeudi":"Jeudi",
-        "Vendredi":"Vendredi",
-        "Samedi":"Samedi",
-        "Dimanche":"Dimanche"
-
+        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées"
     }
 
 

@@ -132,7 +132,8 @@
         "Mini":"Mini",
         "Maxi":"Maxi",
         "Tendance":"Trend",
-        "Moyenne":"Average"
+        "Moyenne":"Average",
+        "Aucune Détection":"No Detection"
    
 
     }, "plugins\/airquality\/3rdparty\/class.DisplayInfo.php": {
@@ -179,7 +180,9 @@
         "Jeudi":"Thursday",
         "Vendredi":"Friday",
         "Samedi":"Saturday",
-        "Dimanche":"Sunday"
+        "Dimanche":"Sunday",
+        "Mise à jour le ":"Update ",
+        " à ":" at "
 
 
     },

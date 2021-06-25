@@ -263,8 +263,8 @@ class ApiAqi
         foreach ($response as $hourCast) {
             if ($hourCast->time >= $beginOfDay && $hourCast->time <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->time + 100));
-                $dayName =  $this->getNameDay($weekday);
-
+                $nameDay = new DisplayInfo();
+                $dayName =  $nameDay->getNameDay($weekday);
                 switch ($element) {
                     case "Poaceae":
                         $newTabAqiDay[$element][$dayName][] =  $hourCast->Species->Grass->{"Grass / Poaceae"};
@@ -315,28 +315,6 @@ class ApiAqi
         }
         return $newTabAqiDay;
     }
-
-
-    // private function getNameDay($numDay)
-    // {
-    //     switch ($numDay) {
-    //         case 1:
-    //             return __('Lundi', __FILE__);
-    //         case 2:
-    //             return __('Mardi', __FILE__);
-    //         case 3:
-    //             return __('Mercredi', __FILE__);
-    //         case 4:
-    //             return __('Jeudi', __FILE__);
-    //         case 5:
-    //             return  __('Vendredi', __FILE__);
-    //         case 6:
-    //             return  __('Samedi', __FILE__);
-    //         case 7:
-    //             return __('Dimanche', __FILE__);
-    //     }
-    // }
-
  
 
     /**
