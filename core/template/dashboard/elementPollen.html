@@ -5,11 +5,11 @@
         <div class="state aqi-#id#-particule">
              <div style="min-width:100px;" class="cmd noRefresh aqi-#id#-label tooltips cursor" data-type="info"
             data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
-            <div style="font-size: 0.8em;">#risk#</div>
+            <div style="font-size: 0.9em;">#risk#</div>
         </div>
        
         <!-- Icone -->
-        <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
+        <div class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
         <div class="aqi-#id#-particule" style="width:90px;">
             <!-- Valeur -->
             <div title="#value# #unity#" style="text-align: center;" class="aqi-#id#-value">#value#</div>
@@ -17,10 +17,10 @@
             <div class="contain-minmax-#id# #history# state tooltips" style="text-align: center;width:100px;"
                 data-cmd_id="#cmdid#" data-eqlogic_id="#id#" data-type="info" data-subtype="numeric">
                 <div style="font-size: 0.8em;" class="state">
-                    <span title="Mini" class="tooltips">#minHistoryValue#</span> |
-                    <span title="Moyenne" class="tooltips">#averageHistoryValue#</span> |
-                    <span title="Maxi" class="tooltips">#maxHistoryValue#</span>&nbsp;<i style="font-size: 0.75em;"
-                        title="Tendance" class="#tendance#"></i>
+                    <span title="#mini#" class="tooltips">#minHistoryValue#</span> |
+                    <span title="#average#" class="tooltips">#averageHistoryValue#</span> |
+                    <span title="#maxi#" class="tooltips">#maxHistoryValue#</span>&nbsp;
+                    <i title="#tendency#" style="font-size: 0.75em;" class="#tendance#"></i>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
         chart: {
             type: 'column',
             height: 170,
-            width: 205,
+            width: 235,
             alignTicks: true,
             borderWidth:0
         },
@@ -101,13 +101,13 @@
         },
         series: [
             {
-                name: '#name#' + ' min',
+                name: '#display-name#' + ' min',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #min#,
                 color: 'currentColor'
             }, {
-                name: '#name#' + ' max',
+                name: '#display-name#' + ' max',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #max#,

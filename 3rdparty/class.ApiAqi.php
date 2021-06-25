@@ -308,7 +308,8 @@ class ApiAqi
         foreach ($response as $hourCast) {
             if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->dt + 100));
-                $dayName =  $this->getNameDay($weekday);
+                $nameDay = new DisplayInfo();
+                $dayName =  $nameDay->getNameDay($weekday);
                 $newTabAqiDay[$component][$dayName][] = ($component == 'aqi') ?  $hourCast->main->aqi : $hourCast->components->$component;
             }
         }
@@ -316,25 +317,25 @@ class ApiAqi
     }
 
 
-    private function getNameDay($numDay)
-    {
-        switch ($numDay) {
-            case 1:
-                return __('Lundi', __FILE__);
-            case 2:
-                return __('Mardi', __FILE__);
-            case 3:
-                return __('Mercredi', __FILE__);
-            case 4:
-                return __('Jeudi', __FILE__);
-            case 5:
-                return  __('Vendredi', __FILE__);
-            case 6:
-                return  __('Samedi', __FILE__);
-            case 7:
-                return __('Dimanche', __FILE__);
-        }
-    }
+    // private function getNameDay($numDay)
+    // {
+    //     switch ($numDay) {
+    //         case 1:
+    //             return __('Lundi', __FILE__);
+    //         case 2:
+    //             return __('Mardi', __FILE__);
+    //         case 3:
+    //             return __('Mercredi', __FILE__);
+    //         case 4:
+    //             return __('Jeudi', __FILE__);
+    //         case 5:
+    //             return  __('Vendredi', __FILE__);
+    //         case 6:
+    //             return  __('Samedi', __FILE__);
+    //         case 7:
+    //             return __('Dimanche', __FILE__);
+    //     }
+    // }
 
  
 

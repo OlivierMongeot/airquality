@@ -129,11 +129,16 @@
         "Erreur pour":"Erreur pour",
         "Expression cron non valide pour":"Expression cron non valide pour",
         "Forecast days":"Forecast days",
-        "NO² Mini prévision":"NO² Mini forecast"
+        "NO² Mini prévision":"NO² Mini forecast",
+        "Cliquez pour + d'info":"Cliquez pour + d'info",
+        "Mini":"Mini",
+        "Maxi":"Maxi",
+        "Tendance":"Tendance",
+        "Moyenne":"Moyenne"
 
     },
     "info.json": {
-        "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez.On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
+        "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez. On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
     },
     "plugins\/airquality\/3rdparty\/class.DisplayInfo.php": {
         "Bon":"Bon",
@@ -142,10 +147,21 @@
         "Mauvais":"Mauvais",
         "Très mauvais":"Très mauvais",
         "Extrême":"Extrême",
-        "Risque haut":"Risque haut",
-        "Risque modéré":"Risque modéré",
-        "Risque bas":"Risque bas",
-        "Risque très haut":"Risque très haut",
+        "Risque haut":"High Risk",
+
+        "Risque modéré":"Moderate risk",
+        "Risque bas":"Low risk",
+        "Risque très haut":"Very high risk",
+        "Nul":"Nul",
+        "Faible":"Low",
+        "Modéré":"Moderate",
+        "Élevé":"High",
+        "Très élevé":"Very High",
+        "Très Mauvaise":"Very bad",
+        "Mauvaise":"Bad",
+        "Moyenne":"Correct",
+        "Bonne":"Good",
+        "Herbes": "Herbes",
         "Poacées":"Poacées",
         "Aulne":"Aulne",
         "Bouleau":"Bouleau",
@@ -161,8 +177,15 @@
         "Armoise":"Armoise",
         "Ortie":"Ortie",
         "Ambroisie":"Ambroisie",
-        "Autres":"Autres"
-
+        "Autres":"Autres",
+        "Autres pollens d'origine inconnue":"Autres pollens d'origine inconnue",
+        "Lundi":"Lundi",
+        "Mardi":"Mardi",
+        "Mercredi":"Mercredi",  
+        "Jeudi":"Jeudi",
+        "Vendredi":"Vendredi",
+        "Samedi":"Samedi",
+        "Dimanche":"Dimanche"
 
     },
     "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {
@@ -184,4 +207,6 @@
         "Dimanche":"Dimanche"
 
     }
+
+
 }

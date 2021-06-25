@@ -54,16 +54,16 @@ class DisplayInfo
         switch ($color) {
 
             case '#00BD01':
-                return 'Risque Bas';
+                return __("Risque bas", __FILE__);
                 break;
             case '#EFE800':
-                return 'Risque modéré';
+                return  __("Risque modéré", __FILE__);
                 break;
             case '#E79C00':
-                return 'Risque élevé';
+                return __("Risque haut", __FILE__);
                 break;
             default :
-                return 'Risque très élevé';
+                return  __("Risque très haut", __FILE__);
         }
     }
 
@@ -97,20 +97,23 @@ class DisplayInfo
      */
     public function getUVRapport($level){
         switch ($level) {
+        case $level == 0  :
+            $alert = __('',__FILE__);
+            break;
         case $level > 0  && $level < 3:
-            $alert = 'Faible';
+            $alert = __('Faible',__FILE__);
             break;
         case $level >= 3  && $level < 6:
-            $alert = 'Modéré';
+            $alert = __('Modéré',__FILE__);
             break;
         case $level >= 6  && $level < 8:
-            $alert = 'Élevé';
+            $alert = __('Élevé',__FILE__);
             break;
         case $level >= 8  && $level < 11:
-            $alert = 'Très élevé';
+            $alert = __('Très élevé',__FILE__);
             break;
         case $level >= 11 :
-            $alert = 'Extrême';
+            $alert = __('Extrême',__FILE__);
             break;
         }
         return $alert;
@@ -122,16 +125,16 @@ class DisplayInfo
     public function getVisibilityRapport($level){
         switch ($level) {
         case $level > 0  && $level < 700:
-                $alert = 'Très Mauvaise';
+                $alert = __('Très Mauvaise',__FILE__);
                 break;
         case $level >= 700  && $level < 3210:
-            $alert = 'Mauvaise';
+            $alert = __('Mauvaise',__FILE__);
             break;
         case $level >= 3210  && $level < 8000:
-            $alert = 'Moyenne';
+            $alert = __('Moyenne',__FILE__);
             break;
         case $level >= 8000 :
-            $alert = 'Bonne';
+            $alert = __('Bonne',__FILE__);
             break;
         }
         return $alert;
@@ -170,6 +173,35 @@ class DisplayInfo
         }
     }
 
+    public function parseDate($isoDateUTC){
+        $datetime = DateTime::createFromFormat('Y-m-d\TH:i:s+', $isoDateUTC);
+       
+        $time =   $datetime-> format('H:i');
+        $date = $datetime-> format('Y-m-d');
+
+
+        return 'Mise à jour le ' . $date. ' à '. $time. ' UTC';
+    }
+
+    public function getNameDay($numDay)
+    {
+        switch ($numDay) {
+            case 1:
+                return __('Lundi', __FILE__);
+            case 2:
+                return __('Mardi', __FILE__);
+            case 3:
+                return __('Mercredi', __FILE__);
+            case 4:
+                return __('Jeudi', __FILE__);
+            case 5:
+                return  __('Vendredi', __FILE__);
+            case 6:
+                return  __('Samedi', __FILE__);
+            case 7:
+                return __('Dimanche', __FILE__);
+        }
+    }
  
 
 }

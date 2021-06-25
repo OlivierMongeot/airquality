@@ -5,20 +5,20 @@
         <div class="state aqi-#id#-particule historique-#id#" >
         <div class="cmd noRefresh aqi-#id#-label tooltips cursor"
             data-type="info" data-subtype="numeric" data-cmd_id="#cmdid#">#display-name#</div>
-            <div class="aqi-#id#-space">#level-particule#</div>
+            <div style="font-size: 0.9em;" class="aqi-#id#-space">#level-particule#</div>
         </div>
         <!-- Icone -->
-        <div title="Cliquez pour + d'info" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
+        <div title="#info-tooltips#" class="#info-modalcmd# tooltips cursor" style="max-width:60px;">#icone#</div>
          <!-- Valeur --> <!-- Historique -->
         <div class="aqi-#id#-particule historique-#id#" >
-            <div title="#unity#"  class="historique-#id# aqi-#id#-value">#value# </div>
+            <div title="#value# #unity#" class="historique-#id# aqi-#id#-value">#value# </div>
             <div class="contain-minmax-#id# #history# state tooltips #display# historique-#id#" data-cmd_id="#cmdid#"
                 data-eqlogic_id="#id#" data-type="info" data-subtype="numeric">
                 <div style="font-size: 0.8em;" class="state">
-                    <span title="Min" class="tooltips">#minHistoryValue#</span> |
-                    <span title="Moyenne" class="tooltips">#averageHistoryValue#</span> |
-                    <span title="Max" class="tooltips">#maxHistoryValue#</span>&nbsp;
-                    <i style="font-size: 0.75em;" class="#tendance#"></i>
+                    <span title="#mini#" class="tooltips">#minHistoryValue#</span> |
+                    <span title="#average#" class="tooltips">#averageHistoryValue#</span> |
+                    <span title="#maxi#" class="tooltips">#maxHistoryValue#</span>&nbsp;
+                    <i title="#tendency#" style="font-size: 0.75em;" class="#tendance#"></i>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 2,
+            margin: 2
            
         },
         tooltip: {
@@ -100,13 +100,13 @@
         },
         series: [
             {
-                name: '#name#' + ' min',
+                name: '#display-name#' + ' min',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #min#,
                 color: 'currentColor'
             }, {
-                name: '#name#' + ' max',
+                name: '#display-name#' + ' max',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #max#,
@@ -114,4 +114,10 @@
             }
         ]
     });
+
+   if ($('body').data("theme") == 'core2019_Legacy'){
+    $('.highcharts-legend-item text').css("background-color", "red")
+    // $('.highcharts-legend-item:not(.highcharts-legend-item-hidden) text').css("fill", "currentColor !important")
+    console.log(  $('.highcharts-legend-item text tspan'))
+   }
 </script>

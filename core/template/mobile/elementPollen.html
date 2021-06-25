@@ -3,6 +3,7 @@
     <div class="aqi-#id#-row">
        <div style="width:100%;text-align:center;">
            <strong class="aqi-#id#-label">#display-name#</strong>
+           <div style="font-size: 0.8em;">#risk#</div>
        </div> 
         <!-- <sub class="mini-#id#-label">2.5</sub> -->
         <div style="width:100%;" class="aqi-#id#-image">#icone#</div>   
@@ -31,10 +32,10 @@
     Highcharts.chart(container_#name#_#id#, {
         chart: {
             type: 'column',
-            height: 170,
-            width: 245,
+            height: 160,
+            width: 320,
             alignTicks: true,
-              borderWidth:0
+            borderWidth:0
         },
         exporting: {
             enabled: false
@@ -75,7 +76,7 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 0
+            margin: 2
         },
         tooltip: {
             shared: true,
@@ -84,7 +85,7 @@
         plotOptions: {
 
             column: {
-                pointPadding: 0.30,
+                pointPadding: 0.15,
                 borderWidth: 0
              },
             series: {
@@ -97,13 +98,13 @@
         },
         series: [
             {
-                name: '#name#' + ' min',
+                name: '#display-name#' + ' min',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #min#,
                 color: 'currentColor'
             }, {
-                name: '#name#' + ' max',
+                name: '#display-name#' + ' max',
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #max#,
@@ -111,4 +112,5 @@
             }
         ]
     });
-</script>
+
+   </script>

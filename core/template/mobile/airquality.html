@@ -131,6 +131,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 <div title="Cliquez pour + d'info" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
                 <div class="cmd noRefresh aqi-#id#-label-aqi">#uv_name#</div>
                 <div class="cmd noRefresh aqi-#id#-aqi">#uv#</div>
+                <div class="display-aqi aqi-#id#-aqi">#uv_level#</div>
             </div>
       
             <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
@@ -145,6 +146,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 <div  title="Cliquez pour + d'info" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
                 <div class="cmd noRefresh">#visibility_name#</div>
                 <div title="#visibility#  m" class="cmd noRefresh aqi-#id#-aqi">#visibility#</div>
+                <div class="display-aqi aqi-#id#-aqi">#visibility_level#</div>
             </div>    
         </div>
 
@@ -157,142 +159,6 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
     
     <script>
     
-    // var labels = #labels#;
-    
-    // function parseData(minArray, maxArray) {
-    //         let data = [];
-    //         data.push(minArray);
-    //         data.push(maxArray);
-    //         return data;
-    //     }
-    
-       
-    //     $(document).ready(function () {
-    
-    
-    //     var dataCo = parseData(#co_min#, #co_max#);
-    //     GiveaChart_#id#('container_co_#id#', dataCo, 'CO', '#color_co#');
-    
-    //     var dataNo =  parseData(#no_min#, #no_max#);
-    //     GiveaChart_#id#('container_no_#id#', dataNo, 'NO','#color_no#');
-    
-    //     var dataPm25 =  parseData( #pm25_min# , #pm25_max#);
-    //     GiveaChart_#id#('container_pm25_#id#', dataPm25, 'PM2.5','#color_pm25#');
-    
-    //     var dataPm10 =  parseData(#pm10_min#, #pm10_max#);
-    //     GiveaChart_#id#('container_pm10_#id#', dataPm10, 'PM10','#color_pm10#');
-    
-    //     var dataO3 =  parseData(#o3_min#, #o3_max#);
-    //     GiveaChart_#id#('container_o3_#id#', dataO3, 'O³','#color_o3#');
-    
-    //     var dataNo2 =  parseData(#no2_min#, #no2_max#);
-    //     GiveaChart_#id#('container_no2_#id#', dataNo2, 'NO²','#color_no2#');
-       
-    //     var dataSo2 =  parseData(#so2_min#, #so2_max#);
-    //     GiveaChart_#id#('container_so2_#id#', dataSo2, 'SO²','#color_so2#');
-       
-    //     var dataNh3 =  parseData(#nh3_min#, #nh3_max#);
-    //     GiveaChart_#id#('container_nh3_#id#', dataNh3, 'NH³','#color_nh3#');
-       
-    //     var dataAqi =  parseData(#aqi_min#, #aqi_max#);
-    //     GiveaChart_#id#('container_aqi_#id#', dataAqi, 'AQI','#color_aqi#');
-    
-    
-    //     })
-      
-    
-    //     function GiveaChart_#id#(container, data, name, colorOne = '#00AEEC') {
-    
-    //         Highcharts.chart(container, {
-    
-    //             chart: {
-    //                 type: 'column',
-    //                 height: 170,
-    //                 width: 300,
-    //                 alignTicks: true,
-    //                   borderWidth:0
-    //             },
-    //             exporting: {
-    //                 enabled: false
-    //             },
-    //             credits: {
-    //                 enabled: false
-    //             },
-    //             title: {
-    //                 text: null
-    //             },
-    //             xAxis: {
-    //                 labels: {
-    //                     rotation: -40,
-    //                     overflow: 'justify',
-    //                     style: { fontSize: '10px' },
-    //                     x: 14,
-    //                     y: 15
-    //                 },
-    //                 min: 0,
-    //                 categories: labels,
-    //                 tickWidth: 1,
-    //                 gridLineWidth: 0
-    //             },
-    //             yAxis: [{
-    //                 visible: false,
-    //                 title: {
-    //                     text: null
-    //                 },
-    //                 labels: {
-    //                     align: 'center',
-    //                     x: 0,
-    //                     y: 0,
-    //                     format: '{value:.,0f}'
-    //                 },
-    //             }],
-    //             legend: {
-    //                 align: 'center',
-    //                 verticalAlign: 'bottom',
-    //                 borderWidth: 0
-    //             },
-    //             tooltip: {
-    //                 shared: true,
-    //                 padding: 3,
-    //             },
-    
-    //             plotOptions: {
-    
-    //                 column: {
-    //                     pointPadding: 0.20,
-    //                     borderWidth: 0
-    //                  },
-    //                 series: {
-    //                     maxPointWidth: 50,
-    //                     cursor: 'pointer',
-    //                     lineWidth: 5,
-    //                     marker: {
-    //                         lineWidth: 0
-    //                     },
-    //                     borderRadius: 2
-    //                 }
-    //             },
-    //             series: [
-    //                 {
-    //                     name: name + ' min',
-    //                     lineWidth: '4px',
-    //                     marker: { radius: 2 },
-    //                     data: data[0],
-    //                     color: 'currentColor'
-    //                 }, {
-    //                     name: name + ' max',
-    //                     lineWidth: '4px',
-    //                     marker: { radius: 2 },
-    //                     data: data[1],
-    //                       color: colorOne
-    //                 }
-    //             ]
-    //         });
-    
-        
-    //     }
-    
-                
     
     // Boite Modal Info     
     
