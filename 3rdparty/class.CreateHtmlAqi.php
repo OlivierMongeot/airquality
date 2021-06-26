@@ -21,7 +21,6 @@ class CreateHtmlAqi
         $this->version = $version;
         $this->gender = $gender;
         $this->slidesAtZero = $slidesAtZero;
-
     }
 
     public function getLayer(){
@@ -39,27 +38,7 @@ class CreateHtmlAqi
                 $html[] =  $this->getStartCell($k, $total) . $item[0] . $this->getEndCell();
             }
         }
-        // if( $this->itemByCell == 2){
 
-        //     if ( $this->countElements %2 == 0 ){
-        //         for ( $i = 0 ; $i < ($this->countCell)*2 ; $i+=2 ) {
-        //             $newTab[] = [ ($array[$i] ? $array[$i] : '') . ($array[$i+1] ? $array[$i+1]:'')  ] ;
-        //         }
-        //     }
-        //     else {
-        //         for ( $i = 0 ; $i < ($this->countCell)*2-2 ; $i+=2 ) {
-        //             $newTab[] = [ ($array[$i] ? $array[$i] : '') . ( $array[$i+1] ? $array[$i+1]:'' ) ] ;
-        //         }
-        //         $newTab[] = [$array[array_key_last($array)]];
-        //     }
-
-        //     $total = count($newTab);
-        //     foreach ($newTab as $k => $item){
-        //         $starCell =  $this->getStartCell($k, $total);
-        //         $html[] = $starCell . $item[0] .  $this->getEndCell();
-        //     }
-
-        // }
         return implode( '', $html); 
     }
 

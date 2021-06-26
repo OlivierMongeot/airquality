@@ -12,8 +12,9 @@
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "",
-	"documentation" : "",
+	"changelog" : "https://oliviermongeot.github.io/Air_Quality/#language#/changelog",
+	"documentation" : "https://oliviermongeot.github.io/Air_Quality/#language#/",
+   
 	"link" : {
 		"forum":"",
 		"video" : ""

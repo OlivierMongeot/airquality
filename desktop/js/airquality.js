@@ -16,57 +16,46 @@
 
 
 
-
-$('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', function () {
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', () => {
   
 
-  if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'dynamic_mode') {
+    if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'dynamic_mode') {
 
-    if (navigator.geolocation) {
-      console.log('check New Location')
-      navigator.geolocation.getCurrentPosition(maPosition);
-    }
-
-    function maPosition(position) {
-      document.getElementById("latitude").value = position.coords.latitude;
-      document.getElementById("longitude").value = position.coords.longitude;
-      getCity(position.coords.latitude, position.coords.longitude)
-    }
-
-    function getCity(latitude, longitude) {
-      console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
-      $.ajax({
-        type: "POST",
-        url: "plugins/airquality/core/ajax/airquality.ajax.php",
-        data: {
-          action: "getcity",
-          longitude: longitude,
-          latitude: latitude
-        },
-        dataType: 'json',
-        error: function (request, status, error) {
-          handleAjaxError(request, status, error);
-        },
-        success: function (data) {
-          console.log("requete ajax succes : " + data.result)
-          document.getElementById("geoCity").value = data.result;
-          if (data.state != 'ok') {
-            console.log('ereur AJAX : ' + data.result);
-          }
+        if (navigator.geolocation) {
+            console.log('Check New Location')
+            navigator.geolocation.getCurrentPosition(maPosition);
+            console.log(navigator.geolocation.getCurrentPosition(maPosition));
         }
-      });
+
+        function maPosition(position) {      
+            document.getElementById("latitude").value = position.coords.latitude;
+            document.getElementById("longitude").value = position.coords.longitude;
+            getCity(position.coords.latitude, position.coords.longitude)
+        }
+        
+        var getCity = (latitude, longitude) => {
+            console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
+            $.ajax({
+                type: "POST",
+                url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                data: { action: "getcity", longitude: longitude, latitude: latitude },
+                dataType: 'json',
+                error: function (request, status, error) { handleAjaxError(request, status, error); },
+                success: function (data) {
+                    console.log("requete ajax succes : " + data.result)
+                    document.getElementById("geoCity").value = data.result;
+                    if (data.state != 'ok') {
+                        console.log('ereur AJAX : ' + data.result);
+                    }
+                }
+            });
+        }
     }
-
-
-
-    
-  }
 })
 
 
 
-// $('.eqLogicAttr[data-l1key=configuration][data-l2key=country_code]').on('keyup', function () {
-    $('#validate-city').on('click' , function()  {
+$('#validate-city').on('click' , function()  {
 
   let cityName = $('.eqLogicAttr[data-l1key=configuration][data-l2key=city]').value()
   let cityCode = $('.eqLogicAttr[data-l1key=configuration][data-l2key=country_code]').value()
@@ -95,10 +84,6 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
         if (data.state != 'ok') {
           console.log('Erreur AJAX : ' + data.result);
         } else {
-        // let success = '<div class="alert alert-success style="width:auto";>'
-        // success +=  ' <span href="#" class="btn_closeAlert pull-right cursor" style="position : relative;top:-2px; left : 30px;color : grey">×</span>'
-        // success +=  '<div class="displayError">Coordonnées de la ville trouvées avec succes vous pouvez sauvegarder</div></div>'
-        // $('#aqi-alert').append(success);
           console.log("Ajax succes : Latitude et longitude = " + data.result)
           let html = '<div class="form-group searchMode city_mode"><label class="col-sm-3 control-label">{{Longitude}}</label><div class="col-sm-4">'
           html += '<input value="' + data.result[1] + '" disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />'
@@ -116,22 +101,16 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 
 });
 
-
-
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', function () {
   $('.searchMode').hide();
   $('.searchMode.' + $(this).value()).show();
 });
-
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=elements]').on('change', function () {
     $('.elements').hide();
     $('.elements.' + $(this).value()).show();
   });
   
-
-
-
 /*
  * Permet la réorganisation des commandes dans l'équipement
  */
@@ -183,16 +162,13 @@ function addCmdToTable(_cmd) {
   tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
   tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
   tr += '</td>';
-  // Afficher  + Historiser + Inverser 
+  // Afficher  + Historiser 
   tr += '<td style="min-width:120px;width:140px;">';
   tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></div> ';
   tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></div> ';
-  //  tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label></div>';
   tr += '</td>';
   //  MIN  + MAX + UNITE
   tr += '<td style="min-width:180px;">';
-  //  tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min.}}" title="{{Min.}}" style="width:30%;display:inline-block;"/> ';
-  //  tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max.}}" title="{{Max.}}" style="width:30%;display:inline-block;"/> ';
   tr += '<input class="cmdAttr form-control input-sm" data-l1key="unite" placeholder="{{Unité}}" title="{{Unité}}" style="width:30%;display:inline-block;"/>';
   tr += '</td>';
   tr += '<td>';

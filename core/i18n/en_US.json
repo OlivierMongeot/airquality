@@ -27,7 +27,7 @@
         "Par ville": "By city",
         "Méthode de localisation":"Méthod of location",
         "Par longitude & latitude": "With longitude & latitude",
-        "Géolocalisation du navigateur": "Géolocalisation from browser",
+        "Géolocalisation du navigateur (https requis)": "Géolocalisation from browser (only with https)",
         "Géolocalisation du serveur Jeedom": "Géolocalisation from Jeedom server",
         "Localisation Jeedom non renseigné dans la configuration générale": "Location Jeedom not available in general configuration",
         "Ville": "City",

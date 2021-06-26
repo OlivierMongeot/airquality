@@ -132,7 +132,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="searchMode">
 										<option value="city_mode">{{Par ville}}</option>
 										<option value="long_lat_mode">{{Par longitude & latitude}}</option>
-										<option value="dynamic_mode">{{Géolocalisation du navigateur}}</option>
+										<option value="dynamic_mode">{{Géolocalisation du navigateur (https requis)}}</option>
 										<?php
 										if ((config::byKey('info::latitude') != '') && (config::byKey('info::longitude') != '')) {
 											echo '<option value="server_mode">{{Géolocalisation du serveur Jeedom}}</option>';
@@ -140,6 +140,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										 echo '<option disabled="disabled" value="server_mode">{{Localisation Jeedom non renseigné dans la configuration générale}}</option>';
 										}
 										?>
+                                        <!-- <option value="dynamic_mode_live">{{Géolocalisation Live}}</option> -->
 									</select>
 								</div>
 							</div>
@@ -166,19 +167,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 
-							<div id="geoloc-city-mode">
-								<!--  <div class="form-group searchMode city_mode">
-									<div class="col-sm-7">
-										 type="hidden" 
-										<input  disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />
-									</div>
-								</div>
-								<div class="form-group searchMode city_mode">
-									<div class="col-sm-7">
-										<input id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />
-									</div>
-								</div>  -->
-							</div>
+							<div id="geoloc-city-mode"><!-- Js --></div>
 
 							<!-- longitude latitude mode -->
 							<div class="form-group searchMode long_lat_mode">
@@ -214,7 +203,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<input id="geoCity" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoCity" />
 								</div>
 							</div>
-
 							<br>
 
 							<div style="display:none" class="form-group">
@@ -235,7 +223,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="animation_aqi">
 										<option value="disable_anim">{{Désactiver}}</option>
 										<option value="slow_anim">{{Activer}}</option>
-
 									</select>
 								</div>
 							</div>
@@ -247,149 +234,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
 										<option value="polution">{{Polluant}}</option>
 										<option value="pollen">{{Pollen}}</option>
-										<option value="radiation">{{Radiation solaire}}</option>
-
+										<!-- <option value="radiation">{{Radiation solaire}}</option> -->
 									</select>
 								</div>
 							</div>
-
-
-                            <div class="form-group elements polution">
-								<label class="col-sm-3 control-label">{{Polluants}}</label>
-								<div class="col-sm-6">
-								
-                                   
-                                       <label class="checkbox-inline" >
-										<input checked type="checkbox" disabled class="eqLogicAttr" data-l1key="configuration" data-l2key="aqi" />AQI
-										</label>
-										<label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="no2"/>NO²
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="so2"/>SO²
-										</label>
-										<label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="co"/>CO
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="nh3"/>NH³
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="no"/>NO
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="o3"/>O³
-										</label>
-                                        <br>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="pm10"/>PM<sub>10</sub>
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="pm25"/>PM<sub>25</sub>
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="uv"/>{{Indice UV}}
-										</label>  <label class="checkbox-inline">
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="visibility"/>{{Visibilité}}
-										</label>                                                                    
-								</div>
-							</div>
-                            <br>
-                            <div class="form-group  elements pollen">
-								<label class="col-sm-3 control-label">{{Pollens}}</label>
-								<div class="col-sm-6"><label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="grass_pollen"/>Herbes Général
-										</label>
-                                        <label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="grass_risk"/>Herbes risques
-										</label>
-                                        <label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="tree_pollen"/>Arbre Général
-										</label>
-                                        <label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="tree_risk"/>Arbre risques
-                                        </label>
-                                        <label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="weed_pollen"/>Weed Général
-										</label>
-                                        <label style="display:none" class="checkbox-inline">
-										<input checked type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="weed_risk"/>Weed risques
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked class="eqLogicAttr" data-l1key="configuration" data-l2key="grass"/>{{Herbes & Poacées}}
-										</label>
-										<label class="checkbox-inline">
-										<input type="checkbox"  checked class="eqLogicAttr" data-l1key="configuration" data-l2key="auln"/>{{Auln}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="boul"/>{{Bouleau}}
-										</label>
-										<label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="cypress" />{{Cyprès}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="orme"/>{{Orme}}
-										</label>
-                                        <br>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="noisetier"/>{{Noisetier}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="chene"/>{{Chêne}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="pin"/>{{Pin}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="platane"/>{{Platane}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="peuplier"/>{{Peuplier}}
-										</label>
-                                      <br>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="chenopod" />{{Chenopod}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="armoise" />{{Armoise}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked class="eqLogicAttr" data-l1key="configuration" data-l2key="ortie" />{{Ortie}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="ambroisie" />{{Ambroisie}}
-										</label>
-                                        <label class="checkbox-inline">
-										<input type="checkbox" checked  class="eqLogicAttr" data-l1key="configuration" data-l2key="autres" />{{Autres}}
-										</label>
-                                        <label class="checkbox-inline" style="display:none">
-										<input type="checkbox" checked class="eqLogicAttr" data-l1key="configuration" data-l2key="updatedAt"/>Update time
-										</label>
-                                   
-								</div>
-							</div>
-
-
-							<!-- Champ de saisie du cron d'auto-actualisation + assistant cron -->
-							<!-- La fonction cron de la classe du plugin doit contenir le code prévu pour que ce champ soit fonctionnel -->
-								<!--<div class="form-group">
-								<label class="col-sm-3 control-label">{{Auto-actualisation}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Fréquence de rafraîchissement de l'équipement}}"></i></sup>
-								</label>
-								<div class="col-sm-7">
-									<div class="input-group">
-										<input type="text" class="eqLogicAttr form-control roundedLeft" data-l1key="configuration" data-l2key="autorefresh" placeholder="{{Cliquer sur ? pour afficher l'assistant cron}}" />
-										<span class="input-group-btn">
-											<a class="btn btn-default cursor jeeHelper roundedRight" data-helper="cron" title="Assistant cron">
-												<i class="fas fa-question-circle"></i>
-											</a>
-										</span>
-									</div>
-								</div>
-							</div> -->
-
-
-
 						</div>
 
 						<!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
