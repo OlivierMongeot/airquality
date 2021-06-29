@@ -8,7 +8,6 @@ Vous pouver historiser vos données, le dashboard, affichera alors les moyennes,
 
 Il fonctionne sous **Jeedom** et est compatible avec la version 4.
 
-
 <img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.JPG">Les données sont récupérées par deux API gratuites: Openwheather et Ambee. 
 
  - Elle sont gratuite dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, je vais aux limites du gratuit, c'est à dire 100 appels/jour.  
