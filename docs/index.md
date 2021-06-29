@@ -52,7 +52,11 @@ J'ai ajouté personnellement des niveaux alertes par pollens, ils sont basés su
 
 Les alertes sont basées sur des seuils de 40 particules/m³ , ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.  
 
-J'ai donc défini comme Risque 
+J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque est limité, et à partir de 40 le risque est élevé. Ces seuils sont valablent pour les personnes sensibles.
+
+Por résumer, les personnes hypersensibles vont réagir à 5 part/m3 et les perssones sensibles à 40.  
+
+**Note**
 
 Il faut attendre quelques minutes avant de pouvoir récupérer des informations suite à la création du compte, le temps que la clef soit active.
 
