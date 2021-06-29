@@ -41,13 +41,7 @@ if (!isConnect()) {
         <input id="api-aqi-key" class="configKey form-control" data-l1key="apikeyAmbee"/>
       </div>
     </div> 
-
-
-
   </fieldset>
-
-
-
 
 </form>
 <script>

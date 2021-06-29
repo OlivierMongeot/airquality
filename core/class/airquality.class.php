@@ -439,14 +439,16 @@ class airquality extends eqLogic
 
     public static function postConfig_apikey()
     {
-        if (config::byKey('apikey', 'airquality') == '') {
-            throw new Exception('La clef API ne peut être vide');
+        if (config::byKey('apikey', 'airquality') == '' && config::byKey('apikeyAmbee', 'airquality') == ''  ) {
+            throw new Exception('Vous devez au moins avoir une des deux clefs API pour recevoir des données');
         }
-        $api = new ApiAqi;
-        $checkApi = $api->getAqi(50, 50);
-        if (!$checkApi) {
-            throw new Exception('La clef API n\'est pas valide ou pas encore active');
-        }
+        // $api = new ApiAqi;
+        // $checkApi = $api->getAqi(50, 50);
+        // if (!$checkApi) {
+        //     throw new Exception('La clef API n\'est pas valide ou pas encore active');
+        // }
+
+
     }
 
     /**

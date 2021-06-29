@@ -232,8 +232,21 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<label class="col-sm-3 control-label">{{Elements à afficher}}</label>
 								<div class="col-sm-6">
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
-										<option value="polution">{{Polluant}}</option>
-										<option value="pollen">{{Pollen}}</option>
+                                <?php
+                                    if (config::byKey('apikey', 'airquality') !== '') {
+											echo '<option value="polution">{{Polluant}}</option>';
+										}else {
+										 echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef avant utilisation}}</option>';
+										}
+
+                                        if (config::byKey('apikeyAmbee', 'airquality') !== '') {
+											echo '<option value="pollen">{{Pollen}}</option>';
+										}else {
+										 echo '<option disabled="disabled" value="no-pollen-key">{{Pollen : Veuiller renseigner la clef avant utilisation}}</option>';
+										}
+                                ?>
+									
+									
 										<!-- <option value="radiation">{{Radiation solaire}}</option> -->
 									</select>
 								</div>
