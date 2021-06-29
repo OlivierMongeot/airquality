@@ -5,7 +5,7 @@ Le plugin Air Quality & Pollen donne des informations sur la qualité de l'air e
 Vous accèdez aux niveaux actuels et aux prévisions sur 5 jours pour la pollution et 3 jour pour les pollens.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/docs/photos/pollen.JPG">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
 </p>
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
@@ -39,7 +39,7 @@ Les alertes sont basé sur des seuils de 40 particules/m³, ce qui correspond au
 Il faut attendre quelques minutes avant de pouvoir récupérer des informations suite à la création du compte, le temps que la clef soit active.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/docs/photos/aqi2.JPG">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.JPG">
 </p>
 
 # Configuration des équipements
