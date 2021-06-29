@@ -9,7 +9,7 @@ Vous pouver historiser vos données, le dashboard, affichera alors les moyennes,
 Il fonctionne sous **Jeedom** et est compatible avec la version 4.
 
 
-<img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/docs/aqi2.JPG">Les données sont récupérées par deux API gratuites: Openwheather et Ambee. 
+<img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.JPG">Les données sont récupérées par deux API gratuites: Openwheather et Ambee. 
 
  - Elle sont gratuite dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, je vais aux limites du gratuit, c'est à dire 100 appels/jour.  
 
@@ -24,6 +24,6 @@ L'AQI en Europe est calculé de 1 (Bon) à 6 (Extrèmement mauvais)
 Pour les pollens les niveaux de danger généraux sont données par l'API ( de 1 Risque Null à 4 Risque très élevé ) pour les familles de pollens,
 J'ai ajouté des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP.
 
-<img  align="left" height="250" src="https://github.com/OlivierMongeot/airquality/docs/pollen.JPG">De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
+<img  align="left" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
 
 Les alertes sont basé sur des seuils de 40 particules/m³, ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.
