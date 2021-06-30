@@ -7,7 +7,7 @@ Vous accèdez aux données live et prévisions sur 5 jours pour la pollution et 
 Vos données peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
 </p>
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
@@ -90,7 +90,7 @@ Por résumer, les personnes hypersensibles vont réagir à 5 part/m3 et les pers
 Il faut attendre quelques minutes avant de pouvoir récupérer des informations suite à la création du compte, le temps que la clef soit active.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.jpg">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
 </p>
 
 Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast tous les matin à 7h00
