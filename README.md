@@ -6,6 +6,7 @@ It works with the open source **Jeedom** soft
 
 Compatible with Version 4. 
 
+<img  align="left" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
 
 ### Built With
 
@@ -14,8 +15,6 @@ Compatible with Version 4.
 * [HighCharts](https://highcharts.com)   
 
 * [Raspberry Pi 3](https://www.raspberrypi.org)
-
-<img  align="left" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
 
 
 ### Installation
@@ -48,7 +47,8 @@ The plugin is not on Jeedom  Marketplace for the momment, i hope, it will be soo
 6. Enjoy and take care yourself !! 
 
 
-<img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
+<img  align="right" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
+
 ## Usage
 
 For all people sensitive, allergic, athletic, asthmatic you can provide your planning with the forecast.
