@@ -143,10 +143,10 @@ class airquality extends eqLogic
                 $cmd->execCmd();
             }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
-            // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
-            // if (is_object($cmd)) {
-            //     $cmd->execCmd();
-            // }
+            $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
         }
     }
 
@@ -272,7 +272,7 @@ class airquality extends eqLogic
             $isObjet = is_object($cmd);
 
                 if ($nameCmd == 'uv') {
-                    $replace[$commandValue] =  $isObjet ? $cmd->execCmd() : '';
+                    $replace[$commandValue] = $isObjet ? $cmd->execCmd() : '';
                     $replace[$commandNameId] = $isObjet ? $cmd->getId(): '';
                     $replace[$commandName] = $isObjet ?  __($cmd->getName(), __FILE__): '';
                     $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
@@ -280,11 +280,11 @@ class airquality extends eqLogic
                     $replace['#uv_level#'] = $isObjet ?  $display->getUVRapport($cmd->execCmd()): '';
 
                 } else if ($nameCmd == 'visibility') {
-                    $replace[$commandValue] =   $isObjet ?$cmd->execCmd(): '';
-                    $replace[$commandNameId] =   $isObjet ?$cmd->getId(): '';
-                    $replace[$commandName] =    $isObjet ?__($cmd->getName(), __FILE__): '';
+                    $replace[$commandValue] = $isObjet ?$cmd->execCmd(): '';
+                    $replace[$commandNameId] = $isObjet ?$cmd->getId(): '';
+                    $replace[$commandName] = $isObjet ?__($cmd->getName(), __FILE__): '';
                     $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
-                    $replace[$nameIcon] =   $isObjet ? $newIcon: '';
+                    $replace[$nameIcon] = $isObjet ? $newIcon: '';
                     $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()): '';
 
 
@@ -327,12 +327,12 @@ class airquality extends eqLogic
                         $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite(): '';
 
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');
-                        $unitreplace['#max#'] = $isObjet ?  $maxCmd->execCmd(): '';
+                        $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '[0,0,0]';
                         $minCmd = $this->getCmd(null, $nameCmd . '_min');
-                        $unitreplace['#min#'] =  $isObjet ? $minCmd->execCmd(): '';
+                        $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '[0,0,0]';
                         $unitreplace['#color#'] =  $isObjet ?  $icone->getColor(): '';
                         $labels = $this->getCmd(null, 'days');
-                        $unitreplace['#labels#'] =  $isObjet ?  $labels->execCmd(): '';
+                        $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','-','data']";
                         $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($icone->getColor()): '';
                         $unitreplace['#level-particule#'] =  $isObjet ?  $display->getElementRiskAqi($icone->getColor()): '';
                         $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
@@ -471,10 +471,6 @@ class airquality extends eqLogic
     {
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
-        // $resLat = trim(config::byKey('DynLatitude', 'airquality'));
-        // $resLong = trim(config::byKey('DynLongitude', 'airquality'));
-        // $api = new ApiAqi;
-        // return  $api->callApiReverseGeoLoc($latitude, $longitude);
     }
 
     /**

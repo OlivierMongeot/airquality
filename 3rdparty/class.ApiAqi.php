@@ -82,9 +82,12 @@ class ApiAqi
         if ($longitude != '' && $latitude != '') {
             $url = "http://api.openweathermap.org/geo/1.0/reverse?lat=" . $latitude . "&lon=" . $longitude;
             $response = $this->curlApi($url, $this->apiKey);
-            if ($response[1]) {
-                throw new Exception(__('Impossible de récupérer cette ville en reverse géolocalisation :' . json_encode($response[1]), __FILE__));
-            } else {
+
+            if (empty(json_decode($response[0]))) {
+                log::add('airquality', 'debug', __('Impossible de récupérer de ville avec ces coordonées :' . json_encode($response), __FILE__));
+                return __("Pas de lieu trouvé par l'API avec ces coordonnées", __FILE__);
+            }
+            else {
                 $data = json_decode($response[0]);
                 $city = $data[0]->name;
                 return  $city;
@@ -147,24 +150,21 @@ class ApiAqi
         $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey);
 
-        if ($response[1]) {
-            throw new Exception('Pas de données de Pollen pour l\'instant'. $response[1] . ' Http code : ' . $response[2]);
-        } else {
-            $data = json_decode($response[0]);
-            $result = $data->data;
-            if ($result == [] || $result == null) {
-                if ( $response[2] == '429'){
-                    throw new Exception('Quota données pollen dépassé');
-                } else if ($response[2] == '401'){
-                    throw new Exception('Clef Api non active');
-                }
-                else {
-                       throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
+            if ( $response[2] == '429'){
+                throw new Exception('Quota données pollen dépassé');
+            } else  if ($response[2] == '401'){
+                throw new Exception('Clef Api non active');
+            } else if( $response[2] == '200'){
+                $data = json_decode($response[0]);
+                // $result = (property_exists($data, 'data')) ? $data->data : [];
+                if (property_exists($data, 'data')){
+                    return $data;
                 }
             } else {
-                return $data;
-            }
-        }
+                       throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
+            } 
+         
+       
     }
 
     /**

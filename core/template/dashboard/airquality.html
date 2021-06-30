@@ -26,15 +26,6 @@
         justify-content:center;
     }
     
-
-    /* .aqi-#id#-particule-zero {
-       height: 250px;
-       display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content:center;
-    } */
-
     #airquality-min#uid#>.carousel-control {
         position: absolute;
         top: 30%;
@@ -85,10 +76,6 @@
         color: var(--link-color) !important;
     }
 
-
-
-
-   
 </style>
 <div class="aqi-#id#-container">
 
@@ -202,11 +189,9 @@
                     var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
                     t#uid# = setTimeout("$('#airquality-min#uid#').carousel({interval: 1000});",
                          start#uid# - 1000);
-                    // console.log('Start : ' + start#uid#);
                     $('#airquality-min#uid#').on('slid.bs.carousel', function () {
                          clearTimeout(t#uid#);
                          var duration#uid# = $(this).find('.active').attr('data-interval');
-                        //  console.log('Duration : ' + duration#uid#);
                          $('#airquality-min#uid#').carousel('pause');
                          t#uid# = setTimeout("$('#airquality-min#uid#').carousel();",
                               duration#uid# - 1000);

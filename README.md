@@ -31,7 +31,7 @@ The plugin is not on Jeedom Marketplace for the momment, i hope, it will be soon
     git clone https://github.com/OlivierMongeot/airquality.git
     ```
 
-4. Delete the folder .git (Otherwise on uninstall Jeedom don't understand what is it and can give errors)
+4. Delete the folder .git before uninstall plugin (Otherwise on uninstall plugin, Jeedom don't understand what is it and can give errors)
     ```sh
     sudo rm /airquality/.git
     ```
