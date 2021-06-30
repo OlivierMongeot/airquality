@@ -188,7 +188,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="col-sm-6">
 									<input id="longitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
 								</div>
-
 							</div>
 							<div class="form-group searchMode dynamic_mode">
 								<label class="col-sm-3 control-label">{{Latitude}}</label>
@@ -196,7 +195,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<input id="latitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
 								</div>
 							</div>
-
 							<div class="form-group searchMode dynamic_mode">
 								<label class="col-sm-3 control-label">{{Ville}}</label>
 								<div class="col-sm-6">
@@ -204,7 +202,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<br>
-
 							<div style="display:none" class="form-group">
 								<label class="col-sm-3 control-label">{{Affichage}}</label>
 								<div class="col-sm-6">
@@ -216,7 +213,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<br>
-
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Animation}}</label>
 								<div class="col-sm-6">
@@ -227,32 +223,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
                             <br>
-               
                             <div class="form-group">
 								<label class="col-sm-3 control-label">{{Elements à afficher}}</label>
 								<div class="col-sm-6">
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
-                                <?php
+                                    <?php
                                     if (config::byKey('apikey', 'airquality') !== '') {
 											echo '<option value="polution">{{Polluant}}</option>';
 										}else {
-										 echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef avant utilisation}}</option>';
+										 echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef Openwheather avant utilisation}}</option>';
 										}
-
                                         if (config::byKey('apikeyAmbee', 'airquality') !== '') {
 											echo '<option value="pollen">{{Pollen}}</option>';
 										}else {
-										 echo '<option disabled="disabled" value="no-pollen-key">{{Pollen : Veuiller renseigner la clef avant utilisation}}</option>';
+										 echo '<option disabled="disabled" value="no-pollen-key">{{Pollen : Veuiller renseigner la clef Ambee avant utilisation}}</option>';
 										}
-                                ?>
-									
-									
-										<!-- <option value="radiation">{{Radiation solaire}}</option> -->
+                                    ?>		
+									<!-- <option value="radiation">{{Radiation solaire}}</option> -->
 									</select>
 								</div>
 							</div>
 						</div>
-
 						<!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
 						<div class="col-lg-6">
 							<legend><i class="fas fa-info"></i> {{Informations}}</legend>
@@ -274,7 +265,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				</form>
 				<hr>
 			</div><!-- /.tabpanel #eqlogictab-->
-
 			<!-- Onglet des commandes de l'équipement -->
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<a class="btn btn-default btn-sm pull-left cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
@@ -301,8 +291,5 @@ $eqLogics = eqLogic::byType($plugin->getId());
 	</div><!-- /.eqLogic -->
 </div><!-- /.row row-overflow -->
 
-
-
 <?php include_file('desktop', 'airquality', 'js', 'airquality'); ?>
-
 <?php include_file('core', 'plugin.template', 'js'); ?>

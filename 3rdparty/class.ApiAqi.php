@@ -43,16 +43,16 @@ class ApiAqi
         $response = curl_exec($curl);
 
         $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ($http_response_code != 200) {
+        if ($http_response_code !== 200) {
             $curlInfo = curl_getinfo($curl);
-            log::add('airquality', 'debug', ' Curl Info : ' . json_encode($curlInfo) . ' - Url : ' . json_encode($url));
+            log::add('airquality', 'debug', ' Curl Info http != 200 : ' . json_encode($curlInfo) . ' - Url : ' . json_encode($url));
         }
-        $err = curl_error($curl);
-        if ($err != '') {
-            log::add('airquality', 'debug', __('Problème API : ' . json_encode($err), __FILE__));
+        $error = curl_error($curl);
+        if ($error != '') {
+            log::add('airquality', 'debug', __('Problème API : ' . json_encode($error), __FILE__));
         }
         curl_close($curl);
-        return [$response, $err, $http_response_code];
+        return [$response, $error, $http_response_code];
     }
 
 
@@ -125,7 +125,7 @@ class ApiAqi
         $data = json_decode($response[0]);
 
         if ($response[1] != null) {
-            throw new Exception('Pas de données  UV et visibilité pour l\'instant : ' . $response[1]);
+            throw new Exception('Pas de données  UV et visibilité pour l\'instant : ' . $response[1]. ' - HttpResponsecode : ' . $response[2]);
         } else {
             if ($data == [] || $data == null) {
                 throw new Exception('Pas de données UV et visibilité avec ces coordonnées');
@@ -148,12 +148,19 @@ class ApiAqi
         $response = $this->curlApi($url, $this->ambeeApiKey);
 
         if ($response[1]) {
-            throw new Exception('Pas de données de Pollen pour l\'instant');
+            throw new Exception('Pas de données de Pollen pour l\'instant'. $response[1] . ' Http code : ' . $response[2]);
         } else {
             $data = json_decode($response[0]);
             $result = $data->data;
             if ($result == [] || $result == null) {
-                throw new Exception('Pas de données de Polen avec ces coordonnées');
+                if ( $response[2] == '429'){
+                    throw new Exception('Quota données pollen dépassé');
+                } else if ($response[2] == '401'){
+                    throw new Exception('Clef Api non active');
+                }
+                else {
+                       throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
+                }
             } else {
                 return $data;
             }
@@ -170,8 +177,11 @@ class ApiAqi
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-            echo ('Pas de données Forecast AQI pour l\'instant : ' . $response[1]);
-        } else {
+
+              throw new Exception('Pas de données AQI pour l\'instant'. $response[1] . ' Http code : ' . $response[2]);
+        }
+      
+        else {
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast AQI avec ces coordonnées');
             } else {
@@ -191,8 +201,12 @@ class ApiAqi
 
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-            echo ('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
-        } else {
+            throw new Exception('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
+        } 
+        else if ($response[2] == '429'){
+            throw new Exception('Quota données pollen dépassé');
+        }
+        else {
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast Pollen : ' . $data->message);
             } else {
@@ -254,7 +268,7 @@ class ApiAqi
 
 
     /**
-     * Combine les données en tableau avec un index par jour + recupération du nom du jour de la semaine avec le timestamp
+     * Combine les données en tableau avec index nommé par jour + recupération du nom du jour de la semaine avec le timestamp
      */
     private function parseDataPollen($response, $element)
     {
@@ -304,7 +318,7 @@ class ApiAqi
     private function parseData($response, $component)
     {
         $beginOfDay = strtotime("today",  time());
-        $day = 86399; // in seconds
+        $day = 86399; //day in seconds
         foreach ($response as $hourCast) {
             if ($hourCast->dt >= $beginOfDay && $hourCast->dt <= ($beginOfDay + 5 * $day)) {
                 $weekday = date('N', ($hourCast->dt + 100));
