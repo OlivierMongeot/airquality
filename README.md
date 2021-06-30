@@ -2,12 +2,7 @@
 
 Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
 
-<img  align="right" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
-
-It works with the open source **Jeedom** soft
-
-Compatible with Version 4. 
-
+It works with the open source **Jeedom** soft and it's compatible with Version 4. 
 
 ### Built With
 
@@ -26,9 +21,9 @@ The plugin is not on Jeedom Marketplace for the momment, i hope, it will be soon
 
 1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/) 
 
-2. Go to plugins directory of your Jeedom server:
+2. Go to plugins directory of your Jeedom server, an give good permission to create files into:
     ```sh
-    /var/www/html/plugins
+    Here : /var/www/html/plugins
     ```
 
 3.  Clone the repo in plugins directory :
