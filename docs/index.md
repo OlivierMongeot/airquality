@@ -2,7 +2,9 @@
 
 Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens présents.
 
-Vous accèdez aux niveaux en direct ainsi qu'aux prévisions sur 5 jours pour la pollution et 3 jours pour les pollens.
+Vous accèdez aux données live et prévisions sur 5 jours pour la pollution et 3 jour pour les pollens.
+
+Vous pouver historiser vos données, le dashboard, affichera alors les moyennes, mini, maxi et tendances. En cliquant sur les moyennes vous accèder au graphique représentant ces chiffres
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg">

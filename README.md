@@ -1,28 +1,62 @@
-# Plugin pour Jeedom Air Quality & Pollen
+# Plugin Jeedom Air Quality & Pollen
 
-Le plugin Air Quality & Pollen donne des informations sur la qualité de l'air et les pollen présents dans l'air ambiant.  
+Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
 
-Vous accèdez aux données live et prévisions sur 5 jours pour la pollution et 3 jour pour les pollens.
+It works with the open source **Jeedom** soft
 
-Vous pouver historiser vos données, le dashboard, affichera alors les moyennes, mini, maxi et tendances. En cliquant sur les moyennes vous accèder au graphique représentant ces chiffres
+Compatible with Version 4. 
 
-Il fonctionne sous **Jeedom** et est compatible avec la version 4.
+<img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
 
-<img  align="right" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">Les données sont récupérées par deux API gratuites: Openwheather et Ambee. 
 
- - Elle sont gratuite dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, je vais aux limites du gratuit, c'est à dire 100 appels/jour.  
+### Built With
 
- - Cela fonctionne presque partout dans le monde et vous pouvez l'utilisez en vous géolocalisant automatiquement.
+* [Jeedom V4.1.22](https://jeedom.com)
 
- - Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021 : https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air
+* [HighCharts](https://highcharts.com)   
 
-## Les indices et niveaux d'alerte
 
-L'AQI en Europe est calculé de 1 (Bon) à 6 (Extrèmement mauvais) 
+### Server Dev
 
-Pour les pollens les niveaux de danger généraux sont données par l'API ( de 1 Risque Null à 4 Risque très élevé ) pour les familles de pollens,
-J'ai ajouté des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP.
+* [Raspberry Pi 3](https://www.raspberrypi.org)
 
-<img  align="left" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
+<img  align="left" height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
 
-Les alertes sont basé sur des seuils de 40 particules/m³, ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.
+
+### Installation
+
+You must have Jeedom Domotic Software installed before using the plugin. 
+
+The plugin is not on Jeedom  Marketplace for the momment, i hope, it will be soon,  so for test you can : 
+
+1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/)
+
+2. Go to plugins directory of your Jeedom server:
+  ```sh
+    /var/www/html/plugins
+    ```
+
+3.  Clone the repo in plugins directory :
+    ```sh
+    git clone https://github.com/your_username_/Project-Name.git
+    ```
+
+4. Delete the folder .git (Otherwise on uninstall Jeedom don't understand what is it and give errors)
+
+5. See the documentation for configuration
+
+     https://oliviermongeot.github.io/airquality/
+
+6. Enjoy and take care yourself !! 
+
+
+## Usage
+
+For all people sensitive, allergic, athletic, asthmatic you can provide your planning with the forecast.
+
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+
