@@ -172,7 +172,6 @@ class ApiAqi
      */
     public function callApiForecastAQI($latitude = null, $longitude = null)
     {
-        message::add('debug', 'use  ApiForecastAQI');
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey);
         $data = json_decode($response[0]);

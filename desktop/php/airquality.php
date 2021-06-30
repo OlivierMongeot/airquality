@@ -160,10 +160,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 
-						<div class="form-group searchMode city_mode">
-                        <label class="col-sm-3 control-label"></label>
+						    <div class="form-group searchMode city_mode">
+                            <label class="col-sm-3 control-label"></label>
 								<div class="col-sm-6">
-									<a  id="validate-city" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> {{Vérifier}}</a>
+									<a id="validate-city" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> {{Vérifier}}</a>
 								</div>
 							</div>
 
@@ -173,13 +173,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<div class="form-group searchMode long_lat_mode">
 								<label class="col-sm-3 control-label">{{Longitude}}</label>
 								<div class="col-sm-6">
-									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="longitude" />
+									<input type="number" id="longitude-llm" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="longitude" />
 								</div>
 							</div>
 							<div class="form-group searchMode long_lat_mode">
 								<label class="col-sm-3 control-label">{{Latitude}}</label>
 								<div class="col-sm-6">
-									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="latitude" />
+									<input type="number" id="latitude-llm" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="latitude" />
+								</div>
+							</div>
+
+                            <div class="form-group searchMode long_lat_mode">
+                            <label class="col-sm-3 control-label"></label>
+								<div class="col-sm-6">
+									<a id="validate-llm" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> {{Vérifier les coordonées}}</a>
+								</div>
+							</div>
+
+                            <div  style="display:none" class="form-group searchMode long_lat_mode">
+								<label class="col-sm-3 control-label">{{Lieu correspondant}}</label>
+								<div class="col-sm-6">
+									<input id="geo-loc-llm" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city-llm" />
 								</div>
 							</div>
 							<!-- dynamic_mode -->
