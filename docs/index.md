@@ -7,6 +7,10 @@ Vous accèdez aux données live et prévisions sur 5 jours pour la pollution et 
 Vos données peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
 
 <p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg">
+</p>
+
+<p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
 </p>
 
@@ -91,6 +95,10 @@ Il faut attendre quelques minutes avant de pouvoir récupérer des informations 
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
+</p>
+
+<p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
 </p>
 
 Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast tous les matin à 7h00
