@@ -390,7 +390,7 @@ class airquality extends eqLogic
                     }
                 }
         }
-
+        // Compteur de slide d'elements à data zero 
         $k = 0;
         if ($this->getConfiguration('elements') == 'pollen') {
             $newArray = array_chunk($tabZero, 3);

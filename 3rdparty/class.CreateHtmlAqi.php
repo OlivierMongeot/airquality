@@ -31,21 +31,31 @@ class CreateHtmlAqi
 
         if($this->itemByCell == 1) {
             for ( $i = 0 ; $i < ($this->countCell) ; $i++ ) {
-                $newTab[] = [ $array[$i]  ] ;
+                $newTab[] = [$array[$i]] ;
             }
             $total = count($newTab);
             foreach ($newTab as $k => $item){
-                $html[] =  $this->getStartCell($k, $total) . $item[0] . $this->getEndCell();
+                $html[] =  $this->getStartCell($k, $total) . $item[0] . $this->getEndCell($k, $total);
             }
         }
 
         return implode( '', $html); 
     }
 
-    private function getEndCell(){
-        if ($this->version == 'mobile'){
-            return ' </div>';
-        } else {
+    private function getEndCell($k, $total){
+
+        if ($this->version == 'mobile' && $this->gender == 'polution' ){
+            return  '</div>';
+        } 
+        else if ($this->version == 'mobile'  && $this->gender == 'pollen' )
+        {
+            if ($k >= ($total - $this->slidesAtZero)){
+                return '</div></div>';
+            } else {
+                return '</div>';
+            }
+        }
+        else {
             return '</div></div>';
         }
     }
@@ -53,9 +63,21 @@ class CreateHtmlAqi
     private function getStartCell($k, $total){
 
 
-        if ($this->version == 'mobile'){
-            return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row first-row aqi-'.$this->id.'-row">';
-        }
+        if ($this->version == 'mobile' && $this->gender == 'polution' ){
+            return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row">';
+        } 
+        else
+        if ($this->version == 'mobile' && $this->gender == 'pollen' ){
+            if ($k >= ($total - $this->slidesAtZero)){
+
+                return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row" ><div >';
+            } else 
+            {
+                return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row first-row aqi-'.$this->id.'-row">';
+            }
+
+        } 
+        
         else {
             if($k == 0){
                 $active = 'active'; 
@@ -66,9 +88,11 @@ class CreateHtmlAqi
             } 
 
             if ($k >= ($total - $this->slidesAtZero) && $this->gender == 'pollen'){
+
                 return '<div class="item '.$active.'" data-interval="'.$interval.'" ><div class="aqi-'.
                 $this->id.'-particule" style="height:200px; display:flex; flex-direction:column;" >';
-            } else {
+            } 
+            else {
                    return '<div class="item '.$active.'" data-interval="'.$interval.'"><div class="aqi-'.$this->id.'-row">';
             }
         }
