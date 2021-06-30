@@ -2,11 +2,12 @@
 
 Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
 
+<img  align="right" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
+
 It works with the open source **Jeedom** soft
 
 Compatible with Version 4. 
 
-<img  align="left" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.jpg">
 
 ### Built With
 
@@ -21,9 +22,9 @@ Compatible with Version 4.
 
 You must have Jeedom Domotic Software installed before using the plugin. 
 
-The plugin is not on Jeedom  Marketplace for the momment, i hope, it will be soon,  so for test you can : 
+The plugin is not on Jeedom Marketplace for the momment, i hope, it will be soon,  so for test you can : 
 
-1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/)
+1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/) 
 
 2. Go to plugins directory of your Jeedom server:
     ```sh
@@ -44,10 +45,12 @@ The plugin is not on Jeedom  Marketplace for the momment, i hope, it will be soo
 
      https://oliviermongeot.github.io/airquality/
 
-6. Enjoy and take care yourself !! 
+6. To have pollen data you must still get a free API Key at [ Ambee.com ](https://www.getambee.com/) but it's not required to test the plugin.
+
+7. Enjoy and take care yourself !! 
 
 
-<img  align="right" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
+<img  align="left" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
 
 ## Usage
 
