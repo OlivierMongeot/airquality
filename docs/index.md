@@ -74,24 +74,26 @@ Pour l'AQI, tous les polluants sont affichés par défault, il vous suffit de d�
 
 Pour les pollens, tous sont affichés par défaut, le plugin, les classe automatiquement par ordre décroissant de risque et les pollens non détéctés(à zéro) sont affiché à part dans un tableau à la fin du caroussel.  
 
+Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
 **Important**
 
 L'AQI en Europe est désormais calculée de 1 (Bon) à 6 (Extrèmement mauvais)
 
-Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (de 1 Risque Nul à 4 Risque très élevé) .
+J'ai utilisé les code couleurs officiel pour l'affichage : [voir ici](https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air)
 
-J'ai ajouté personnellement des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP  :
+Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (de 1 Risque nul à 4 Risque très élevé).
+
+J'ai rajouté des niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP  :
 
 Les alertes sont basées sur des seuils de 40 particules/m³ , ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.  
 
 J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque est limité, et à partir de 40 le risque est élevé. Ces seuils sont valablent pour les personnes sensibles.
 
-Por résumer, les personnes hypersensibles vont réagir à 5 part/m3 et les sensibles à 40.  
+Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et les sensibles dès 40.  
 
 **Note**
 
-Il faut attendre quelques minutes avant de pouvoir récupérer des informations suite à la création du compte, le temps que la clef soit active.
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
