@@ -17,7 +17,7 @@ It works with the open source **Jeedom** soft and it's compatible with Version 4
 
 You must have Jeedom Domotic Software installed before using the plugin. 
 
-The plugin is not on Jeedom Marketplace for the momment, i hope, it will be soon,  so for test you can : 
+The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, so for test you can : 
 
 1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/) 
 
