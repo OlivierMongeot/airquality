@@ -10,9 +10,7 @@ Vos données peuvent être historisées, le dashboard, affichera alors les moyen
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg">
 </p>
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
-</p>
+
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
 
@@ -32,7 +30,9 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021
 
-De la documentation sur mes sources est disponible dans le dossier pdf à la racine du projet.
+<p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
+</p>
 
 # Configuration principale du plugin
 
@@ -79,7 +79,7 @@ Pour les pollens, tous sont affichés par défaut, le plugin, les classe automat
 
 L'AQI en Europe est désormais calculée de 1 (Bon) à 6 (Extrèmement mauvais)
 
-Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee ( de 1 Risque Nul à 4 Risque très élevé ) .
+Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (de 1 Risque Nul à 4 Risque très élevé) .
 
 J'ai ajouté personnellement des niveaux alertes par pollens, ils sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP  :
 
@@ -87,7 +87,7 @@ Les alertes sont basées sur des seuils de 40 particules/m³ , ce qui correspond
 
 J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque est limité, et à partir de 40 le risque est élevé. Ces seuils sont valablent pour les personnes sensibles.
 
-Por résumer, les personnes hypersensibles vont réagir à 5 part/m3 et les perssones sensibles à 40.  
+Por résumer, les personnes hypersensibles vont réagir à 5 part/m3 et les sensibles à 40.  
 
 **Note**
 
