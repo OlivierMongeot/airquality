@@ -51,6 +51,38 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
             });
         }
     }
+
+
+    if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'long_lat_mode') {
+
+   
+
+  
+            getCity(position.coords.latitude, position.coords.longitude)
+
+        
+        var getCity = (latitude, longitude) => {
+            console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
+            $.ajax({
+                type: "POST",
+                url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                data: { action: "getcity", longitude: longitude, latitude: latitude },
+                dataType: 'json',
+                error: function (request, status, error) { handleAjaxError(request, status, error); },
+                success: function (data) {
+                    console.log("requete ajax succes : " + data.result)
+                    document.getElementById("geoCity").value = data.result;
+                    if (data.state != 'ok') {
+                        console.log('ereur AJAX : ' + data.result);
+                    }
+                }
+            });
+        }
+    }
+
+
+
+
 })
 
 

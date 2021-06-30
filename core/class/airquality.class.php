@@ -321,7 +321,9 @@ class airquality extends eqLogic
                         $unitreplace['#display-name#'] =  $isObjet ? __($cmd->getName(), __FILE__): '';
                         $unitreplace['#cmdid#'] = $isObjet ?  $cmd->getId(): '';
                         $unitreplace['#history#'] =  $isObjet ? 'history cursor': '';
+                   
                         $unitreplace['#info-modalcmd#'] = $isObjet ?  'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
+                   
                         $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite(): '';
 
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');
@@ -439,13 +441,8 @@ class airquality extends eqLogic
 
     public static function postConfig_apikey()
     {
-        if (config::byKey('apikey', 'airquality') == '') {
-            throw new Exception('La clef API ne peut être vide');
-        }
-        $api = new ApiAqi;
-        $checkApi = $api->getAqi(50, 50);
-        if (!$checkApi) {
-            throw new Exception('La clef API n\'est pas valide ou pas encore active');
+        if (config::byKey('apikey', 'airquality') == '' && config::byKey('apikeyAmbee', 'airquality') == '' ) {
+            throw new Exception('Au moins une clef est nécessaire pour faire marcher le plugin');
         }
     }
 
