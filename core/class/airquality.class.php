@@ -1,10 +1,10 @@
 <?php
 // Setup Error : only dev 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
-// ini_set('log_errors', TRUE);
-// ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log');
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
+ini_set('log_errors', TRUE);
+ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log');
 
 /* This file is part of Jeedom.
  *
@@ -143,10 +143,10 @@ class airquality extends eqLogic
                 $cmd->execCmd();
             }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
-            $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
-            }
+            // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
+            // if (is_object($cmd)) {
+            //     $cmd->execCmd();
+            // }
         }
     }
 
@@ -254,7 +254,7 @@ class airquality extends eqLogic
         // Pollution 
         if ($this->getConfiguration('elements') == 'polution') {
             message::add("Is Going",'Polution Tohtml');
-            $icone = new IconesAqi;
+          
             $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
 
             foreach ($this->getCmd('info') as $cmd) {
@@ -273,6 +273,7 @@ class airquality extends eqLogic
                         $replace[$commandValue] = $isObjet ? $cmd->execCmd() : '';
                         $replace[$commandNameId] = $isObjet ? $cmd->getId(): '';
                         $replace[$commandName] = $isObjet ?  __($cmd->getName(), __FILE__): '';
+                        $icone = new IconesAqi;
                         $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                         $replace[$nameIcon] = $isObjet ? $newIcon: '';
                         $replace['#uv_level#'] = $isObjet ?  $display->getUVRapport($cmd->execCmd()): '';
@@ -281,6 +282,7 @@ class airquality extends eqLogic
                         $replace[$commandValue] = $isObjet ?$cmd->execCmd(): '';
                         $replace[$commandNameId] = $isObjet ?$cmd->getId(): '';
                         $replace[$commandName] = $isObjet ?__($cmd->getName(), __FILE__): '';
+                        $icone = new IconesAqi;
                         $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                         $replace[$nameIcon] = $isObjet ? $newIcon: '';
                         $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()): '';
@@ -289,6 +291,7 @@ class airquality extends eqLogic
                         // Incrémentation Compteur de pollens actifs 
                        
                         if ( $cmd->getIsVisible() == 1 ) {
+                            $icone = new IconesAqi;
                             $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
                             $unitreplace['#icone#'] =  $isObjet ? $newIcon: '';
                             $unitreplace['#id#'] =  $isObjet ? $this->getId(): '';
@@ -353,12 +356,13 @@ class airquality extends eqLogic
             }
             //FIN FOREACH
             $replace['#index_name#'] = __('Indice', __FILE__);
+            $k = 0;
         } 
         
 
         // Pollen 
         if ($this->getConfiguration('elements') == 'pollen') {
-            $icone = new IconesPollen;
+          
             $elementTemplate = getTemplate('core', $version, 'elementPollen', 'airquality');
 
             foreach ($this->getCmd('info') as $cmd) {
@@ -374,21 +378,22 @@ class airquality extends eqLogic
                 $isObjet = is_object($cmd);
     
                 if ($nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen') {
-                        $replace[$commandValue] =  $isObjet ? $cmd->execCmd(): '';
-                        $replace[$commandNameId] =   $isObjet ? $cmd->getId(): '';
+                        $replace[$commandValue] =  $isObjet ? $cmd->execCmd() : '';
+                        $replace[$commandNameId] =   $isObjet ? $cmd->getId() : '';
                         $replace[$commandName] =  $isObjet ?  __($cmd->getName(), __FILE__): '';
-                        $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
-                        $replace[$nameIcon] = $isObjet ?  $newIcon: '';
+                        $iconePollen = new IconesPollen;
+                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
+                        $replace[$nameIcon] = $isObjet ?  $newIcon : '';
                         $listPollen = '#list_' . $nameCmd . '#';
-                        $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd): '';
+                        $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
     
                     } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
-                        $replace[$commandValue] =  $isObjet ?$display->getPollenRisk($cmd->execCmd()): '';
+                        $replace[$commandValue] =  $isObjet ?$display->getPollenRisk($cmd->execCmd()) : '';
     
                     } else  if ($nameCmd == 'updatedAt') {
                         // En réparation 
                         // $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
-                        $replace['#updatedAt#'] = $isObjet ? '': '';
+                        $replace['#updatedAt#'] = $isObjet ? '' : '';
     
                     } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                         // Incrémentation Compteur de pollens actifs 
@@ -402,8 +407,8 @@ class airquality extends eqLogic
                         $displaySlide = (array_sum($max) > 0) ? true : false;
     
                         if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true ) {
-
-                            $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
+                            $iconePollen = new IconesPollen;
+                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
                             $unitreplace['#icone#'] =  $isObjet ? $newIcon: '';
                             $unitreplace['#id#'] =  $isObjet ? $this->getId(): '';
                             // $unitreplace['#value#'] =  ($this->getConfiguration('elements') == 'polution'  &&  $isObjet) ?  $display->formatValueForDisplay($cmd->execCmd()) : $cmd->execCmd();
@@ -418,10 +423,10 @@ class airquality extends eqLogic
                             $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '[0,0,0]';
                             $minCmd = $this->getCmd(null, $nameCmd . '_min');
                             $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '[0,0,0]';
-                            $unitreplace['#color#'] =  $isObjet ?  $icone->getColor(): '';
+                            $unitreplace['#color#'] =  $isObjet ?  $iconePollen->getColor(): '';
                             $labels = $this->getCmd(null, 'days');
                             $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','-','data']";
-                            $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($icone->getColor()): '';
+                            $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()): '';
                             $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
                             $unitreplace['#mini#'] = __("Mini", __FILE__);
                             $unitreplace['#maxi#'] = __("Maxi", __FILE__);
@@ -452,8 +457,8 @@ class airquality extends eqLogic
                         } else {
                             // Cas Pollen à ZERO 
                             if ($this->getConfiguration('elements') == 'pollen') {
-    
-                                $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '10px');
+                                $iconePollen = new IconesPollen;
+                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '10px');
                                 $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon: '';
                                 $pollenZeroReplace['#id#'] = $isObjet ? $this->getId(): '';
                                 // $pollenZeroReplace['#value#'] = ($this->getConfiguration('elements') == 'polution') ?  $display->formatValueForDisplay($cmd->execCmd()) : $cmd->execCmd();
@@ -473,7 +478,6 @@ class airquality extends eqLogic
          
             // Compteur de slide d pollen à data zero 
             $k = 0;
-           
             $newArray = array_chunk($tabZero, 3);
                    foreach ($newArray as $arr) {
                     $tab[] = implode('', $arr);
