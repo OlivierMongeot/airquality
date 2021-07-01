@@ -1,4 +1,5 @@
 <?php
+// Setup Error : only dev 
 error_reporting(E_ALL);
 ini_set('ignore_repeated_errors', TRUE);
 ini_set('display_errors', TRUE);
@@ -47,7 +48,6 @@ class airquality extends eqLogic
             }
         }
     }
-
 
     public static function cron()
     {
@@ -296,10 +296,13 @@ class airquality extends eqLogic
                     $replace[$nameIcon] = $isObjet ?  $newIcon: '';
                     $listPollen = '#list_' . $nameCmd . '#';
                     $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd): '';
+
                 } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
                     $replace[$commandValue] =  $isObjet ?$display->getPollenRisk($cmd->execCmd()): '';
+
                 } else  if ($nameCmd == 'updatedAt') {
                     $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
+
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide' || $cmd->getConfiguration($nameCmd) == 'both') {
                     // Incrémentation Compteur de pollens actifs 
                     $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
@@ -439,6 +442,7 @@ class airquality extends eqLogic
         return (int)$string;
     }
 
+    
     public static function postConfig_apikey()
     {
         if (config::byKey('apikey', 'airquality') == '' && config::byKey('apikeyAmbee', 'airquality') == '' ) {
@@ -551,7 +555,7 @@ class airquality extends eqLogic
     }
 
     /**
-     * Appel api AqI + UV + Visibility Live + Update des Commands 
+     * Appel api AQI live + UV + Visibility + Update des Commands 
      */
     public function updatePollution()
     {
