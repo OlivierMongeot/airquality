@@ -138,10 +138,10 @@ class airquality extends eqLogic
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
-            $cmd = $this->getCmd(null, 'refresh');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
-            }
+            // $cmd = $this->getCmd(null, 'refresh');
+            // if (is_object($cmd)) {
+            //     $cmd->execCmd();
+            // }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
             // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
             // if (is_object($cmd)) {
@@ -185,6 +185,7 @@ class airquality extends eqLogic
             $refresh->setSubType('other');
             $refresh->save();
             $setup = SetupAqi::$setupAqi;
+
 
         }
 
@@ -255,6 +256,7 @@ class airquality extends eqLogic
         if ($this->getConfiguration('elements') == 'polution') {
         
             $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
+          
 
             foreach ($this->getCmd('info') as $cmd) {
                 // Preparation dynamique des valeurs à remplacer 
@@ -285,8 +287,8 @@ class airquality extends eqLogic
                         $replace[$nameIcon] = $isObjet ? $newIcon: '';
                         $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()): '';
     
-                    } else if ($cmd->getConfiguration($nameCmd) == 'slide' || $cmd->getConfiguration($nameCmd) == 'both') {
-                        // Incrémentation Compteur de pollens actifs 
+                    } else if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
+                       
                        
                         if ( $cmd->getIsVisible() == 1 ) {
                             $icone = new IconesAqi;
@@ -592,31 +594,34 @@ class airquality extends eqLogic
     public function updatePollen()
     {
         $dataAll = $this->getApiData('getAmbee');
-        $dataPollen = $dataAll->data;
-        $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
-        $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
-        $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
-        $this->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
-        $this->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
-        $this->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
-        $this->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
-        $this->checkAndUpdateCmd('grass_risk', $dataPollen[0]->Risk->grass_pollen);
-        $this->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
-        $this->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
-        $this->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
-        $this->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
-        $this->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
-        $this->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
-        $this->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
-        $this->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
-        $this->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
-        $this->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
-        $this->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
-        $this->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
-        $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
-        $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
-        $this->reorderCmdPollen();
-        $this->refreshWidget();
+        if(isset($dataAll->data)){
+            $dataPollen = $dataAll->data;
+            $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
+            $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
+            $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
+            $this->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
+            $this->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
+            $this->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
+            $this->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
+            $this->checkAndUpdateCmd('grass_risk', $dataPollen[0]->Risk->grass_pollen);
+            $this->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
+            $this->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
+            $this->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
+            $this->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
+            $this->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
+            $this->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
+            $this->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
+            $this->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
+            $this->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
+            $this->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
+            $this->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
+            $this->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
+            $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
+            $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
+            $this->reorderCmdPollen();
+            $this->refreshWidget();
+        }
+      
     }
 
     /**
@@ -674,39 +679,42 @@ class airquality extends eqLogic
     public function updateForecastPollen()
     {
         $forecast =  $this->getApiData('getForecastPollen');
-        log::add('airquality', 'debug', json_encode($forecast));
-        $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
-        $this->checkAndUpdateCmd('poaceae_min', json_encode($forecast['Poaceae']['min']));
-        $this->checkAndUpdateCmd('poaceae_max', json_encode($forecast['Poaceae']['max']));
-        $this->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));
-        $this->checkAndUpdateCmd('alder_max', json_encode($forecast['Alder']['max']));
-        $this->checkAndUpdateCmd('birch_min', json_encode($forecast['Birch']['min']));
-        $this->checkAndUpdateCmd('birch_max', json_encode($forecast['Birch']['max']));
-        $this->checkAndUpdateCmd('cypress_min', json_encode($forecast['Cypress']['min']));
-        $this->checkAndUpdateCmd('cypress_max', json_encode($forecast['Cypress']['max']));
-        $this->checkAndUpdateCmd('elm_min', json_encode($forecast['Elm']['min']));
-        $this->checkAndUpdateCmd('elm_max', json_encode($forecast['Elm']['max']));
-        $this->checkAndUpdateCmd('hazel_min', json_encode($forecast['Hazel']['min']));
-        $this->checkAndUpdateCmd('hazel_max', json_encode($forecast['Hazel']['max']));
-        $this->checkAndUpdateCmd('oak_min', json_encode($forecast['Oak']['min']));
-        $this->checkAndUpdateCmd('oak_max', json_encode($forecast['Oak']['max']));
-        $this->checkAndUpdateCmd('pine_min', json_encode($forecast['Pine']['min']));
-        $this->checkAndUpdateCmd('pine_max', json_encode($forecast['Pine']['max']));
-        $this->checkAndUpdateCmd('plane_min', json_encode($forecast['Plane']['min']));
-        $this->checkAndUpdateCmd('plane_max', json_encode($forecast['Plane']['max']));
-        $this->checkAndUpdateCmd('poplar_min', json_encode($forecast['Poplar']['min']));
-        $this->checkAndUpdateCmd('poplar_max', json_encode($forecast['Poplar']['max']));
-        $this->checkAndUpdateCmd('chenopod_min', json_encode($forecast['Chenopod']['min']));
-        $this->checkAndUpdateCmd('chenopod_max', json_encode($forecast['Chenopod']['max']));
-        $this->checkAndUpdateCmd('mugwort_min', json_encode($forecast['Mugwort']['min']));
-        $this->checkAndUpdateCmd('mugwort_max', json_encode($forecast['Mugwort']['max']));
-        $this->checkAndUpdateCmd('nettle_min', json_encode($forecast['Nettle']['min']));
-        $this->checkAndUpdateCmd('nettle_max', json_encode($forecast['Nettle']['max']));
-        $this->checkAndUpdateCmd('ragweed_min', json_encode($forecast['Ragweed']['min']));
-        $this->checkAndUpdateCmd('ragweed_max', json_encode($forecast['Ragweed']['max']));
-        $this->checkAndUpdateCmd('others_min', json_encode($forecast['Others']['min']));
-        $this->checkAndUpdateCmd('others_max', json_encode($forecast['Others']['max']));
-        $this->refreshWidget();
+        if (is_array($forecast)){
+            log::add('airquality', 'debug', json_encode($forecast));
+            $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
+            $this->checkAndUpdateCmd('poaceae_min', json_encode($forecast['Poaceae']['min']));
+            $this->checkAndUpdateCmd('poaceae_max', json_encode($forecast['Poaceae']['max']));
+            $this->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));
+            $this->checkAndUpdateCmd('alder_max', json_encode($forecast['Alder']['max']));
+            $this->checkAndUpdateCmd('birch_min', json_encode($forecast['Birch']['min']));
+            $this->checkAndUpdateCmd('birch_max', json_encode($forecast['Birch']['max']));
+            $this->checkAndUpdateCmd('cypress_min', json_encode($forecast['Cypress']['min']));
+            $this->checkAndUpdateCmd('cypress_max', json_encode($forecast['Cypress']['max']));
+            $this->checkAndUpdateCmd('elm_min', json_encode($forecast['Elm']['min']));
+            $this->checkAndUpdateCmd('elm_max', json_encode($forecast['Elm']['max']));
+            $this->checkAndUpdateCmd('hazel_min', json_encode($forecast['Hazel']['min']));
+            $this->checkAndUpdateCmd('hazel_max', json_encode($forecast['Hazel']['max']));
+            $this->checkAndUpdateCmd('oak_min', json_encode($forecast['Oak']['min']));
+            $this->checkAndUpdateCmd('oak_max', json_encode($forecast['Oak']['max']));
+            $this->checkAndUpdateCmd('pine_min', json_encode($forecast['Pine']['min']));
+            $this->checkAndUpdateCmd('pine_max', json_encode($forecast['Pine']['max']));
+            $this->checkAndUpdateCmd('plane_min', json_encode($forecast['Plane']['min']));
+            $this->checkAndUpdateCmd('plane_max', json_encode($forecast['Plane']['max']));
+            $this->checkAndUpdateCmd('poplar_min', json_encode($forecast['Poplar']['min']));
+            $this->checkAndUpdateCmd('poplar_max', json_encode($forecast['Poplar']['max']));
+            $this->checkAndUpdateCmd('chenopod_min', json_encode($forecast['Chenopod']['min']));
+            $this->checkAndUpdateCmd('chenopod_max', json_encode($forecast['Chenopod']['max']));
+            $this->checkAndUpdateCmd('mugwort_min', json_encode($forecast['Mugwort']['min']));
+            $this->checkAndUpdateCmd('mugwort_max', json_encode($forecast['Mugwort']['max']));
+            $this->checkAndUpdateCmd('nettle_min', json_encode($forecast['Nettle']['min']));
+            $this->checkAndUpdateCmd('nettle_max', json_encode($forecast['Nettle']['max']));
+            $this->checkAndUpdateCmd('ragweed_min', json_encode($forecast['Ragweed']['min']));
+            $this->checkAndUpdateCmd('ragweed_max', json_encode($forecast['Ragweed']['max']));
+            $this->checkAndUpdateCmd('others_min', json_encode($forecast['Others']['min']));
+            $this->checkAndUpdateCmd('others_max', json_encode($forecast['Others']['max']));
+            $this->refreshWidget();
+        }
+      
     }
 
     /**

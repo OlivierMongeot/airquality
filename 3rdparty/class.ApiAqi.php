@@ -156,7 +156,6 @@ class ApiAqi
                 throw new Exception('Clef Api non active');
             } else if( $response[2] == '200'){
                 $data = json_decode($response[0]);
-               
                 if (property_exists($data, 'data')){
                     return $data;
                 }
@@ -203,7 +202,7 @@ class ApiAqi
             throw new Exception('Pas de données Forecast Pollen pour l\'instant : ' . $response[1]);
         } 
         else if ($response[2] == '429'){
-            message::add('Ambee','Quota journalier données pollen dépassé');
+            message::add('Ambee','Quota journalier données pollen dépassé pour le Forecast');
         }
         else {
             if ($data == [] || $data == null) {
