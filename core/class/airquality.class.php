@@ -138,10 +138,10 @@ class airquality extends eqLogic
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
-            // $cmd = $this->getCmd(null, 'refresh');
-            // if (is_object($cmd)) {
-            //     $cmd->execCmd();
-            // }
+            $cmd = $this->getCmd(null, 'refresh');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
             // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
             // if (is_object($cmd)) {
@@ -185,8 +185,6 @@ class airquality extends eqLogic
             $refresh->setSubType('other');
             $refresh->save();
             $setup = SetupAqi::$setupAqi;
-
-
         }
 
         if ($this->getConfiguration('elements') == 'pollen') {

@@ -23,7 +23,7 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
 
 2. Go to 'plugins' directory of your Jeedom server, and create folder 'airquality' and give good permission to create files into:
     ```sh
-    Here : /var/www/html/plugins
+    Go here : /var/www/html/plugins
     ```
 
 3.  Clone the repo in plugins directory :
@@ -49,11 +49,10 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
 
 ## Usage
 
-For all people sensitive, allergic, athletic, asthmatic you can provide your planning with the forecast.
-
+For all people sensitive, allergic, athletic, asthmatic you can provide your planning with the forecast and so protect yourself.
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Any contributions you make are **greatly appreciated**.
 
 
