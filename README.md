@@ -21,7 +21,7 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
 
 1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/) 
 
-2. Go to plugins directory of your Jeedom server, an give good permission to create files into:
+2. Go to 'plugins' directory of your Jeedom server, and create folder 'airquality' and give good permission to create files into:
     ```sh
     Here : /var/www/html/plugins
     ```
@@ -31,7 +31,7 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
     git clone https://github.com/OlivierMongeot/airquality.git
     ```
 
-4. Delete the folder .git before uninstall plugin (Otherwise on uninstall plugin, Jeedom don't understand what is it and can give errors)
+4. !!! Delete the folder .git if it's just a test. Because on uninstall plugin, Jeedom don't understand what is it and can give errors)
     ```sh
     sudo rm /airquality/.git
     ```
