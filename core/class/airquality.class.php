@@ -352,7 +352,6 @@ class airquality extends eqLogic
                     }
             }
             //FIN FOREACH
-            
             $replace['#index_name#'] = __('Indice', __FILE__);
         } 
         
@@ -391,7 +390,7 @@ class airquality extends eqLogic
                         // $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
                         $replace['#updatedAt#'] = $isObjet ? '': '';
     
-                    } else if ($cmd->getConfiguration($nameCmd) == 'slide' || $cmd->getConfiguration($nameCmd) == 'both') {
+                    } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                         // Incrémentation Compteur de pollens actifs 
                         $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
     
@@ -413,11 +412,8 @@ class airquality extends eqLogic
                             $unitreplace['#display-name#'] =  $isObjet ? __($cmd->getName(), __FILE__): '';
                             $unitreplace['#cmdid#'] = $isObjet ?  $cmd->getId(): '';
                             $unitreplace['#history#'] =  $isObjet ? 'history cursor': '';
-                       
                             $unitreplace['#info-modalcmd#'] = $isObjet ?  'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
-                       
                             $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite(): '';
-    
                             $maxCmd = $this->getCmd(null, $nameCmd . '_max');
                             $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '[0,0,0]';
                             $minCmd = $this->getCmd(null, $nameCmd . '_min');
@@ -471,7 +467,6 @@ class airquality extends eqLogic
                                 $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2);
                             }
                         }
-    
                     }
             }
             //FIN FOREACH
@@ -487,7 +482,6 @@ class airquality extends eqLogic
          
             $replace['#active_pollen_label#'] = __('Pollens actifs', __FILE__);
             $replace['#activePollen#'] = $activePollenCounter;
-
 
         }
 
