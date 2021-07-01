@@ -25,14 +25,20 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 if (!class_exists('ApiAqi')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.ApiAqi.php';
 }
-
-require_once dirname(__FILE__) . '/../../3rdparty/class.CreateHtmlAqi.php';
-require_once dirname(__FILE__) . '/../../3rdparty/class.IconesAqi.php';
-require_once dirname(__FILE__) . '/../../3rdparty/class.IconesPollen.php';
-require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
-require_once dirname(__FILE__) . '/../../3rdparty/class.SetupAqi.php';
-
+if (!class_exists('CreateHtmlAqi')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.CreateHtmlAqi.php';
+}
+if (!class_exists('IconesAqi')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.IconesAqi.php';
+}
+if (!class_exists('IconesPollen')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.IconesPollen.php';
+}
+if (!class_exists('DisplayInfo')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
+}
+if (!class_exists('SetupAqi')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.SetupAqi.php';
+}
 
 ?>
-
-

@@ -19,7 +19,6 @@ class IconesAqi
         'no' => '0 0 110.0691 110.35955',
         'uv' => '0 0 133.48291 135.59999',
         'visibility' => '0 0 135.34703 103.71885'
-
     ];
 
     public function getIcon($name, $value, $id, $height = '34px')
