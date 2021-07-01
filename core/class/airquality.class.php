@@ -1,10 +1,10 @@
 <?php
 // Setup Error : only dev 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
-ini_set('log_errors', TRUE);
-ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log');
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
+// ini_set('log_errors', TRUE);
+// ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log');
 
 /* This file is part of Jeedom.
  *
@@ -301,7 +301,9 @@ class airquality extends eqLogic
                     $replace[$commandValue] =  $isObjet ?$display->getPollenRisk($cmd->execCmd()): '';
 
                 } else  if ($nameCmd == 'updatedAt') {
-                    $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
+                    // En réparation 
+                    // $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
+                    $replace['#updatedAt#'] = $isObjet ? '': '';
 
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide' || $cmd->getConfiguration($nameCmd) == 'both') {
                     // Incrémentation Compteur de pollens actifs 
