@@ -49,8 +49,8 @@ class DisplayInfo
         }
     }
 
-    public function getElementRiskPollen($color){
-
+    public function getElementRiskPollen($color, $nocolor = false){
+        
         switch ($color) {
 
             case '#00BD01':

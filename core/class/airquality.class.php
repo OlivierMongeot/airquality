@@ -138,10 +138,10 @@ class airquality extends eqLogic
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
-            $cmd = $this->getCmd(null, 'refresh');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
-            }
+            // $cmd = $this->getCmd(null, 'refresh');
+            // if (is_object($cmd)) {
+            //     $cmd->execCmd();
+            // }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
             // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
             // if (is_object($cmd)) {
@@ -368,7 +368,7 @@ class airquality extends eqLogic
                         $replace[$commandNameId] =   $isObjet ? $cmd->getId() : '';
                         $replace[$commandName] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
                         $iconePollen = new IconesPollen;
-                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
+                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true);
                         $replace[$nameIcon] = $isObjet ?  $newIcon : '';
                         $listPollen = '#list_' . $nameCmd . '#';
                         $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
@@ -394,7 +394,7 @@ class airquality extends eqLogic
     
                         if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true ) {
                             $iconePollen = new IconesPollen;
-                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
+                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true);
                             $unitreplace['#icone#'] =  $isObjet ? $newIcon: '';
                             $unitreplace['#id#'] =  $isObjet ? $this->getId(): '';
                             $unitreplace['#value#'] =  $isObjet ?  $cmd->execCmd() :'';
@@ -404,6 +404,7 @@ class airquality extends eqLogic
                             $unitreplace['#history#'] =  $isObjet ? 'history cursor': '';
                             $unitreplace['#info-modalcmd#'] = $isObjet ?  'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
                             $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite(): '';
+                            // Chart 
                             $maxCmd = $this->getCmd(null, $nameCmd . '_max');
                             $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '[0,0,0]';
                             $minCmd = $this->getCmd(null, $nameCmd . '_min');
@@ -411,7 +412,10 @@ class airquality extends eqLogic
                             $unitreplace['#color#'] =  $isObjet ?  $iconePollen->getColor(): '';
                             $labels = $this->getCmd(null, 'days');
                             $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','-','data']";
+                            //  Message
+                            $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()): '';
+                            // Moyenne Min Max Tendance 
                             $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
                             $unitreplace['#mini#'] = __("Mini", __FILE__);
                             $unitreplace['#maxi#'] = __("Maxi", __FILE__);
@@ -442,7 +446,7 @@ class airquality extends eqLogic
                         } else {
                             // Cas Pollen à ZERO 
                                 $iconePollen = new IconesPollen;
-                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '10px');
+                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true );
                                 $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon: '';
                                 $pollenZeroReplace['#id#'] = $isObjet ? $this->getId(): '';
                                 $pollenZeroReplace['#value#'] = $isObjet ?  $cmd->execCmd() : '';

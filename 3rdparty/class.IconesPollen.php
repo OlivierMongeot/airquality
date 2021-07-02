@@ -6,6 +6,7 @@ class IconesPollen
     private $name;
     private $height = '35px';
     private $color;
+    private $noColor;
     private $id;
     private $value;
     private $viewBox = [
@@ -30,22 +31,26 @@ class IconesPollen
         'nettle' => '0 0 98.99248 139.70172',
         'ragweed' => '0 0 132.12174 133.06716',
         'others' => '0 0 132.82721 132.81453'
-
     ];
 
-    public function getIcon($name, $value, $id)
+    public function getIcon($name, $value, $id, $noColor = false)
     {
         $this->name = $name;
         $this->value = $value;
         $this->id = $id;
+        $this->noColor = $noColor;
         $this->getColor();
         return  $this->firstPartIcon() . $this->lastPartIcon();
     }
 
-  
 
     public function getColor()
     {
+        if ( $this->noColor == true)
+        {
+            $this->color = 'currentColor';
+            return 'currentColor';
+        }
         $composants =
             [
                 'poaceae' => [
