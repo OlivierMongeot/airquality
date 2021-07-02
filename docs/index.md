@@ -11,7 +11,6 @@ Vos données peuvent être historisées, le dashboard, affichera alors les moyen
 </p>
 
 
-
 Il fonctionne sous Jeedom et est compatible avec la version 4.
 
 Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
