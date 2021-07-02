@@ -243,11 +243,8 @@ class airquality extends eqLogic
         }
 
         $this->emptyCacheWidget(); //vide le cache. Pour le développement
-
         $version = jeedom::versionAlias($_version);
-
         $activePollenCounter = 0;
-
         $display = new DisplayInfo;
 
         // Pollution 
@@ -255,7 +252,6 @@ class airquality extends eqLogic
         
             $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
           
-
             foreach ($this->getCmd('info') as $cmd) {
                 // Preparation dynamique des valeurs à remplacer 
                 $nameCmd = $cmd->getLogicalId();
@@ -286,7 +282,6 @@ class airquality extends eqLogic
                         $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()): '';
     
                     } else if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
-                       
                        
                         if ( $cmd->getIsVisible() == 1 ) {
                             $icone = new IconesAqi;
@@ -366,7 +361,6 @@ class airquality extends eqLogic
                 $commandNameId =  '#' . $nameCmd . 'id#';
                 $commandName = '#' . $nameCmd . '_name#';
                 $info = '#' . $nameCmd . 'info#';
-    
                 $isObjet = is_object($cmd);
     
                 if ($nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen') {
@@ -465,7 +459,7 @@ class airquality extends eqLogic
             }
             //FIN FOREACH
          
-            // Compteur de slide d pollen à data zero 
+            // Compteur de slide pollen à data zero 
             $k = 0;
             $newArray = array_chunk($tabZero, 3);
                    foreach ($newArray as $arr) {
@@ -511,7 +505,7 @@ class airquality extends eqLogic
     public static function postConfig_apikey()
     {
         if (config::byKey('apikey', 'airquality') == '' && config::byKey('apikeyAmbee', 'airquality') == '' ) {
-            throw new Exception('Au moins une clef est nécessaire pour faire marcher le plugin');
+            throw new Exception('Au moins une clef OpenWeather est requise pour faire marcher le plugin');
         }
     }
 

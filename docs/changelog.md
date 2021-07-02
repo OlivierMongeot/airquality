@@ -3,5 +3,5 @@
 
 # 26/06/2021
 
-- Version beta du plugin pour tests
+- Version pre-beta du plugin pour tests
 
