@@ -94,7 +94,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
             height: 8px;
         }
         
-            .slides-#id#-aqi::-webkit-scrollbar-track {
+        .slides-#id#-aqi::-webkit-scrollbar-track {
             background: transparent;
         }
 
@@ -108,11 +108,9 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
             transform: scale(1);
             transition: transform 0.8s;
             position: relative;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
         }
 
         .slides-#id#-aqi>div:target {
@@ -135,9 +133,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
             </div>
       
             <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
-            
                 <div title="Cliquez pour + d'info" id="info-modal#aqiid#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
-            
                 <div  class="cmd noRefresh  aqi-#id#-aqi">#aqi_name# #aqi#</div>
                 <div style="font-size: 1.1rem;" class="cmd noRefresh aqi-#id#-space">#aqiinfo#</div>
             </div>
@@ -155,82 +151,10 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 #mini_slide#
             </div>
         </div>
-    
-    
-    <script>
-    
-    
-    // Boite Modal Info     
-    
-        $(document).on ("click", "#info-modal#aqiid#", function () {
-           
-            $('#md_modal2').dialog({
-            title: "Info AQI"
-            });
-            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoAqi&id=#id#&logical_id=#aqiid#').dialog('open');
-            });
-        
-        $(document).on ("click", "#info-modal#uvid#", function () {
-           
-            $('#md_modal2').dialog({
-            title: "Info UV"
-            });
-            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoUv&id=#id#&logical_id=#uvid#').dialog('open');
-            });
-    
-        $(document).on ("click", "#info-modal#visibilityid#", function () {
-           
-            $('#md_modal2').dialog({
-            title: "Info Visibilité"
-            });
-            $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoVisibility&id=#id#&logical_id=#visibilityid#').dialog('open');
-            });
-        
-    
-        // $(document).on ("click", ".info-modal#pm10id#", function () {
-        
-        //     $('#md_modal2').dialog({
-        //     title: "Info Particules Fines"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoPm25&id=#pm10id#').dialog('open');
-        //             });
-    
-    
-        // $(document).on ("click", ".info-modal#o3id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Ozone"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoO3&id=#o3id#').dialog('open');
-        //     });
-    
-        // $(document).on ("click", "#info-modal#nh3id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Ammoniac"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNh3&id=#nh3id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#so2id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Dioxyde de Souffre"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoSo2&id=#so2id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#no2id#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Dioxyde d'Azote"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo2&id=#no2id#').dialog('open');
-        //     });
-        // $(document).on ("click", "#info-modal#noid#", function () {
-        //     $('#md_modal2').dialog({
-        //     title: "Info Monoxyde d'Azote"
-        //     });
-        //     $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=#noid#').dialog('open');
-        //     });
-    
-         
-        
-            $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
+
+<script>
+                 
+    $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
                         jeedom.cmd.execute({ id: $(this).data('cmd_id') });
                         });
  

@@ -25,7 +25,7 @@ $id = init('id');
 // https://tiles.aqicn.org/tiles/usepa-o3/0/50/50.png?token=9b3d4199353f640029088fd1721cb6593baee316
 $link = 'https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air';
 ?>
-<iframe src="<?= $link; ?>" height="100%" width="100%">You need a Frames Capable browser to view this content.</iframe> -->
+<iframe src="<?= $link; ?>" height="100%" width="100%">You need a Frames Capable browser to view this content.</iframe>
 
 
 

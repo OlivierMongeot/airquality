@@ -26,4 +26,4 @@ $id = init('id');
 $link='https://fr.wikipedia.org/wiki/Particules_en_suspension';
 ?>
 
-<iframe src="<?= $link; ?>" height="100%" width="100%">You need a Frames Capable browser to view this content.</iframe> -->
+<iframe src="<?= $link; ?>" height="100%" width="100%">You need a Frames Capable browser to view this content.</iframe>

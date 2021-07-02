@@ -180,6 +180,12 @@
         });
         $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoNo&id=no#id#').dialog('open');
         });
+    $(document).on ("click", ".info-modalco#id#", function () {
+        $('#md_modal2').dialog({
+        title: "Info Monoxyde de carbone"
+        });
+        $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoCo&id=co#id#').dialog('open');
+        });
         
             var  mySlider#id# = $('#airquality-min#uid#').carousel({pause: "true"});
                 
