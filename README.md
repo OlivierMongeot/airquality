@@ -12,6 +12,8 @@ It works with the open source **Jeedom** soft and it's compatible with Version 4
 
 * [Raspberry Pi 3](https://www.raspberrypi.org)
 
+* [Raspbian GNU/Linux 10 (buster)](https://www.raspberrypi.org/software)
+
 
 ### Installation
 
