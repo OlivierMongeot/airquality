@@ -33,7 +33,7 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.JPG">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg">
 </p>
 
 # Configuration principale du plugin
@@ -84,6 +84,10 @@ Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à
 
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
+<p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
+</p>
+
 **Important**
 
 L'AQI en Europe est désormais calculée de 1 (Bon) à 6 (Extrèmement mauvais)
@@ -102,9 +106,6 @@ Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et le
 
 **Note**
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
-</p>
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
