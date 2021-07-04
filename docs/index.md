@@ -2,8 +2,9 @@
 
 Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens.
 
-For all people sensitive, allergic, athletic, asthmatic you can provide your planning with the forecast and so protect yourself.
-Il s'adresse aux personnes sensibles, allergiques, asthmatique et sportif, grâce aux prévisons et données live, vous pouvez manager votre planning et vous protéger plus efficacement.  
+Il s'adresse essentielement aux personnes sensibles, allergiques, asthmatiques et sportifs.
+
+Grâce aux prévisons et données live, vous pouvez manager votre planning et vous protéger plus efficacement.  
 
 Vous accèdez aux données en direct et aux prévisions sur 5 jours pour la pollution et sur 3 jours pour les pollens.
 
@@ -12,7 +13,6 @@ Vos données peuvent être historisées, le dashboard, affichera alors les moyen
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png">
 </p>
-
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
 
@@ -33,7 +33,7 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.JPG">
 </p>
 
 # Configuration principale du plugin
@@ -114,4 +114,4 @@ Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le f
 
 Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et le forecast tous les matin à 7h00
 
-Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin. 
+Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin ou tout autre corps médicale.
