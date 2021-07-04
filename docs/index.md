@@ -85,7 +85,7 @@ Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi.JPG">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
 </p>
 
 **Important**
@@ -105,11 +105,6 @@ J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque
 Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et les sensibles dès 40.  
 
 **Note**
-
-
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
-</p>
 
 Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast tous les matin à 7h00
 
