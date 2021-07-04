@@ -14,121 +14,56 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+var getCity = (latitude, longitude, displayFor) => {
+    console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
+    $.ajax({
+        type: "POST",
+        url: "plugins/airquality/core/ajax/airquality.ajax.php",
+        data: { action: "getcity", longitude: longitude, latitude: latitude },
+        dataType: 'json',
+        error: function (request, status, error) { handleAjaxError(request, status, error); },
+        success: function (data) {
+            console.log("requete ajax succes : " + data.result)
+            if (displayFor == 'geoCity') {
+                 // Geo city
+                document.getElementById("geoCity").value = data.result;
+            } else {
+                //  LONG LAT MODE 
+                document.getElementById("geo-loc-llm").value = data.result;
+            }
+            if (data.state != 'ok') {
+                console.log('ereur AJAX : ' + data.result);
+            }
+        }
+    });
+}
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', () => {
   
-
     if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'dynamic_mode') {
 
         if (navigator.geolocation) {
             console.log('Check New Location')
             navigator.geolocation.getCurrentPosition(maPosition);
-            console.log(navigator.geolocation.getCurrentPosition(maPosition));
         }
 
         function maPosition(position) {      
             document.getElementById("latitude").value = position.coords.latitude;
             document.getElementById("longitude").value = position.coords.longitude;
-            getCity(position.coords.latitude, position.coords.longitude)
-        }
-        
-        var getCity = (latitude, longitude) => {
-            console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
-            $.ajax({
-                type: "POST",
-                url: "plugins/airquality/core/ajax/airquality.ajax.php",
-                data: { action: "getcity", longitude: longitude, latitude: latitude },
-                dataType: 'json',
-                error: function (request, status, error) { handleAjaxError(request, status, error); },
-                success: function (data) {
-                    console.log("requete ajax succes : " + data.result)
-                    document.getElementById("geoCity").value = data.result;
-                    if (data.state != 'ok') {
-                        console.log('ereur AJAX : ' + data.result);
-                    }
-                }
-            });
+            getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
         }
     }
-
-
-    // if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'long_lat_mode') {
-
-    //     let longi = $('.eqLogicAttr[data-l1key=configuration][data-l2key=longitude]').value()
-    //     let lati = $('.eqLogicAttr[data-l1key=configuration][data-l2key=latitude]').value()
-    //     console.log(longi)
-    //     console.log(lati)
-        
-    //     var getCity2 = (latitude, longitude) => {
-    //         console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
-    //         $.ajax({
-    //             type: "POST",
-    //             url: "plugins/airquality/core/ajax/airquality.ajax.php",
-    //             data: { action: "getcity", longitude: longitude, latitude: latitude },
-    //             dataType: 'json',
-    //             error: function (request, status, error) { handleAjaxError(request, status, error); },
-    //             success: function (data) {
-    //                 console.log("requete ajax succes : " + data.result)
-
-    //                 document.getElementById("geo-loc-llm").value = data.result;
-    //                 if (data.state != 'ok') {
-    //                     console.log('ereur AJAX : ' + data.result);
-    //                 }
-    //             }
-    //         });
-    //     }
-    //      getCity2(lati, longi)
-
-    // }
-
-
-
-
 })
 
-$('#validate-llm').on('click' , function()  {
+$('#validate-llm').on('click' , () =>  {
 
     let longi = $('.eqLogicAttr[data-l1key=configuration][data-l2key=longitude]').value()
     let lati = $('.eqLogicAttr[data-l1key=configuration][data-l2key=latitude]').value()
-    console.log(longi)
-    console.log(lati)
-    
-    var getCity2 = (latitude, longitude) => {
-        console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
-        $.ajax({
-            type: "POST",
-            url: "plugins/airquality/core/ajax/airquality.ajax.php",
-            data: { action: "getcity", longitude: longitude, latitude: latitude },
-            dataType: 'json',
-            error: function (request, status, error) { handleAjaxError(request, status, error); },
-            success: function (data) {
-                console.log("requete ajax succes : " + data.result)
-
-                document.getElementById("geo-loc-llm").value = data.result;
-                if (data.state != 'ok') {
-                    console.log('ereur AJAX : ' + data.result);
-                }
-            }
-        });
-    }
-     getCity2(lati, longi)
-  
+    getCity(lati, longi, 'longLatMode')
 });
   
 
-
-
-$('#validate-city').on('click' , function()  {
-
-  let cityName = $('.eqLogicAttr[data-l1key=configuration][data-l2key=city]').value()
-  let cityCode = $('.eqLogicAttr[data-l1key=configuration][data-l2key=country_code]').value()
-
-  if (cityCode.length >= 2 && cityName.length >= 2) {
-    getCoordinates(cityName, cityCode)
-  }
-
-  function getCoordinates(cityName, cityCode) {
+var getCoordinates = (cityName, cityCode) => {
     $.ajax({
       type: "POST",
       url: "plugins/airquality/core/ajax/airquality.ajax.php",
@@ -139,7 +74,6 @@ $('#validate-city').on('click' , function()  {
       },
       dataType: 'json',
       beforeSend :() => {
-          
       },
       error:  (request, status, error) => {
         handleAjaxError(request, status, error);
@@ -162,6 +96,18 @@ $('#validate-city').on('click' , function()  {
       }
     });
   }
+
+
+
+$('#validate-city').on('click' , () => {
+
+  let cityName = $('.eqLogicAttr[data-l1key=configuration][data-l2key=city]').value()
+  let cityCode = $('.eqLogicAttr[data-l1key=configuration][data-l2key=country_code]').value()
+
+  if (cityCode.length >= 2 && cityName.length >= 2) {
+    getCoordinates(cityName, cityCode)
+  }
+
 
 });
 
