@@ -138,15 +138,15 @@ class airquality extends eqLogic
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
-            // $cmd = $this->getCmd(null, 'refresh');
-            // if (is_object($cmd)) {
-            //     $cmd->execCmd();
-            // }
+            $cmd = $this->getCmd(null, 'refresh');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
             // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
-            // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
-            // if (is_object($cmd)) {
-            //     $cmd->execCmd();
-            // }
+            $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
+            if (is_object($cmd)) {
+                $cmd->execCmd();
+            }
         }
     }
 
@@ -410,7 +410,7 @@ class airquality extends eqLogic
                             $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '[0,0,0]';
                             $unitreplace['#color#'] =  $isObjet ?  $iconePollen->getColor(): '';
                             $labels = $this->getCmd(null, 'days');
-                            $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','-','data']";
+                            $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','forecast','data']";
                             //  Message
                             $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()): '';
