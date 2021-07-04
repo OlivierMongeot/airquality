@@ -21,7 +21,6 @@ if (init('id') == '') {
 }
 $id = init('id');
 
-
 $link='https://fr.wikipedia.org/wiki/Monoxyde_de_carbone';
 ?>
 <iframe src="<?= $link; ?>" height="100%" width="100%">You need a Frames Capable browser to view this content.</iframe>

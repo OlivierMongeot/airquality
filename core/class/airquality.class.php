@@ -368,7 +368,7 @@ class airquality extends eqLogic
                         $replace[$commandNameId] =   $isObjet ? $cmd->getId() : '';
                         $replace[$commandName] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
                         $iconePollen = new IconesPollen;
-                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true);
+                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                         $replace[$nameIcon] = $isObjet ?  $newIcon : '';
                         $listPollen = '#list_' . $nameCmd . '#';
                         $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
@@ -394,7 +394,7 @@ class airquality extends eqLogic
     
                         if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true ) {
                             $iconePollen = new IconesPollen;
-                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true);
+                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $unitreplace['#icone#'] =  $isObjet ? $newIcon: '';
                             $unitreplace['#id#'] =  $isObjet ? $this->getId(): '';
                             $unitreplace['#value#'] =  $isObjet ?  $cmd->execCmd() :'';
@@ -446,7 +446,7 @@ class airquality extends eqLogic
                         } else {
                             // Cas Pollen à ZERO 
                                 $iconePollen = new IconesPollen;
-                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), true );
+                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false );
                                 $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon: '';
                                 $pollenZeroReplace['#id#'] = $isObjet ? $this->getId(): '';
                                 $pollenZeroReplace['#value#'] = $isObjet ?  $cmd->execCmd() : '';
