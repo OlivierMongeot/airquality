@@ -1,4 +1,4 @@
-# Plugin AirQuality
+# Plugin Jeedom AirQuality
 
 Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens.
 
