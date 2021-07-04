@@ -142,7 +142,7 @@ class airquality extends eqLogic
             // if (is_object($cmd)) {
             //     $cmd->execCmd();
             // }
-            // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appel gratuits/ jours 
+            // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
             // $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
             // if (is_object($cmd)) {
             //     $cmd->execCmd();
@@ -342,8 +342,7 @@ class airquality extends eqLogic
                             $replace[$nameIcon] = $isObjet ? $newIcon: '';
                         }
                     }
-            }
-            //FIN FOREACH
+            } 
             $replace['#index_name#'] = __('Indice', __FILE__);
             $k = 0;
         } 
@@ -457,11 +456,9 @@ class airquality extends eqLogic
                                 $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
                                 $elementTemplate2 = getTemplate('core', $version, 'elementPollenZero', 'airquality');
                                 $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2);
-                           
                         }
                     }
             }
-            //FIN FOREACH
          
             // Compteur de slide pollen à data zero 
             $k = 0;
