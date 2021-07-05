@@ -40,7 +40,7 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
 
 5. See the documentation for configuration
 
-     https://github.com/OlivierMongeot/airquality/blob/Master/docs/index.md
+     https://custom-one.fr/plugin-jeedom-air-quality-pollen/
 
 6. To have pollen data you must still get a free API Key at [ Ambee.com ](https://www.getambee.com/) but it's not required to test the plugin.
 
@@ -54,6 +54,7 @@ The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, 
     So, you can see every problems, but be carrefull if you are testing, you can maybe see errors from others plugins. 
 
 8. Enjoy and take care yourself !! 
+
 
 
 <img  align="left" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
