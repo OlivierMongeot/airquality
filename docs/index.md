@@ -32,9 +32,7 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg">
-</p>
+[Photos](https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg)
 
 # Configuration principale du plugin
 
