@@ -11,7 +11,7 @@ Vous accèdez aux données en direct et aux prévisions sur 5 jours pour la poll
 Les valeurs peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png" class="img-responsive" alt="Pollen">
 </p>
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
