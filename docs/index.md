@@ -2,13 +2,13 @@
 
 Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens.
 
-Il s'adresse essentielement aux personnes sensibles, allergiques, asthmatiques et sportifs.
+Il s'adresse essentiellement aux personnes sensibles, allergiques, asthmatiques et sportifs, mai aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
-Grâce aux prévisons et données live, vous pouvez manager votre planning et vous protéger plus efficacement.  
+Grâce aux informations des  prévisons et données live, vous pouvez manager votre planning et vous protéger plus efficacement.  
 
 Vous accèdez aux données en direct et aux prévisions sur 5 jours pour la pollution et sur 3 jours pour les pollens.
 
-Vos données peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
+Les valeurs peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png">
