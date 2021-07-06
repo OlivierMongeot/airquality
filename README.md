@@ -14,6 +14,7 @@ It works with the open source **Jeedom** soft and it's compatible with Version 4
 
 * [Raspbian GNU/Linux 10 (buster)](https://www.raspberrypi.org/software)
 
+* [Visual Studio Code + Remote SSH](https://code.visualstudio.com/)
 
 ### Installation
 

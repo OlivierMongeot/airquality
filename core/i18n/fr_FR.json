@@ -196,12 +196,12 @@
         "Pas de données  UV et visibilité pour l'instant": "Pas de données  UV et visibilité pour l'instant",
         "Pas de données UV et visibilité avec ces coordonnées": "Pas de données UV et visibilité avec ces coordonnées",
         "Les coordonnées sont vides":"Les coordonnées sont vides",
-        "Impossible de récupérer cette ville en reverse géolocalsation : ":"Impossible de récupérer cette ville en reverse géolocalsation : ",
-        "Pas de données de pollution pour l'instant":"Pas de données de pollution pour l'instant",
+        "Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées":"Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées",
+        "Pas de données de pollution pour l'instant : ":"Pas de données de pollution pour l'instant : ",
         "Pas de données de pollution avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
         "Pas de données de Pollen pour l'instant":"Pas de données de Pollen pour l'instant",
-        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées"
+        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
+        "Pas de données de Polen - Http code : ":"Pas de données de Polen - Http code : "
     }
-
 
 }

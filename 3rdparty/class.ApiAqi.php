@@ -20,24 +20,21 @@ class ApiAqi
 
     /**
      * Methode générique d'appel API avec curl 
+     * @param string $url  The url for connect the API
+     * @param string $apiKey  The apikey
+     * @param string $apiName  The API Name : 'Openwheather' or 'Ambee'
+     * @return array  The response with errors and responsecodeHttp 
      */
-    private function curlApi(string $url, string $apiKey, $ApiName = 'openwheather')
+    private function curlApi(string $url, string $apiKey, string $apiName = 'openwheather')
     {
          $curl = curl_init();
-        if ($ApiName == 'openwheather'){
+        if ($apiName == 'openwheather'){
             curl_setopt_array($curl, [
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER =>["Accept: application/json", "x-api-key:" . $apiKey ]
             ]);
-            // curl_setopt($curl, CURLOPT_URL, $url);
-            // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            // curl_setopt($curl, CURLOPT_HTTPHEADER, ["Accept: application/json", "x-api-key:" . $apiKey ]);
-            //for debug only!
-            // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         } else {
-     
         curl_setopt_array($curl, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
@@ -100,7 +97,7 @@ class ApiAqi
             $response = $this->curlApi($url, $this->apiKey ,'openwheather');
 
             if (empty(json_decode($response[0]))) {
-                    return __("Pas de lieu trouvé par l'API avec ces coordonnées", __FILE__);
+                    return __("Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées", __FILE__);
             }
             else {
                 $data = json_decode($response[0]);
@@ -128,7 +125,7 @@ class ApiAqi
             if ($result == [] || $result == null) {
                 throw new Exception('Pas de données de pollution avec ces coordonnées');
             } else {
-                log::add('airquality', 'debug', 'Données AQI live : '. json_encode($data->list[0]));
+                log::add('airquality', 'debug', 'Data AQI live : '. json_encode($data->list[0]));
                 return $data->list[0];
             }
         }
@@ -174,11 +171,11 @@ class ApiAqi
             } else if( $response[2] == '200'){
                 $data = json_decode($response[0]);
                 if (property_exists($data, 'data')){
-                    log::add('airquality', 'debug', 'Données Ambee Live : '. json_encode($data));
+                    log::add('airquality', 'debug', 'Data Ambee Live : '. json_encode($data));
                     return $data;
                 }
             } else {
-                    throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
+                    throw new Exception(__('Pas de données de Polen - Http code : ' . $response[2], __FILE__));
             } 
          
        
@@ -197,10 +194,10 @@ class ApiAqi
         }
         else {
             if ($data == [] || $data == null) {
-                echo ('Pas de données Forecast AQI avec ces coordonnées');
+                throw new Exception('AQI Forecast','Pas de données avec ces coordonnées');
             } else {
                 if (property_exists($data, 'list')){
-                    log::add('airquality', 'debug', 'Données Aqi Forecast : '. json_encode($data->list));
+                    log::add('airquality', 'debug', 'Data Aqi Forecast : '. json_encode($data->list));
                     return $data->list;
                 }
             }
@@ -225,9 +222,9 @@ class ApiAqi
         }
         else {
             if ($data == [] || $data == null) {
-                echo ('Pas de données Forecast Pollen : ' . $data->message);
+                throw new Exception('Pas de données Forecast Pollen : ' . $data->message);
             } else {
-                log::add('airquality', 'debug', 'Données Pollen Forecast : '. json_encode($data->list));
+                log::add('airquality', 'debug', 'Data Pollen Forecast : '. json_encode($data->data));
                 return $data->data;
             }
         }
@@ -239,12 +236,12 @@ class ApiAqi
      */
     public function getForecast($latitude = null, $longitude = null)
     {
-        $components = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
+        $polluants = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 
-        foreach ($components as $component) {
-            $newTabDay = $this->parseData($dataList, $component);
-            $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
+        foreach ($polluants as $polluant) {
+            $newTabDay = $this->parseData($dataList, $polluant);
+            $minMaxTab[$polluant] = $this->pushMinMaxByDay($newTabDay, $polluant);
         }
         return $minMaxTab;
     }
@@ -254,15 +251,15 @@ class ApiAqi
      */
     public function getForecastPollen($latitude = null, $longitude = null)
     {
-        $components = [
+        $pollens = [
             "Poaceae", "Alder", "Birch", "Cypress", "Elm", "Hazel", "Oak", "Pine", "Plane", "Poplar",
             "Chenopod", "Mugwort", "Nettle", "Ragweed", "Others"
         ];
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
         log::add('airquality', 'debug', json_encode($dataList));
-        foreach ($components as $component) {
-            $newTabDay = $this->parseDataPollen($dataList, $component);
-            $minMaxTab[$component] = $this->pushMinMaxByDay($newTabDay, $component);
+        foreach ($pollens as $pollen) {
+            $newTabDay = $this->parseDataPollen($dataList, $pollen);
+            $minMaxTab[$pollen] = $this->pushMinMaxByDay($newTabDay, $pollen);
         }
         return $minMaxTab;
     }
