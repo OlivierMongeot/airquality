@@ -257,11 +257,18 @@ class ApiAqi
         ];
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
         log::add('airquality', 'debug', json_encode($dataList));
-        foreach ($pollens as $pollen) {
-            $newTabDay = $this->parseDataPollen($dataList, $pollen);
-            $minMaxTab[$pollen] = $this->pushMinMaxByDay($newTabDay, $pollen);
+        if (isset($dataList->data)){
+            foreach ($pollens as $pollen) {
+                $newTabDay = $this->parseDataPollen($dataList, $pollen);
+                $minMaxTab[$pollen] = $this->pushMinMaxByDay($newTabDay, $pollen);
+            }
+            return $minMaxTab;
         }
-        return $minMaxTab;
+        else 
+        {
+            return [];
+        }
+       
     }
 
 

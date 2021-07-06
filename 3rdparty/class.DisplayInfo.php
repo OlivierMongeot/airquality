@@ -173,11 +173,11 @@ class DisplayInfo
         }
     }
 
-    public function parseDate($isoDateUTC){
-        $datetime = DateTime::createFromFormat('Y-m-d\TH:i:s+', $isoDateUTC);
+    public function parseDate(){
+        $datetime = new DateTime;
         $time =   $datetime-> format('H:i');
         $date = $datetime-> format('Y-m-d');
-        return __('Mise à jour le ',__FILE__) . $date. __(' à ',__FILE__). $time. ' UTC';
+        return __('Mise à jour le ',__FILE__) . $date. __(' à ',__FILE__). $time;
     }
 
     public function getNameDay($numDay)

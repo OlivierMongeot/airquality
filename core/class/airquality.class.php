@@ -140,10 +140,15 @@ class airquality extends eqLogic
             if (is_object($cmd)) {
                 $cmd->execCmd();
             }
-            // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
+              // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
+              // Annulation du refresh inutile à la sauvegarde si il y a déjà des data
+            $cmdCheckNull =  $this->getCmd(null, 'poaceae_max');
+            if (is_object($cmdCheckNull) && $cmdCheckNull->execCmd() == null) {
+                
             $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
+                if (is_object($cmd)) {
+                    $cmd->execCmd();
+                }
             }
         }
     }
@@ -241,6 +246,7 @@ class airquality extends eqLogic
         }
 
         $this->emptyCacheWidget(); //vide le cache. Pour le développement
+
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
         $display = new DisplayInfo;
@@ -302,10 +308,10 @@ class airquality extends eqLogic
                             $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','-','data']";
                             $unitreplace['#level-particule#'] =  $isObjet ?  $display->getElementRiskAqi($icone->getColor()): '';
                             $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
-                            $unitreplace['#mini#'] = __("Mini", __FILE__);
-                            $unitreplace['#maxi#'] = __("Maxi", __FILE__);
-                            $unitreplace['#tendency#'] = __("Tendance", __FILE__);
-                            $unitreplace['#average#'] = __("Moyenne", __FILE__);
+                            $unitreplace['#mini#'] = __("Mini 10 jours", __FILE__);
+                            $unitreplace['#maxi#'] = __("Maxi 10 jours", __FILE__);
+                            $unitreplace['#tendency#'] = __("Tendance 12h", __FILE__);
+                            $unitreplace['#average#'] = __("Moyenne 10 jours", __FILE__);
                             if ($cmd->getIsHistorized() == 1) {
                                 // Historique Commun
                                 $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
@@ -338,6 +344,7 @@ class airquality extends eqLogic
                             $replace[$commandName] = $isObjet ?  $cmd->getName(): '';
                             $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                             $replace[$nameIcon] = $isObjet ? $newIcon: '';
+                            $replace['#updateAt#'] = ($isObjet && $cmd->execCmd()) ? $display->parseDate(): 'No data';
                         }
                     }
             } 
@@ -374,9 +381,8 @@ class airquality extends eqLogic
                         $replace[$commandValue] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
     
                     } else  if ($nameCmd == 'updatedAt') {
-                        // En réparation 
-                        // $replace['#updatedAt#'] = $isObjet ? $display->parseDate($cmd->execCmd()): '';
-                        $replace['#updatedAt#'] = $isObjet ? '' : '';
+                       
+                        $replace['#updatedAt#'] = ($isObjet && $cmd->execCmd()) ? $display->parseDate(): 'No data';
     
                     } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                         // Incrémentation Compteur de pollens actifs 
@@ -414,10 +420,10 @@ class airquality extends eqLogic
                             $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()): '';
                             // Moyenne Min Max Tendance 
                             $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
-                            $unitreplace['#mini#'] = __("Mini", __FILE__);
-                            $unitreplace['#maxi#'] = __("Maxi", __FILE__);
-                            $unitreplace['#tendency#'] = __("Tendance", __FILE__);
-                            $unitreplace['#average#'] = __("Moyenne", __FILE__);
+                            $unitreplace['#mini#'] = __("Mini 10 jours", __FILE__);
+                            $unitreplace['#maxi#'] = __("Maxi 10 jours", __FILE__);
+                            $unitreplace['#tendency#'] = __("Tendance 12h", __FILE__);
+                            $unitreplace['#average#'] = __("Moyenne 10 jours", __FILE__);
                             if ($cmd->getIsHistorized() == 1) {
                                 // Historique Commun
                                 $startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . 240 . ' hour'));
@@ -460,11 +466,14 @@ class airquality extends eqLogic
          
             // Compteur de slide pollen à data zero 
             $k = 0;
-            $newArray = array_chunk($tabZero, 3);
-                   foreach ($newArray as $arr) {
-                    $tab[] = implode('', $arr);
-                    $k++;
-                }
+            if (isset($tabZero)){
+                $newArray = array_chunk($tabZero, 3);
+                foreach ($newArray as $arr) {
+                 $tab[] = implode('', $arr);
+                 $k++;
+             }
+            }
+         
          
             $replace['#active_pollen_label#'] = __('Pollens actifs', __FILE__);
             $replace['#activePollen#'] = $activePollenCounter;
@@ -670,7 +679,7 @@ class airquality extends eqLogic
     public function updateForecastPollen()
     {
         $forecast =  $this->getApiData('getForecastPollen');
-        if (is_array($forecast)){
+        if (is_array($forecast) && $forecast != []){
             log::add('airquality', 'debug', json_encode($forecast));
             $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
             $this->checkAndUpdateCmd('poaceae_min', json_encode($forecast['Poaceae']['min']));
