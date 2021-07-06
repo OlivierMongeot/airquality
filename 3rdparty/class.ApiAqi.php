@@ -49,7 +49,7 @@ class ApiAqi
         }
         $error = curl_error($curl);
         if ($error != '') {
-            log::add('airquality', 'debug', __('Problème API : ' . json_encode($error), __FILE__));
+            log::add('airquality', 'debug', 'Problem with API : ' . json_encode($error));
         }
         curl_close($curl);
         return [$response, $error, $http_response_code];
@@ -84,8 +84,7 @@ class ApiAqi
             $response = $this->curlApi($url, $this->apiKey);
 
             if (empty(json_decode($response[0]))) {
-                log::add('airquality', 'debug', __('Impossible de récupérer de ville avec ces coordonées :' . json_encode($response), __FILE__));
-                return __("Pas de lieu trouvé par l'API avec ces coordonnées", __FILE__);
+                    return __("Pas de lieu trouvé par l'API avec ces coordonnées", __FILE__);
             }
             else {
                 $data = json_decode($response[0]);

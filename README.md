@@ -21,7 +21,8 @@ You must have Jeedom Domotic Software installed before using the plugin.
 
 The plugin is not on Jeedom Marketplace at the moment, i hope, it will be soon, so for test you can use the CLI with a linux systeme for installation : 
 
-1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/) 
+1. Get a free API Key at [ openweathermap.org ](https://openweathermap.org/). If you ever have one in your Jeedom, you can use the same, the plugin automatically import the key.
+
 
 2. Go to 'plugins' directory of your Jeedom server, and create folder 'airquality' and give good permission to create files into:
     ```sh
