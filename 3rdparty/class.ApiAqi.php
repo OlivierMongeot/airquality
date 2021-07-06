@@ -21,15 +21,29 @@ class ApiAqi
     /**
      * Methode générique d'appel API avec curl 
      */
-    private function curlApi(string $url, string $apiKey, int $timeOut = 30)
+    private function curlApi(string $url, string $apiKey, $ApiName = 'openwheather')
     {
-        $curl = curl_init();
+         $curl = curl_init();
+        if ($ApiName == 'openwheather'){
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER =>["Accept: application/json", "x-api-key:" . $apiKey ]
+            ]);
+            // curl_setopt($curl, CURLOPT_URL, $url);
+            // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($curl, CURLOPT_HTTPHEADER, ["Accept: application/json", "x-api-key:" . $apiKey ]);
+            //for debug only!
+            // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        } else {
+     
         curl_setopt_array($curl, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => $timeOut,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
@@ -38,14 +52,16 @@ class ApiAqi
             ],
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false
-        ]);
-
+            ]);
+            }
+       
         $response = curl_exec($curl);
-
-        $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $curlInfo = curl_getinfo($curl);
+        $http_response_code = $curlInfo['http_code'];
+    
         if ($http_response_code !== 200) {
-            $curlInfo = curl_getinfo($curl);
-            log::add('airquality', 'debug', ' Curl Info http != 200 : ' . json_encode($curlInfo) . ' - Url : ' . json_encode($url));
+          
+            log::add('airquality', 'debug', 'Info Curl httpResponse != 200 : ' . json_encode($curlInfo) . ' - Url : ' . json_encode($url));
         }
         $error = curl_error($curl);
         if ($error != '') {
@@ -63,7 +79,7 @@ class ApiAqi
     public function callApiGeoLoc($city, $country_code, $state_code = null)
     {
         $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
-        $response = $this->curlApi($url, $this->apiKey);
+        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
 
         if ($response[1]) {
             throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($response[1]), __FILE__));
@@ -81,7 +97,7 @@ class ApiAqi
     {
         if ($longitude != '' && $latitude != '') {
             $url = "http://api.openweathermap.org/geo/1.0/reverse?lat=" . $latitude . "&lon=" . $longitude;
-            $response = $this->curlApi($url, $this->apiKey);
+            $response = $this->curlApi($url, $this->apiKey ,'openwheather');
 
             if (empty(json_decode($response[0]))) {
                     return __("Pas de lieu trouvé par l'API avec ces coordonnées", __FILE__);
@@ -103,15 +119,16 @@ class ApiAqi
     public function getAqi($latitude, $longitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
-        $response = $this->curlApi($url, $this->apiKey);
+        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
         if ($response[1]) {
-            throw new Exception('Pas de données de pollution pour l\'instant : ' . $response[1]);
+            throw new Exception('Pas de données de pollution pour l\'instant : ' . $response[1]. 'HTTP responseCode =' .$response[2]);
         } else {
             $data = json_decode($response[0]);
             $result = $data->list[0];
             if ($result == [] || $result == null) {
                 throw new Exception('Pas de données de pollution avec ces coordonnées');
             } else {
+                log::add('airquality', 'debug', 'Données AQI live : '. json_encode($data->list[0]));
                 return $data->list[0];
             }
         }
@@ -123,7 +140,7 @@ class ApiAqi
     public function getOneCallApi($latitude, $longitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
-        $response = $this->curlApi($url, $this->apiKey);
+        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
         $data = json_decode($response[0]);
 
         if ($response[1] != null) {
@@ -132,6 +149,7 @@ class ApiAqi
             if ($data == [] || $data == null) {
                 throw new Exception('Pas de données UV et visibilité avec ces coordonnées');
             } else {
+                log::add('airquality', 'debug', 'Données OneCallapi : '. json_encode($data->current));
                 return $data->current;
             }
         }
@@ -147,7 +165,7 @@ class ApiAqi
             $latitude = 50 && $longitude = 50;
         }
         $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
-        $response = $this->curlApi($url, $this->ambeeApiKey);
+        $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
 
             if ( $response[2] == '429'){
                 message::add('Ambee','Quota journalier données pollen dépassé');
@@ -156,10 +174,11 @@ class ApiAqi
             } else if( $response[2] == '200'){
                 $data = json_decode($response[0]);
                 if (property_exists($data, 'data')){
+                    log::add('airquality', 'debug', 'Données Ambee Live : '. json_encode($data));
                     return $data;
                 }
             } else {
-                       throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
+                    throw new Exception('Pas de données de Polen - Http code : ' . $response[2]);
             } 
          
        
@@ -171,18 +190,19 @@ class ApiAqi
     public function callApiForecastAQI($latitude = null, $longitude = null)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
-        $response = $this->curlApi($url, $this->apiKey);
+        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-
-              throw new Exception('Pas de données AQI pour l\'instant'. $response[1] . ' Http code : ' . $response[2]);
+              throw new Exception('Pas de données Forecast AQI pour l\'instant'. $response[1] . ' Http code : ' . $response[2]);
         }
-      
         else {
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast AQI avec ces coordonnées');
             } else {
-                return $data->list;
+                if (property_exists($data, 'list')){
+                    log::add('airquality', 'debug', 'Données Aqi Forecast : '. json_encode($data->list));
+                    return $data->list;
+                }
             }
         }
     }
@@ -194,7 +214,7 @@ class ApiAqi
     public function callApiForecastPollen($latitude = null, $longitude = null)
     {
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
-        $response = $this->curlApi($url, $this->ambeeApiKey);
+        $response = $this->curlApi($url, $this->ambeeApiKey ,'ambee');
 
         $data = json_decode($response[0]);
         if ($response[1] != '') {
@@ -207,6 +227,7 @@ class ApiAqi
             if ($data == [] || $data == null) {
                 echo ('Pas de données Forecast Pollen : ' . $data->message);
             } else {
+                log::add('airquality', 'debug', 'Données Pollen Forecast : '. json_encode($data->list));
                 return $data->data;
             }
         }
@@ -218,7 +239,6 @@ class ApiAqi
      */
     public function getForecast($latitude = null, $longitude = null)
     {
-
         $components = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
 

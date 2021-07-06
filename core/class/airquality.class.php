@@ -511,7 +511,7 @@ class airquality extends eqLogic
     /**
      * Pour recevoir appel Ajax. Utilisé dans la configuration mode "Geolocalisation du Navigateur"
      */
-    public static function fetchReverseGeoLoc($longitude, $latitude)
+    public static function ReverseGeoLoc($longitude, $latitude)
     {
         $api = new ApiAqi;
         return $api->callApiReverseGeoLoc($longitude, $latitude);
@@ -520,7 +520,7 @@ class airquality extends eqLogic
     /**
      * Pour appel Ajax. Utilisé dans la configuration mode "Par ville"
      */
-    public static function fetchGeoLoc($city, $country_code, $state_code = null)
+    public static function GeoLoc($city, $country_code, $state_code = null)
     {
         $api = new ApiAqi;
         return $api->callApiGeoLoc($city, $country_code, $state_code = null);
