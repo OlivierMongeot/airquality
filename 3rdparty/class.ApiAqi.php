@@ -230,9 +230,9 @@ class ApiAqi
                 return $data->data;
             }
         }
-        
-        // $response = file_get_contents("pollen.json");
-        // return  json_decode($response, true);
+        // $response = file_get_contents(__DIR__. '../pollen.json');
+        // return  json_decode($response);
+        // return;
     }
 
 
