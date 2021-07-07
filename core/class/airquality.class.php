@@ -23,6 +23,7 @@ ini_set('display_errors', TRUE);
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
 
+
 class airquality extends eqLogic
 {
 
