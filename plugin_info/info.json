@@ -9,8 +9,8 @@
 	"author" : "Olivrius",
 	"require" : "4.1.22",
 	"category" : "weather",
-	"changelog" : "https://oliviermongeot.github.io/airquality/changelog.md",
-	"documentation" : "https://oliviermongeot.github.io/airquality/docs/index.md",
+	"changelog" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/changelog.md",
+	"documentation" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/index.md",
 	"language" : ["fr_FR","en_US"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"]
 }
