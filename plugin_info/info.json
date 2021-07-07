@@ -2,23 +2,15 @@
 	"id" : "airquality",
 	"name" : "Air Quality",
 	"description" : {
-		"fr_FR": "Ce plugin affiche les données de pollution atmosphérique des principaux polluants et indique les niveaux d'alertes basé sur l'AQI",
-		"en_US": "This plugin displays the air pollution data of the main pollutants and indicates the alert levels based on AQI"
+		"fr_FR": "Ce plugin affiche les concentrations de polluants et pollens, il indique également les prévisons : 5 jours pour l'AQI et 48h pour les pollens",
+		"en_US": "This plugin displays the concentrations of pollutants and pollens, it also shows the forecasts: 5 days for AQI and 48h for pollens"
 	},
 	"licence" : "AGPL",
-	"author" : "Olivier Mongeot",
-	"require" : "3.3.39",
+	"author" : "Olivrius",
+	"require" : "4.1.22",
 	"category" : "weather",
-	"hasDependency" : false,
-	"hasOwnDeamon" : false,
-	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://oliviermongeot.github.io/airquality/changelog",
-	"documentation" : "https://oliviermongeot.github.io/airquality/",
-   
-	"link" : {
-		"forum":"",
-		"video" : ""
-	},
+	"changelog" : "https://oliviermongeot.github.io/airquality/changelog.md",
+	"documentation" : "https://oliviermongeot.github.io/airquality/docs/index.md",
 	"language" : ["fr_FR","en_US"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"]
 }

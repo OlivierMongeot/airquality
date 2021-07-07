@@ -38,7 +38,7 @@ if (!isConnect()) {
 <div class="form-group">
       <label title="https://api-dashboard.getambee.com" class="col-sm-3 control-label">{{Clef API Ambee}}</label>
       <div class="col-sm-6">
-        <input id="api-aqi-key" class="configKey form-control" data-l1key="apikeyAmbee"/>
+        <input class="configKey form-control" data-l1key="apikeyAmbee"/>
       </div>
     </div> 
   </fieldset>

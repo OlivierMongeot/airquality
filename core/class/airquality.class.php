@@ -475,8 +475,6 @@ class airquality extends eqLogic
                  $k++;
              }
             }
-         
-         
             $replace['#active_pollen_label#'] = __('Pollens actifs', __FILE__);
             $replace['#activePollen#'] = $activePollenCounter;
         }

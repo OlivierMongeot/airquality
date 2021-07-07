@@ -56,13 +56,15 @@
         "Ambroisie":"Ambroisie",
         "Autres":"Autres",
         "Indice UV":"Indice UV",
-        "Visibilité":"Visibilité"
+        "Visibilité":"Visibilité",
+        "Vérifier": "Vérifier"
       
     },
     "plugins\/airquality\/desktop\/js\/airquality.js": {
         "Nom": "Nom",
         "Historiser": "Historiser",
-        "Tester": "Tester"
+        "Tester": "Tester",
+        "Afficher":"Afficher"
     },
     "plugins\/airquality\/core\/ajax\/airquality.ajax.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
@@ -72,15 +74,14 @@
         "La ville ou le code pays ne peuvent être vide": "La ville ou le code pays ne peuvent être vide",
         "La longitude ou la latitude ne peuvent être vide": "La longitude ou la latitude ne peuvent être vide",
         "Probleme de localisation par le navigateur": "Probleme de localisation par le navigateur",
-       "Les coordonnées sont vides, testez la ville dans la configuration":"Les coordonnées sont vides, testez la ville dans la configuration",
-       "Probleme de localisation dynamique":"Probleme de localisation dynamique",
-       "Impossible de trouver la commande refresh pour ":"Impossible de trouver la commande refresh pour ",
-       "Erreur pour ":"Erreur pour ",
-       "Expression cron non valide pour ":"Expression cron non valide pour ",
-      "La clef API ne peut être vide":"La clef API ne peut être vide",
-      "La clef API n'est pas valide ou pas encore active":"La clef API n'est pas valide ou pas encore active",
-      
-       "Indice de qualité": "Indice de qualité",
+        "Les coordonnées sont vides, testez la ville dans la configuration":"Les coordonnées sont vides, testez la ville dans la configuration",
+        "Probleme de localisation dynamique":"Probleme de localisation dynamique",
+        "Impossible de trouver la commande refresh pour ":"Impossible de trouver la commande refresh pour ",
+        "Erreur pour ":"Erreur pour ",
+        "Expression cron non valide pour ":"Expression cron non valide pour ",
+        "La clef API ne peut être vide":"La clef API ne peut être vide",
+        "La clef API n'est pas valide ou pas encore active":"La clef API n'est pas valide ou pas encore active",
+        "Indice de qualité": "Indice de qualité",
         "Dioxide d'azote": "Dioxide d'azote",
         "Monoxyde d'azote": "Monoxyde d'azote",
         "Monoxyde de carbone": "Monoxyde de carbone",
@@ -92,7 +93,6 @@
         "Rafraichir": "Rafraichir",
         "Rafraichir Forecast":"Rafraichir Forecast",
         "Rafraichir Forecast Pollen":"Rafraichir Forecast Pollen",
-
         "AQI":"AQI",
         "NO²":"NO²",
         "NO":"NO",
@@ -105,7 +105,6 @@
         "Visibilité":"Visibilité",
         "Indice":"Indice",
         "Pollens actifs":"Pollens actifs",
-
         "Herbes": "Herbes",
         "Arbres": "Arbres",
         "Mauvaises Herbes": "Mauvaises Herbes",
@@ -138,9 +137,6 @@
         "Aucune Détection":"Aucune Détection"
 
     },
-    "info.json": {
-        "Ce plugin vous permet de récuperer des informations sur les polluants et les pollens contenu dans l'atmosphère que vous respirez. On trouve des informations tel que les niveaux des particules fines, l'indice AQI, les principaux pollens, etc...": "Ce plugin vous permet de récuperer les informations météo.On trouve des informations tel que, les conditions, températures,  actuelles et des jours à venir. Vous aurez aussi le taux d'humidité, la force du vent et sa direction, l'heure du lever et du coucher de soleil et plein d'autres. Vous vouliez acheter une station météo, ce plugin vous fera peut être changer d'avis."
-    },
     "plugins\/airquality\/3rdparty\/class.DisplayInfo.php": {
         "Bon":"Bon",
         "Correct":"Correct",
@@ -149,7 +145,6 @@
         "Très mauvais":"Très mauvais",
         "Extrême":"Extrême",
         "Risque haut":"High Risk",
-
         "Risque modéré":"Moderate risk",
         "Risque bas":"Low risk",
         "Risque très haut":"Very high risk",
@@ -193,15 +188,9 @@
     },
     "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {
         "Impossible de récupérer les coordonnées de cete ville": "Impossible de récupérer les coordonnées de cette ville",
-        "Pas de données  UV et visibilité pour l'instant": "Pas de données  UV et visibilité pour l'instant",
-        "Pas de données UV et visibilité avec ces coordonnées": "Pas de données UV et visibilité avec ces coordonnées",
         "Les coordonnées sont vides":"Les coordonnées sont vides",
         "Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées":"Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées",
-        "Pas de données de pollution pour l'instant : ":"Pas de données de pollution pour l'instant : ",
-        "Pas de données de pollution avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
-        "Pas de données de Pollen pour l'instant":"Pas de données de Pollen pour l'instant",
-        "Pas de données de Polen avec ces coordonnées":"Pas de données de pollution avec ces coordonnées",
-        "Pas de données de Polen - Http code : ":"Pas de données de Polen - Http code : "
+        "Quota journalier données pollen dépassé":"Quota journalier données pollen dépassé",
+        "Quota journalier données pollen dépassé pour les prévisions":"Quota journalier données pollen dépassé pour les prévisions"
     }
-
 }

@@ -44,7 +44,7 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 
         if (navigator.geolocation) {
             console.log('Check New Location')
-            navigator.geolocation.getCurrentPosition(maPosition);
+            navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout:10000, enableHighAccuracy:true});
         }
 
         function maPosition(position) {      
@@ -52,6 +52,10 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
             document.getElementById("longitude").value = position.coords.longitude;
             getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
         }
+        function noLocation() {
+           console.log("Could not find location");
+        }
+
     }
 })
 
@@ -184,7 +188,7 @@ function addCmdToTable(_cmd) {
   tr += '<td>';
   if (is_numeric(_cmd.id)) {
     tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
-    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> Tester</a>';
+    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i>{{Tester}}</a>';
   }
   tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
   tr += '</tr>';
