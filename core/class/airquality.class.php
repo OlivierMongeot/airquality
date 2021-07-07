@@ -136,6 +136,7 @@ class airquality extends eqLogic
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
+
             $cmd = $this->getCmd(null, 'refresh');
             if (is_object($cmd)) {
                 $cmd->execCmd();
@@ -413,7 +414,7 @@ class airquality extends eqLogic
                             $minCmd = $this->getCmd(null, $nameCmd . '_min');
                             $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '[0,0,0]';
                             $unitreplace['#color#'] =  $isObjet ?  $iconePollen->getColor(): '';
-                            $labels = $this->getCmd(null, 'days');
+                            $labels = $this->getCmd(null, 'daysPollen');
                             $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','forecast','data']";
                             //  Message
                             $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
@@ -681,7 +682,7 @@ class airquality extends eqLogic
         $forecast =  $this->getApiData('getForecastPollen');
         if (is_array($forecast) && $forecast != []){
             log::add('airquality', 'debug', json_encode($forecast));
-            $this->checkAndUpdateCmd('days', json_encode($forecast['Alder']['day']));
+            $this->checkAndUpdateCmd('daysPollen', json_encode($forecast['Alder']['day']));
             $this->checkAndUpdateCmd('poaceae_min', json_encode($forecast['Poaceae']['min']));
             $this->checkAndUpdateCmd('poaceae_max', json_encode($forecast['Poaceae']['max']));
             $this->checkAndUpdateCmd('alder_min', json_encode($forecast['Alder']['min']));

@@ -59,7 +59,7 @@ Class  SetupAqi {
         ['name' => 'ragweed', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 18, 'display' => 'slide'],
         ['name' => 'others', 'title' => 'Autres', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 22, 'display' => 'slide'],
         ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType' => 'string', 'order' => 60, 'display' => 'main'],
-        ['name' => 'days', 'title' => 'Forecast days Pollen', 'unit' => '', 'subType' => 'string', 'order' => 23, 'display' => 'chart'],
+        ['name' => 'daysPollen', 'title' => 'Forecast days Pollen', 'unit' => '', 'subType' => 'string', 'order' => 23, 'display' => 'chart'],
         ['name' => 'poaceae_min', 'title' => "Grass-Poaceae Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 24, 'display' => 'chart'],
         ['name' => 'poaceae_max', 'title' => 'Grass-Poaceae Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 25, 'display' => 'chart'],
         ['name' => 'alder_min', 'title' => "Alder Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 26, 'display' => 'chart'],
