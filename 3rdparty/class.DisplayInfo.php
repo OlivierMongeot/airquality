@@ -191,13 +191,11 @@ class DisplayInfo
 
     public function getMessage($value, $pollen ){
 
-        if($this)
-        {
-            $message ='';
-        }
-
-        return $message;
-
+        // if($this)
+        // {
+        //     $message ='';
+        // }
+        return 'TOTO';
 
 
     }
