@@ -1,8 +1,8 @@
 <?php
 // Setup Error : only dev 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -171,24 +171,24 @@ class airquality extends eqLogic
                 $refreshForecast = new airqualityCmd();
                 $refreshForecast->setName('Rafraichir Forecast');
             }
-            $refreshForecast->setEqLogic_id($this->getId());
-            $refreshForecast->setLogicalId('refresh_forecast');
-            $refreshForecast->setType('action');
-            $refreshForecast->setOrder(100);
-            $refreshForecast->setSubType('other');
-            $refreshForecast->save();
+            $refreshForecast->setEqLogic_id($this->getId())
+            ->setLogicalId('refresh_forecast')
+            ->setType('action')
+            ->setOrder(100)
+            ->setSubType('other')
+            ->save();
 
             $refresh = $this->getCmd(null, 'refresh');
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
                 $refresh->setName('Rafraichir');
             }
-            $refresh->setEqLogic_id($this->getId());
-            $refresh->setLogicalId('refresh');
-            $refresh->setType('action');
-            $refresh->setOrder(99);
-            $refresh->setSubType('other');
-            $refresh->save();
+            $refresh->setEqLogic_id($this->getId())
+            ->setLogicalId('refresh')
+            ->setType('action')
+            ->setOrder(99)
+            ->setSubType('other')
+            ->save();
             $setup = SetupAqi::$setupAqi;
         }
 
@@ -199,24 +199,24 @@ class airquality extends eqLogic
                 $refreshForecast = new airqualityCmd();
                 $refreshForecast->setName('Rafraichir Forecast Pollen');
             }
-            $refreshForecast->setEqLogic_id($this->getId());
-            $refreshForecast->setLogicalId('refresh_pollen_forecast');
-            $refreshForecast->setType('action');
-            $refreshForecast->setOrder(100);
-            $refreshForecast->setSubType('other');
-            $refreshForecast->save();
+            $refreshForecast->setEqLogic_id($this->getId())
+            ->setLogicalId('refresh_pollen_forecast')
+            ->setType('action')
+            ->setOrder(100)
+            ->setSubType('other')
+            ->save();
 
             $refresh = $this->getCmd(null, 'refresh');
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
                 $refresh->setName('Rafraichir');
             }
-            $refresh->setEqLogic_id($this->getId());
-            $refresh->setLogicalId('refresh');
-            $refresh->setType('action');
-            $refresh->setOrder(99);
-            $refresh->setSubType('other');
-            $refresh->save();
+            $refresh->setEqLogic_id($this->getId())
+            ->setLogicalId('refresh')
+            ->setType('action')
+            ->setOrder(99)
+            ->setSubType('other')
+            ->save();
             $setup = SetupAqi::$setupPollen;
 
         }
@@ -227,16 +227,16 @@ class airquality extends eqLogic
                 $cmdInfo = new airqualityCmd();
                 $cmdInfo->setName($command['title']);
             }
-            $cmdInfo->setEqLogic_id($this->getId());
-            $cmdInfo->setLogicalId($command['name']);
-            $cmdInfo->setType('info');
-            $cmdInfo->setOrder($command['order']);
-            $cmdInfo->setTemplate('dashboard', 'tile');
-            $cmdInfo->setSubType($command['subType']);
-            $cmdInfo->setUnite($command['unit']);
-            $cmdInfo->setDisplay('generic_type', 'GENERIC_INFO');
-            $cmdInfo->setConfiguration($command['name'], $command['display']);
-            $cmdInfo->save();
+            $cmdInfo->setEqLogic_id($this->getId())
+            ->setLogicalId($command['name'])
+            ->setType('info')
+            ->setOrder($command['order'])
+            ->setTemplate('dashboard', 'tile')
+            ->setSubType($command['subType'])
+            ->setUnite($command['unit'])
+            ->setDisplay('generic_type', 'GENERIC_INFO')
+            ->setConfiguration($command['name'], $command['display'])
+            ->save();
         }
     }
 
@@ -390,7 +390,7 @@ class airquality extends eqLogic
                         // Incrémentation Compteur de pollens actifs 
                         $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
     
-                        // Check si les previsons pollen sont > 0 en partant d'une data-string 
+                        // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les chart
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');
                         $max = $maxCmd->execCmd();
                         $max = str_replace(['[', ']'], '', $max);
@@ -411,12 +411,12 @@ class airquality extends eqLogic
                             $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite(): '';
                             // Chart 
                             $maxCmd = $this->getCmd(null, $nameCmd . '_max');
-                            $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '[0,0,0]';
+                            $unitreplace['#max#'] = is_object($maxCmd) ?  $maxCmd->execCmd(): '';
                             $minCmd = $this->getCmd(null, $nameCmd . '_min');
-                            $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '[0,0,0]';
+                            $unitreplace['#min#'] = is_object($minCmd) ? $minCmd->execCmd(): '';
                             $unitreplace['#color#'] =  $isObjet ?  $iconePollen->getColor(): '';
                             $labels = $this->getCmd(null, 'daysPollen');
-                            $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): "['no','forecast','data']";
+                            $unitreplace['#labels#'] = is_object($labels) ? $labels->execCmd(): '';
                             //  Message
                             $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()): '';
@@ -576,6 +576,12 @@ class airquality extends eqLogic
     }
 
 
+    public function getMessagePollen(){
+
+        $display = new DisplayInfo;
+        return $display->getMessage();
+    }
+
     /**
      * Lance l'update des données live pollution ou pollen 
      */
@@ -620,6 +626,8 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
             $this->reorderCmdPollen();
             $this->refreshWidget();
+            $this->checkAndUpdateCmd('messagePollen', $this->getMessagePollen());
+
         }
       
     }

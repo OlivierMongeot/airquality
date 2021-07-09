@@ -22,6 +22,10 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
  * Fichier d’inclusion si vous avez plusieurs fichiers de class ou 3rdParty à inclure
  * 
  */
+
+if (!class_exists('SetupAqi')){
+    require_once dirname(__FILE__) . '/../../3rdparty/class.SetupAqi.php';
+}
 if (!class_exists('ApiAqi')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.ApiAqi.php';
 }
@@ -37,8 +41,6 @@ if (!class_exists('IconesPollen')){
 if (!class_exists('DisplayInfo')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
 }
-if (!class_exists('SetupAqi')){
-    require_once dirname(__FILE__) . '/../../3rdparty/class.SetupAqi.php';
-}
+
 
 ?>

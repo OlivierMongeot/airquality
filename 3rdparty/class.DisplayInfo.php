@@ -73,22 +73,16 @@ class DisplayInfo
 
             case '#00AEEC':
                 return __("Bon", __FILE__);
-                break;
             case '#00BD01':
                 return __("Correct", __FILE__);
-                break;
             case '#EFE800':
                 return  __("Dégradé", __FILE__);
-                break;
             case '#E79C00':
                 return __("Mauvais", __FILE__);
-                break;
             case '#B00000':
                 return __("Très mauvais", __FILE__);
-                break;
             case '#B00000':
                 return __("Extrême", __FILE__);
-                break;
         }
     }
 
@@ -98,25 +92,19 @@ class DisplayInfo
     public function getUVRapport($level){
         switch ($level) {
         case $level == 0  :
-            $alert = __('',__FILE__);
-            break;
+            return __('Nul',__FILE__);
         case $level > 0  && $level < 3:
-            $alert = __('Faible',__FILE__);
-            break;
+            return __('Faible',__FILE__);
         case $level >= 3  && $level < 6:
-            $alert = __('Modéré',__FILE__);
-            break;
+            return __('Modéré',__FILE__);
         case $level >= 6  && $level < 8:
-            $alert = __('Élevé',__FILE__);
-            break;
+            return __('Élevé',__FILE__);
         case $level >= 8  && $level < 11:
-            $alert = __('Très élevé',__FILE__);
-            break;
+            return __('Très élevé',__FILE__);
         case $level >= 11 :
-            $alert = __('Extrême',__FILE__);
-            break;
+            return __('Extrême',__FILE__);
+          
         }
-        return $alert;
     }
 
     /**
@@ -200,5 +188,18 @@ class DisplayInfo
         }
     }
  
+
+    public function getMessage($value, $pollen ){
+
+        if($this)
+        {
+            $message ='';
+        }
+
+        return $message;
+
+
+
+    }
 
 }
