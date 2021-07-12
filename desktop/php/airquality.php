@@ -224,7 +224,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="displayMode">
                                         <option value="min_display">{{Digital}}</option>
                                         <option disabled value="full_display">{{Analogique}}</option>
-
                                     </select>
                                 </div>
                             </div>
@@ -239,6 +238,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
+                            <!-- <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Historisation}}</label>
+                                <div class="col-sm-6">
+                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="historize">
+                                        <option value="disable_anim">{{Désactiver}}</option>
+                                        <option value="slow_anim">{{Activer}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br> -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Elements à afficher}}</label>
                                 <div class="col-sm-6">
@@ -262,10 +271,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 
                             <div class="form-group  elements pollen">
-                                <label class="col-sm-3 control-label">{{Pollen Niveau Zéro}}</label>
+                                <label class="col-sm-3 control-label">{{Pollens Niveau Zéro}}</label>
                                 <div class="col-sm-6">
                                          <label class="checkbox-inline">
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />Afficher
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{Visible}}
                                     </label>
 
                                 </div>

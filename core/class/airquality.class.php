@@ -138,19 +138,19 @@ class airquality extends eqLogic
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
 
-            $cmd = $this->getCmd(null, 'refresh');
-            if (is_object($cmd)) {
-                $cmd->execCmd();
-            }
-              // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
-              // Annulation du refresh inutile à la sauvegarde si il y a déjà des data
             $cmdCheckNull =  $this->getCmd(null, 'poaceae_max');
             if (is_object($cmdCheckNull) && $cmdCheckNull->execCmd() == null) {
-                
-            $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
-                if (is_object($cmd)) {
-                    $cmd->execCmd();
-                }
+
+                $cmd = $this->getCmd(null, 'refresh');
+                    if (is_object($cmd)) {
+                        $cmd->execCmd();
+                    }
+                // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
+                // Annulation du refresh inutile à la sauvegarde si il y a déjà des data
+                $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
+                    if (is_object($cmd)) {
+                        $cmd->execCmd();
+                    }
             }
         }
     }
@@ -165,6 +165,14 @@ class airquality extends eqLogic
     public function postUpdate()
     {
         if ($this->getConfiguration('elements') == 'polution') {
+
+            $setupPollen = SetupAqi::$setupPollen;
+            foreach ($setupPollen as $command) {
+                $cmdInfo = $this->getCmd(null, $command['name']);
+                if (is_object($cmdInfo)) {
+                    $cmdInfo->remove();
+                }
+            }
 
             $refreshForecast = $this->getCmd(null, 'refresh_forecast');
             if (!is_object($refreshForecast)) {
@@ -194,6 +202,14 @@ class airquality extends eqLogic
 
         if ($this->getConfiguration('elements') == 'pollen') {
 
+            $setupAqi = SetupAqi::$setupAqi;
+            foreach ($setupAqi as $command) {
+                $cmdInfo = $this->getCmd(null, $command['name']);
+                if (is_object($cmdInfo)) {
+                    $cmdInfo->remove();
+                }
+            }
+
             $refreshForecast = $this->getCmd(null, 'refresh_pollen_forecast');
             if (!is_object($refreshForecast)) {
                 $refreshForecast = new airqualityCmd();
@@ -218,6 +234,9 @@ class airquality extends eqLogic
             ->setSubType('other')
             ->save();
             $setup = SetupAqi::$setupPollen;
+
+
+           
 
         }
 
@@ -247,7 +266,7 @@ class airquality extends eqLogic
             return $replace;
         }
 
-        $this->emptyCacheWidget(); //vide le cache. Pour le développement
+        // $this->emptyCacheWidget(); //vide le cache. Pour le développement
 
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
@@ -390,7 +409,7 @@ class airquality extends eqLogic
                         // Incrémentation Compteur de pollens actifs 
                         $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
     
-                        // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les chart
+                        // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les charts/slides
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');
                         $max = $maxCmd->execCmd();
                         $max = str_replace(['[', ']'], '', $max);
@@ -462,8 +481,8 @@ class airquality extends eqLogic
                             $pollenZeroReplace['#cmdid#'] = $isObjet ?  $cmd->getId(): '';
                             $pollenZeroReplace['#info-modalcmd#'] =  $isObjet ? 'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
                             $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
-                            $elementTemplate2 = getTemplate('core', $version, 'elementPollenZero', 'airquality');
-                            $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2);
+                            $templateZero = getTemplate('core', $version, 'elementPollenZero', 'airquality');
+                            $tabZero[] = template_replace($pollenZeroReplace, $templateZero);
 
                            }
                               

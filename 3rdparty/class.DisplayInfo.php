@@ -90,20 +90,23 @@ class DisplayInfo
      * Basé sur l'indice UV officiel
      */
     public function getUVRapport($level){
-        switch ($level) {
-        case $level == 0  :
+        if ( $level == 0){
             return __('Nul',__FILE__);
-        case $level > 0  && $level < 3:
+        } 
+        else if ( $level > 0  && $level < 3){
             return __('Faible',__FILE__);
-        case $level >= 3  && $level < 6:
+        } 
+        else if ($level >= 3  && $level < 6){
             return __('Modéré',__FILE__);
-        case $level >= 6  && $level < 8:
+        }
+        else if ( $level >= 6  && $level < 8){
             return __('Élevé',__FILE__);
-        case $level >= 8  && $level < 11:
+        }
+        else if ( $level >= 8  && $level < 11){
             return __('Très élevé',__FILE__);
-        case $level >= 11 :
+        }
+        else if (  $level >= 11){
             return __('Extrême',__FILE__);
-          
         }
     }
 
@@ -113,19 +116,14 @@ class DisplayInfo
     public function getVisibilityRapport($level){
         switch ($level) {
         case $level > 0  && $level < 700:
-                $alert = __('Très Mauvaise',__FILE__);
-                break;
+            return __('Très Mauvaise',__FILE__);
         case $level >= 700  && $level < 3210:
-            $alert = __('Mauvaise',__FILE__);
-            break;
+            return __('Mauvaise',__FILE__);
         case $level >= 3210  && $level < 8000:
-            $alert = __('Moyenne',__FILE__);
-            break;
+            return __('Moyenne',__FILE__);
         case $level >= 8000 :
-            $alert = __('Bonne',__FILE__);
-            break;
+            return __('Bonne',__FILE__);
         }
-        return $alert;
     }
 
 
