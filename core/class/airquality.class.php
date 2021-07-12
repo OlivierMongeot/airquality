@@ -153,6 +153,7 @@ class airquality extends eqLogic
                     }
             }
         }
+
     }
 
 
@@ -197,6 +198,7 @@ class airquality extends eqLogic
             ->setOrder(99)
             ->setSubType('other')
             ->save();
+        
             $setup = SetupAqi::$setupAqi;
         }
 
@@ -235,9 +237,6 @@ class airquality extends eqLogic
             ->save();
             $setup = SetupAqi::$setupPollen;
 
-
-           
-
         }
 
         foreach ($setup as $command) {
@@ -258,6 +257,7 @@ class airquality extends eqLogic
             ->save();
         }
     }
+
 
     public function toHtml($_version = 'dashboard')
     {

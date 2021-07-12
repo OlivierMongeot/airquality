@@ -59,7 +59,18 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
     }
 })
 
-$('#validate-llm').on('click' , () =>  {
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=historize]').on('change', () => {
+  
+    if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=historize]').value() == 'actived') {
+        var select = $(".isHistorized");
+        console.log(select);
+    }
+      
+     
+})
+
+
+$('#validate-llm').on('click', () =>  {
 
     let longi = $('.eqLogicAttr[data-l1key=configuration][data-l2key=longitude]').value()
     let lati = $('.eqLogicAttr[data-l1key=configuration][data-l2key=latitude]').value()
@@ -141,7 +152,8 @@ $("#table_cmd").sortable({
  * Fonction permettant l'affichage des commandes dans l'équipement
  */
 function addCmdToTable(_cmd) {
-  if (!isset(_cmd)) {
+    if (!isset(_cmd)) {
+     
     var _cmd = {
       configuration: {}
     };
@@ -149,7 +161,8 @@ function addCmdToTable(_cmd) {
   if (!isset(_cmd.configuration)) {
     _cmd.configuration = {};
   }
-  var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
+//   console.log(_cmd);
+  var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '" data-cmd_logical_id="' + init(_cmd.logicalId) + '">';
   //  ID Commande
   tr += '<td style="min-width:50px;width:70px;">';
   tr += '<span class="cmdAttr" data-l1key="id"></span>';
@@ -179,7 +192,7 @@ function addCmdToTable(_cmd) {
   // Afficher  + Historiser 
   tr += '<td style="min-width:120px;width:140px;">';
   tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></div> ';
-  tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></div> ';
+  tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline isHistorized cmd_' + init(_cmd.logicalId) + '" data-l1key="isHistorized" checked/>{{Historiser}}</label></div> ';
   tr += '</td>';
   //  MIN  + MAX + UNITE
   tr += '<td style="min-width:180px;">';

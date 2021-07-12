@@ -238,16 +238,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-                            <!-- <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Historisation}}</label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Mini, Maxi, Moyenne, Tendance, Statistiques}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="historize">
-                                        <option value="disable_anim">{{Désactiver}}</option>
-                                        <option value="slow_anim">{{Activer}}</option>
+                                        <option value="actived">{{Activer}}</option>
+                                        <option value="disable">{{Désactiver}}</option>
                                     </select>
                                 </div>
                             </div>
-                            <br> -->
+                            <br>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Elements à afficher}}</label>
                                 <div class="col-sm-6">
