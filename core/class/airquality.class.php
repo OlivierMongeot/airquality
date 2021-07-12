@@ -450,18 +450,23 @@ class airquality extends eqLogic
                             $tab[] = template_replace($unitreplace, $elementTemplate);
                         } else {
                             // Cas Pollen à ZERO 
-                                $iconePollen = new IconesPollen;
-                                $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false );
-                                $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon: '';
-                                $pollenZeroReplace['#id#'] = $isObjet ? $this->getId(): '';
-                                $pollenZeroReplace['#value#'] = $isObjet ?  $cmd->execCmd() : '';
-                                $pollenZeroReplace['#name#'] = $isObjet ?  $cmd->getLogicalId(): '';
-                                $pollenZeroReplace['#display-name#'] =  $isObjet ? __($cmd->getName(), __FILE__): '';
-                                $pollenZeroReplace['#cmdid#'] = $isObjet ?  $cmd->getId(): '';
-                                $pollenZeroReplace['#info-modalcmd#'] =  $isObjet ? 'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
-                                $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
-                                $elementTemplate2 = getTemplate('core', $version, 'elementPollenZero', 'airquality');
-                                $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2);
+                           if ( $this->getConfiguration('displayZeroPollen') == 1){
+                   
+                            $iconePollen = new IconesPollen;
+                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false );
+                            $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon: '';
+                            $pollenZeroReplace['#id#'] = $isObjet ? $this->getId(): '';
+                            $pollenZeroReplace['#value#'] = $isObjet ?  $cmd->execCmd() : '';
+                            $pollenZeroReplace['#name#'] = $isObjet ?  $cmd->getLogicalId(): '';
+                            $pollenZeroReplace['#display-name#'] =  $isObjet ? __($cmd->getName(), __FILE__): '';
+                            $pollenZeroReplace['#cmdid#'] = $isObjet ?  $cmd->getId(): '';
+                            $pollenZeroReplace['#info-modalcmd#'] =  $isObjet ? 'info-modal' . $cmd->getLogicalId() . $this->getId(): '';
+                            $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
+                            $elementTemplate2 = getTemplate('core', $version, 'elementPollenZero', 'airquality');
+                            $tabZero[] = template_replace($pollenZeroReplace, $elementTemplate2);
+
+                           }
+                              
                         }
                     }
             }
@@ -575,11 +580,14 @@ class airquality extends eqLogic
         }
     }
 
-
+    /**
+     * To do 
+     */
     public function getMessagePollen(){
-
+        $value = 0;
+        $pollen = 'birch';
         $display = new DisplayInfo;
-        return $display->getMessage();
+        return $display->getMessage($value,$pollen);
     }
 
     /**
