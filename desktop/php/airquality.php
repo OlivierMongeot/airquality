@@ -125,7 +125,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                             <br>
 
-
                             <legend><i class="fas fa-cogs"></i> {{Paramètres}}</legend>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Méthode de localisation}}</label>
@@ -286,7 +285,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
                             <div class="form-group elements polution">
                                 <div class="container">
-                                    <h5>Code Couleurs</h5>
+                                    <h5>Code Couleurs AQI</h5>
                                 </div>
                                 <br>
                                 <div class="container">
@@ -312,13 +311,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                     <br>
                                     <br>
-
                                 </div>
                             </div>
                             <!--  -->
                             <div class="form-group elements pollen">
                                 <div class="container">
-                                    <h6>Code Couleurs</h6>
+                                    <h6>Code Couleurs Pollen</h6>
                                 </div>
                                 <br>
                                 <div class="container">
@@ -373,68 +371,236 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </table>
                 </div>
             </div><!-- /.tabpanel #commandtab-->
-
-
-
             <style>
-              /* * {
-	 -webkit-box-sizing: border-box;
-	 -moz-box-sizing: border-box;
-	 box-sizing: border-box;
-} */
- /* body {
-	 font-family: sans-serif;
-	 padding: 40px;
-} */
- .range-slider .input-range {
-	 -webkit-appearance: none;
-	 height: 20px;
-	 border-radius: 5px;
-	 background: #ccc;
-	 outline: none;
-	 writing-mode: bt-lr;
-	/* IE */
-	 /* -webkit-appearance: slider-vertical; */
-	/* WebKit */
-}
- ::-moz-range-track {
-	 background: #ccc;
-	 border: 2;
-}
- input::-moz-focus-inner {
-	 border: 2;
-}
- 
+                .range-slider.aqi .input-range.aqi {
+                    -webkit-appearance: none;
+                    height: 5px;
+                    border-radius: 5px;
+                    background: #ccc;
+                    outline: none;
+                    writing-mode: bt-lr;
+                }
 
-
+                .range-container {
+                    width: 40%;
+                }
             </style>
             <!-- Onglet reglage Alerte -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
                 <br /><br />
-                <legend>
-                    Reglages des niveaux d'alertes des polluants
-                </legend>
-                <div class="container">
-                  
+                <legend>Seuil d'alertes</legend>
+                <div class="container range-container">
+
+                    <div class="form-group elements polution">
+                       
+                        <div class="range-slider aqi">
+
+                            <?php
+                            foreach ($eqLogics as $eqLogic) {
+                                $levelAqi_ = $eqLogic->getConfiguration('aqi_alert_level');
+                                $levelPm25_ = $eqLogic->getConfiguration('pm25_alert_level');
+                                $levelPm10_ = $eqLogic->getConfiguration('pm10_alert_level');
+                                $levelO3_ = $eqLogic->getConfiguration('o3_alert_level');
+                                $levelSo2_ = $eqLogic->getConfiguration('so2_alert_level');
+                                $levelNo2_ = $eqLogic->getConfiguration('no2_alert_level');
+                                $levelCo_ = $eqLogic->getConfiguration('co_alert_level');
+                                $levelNh3_ = $eqLogic->getConfiguration('nh3_alert_level');
+                                $levelUV_ = $eqLogic->getConfiguration('uv_alert_level');
+                                $levelVisi_ = $eqLogic->getConfiguration('visibility_alert_level');
+
+                                if ($levelAqi_ != '') {
+                                    $levelAqi = $levelAqi_;
+                                }
+                                if ($levelPm25_ != '') {
+                                    $levelPm25 = $levelPm25_;
+                                }
+                                if ($levelPm10_ != '') {
+                                    $levelPm10 = $levelPm10_;
+                                }
+                                if ($levelO3_ != '') {
+                                    $levelO3 = $levelO3_;
+                                }
+                                if ($levelSo2_ != '') {
+                                    $levelSo2 = $levelSo2_;
+                                }
+                                if ($levelNo2_ != '') {
+                                    $levelNo2 = $levelNo2_;
+                                }
+                                if ($levelCo_ != '') {
+                                    $levelCo = $levelCo_;
+                                }
+                                if ($levelNh3_ != '') {
+                                    $levelNh3 = $levelNh3_;
+                                }
+                                if ($levelUV_ != '') {
+                                    $levelUV = $levelUV_;
+                                }
+                                if ($levelVisi_ != '') {
+                                    $levelVisi = $levelVisi_;
+                                }
+                            }
+                            ?>
+                            <label for="aqi">Indice AQI</label> <span class="pull-right" id="disp_aqi"></span>
+                            <input type="range" value="<?= $levelAqi ?>" min="1" max="6" class="input-range aqi" orient="vertical" name="aqi" id="aqi"></input>
+                            
+                            <input type="hidden" class="eqLogicAttr form-control" id="aqi_alert_level" data-l1key="configuration" data-l2key="aqi_alert_level"></input>
+                            <br><br>
+                            <label for="pm25">PM<sub>2.5</sub></label><div class="pull-right"><span id="disp_pm25"></span> μg/m3</div> 
+                            <input type="range" value="<?= $levelPm25 ?>" min="10" max="75" class="input-range aqi" orient="horizontal" name="pm25" id="pm25"></input>
+                            
+                            <input type="hidden" class="eqLogicAttr form-control" id="pm25_alert_level" data-l1key="configuration" data-l2key="pm25_alert_level"></input>
+                            <br><br>
+                            <label for="pm10">PM<sub>10</sub></label><div class="pull-right" ><span id="disp_pm10"></span> μg/m3</div> 
+                            <input type="range" value="<?= $levelPm10 ?>" min="20" max="150" class="input-range aqi" orient="horizontal" name="pm10" id="pm10"></input>
+                            
+                            <input type="hidden" class="eqLogicAttr form-control" id="pm10_alert_level" data-l1key="configuration" data-l2key="pm10_alert_level"></input>
+                            <br><br>
+                            <label for="o3">O³</label><div  class="pull-right"><span id="disp_o3"></span> μg/m3</div> 
+                            <input type="range" value="<?= $levelO3 ?>" min="50" max="380" class="input-range aqi" orient="horizontal" name="o3" id="o3"></input>
+                           
+                            <input type="hidden" class="eqLogicAttr form-control" id="o3_alert_level" data-l1key="configuration" data-l2key="o3_alert_level"></input>
+                            <br><br>
+                            <label for="so2">SO²</label> <div class="pull-right" ><span id="disp_so2"></span> μg/m3</div>
+                            <input type="range" value="<?= $levelSo2 ?>" min="100" max="750" class="input-range aqi" orient="horizontal" name="so2" id="so2"></input>
+                          
+                            <input type="hidden" class="eqLogicAttr form-control" id="so2_alert_level" data-l1key="configuration" data-l2key="so2_alert_level"></input>
+                            <br><br>
+                            <label for="no2">NO²</label> <div class="pull-right"><span id="disp_no2"></span> μg/m3</div>
+                            <input type="range" value="<?= $levelNo2 ?>" min="40" max="340" class="input-range aqi" orient="horizontal" name="no2" id="no2"></input>
                         
-                    <div class="range-slider">
-                    <!-- <div class="slider-wrapper"> -->
-                          <label for="aqi">AQI</label>
-                        <input type="range" min="1" max="100" value="40" class="input-range" orient="horizontal" name="aqi" id="aqi">
-                        <span id="demo"></span>
-               <br><br>
-                         <label for="aqi">PM2.5</label>
-                        <input type="range" min="1" max="100" value="40" class="input-range" orient="vertical" name="pm25" id="pm25">
-                        <span id="demo_pm25"></span>
+                            <input type="hidden" class="eqLogicAttr form-control" id="no2_alert_level" data-l1key="configuration" data-l2key="no2_alert_level"></input>
+                            <br><br>
+                            <label for="co">CO</label><div class="pull-right"><span id="disp_co"></span> μg/m3</div> 
+                            <input type="range" value="<?= $levelCo ?>" min="50" max="700" class="input-range aqi" orient="horizontal" name="co" id="co"></input>
+                           
+                            <input type="hidden" class="eqLogicAttr form-control" id="co_alert_level" data-l1key="configuration" data-l2key="co_alert_level"></input>
+                            <br><br>
+                            <label for="nh3">NH³</label><div class="pull-right"><span  id="disp_nh3"></span> μg/m3</div>
+                            <input type="range" value="<?= $levelNh3 ?>" min="3" max="300" class="input-range aqi" orient="horizontal" name="nh3" id="nh3"></input>
+                           
+                            <input type="hidden" class="eqLogicAttr form-control" id="nh3_alert_level" data-l1key="configuration" data-l2key="nh3_alert_level"></input>
+                            <br><br>
+                            <label for="uv">Indice UV</label><div class="pull-right"><span id="disp_uv"></span></div>
+                            <input type="range" value="<?= $levelUV ?>" min="2" max="10" class="input-range aqi" orient="horizontal" name="uv" id="uv"></input>
+                           
+                            <input type="hidden" class="eqLogicAttr form-control" id="uv_alert_level" data-l1key="configuration" data-l2key="uv_alert_level"></input>
+                            <br><br>
+                            <label for="visibility">Visibilité</label><div class="pull-right"><span id="disp_visibility"></span> m</div>
+                            <input type="range" value="<?= $levelVisi ?>" min="0" max="10000" class="input-range aqi" orient="horizontal" name="visibility" id="visibility"></input>
+                          
+                            <input type="hidden" class="eqLogicAttr form-control" id="visibility_alert_level" data-l1key="configuration" data-l2key="visibility_alert_level"></input>
+                            <br><br>
+                        </div>
                     </div>
-                      
+
+                    <div class="form-group elements pollen">
+                       
+                        <div class="range-slider aqi">
+
+                        <?php
+                            foreach ($eqLogics as $eqLogic) {
+                                $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
+                                $levelElm_ = $eqLogic->getConfiguration('elm_alert_level');
+                                $levelAlder_ = $eqLogic->getConfiguration('alder_alert_level');
+                                $levelBirch_ = $eqLogic->getConfiguration('alder_alert_level');
+                                $levelCypress_ = $eqLogic->getConfiguration('cypress_alert_level');
+                                $levelOak_ = $eqLogic->getConfiguration('oak_alert_level');
+                                $levelHazel_ = $eqLogic->getConfiguration('hazel_alert_level');
+                                $levelPine_ = $eqLogic->getConfiguration('pine_alert_level');
+                                $levelPlane_ = $eqLogic->getConfiguration('plane_alert_level');
+                                $levelPoplar_ = $eqLogic->getConfiguration('poplar_alert_level');
+                                $levelChenopod_ = $eqLogic->getConfiguration('chenopod_alert_level');
+                                $levelMugwort_ = $eqLogic->getConfiguration('mugwort_alert_level');
+                                $levelNettle_ = $eqLogic->getConfiguration('nettle_alert_level');
+                                $levelRagweed_ = $eqLogic->getConfiguration('ragweed_alert_level');
+                                $levelOthers_ = $eqLogic->getConfiguration('others_alert_level');
+
+                                if ($levelPoaceae_ != '') { $levelPoaceae = $levelPoaceae_; }
+                                if ($levelElm_ != '') { $levelElm = $levelElm_; }
+                                if ($levelAlder_ != '') { $levelAlder = $levelAlder_; }
+                                if ($levelBirch_ != '') { $levelBirch = $levelBirch_; }
+                                if ($levelCypress_ != '') { $levelCypress = $levelCypress_; }
+                                if ($levelOak_ != '') { $levelOak = $levelOak_; }
+                                if ($levelHazel_ != '') { $levelHazel = $levelHazel_; }
+                                if ($levelPine_ != '') { $levelPine = $levelPine_; }
+                                if ($levelPlane_ != '') { $levelPlane = $levelPlane_; }
+                                if ($levelPoplar_ != '') { $levelPoplar = $levelPoplar_; }
+                                if ($levelChenopod_ != '') { $levelChenopod = $levelChenopod_; }
+                                if ($levelMugwort_ != '') { $levelMugwort = $levelMugwort_; }
+                                if ($levelNettle_ != '') { $levelNettle = $levelNettle_; }
+                                if ($levelRagweed_ != '') { $levelRagweed = $levelRagweed_; }
+                                if ($levelOthers_ != '') { $levelOthers = $levelOthers_; }
+                            }
+                            ?>
+                            <label for="poaceae">{{Graminées / Poacées}}</label><div class="pull-right"><span id="disp_poaceae"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPm25 ?>" min="1" max="250" class="input-range aqi" orient="vertical" name="poaceae" id="poaceae"></input>
+                            <input type="hidden" class="eqLogicAttr form-control" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                            <br>
+                            <label for="elm">{{Orme}}</label><div class="pull-right"><span id="disp_elm"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPm25 ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="elm" id="elm"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
+                            <br>
+                            <label for="alder">{{Aulne}}</label><div class="pull-right"><span id="disp_alder"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelAlder ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="alder" id="alder"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="alder_alert_level" data-l1key="configuration" data-l2key="alder_alert_level"></input>
+                            <br>
+                            <label for="birch">{{Bouleau}}</label><div class="pull-right"><span id="disp_birch"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelBirch ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="birch" id="birch"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="birch_alert_level" data-l1key="configuration" data-l2key="birch_alert_level"></input>
+                            <br>
+                            <label for="cypress">{{Cyprès}}</label><div class="pull-right"><span id="disp_cypress"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelCypress ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="cypress" id="cypress"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="cypress_alert_level" data-l1key="configuration" data-l2key="cypress_alert_level"></input>
+                            <br>
+                            <label for="oak">{{Chêne}}</label><div class="pull-right"><span id="disp_oak"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelOak ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="oak" id="oak"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="oak_alert_level" data-l1key="configuration" data-l2key="oak_alert_level"></input>
+                            <br>
+                            <label for="hazel">{{Noisetier}}</label><div class="pull-right"><span id="disp_hazel"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelHazel ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="hazel" id="hazel"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="hazel_alert_level" data-l1key="configuration" data-l2key="hazel_alert_level"></input>
+                            <br>
+                            <label for="pine">{{Pin}}</label><div class="pull-right"><span id="disp_pine"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPine ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="pine" id="pine"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="pine_alert_level" data-l1key="configuration" data-l2key="pine_alert_level"></input>
+                            <br>
+                            <label for="plane">{{Platane}}</label><div class="pull-right"><span id="disp_plane"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPlane ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="plane" id="plane"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="plane_alert_level" data-l1key="configuration" data-l2key="plane_alert_level"></input>
+                            <br>
+                            <label for="poplar">{{Peuplier}}</label><div class="pull-right"><span id="disp_poplar"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPoplar ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="poplar" id="poplar"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="poplar_alert_level" data-l1key="configuration" data-l2key="poplar_alert_level"></input>
+                            <br>
+                            <label for="chenopod">{{Chénopodes}}</label><div class="pull-right"><span id="disp_chenopod"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelChenopod ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="chenopod" id="chenopod"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
+                            <br>
+                            <label for="mugwort">{{Mugwort / Armoises }}</label><div class="pull-right"><span id="disp_mugwort"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelPlane ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="mugwort" id="mugwort"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
+                            <br>
+                            <label for="nettle">{{Ortie}}</label><div class="pull-right"><span id="disp_nettle"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelNettle ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="nettle" id="nettle"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
+                            <br>
+                            <label for="ragweed">{{Ambroisie}}</label><div class="pull-right"><span id="disp_ragweed"></span> part/m3</div> 
+                            <input type="range" value="<?= $levelMugwort ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="ragweed" id="ragweed"></input> 
+                            <input type="hidden" class="eqLogicAttr form-control" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
+                            <br>
+                            <label for="others">{{Autres Pollens}}</label><div class="pull-right"><span id="disp_others"></span> part/m3</div>
+                            <input type="range" value="<?= $levelOthers ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="others" id="others"></input>
+                            <input type="hidden" class="eqLogicAttr form-control" id="others_alert_level" data-l1key="configuration" data-l2key="others_alert_level"></input>
+                            <br><br>
+                        </div> 
+                    </div>
+
                 </div>
-
-
                 <!-- </div> -->
-
             </div>
             <!--/.tabpanel-->
+
+
 
         </div><!-- /.tab-content -->
     </div><!-- /.eqLogic -->

@@ -221,20 +221,46 @@ function addCmdToTable(_cmd) {
   });
 }
 
-var slider = document.getElementById("aqi");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
 
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = this.value;
+getSlider('aqi');
+getSlider('pm25');
+getSlider('pm10');
+getSlider('o3');
+getSlider('so2');
+getSlider('no2');
+getSlider('co');
+getSlider('nh3');
+getSlider('uv');
+getSlider('visibility');
+
+getSlider('poaceae');
+getSlider('elm');
+getSlider('alder');
+getSlider('birch');
+getSlider('cypress');
+getSlider('oak');
+getSlider('hazel');
+getSlider('pine');
+getSlider('plane');
+getSlider('poplar');
+getSlider('chenopod');
+getSlider('mugwort');
+getSlider('nettle');
+getSlider('ragweed');
+getSlider('others');
+
+
+
+function getSlider(element) {
+        var slider = document.getElementById(element);
+        var output = document.getElementById("disp_"+element);
+        var inputVal = document.getElementById(element+"_alert_level");
+        output.innerHTML = slider.value; 
+        // Update the current slider value and the input 
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+            inputVal.value = this.value;
+        }
 }
 
-var sliderPm25 = document.getElementById("pm25");
-var outputPm25 = document.getElementById("demo_pm25");
-outputPm25.innerHTML = sliderPm25.value; // Display the default slider value
 
-// Update the current slider value (each time you drag the slider handle)
-sliderPm25.oninput = function() {
-    outputPm25.innerHTML = this.value;
-}
