@@ -59,16 +59,6 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
     }
 })
 
-$('.eqLogicAttr[data-l1key=configuration][data-l2key=historize]').on('change', () => {
-  
-    if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=historize]').value() == 'actived') {
-        var select = $(".isHistorized");
-        console.log(select);
-    }
-      
-     
-})
-
 
 $('#validate-llm').on('click', () =>  {
 
@@ -191,8 +181,10 @@ function addCmdToTable(_cmd) {
   tr += '</td>';
   // Afficher  + Historiser 
   tr += '<td style="min-width:120px;width:140px;">';
-  tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></div> ';
-  tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline isHistorized cmd_' + init(_cmd.logicalId) + '" data-l1key="isHistorized" checked/>{{Historiser}}</label></div> ';
+    tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></div> ';
+    if (init(_cmd.subType) == 'numeric') {
+        tr += '<div><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline isHistorized cmd_' + init(_cmd.logicalId) + '" data-l1key="isHistorized" checked/>{{Historiser}}</label></div> ';
+    }
   tr += '</td>';
   //  MIN  + MAX + UNITE
   tr += '<td style="min-width:180px;">';
@@ -227,4 +219,22 @@ function addCmdToTable(_cmd) {
       jeedom.cmd.changeType(tr, init(_cmd.subType));
     }
   });
+}
+
+var slider = document.getElementById("aqi");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+var sliderPm25 = document.getElementById("pm25");
+var outputPm25 = document.getElementById("demo_pm25");
+outputPm25.innerHTML = sliderPm25.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+sliderPm25.oninput = function() {
+    outputPm25.innerHTML = this.value;
 }

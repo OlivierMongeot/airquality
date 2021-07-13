@@ -72,6 +72,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
+            <li role="presentation"><a href="#alerttab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-exclamation-circle"></i><span class="hidden-xs"> {{Alertes}}</span></a></li>
         </ul>
         <div class="tab-content">
             <!-- Onglet de configuration de l'équipement -->
@@ -238,7 +239,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Mini, Maxi, Moyenne, Tendance, Statistiques}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="historize">
@@ -247,7 +248,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </select>
                                 </div>
                             </div>
-                            <br>
+                            <br> -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Elements à afficher}}</label>
                                 <div class="col-sm-6">
@@ -270,10 +271,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
 
 
-                            <div class="form-group  elements pollen">
+                            <div class="form-group elements pollen">
                                 <label class="col-sm-3 control-label">{{Pollens Niveau Zéro}}</label>
                                 <div class="col-sm-6">
-                                         <label class="checkbox-inline">
+                                    <label class="checkbox-inline">
                                         <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{Visible}}
                                     </label>
 
@@ -283,13 +284,62 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         <!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
                         <div class="col-lg-6">
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
-                            <div class="form-group">
-
+                            <div class="form-group elements polution">
                                 <div class="container">
-                                    <!-- {{Trouver ses coordonnées sur  www.coordonnees-gps.fr}} -->
+                                    <h5>Code Couleurs</h5>
+                                </div>
+                                <br>
+                                <div class="container">
+                                    <div>
+                                        <input type="color" name="head" disabled value="#00AEEC">
+                                        <label for="head">Bon</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#00BD01">
+                                        <label for="body">Correct</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#EFE800">
+                                        <label for="body">Dégradé</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#E79C00">
+                                        <label for="body">Mauvais</label>
+                                        &nbsp; &nbsp;
+                                        <br><br>
+                                        <input type="color" name="body" disabled value="#B00000">
+                                        <label for="body">Très mauvais</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#662D91">
+                                        <label for="body">Extrême</label>
+                                    </div>
+                                    <br>
+                                    <br>
+
                                 </div>
                             </div>
                             <!--  -->
+                            <div class="form-group elements pollen">
+                                <div class="container">
+                                    <h6>Code Couleurs</h6>
+                                </div>
+                                <br>
+                                <div class="container">
+                                    <div>
+                                        <input type="color" name="head" disabled value="#00BD01">
+                                        <label for="head">Risque bas</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#EFE800">
+                                        <label for="body">Risque modéré</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#E79C00">
+                                        <label for="body">Risque haut</label>
+                                        &nbsp; &nbsp;
+                                        <input type="color" name="body" disabled value="#B00000">
+                                        <label for="body">Risque très haut</label>
+                                    </div>
+                                    <br>
+                                    <br>
+
+                                </div>
+                            </div>
                             <!--  -->
                             <div class="form-group">
                                 <div class="text-center">
@@ -301,6 +351,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 </form>
                 <hr>
             </div><!-- /.tabpanel #eqlogictab-->
+
             <!-- Onglet des commandes de l'équipement -->
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <a class="btn btn-default btn-sm pull-left cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
@@ -322,6 +373,68 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </table>
                 </div>
             </div><!-- /.tabpanel #commandtab-->
+
+
+
+            <style>
+              /* * {
+	 -webkit-box-sizing: border-box;
+	 -moz-box-sizing: border-box;
+	 box-sizing: border-box;
+} */
+ /* body {
+	 font-family: sans-serif;
+	 padding: 40px;
+} */
+ .range-slider .input-range {
+	 -webkit-appearance: none;
+	 height: 20px;
+	 border-radius: 5px;
+	 background: #ccc;
+	 outline: none;
+	 writing-mode: bt-lr;
+	/* IE */
+	 /* -webkit-appearance: slider-vertical; */
+	/* WebKit */
+}
+ ::-moz-range-track {
+	 background: #ccc;
+	 border: 2;
+}
+ input::-moz-focus-inner {
+	 border: 2;
+}
+ 
+
+
+            </style>
+            <!-- Onglet reglage Alerte -->
+            <div role="tabpanel" class="tab-pane" id="alerttab">
+                <br /><br />
+                <legend>
+                    Reglages des niveaux d'alertes des polluants
+                </legend>
+                <div class="container">
+                  
+                        
+                    <div class="range-slider">
+                    <!-- <div class="slider-wrapper"> -->
+                          <label for="aqi">AQI</label>
+                        <input type="range" min="1" max="100" value="40" class="input-range" orient="horizontal" name="aqi" id="aqi">
+                        <span id="demo"></span>
+               <br><br>
+                         <label for="aqi">PM2.5</label>
+                        <input type="range" min="1" max="100" value="40" class="input-range" orient="vertical" name="pm25" id="pm25">
+                        <span id="demo_pm25"></span>
+                    </div>
+                      
+                </div>
+
+
+                <!-- </div> -->
+
+            </div>
+            <!--/.tabpanel-->
 
         </div><!-- /.tab-content -->
     </div><!-- /.eqLogic -->

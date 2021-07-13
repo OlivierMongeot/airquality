@@ -8,7 +8,11 @@ Grâce aux informations des  prévisons et données live, vous pouvez manager vo
 
 Vous accèdez aux données en direct et aux prévisions sur 5 jours pour la pollution et sur 3 jours pour les pollens.
 
-Les valeurs peuvent être historisées, le dashboard, affichera alors les moyennes, mini, maxi et tendances.
+Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault.
+
+Cela historise aussi les données et donne accès la représentation graphique.
+
+Vous pouvez les désactiver en décochant 'Historiser' une fois les commandes créées dans l'onglet 'Commandes'
 
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png" class="img-responsive" alt="Pollen">
@@ -111,3 +115,5 @@ Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le f
 Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et le forecast tous les matin à 7h00
 
 Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin ou tout autre corps médicale.
+
+Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota journalier de données gratuites. C'est normal, il faut attendre le lendemain matin pour que tout rentre dans l'ordre.

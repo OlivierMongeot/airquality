@@ -253,8 +253,11 @@ class airquality extends eqLogic
             ->setSubType($command['subType'])
             ->setUnite($command['unit'])
             ->setDisplay('generic_type', 'GENERIC_INFO')
-            ->setConfiguration($command['name'], $command['display'])
-            ->save();
+            ->setConfiguration($command['name'], $command['display']);
+            if ($command['subType'] =='numeric' ){
+                  $cmdInfo->setIsHistorized(1);
+            }
+            $cmdInfo->save();
         }
     }
 

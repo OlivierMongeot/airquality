@@ -81,7 +81,7 @@ class DisplayInfo
                 return __("Mauvais", __FILE__);
             case '#B00000':
                 return __("Très mauvais", __FILE__);
-            case '#B00000':
+            case '#662D91':
                 return __("Extrême", __FILE__);
         }
     }
