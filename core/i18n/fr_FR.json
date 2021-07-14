@@ -183,7 +183,8 @@
         "Samedi":"Samedi",
         "Dimanche":"Dimanche",
         "Mise à jour le ":"Mise à jour le ",
-        " à ":" à "
+        " à ":" à ",
+        "Visibilité stable au niveau Bonne":"Visibilité stable au niveau bon"
 
     },
     "plugins\/airquality\/3rdparty\/class.ApiAqi.php": {

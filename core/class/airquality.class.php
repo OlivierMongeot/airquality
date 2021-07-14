@@ -133,7 +133,8 @@ class airquality extends eqLogic
             }
             $cmd = $this->getCmd(null, 'refresh_forecast');
             if (is_object($cmd)) {
-                $cmd->execCmd();
+                message::add( 'debug', __('Refresh forecast disable', __FILE__));
+                // $cmd->execCmd();
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
@@ -166,7 +167,7 @@ class airquality extends eqLogic
     public function postUpdate()
     {
         if ($this->getConfiguration('elements') == 'polution') {
-
+            // Remove pollen cmd 
             $setupPollen = SetupAqi::$setupPollen;
             foreach ($setupPollen as $command) {
                 $cmdInfo = $this->getCmd(null, $command['name']);
@@ -236,7 +237,6 @@ class airquality extends eqLogic
             ->setSubType('other')
             ->save();
             $setup = SetupAqi::$setupPollen;
-
         }
 
         foreach ($setup as $command) {
@@ -244,6 +244,7 @@ class airquality extends eqLogic
             if (!is_object($cmdInfo)) {
                 $cmdInfo = new airqualityCmd();
                 $cmdInfo->setName($command['title']);
+                message::add('new cmd', $command['title'] );
             }
             $cmdInfo->setEqLogic_id($this->getId())
             ->setLogicalId($command['name'])
@@ -602,16 +603,7 @@ class airquality extends eqLogic
         }
     }
 
-    /**
-     * To do 
-     */
-    public function getMessagePollen(){
-        $value = 0;
-        $pollen = 'birch';
-        $display = new DisplayInfo;
-        return $display->getMessage($value,$pollen);
-    }
-
+  
     /**
      * Lance l'update des données live pollution ou pollen 
      */
@@ -625,13 +617,76 @@ class airquality extends eqLogic
     }
 
     /**
+     * Creation tableau associatif avec data de pollution et de pollen
+     */
+    private function getCurentPollen(){
+        $dataArray = [];
+        foreach ($this->getCmd('info') as $cmd) {
+          
+           $logicId = is_object($cmd) ?  $cmd->getLogicalId(): '';
+           $value = is_object($cmd) ? $cmd->execCmd() : '';
+           $dataArray[$logicId] = $value;
+        }
+        // message::add('Data Last : ', json_encode($dataArray));
+    }
+
+
+    private function getParamAlertAqi()
+    {
+        $arrayLevel = [];
+        $aqiLevel = $this->getConfiguration('aqi_alert_level');
+        $arrayLevel['aqi_alert_level'] =  $aqiLevel;
+        $pm25Level = $this->getConfiguration('pm25_alert_level');
+        $arrayLevel['pm25_alert_level'] = $pm25Level;
+        $pm10Level = $this->getConfiguration('pm10_alert_level');
+        $arrayLevel['pm10_alert_level'] = $pm10Level;
+        $no2Level = $this->getConfiguration('no2_alert_level');
+        $arrayLevel['no2_alert_level'] = $no2Level;
+        $so2Level = $this->getConfiguration('so2_alert_level');
+        $arrayLevel['so2_alert_level'] = $so2Level;
+        $o3Level = $this->getConfiguration('o3_alert_level');
+        $arrayLevel['o3_alert_level'] = $o3Level;
+        $coLevel = $this->getConfiguration('co_alert_level');
+        $arrayLevel['co_alert_level'] = $coLevel;
+        $nh3Level = $this->getConfiguration('nh3_alert_level');
+        $arrayLevel['nh3_alert_level'] = $nh3Level;
+        $noLevel = $this->getConfiguration('no_alert_level');
+        $arrayLevel['no_alert_level'] = $noLevel;
+        $uvLevel = $this->getConfiguration('uv_alert_level');
+        $arrayLevel['uv_alert_level'] = $uvLevel;
+        $visibilityLevel = $this->getConfiguration('visibility_alert_level');
+        $arrayLevel['visibility_alert_level'] = $visibilityLevel;
+
+        return $arrayLevel;
+    }
+
+      /**
+     * Creation tableau associatif avec data de pollution et de pollen
+     */
+    private function getCurentPollution(){
+        $dataArray = [];
+        foreach ($this->getCmd('info') as $cmd) {
+          
+           $logicId = is_object($cmd) ?  $cmd->getLogicalId(): '';
+           $value = is_object($cmd) ? $cmd->execCmd() : '';
+           $dataArray[$logicId] = $value;
+        }
+        return $dataArray;
+    }
+
+
+    /**
      * Appel api Pollen Live + Update des Commands + reorder by level  
      */
     public function updatePollen()
     {
         $dataAll = $this->getApiData('getAmbee');
         if(isset($dataAll->data)){
-            $dataPollen = $dataAll->data;
+             $dataPollen = $dataAll->data;
+            // Recuperation des ancienne données de l'API avant update + comparaion aux nouvelles données
+           
+            $oldData = $this->getCurentPollen();
+         
             $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
             $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
             $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
@@ -655,9 +710,11 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
             $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
             $this->reorderCmdPollen();
-            $this->refreshWidget();
-            $this->checkAndUpdateCmd('messagePollen', $this->getMessagePollen());
 
+         
+            $display = new DisplayInfo;
+            $this->checkAndUpdateCmd('messagePollen',  $display->getMessagePollen($oldData, $dataPollen));
+            $this->refreshWidget();
         }
       
     }
@@ -667,6 +724,9 @@ class airquality extends eqLogic
      */
     public function updatePollution()
     {
+        $paramAlertAqi = $this->getParamAlertAqi();
+   
+        $oldData = $this->getCurentPollution();
         $data = $this->getApiData('getAqi');
         $this->checkAndUpdateCmd('aqi', $data->main->aqi);
         $this->checkAndUpdateCmd('no2', $data->components->no2);
@@ -677,10 +737,13 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('nh3', $data->components->nh3);
         $this->checkAndUpdateCmd('pm25', $data->components->pm2_5);
         $this->checkAndUpdateCmd('pm10', $data->components->pm10);
-        $data = $this->getApiData('getOneCallApi');
-        $this->checkAndUpdateCmd('uv', $data->uvi);
-        $this->checkAndUpdateCmd('visibility', $data->visibility);
+        $dataOneCall = $this->getApiData('getOneCallApi');
+        $this->checkAndUpdateCmd('uv', $dataOneCall->uvi);
+        $this->checkAndUpdateCmd('visibility', $dataOneCall->visibility);
+        $display = new DisplayInfo;
+        $this->checkAndUpdateCmd('messagePollution', ($display->getMessagePollution($oldData, $data, $dataOneCall, $paramAlertAqi)));
         $this->refreshWidget();
+
     }
 
     /**

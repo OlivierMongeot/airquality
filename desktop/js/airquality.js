@@ -230,6 +230,8 @@ getSlider('so2');
 getSlider('no2');
 getSlider('co');
 getSlider('nh3');
+getSlider('no');
+
 getSlider('uv');
 getSlider('visibility');
 

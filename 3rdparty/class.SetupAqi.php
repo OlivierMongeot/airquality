@@ -34,7 +34,8 @@ class  SetupAqi
         ['name' => 'pm25_min', 'title' => 'PM2.5 Mini prévision', 'unit' => '', 'subType' => 'string', 'order' => 25, 'display' => 'chart'],
         ['name' => 'pm25_max', 'title' => 'PM2.5 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 26, 'display' => 'chart'],
         ['name' => 'pm10_min', 'title' => 'PM10 Mini prévision', 'unit' => '', 'subType' => 'string', 'order' => 27, 'display' => 'chart'],
-        ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 28, 'display' => 'chart']
+        ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 28, 'display' => 'chart'],
+        ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none']
     ];
 
     public static $setupPollen = [
@@ -91,7 +92,7 @@ class  SetupAqi
         ['name' => 'ragweed_max', 'title' => 'Ragweed Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 51, 'display' => 'chart'],
         ['name' => 'others_min', 'title' => "Others Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 52, 'display' => 'chart'],
         ['name' => 'others_max', 'title' => 'Others Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 53, 'display' => 'chart'],
-        ['name' => 'messagePollen', 'title' => 'Alerte Pollen', 'unit' => '', 'subType' => 'string', 'order' => 54, 'display' => 'none'],
+        ['name' => 'messagePollen', 'title' => 'Alerte Pollen', 'unit' => '', 'subType' => 'string', 'order' => 54, 'display' => 'none']
     ];
 
 
@@ -187,8 +188,8 @@ class  SetupAqi
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 10000]
         ]
-
     ];
+
 
     public static $aqiRange =
     [
