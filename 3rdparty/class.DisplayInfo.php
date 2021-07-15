@@ -186,59 +186,37 @@ class DisplayInfo
         }
     }
 
-    /**
-     * Création message : analyse live si bascule tranche + prevision pic si > norme
-     */
-    public function getMessagePollen($oldData, $newData, $paramAlertPollen)
+
+
+    public function getAllMessagesPollution($oldData, $newDataPollution, $newDataOc, $paramAlertAqi)
     {
-        $message = '';
-        $newPoaceae = $newData[0]->Species->Grass->{"Grass / Poaceae"};
-        $oldPoaceae = $oldData['poaceae'];
-        message::addInfo('newPollen', $newPoaceae);
-        message::addInfo('oldPollen', $oldPoaceae);
-        message::addInfo('paramPollen', json_encode($paramAlertPollen));
-        if ($paramAlertPollen['poaceae_alert_level'] <= $newPoaceae){
-            if ($newPoaceae > $oldPoaceae){
-                $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
-                if (!empty($mess)) {
-                    $message .= $mess;
-                }
-            }
-
-        }
-        return  $message;
-    }
-
-
-    public function getMessagePollution($oldData, $newDataPollution, $newDataOc, $paramAlertAqi)
-    {
-
         $message = '';
         // AQI
         $newAqi = $newDataPollution->main->aqi;
         $oldAqi = $oldData['aqi'];
         if ($paramAlertAqi['aqi_alert_level'] <= $newAqi) {
             if ($newAqi > $oldAqi) {
-                $message.= __('Dégradation de l\'AQI à ', __FILE__) . $newAqi.'. ';
+                $message .= __('Dégradation de l\'AQI à ', __FILE__) . $newAqi . '. ';
             } else if ($newAqi < $oldAqi) {
-                $message.= __('Amélioration de l\'AQI à ', __FILE__) . $newAqi.'. ';
+                $message .= __('Amélioration de l\'AQI à ', __FILE__) . $newAqi . '. ';
+            } else {
+                $message .= __('AQI stable à ', __FILE__) . $newAqi . '. ';
             }
         }
-
         // PM2.5
         $newPm25 = $newDataPollution->components->pm2_5;
         $oldPm25 = $oldData['pm25'];
         if ($paramAlertAqi['pm25_alert_level'] <= $newPm25) {
-            $mess = $this->makeMessage($newPm25, $oldPm25, 'pm25', 'PM2.5');
+            $mess = $this->makeMessageAqi($newPm25, $oldPm25, 'pm25', 'PM2.5');
             if ($mess != '') {
-            $message .= $mess;
-            } 
+                $message .= $mess;
+            }
         }
         // PM10
         $newPm10 = $newDataPollution->components->pm10;
         $oldPm10 = $oldData['pm10'];
         if ($paramAlertAqi['pm10_alert_level'] <= $newPm10) {
-            $mess = $this->makeMessage($newPm10, $oldPm10, 'pm10', 'PM10');
+            $mess = $this->makeMessageAqi($newPm10, $oldPm10, 'pm10', 'PM10');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -247,7 +225,7 @@ class DisplayInfo
         $newO3 = $newDataPollution->components->o3;
         $oldO3 = $oldData['o3'];
         if ($paramAlertAqi['o3_alert_level'] <= $newO3) {
-            $mess = $this->makeMessage($newO3, $oldO3, 'o3', 'O³');
+            $mess = $this->makeMessageAqi($newO3, $oldO3, 'o3', 'O³');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -256,7 +234,7 @@ class DisplayInfo
         $newNo2 = $newDataPollution->components->no2;
         $oldNo2 = $oldData['no2'];
         if ($paramAlertAqi['no2_alert_level'] <= $newNo2) {
-            $mess = $this->makeMessage($newNo2, $oldNo2, 'no2', 'NO²');
+            $mess = $this->makeMessageAqi($newNo2, $oldNo2, 'no2', 'NO²');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -265,7 +243,7 @@ class DisplayInfo
         $newSo2 = $newDataPollution->components->so2;
         $oldSo2 = $oldData['so2'];
         if ($paramAlertAqi['so2_alert_level'] <= $newSo2) {
-            $mess = $this->makeMessage($newSo2, $oldSo2, 'so2', 'SO²');
+            $mess = $this->makeMessageAqi($newSo2, $oldSo2, 'so2', 'SO²');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -274,7 +252,7 @@ class DisplayInfo
         $newCo = $newDataPollution->components->co;
         $oldCo = $oldData['co'];
         if ($paramAlertAqi['co_alert_level'] <= $newCo) {
-            $mess = $this->makeMessage($newCo, $oldCo, 'co', 'CO');
+            $mess = $this->makeMessageAqi($newCo, $oldCo, 'co', 'CO');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -283,7 +261,7 @@ class DisplayInfo
         $newNo = $newDataPollution->components->no;
         $oldNo = $oldData['no'];
         if ($paramAlertAqi['no_alert_level'] <= $newNo) {
-            $mess = $this->makeMessage($newNo, $oldNo, 'no', 'NO');
+            $mess = $this->makeMessageAqi($newNo, $oldNo, 'no', 'NO');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -292,7 +270,7 @@ class DisplayInfo
         $newNh3 = $newDataPollution->components->nh3;
         $oldNh3 = $oldData['nh3'];
         if ($paramAlertAqi['nh3_alert_level'] <= $newNh3) {
-            $mess = $this->makeMessage($newNh3, $oldNh3, 'nh3', 'NH³');
+            $mess = $this->makeMessageAqi($newNh3, $oldNh3, 'nh3', 'NH³');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -301,7 +279,7 @@ class DisplayInfo
         $newUv = $newDataOc->uvi;
         $oldUv = $oldData['uv'];
         if ($paramAlertAqi['uv_alert_level'] <= $newUv) {
-            $mess = $this->makeMessage($newUv, $oldUv, 'uv', 'UV');
+            $mess = $this->makeMessageAqi($newUv, $oldUv, 'uv', 'UV');
             if ($mess != '') {
                 $message .= $mess;
             }
@@ -309,23 +287,22 @@ class DisplayInfo
         // Visibility
         $newVisibility = $newDataOc->visibility;
         $oldVisibility = $oldData['visibility'];
-        if ($paramAlertAqi['visibility_alert_level'] <= $newVisibility) {
-            $mess = $this->makeMessage($newVisibility, $oldVisibility, 'visibility', 'Visibilité', $paramAlertAqi);
+        if ($paramAlertAqi['visibility_alert_level'] < $newVisibility) {
+            $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'Visibilité', $paramAlertAqi);
             if ($mess != '') {
                 $message .= $mess;
             }
         }
-        // message::add('Message',  $message);
+        message::add('Final Message AQI', $message);
         return  $message;
     }
 
 
-    private function makeMessage($newData, $oldData, $type, $typeName)
+    private function makeMessageAqi($newData, $oldData, $type, $typeName)
     {
         $message = '';
         switch ($type) {
             case 'visibility':
-            case 'uv':
                 $increase = 'Dégradation';
                 $decrease = 'Amélioration';
                 break;
@@ -336,61 +313,210 @@ class DisplayInfo
         }
 
         if ($newData > $oldData) {
-            // Check if change category => compare category
-            $newCategory = $this->getLevel($newData, $type);
-            $oldCategory = $this->getLevel($oldData, $type);
+            $newCategory = strtolower($this->getLevel($newData, $type));
+            $oldCategory = strtolower($this->getLevel($oldData, $type));
             if ($newCategory !== $oldCategory) {
-                // message::add('check ' . $type,  $decrease.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __( $decrease.' des  ' .$typeName . ' au niveau ', __FILE__) . $newCategory.'. ';
+                $message = __($decrease . ' des  ' . $typeName . ' au niveau ', __FILE__) . $newCategory . '. ';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevel($newData, $type);
             $oldCategory = $this->getLevel($oldData, $type);
-            if ($newCategory !== $oldCategory) {
-                // message::add('check ' . $type,  $increase.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __($increase.' des '.$typeName. ' au niveau  ', __FILE__) . $newCategory.'. ';
-            }
+                if ($newCategory !== $oldCategory) {
+                    $message = __($increase . ' des ' . $typeName . ' au niveau  ', __FILE__). $newCategory . '. ';
+                }
         } else {
-            // pour le dev uniquement 
-            // $newCategory = $this->getLevel($newData, $type);
-            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
-            // message::add('check ' . $type, __($typeName . ' stable au niveau ' . $newCategory, __FILE__));
+            $newCategory = $this->getLevel($newData, $type);
+            $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
         }
         return $message;
     }
 
+    /**
+     * Création message : analyse live si bascule tranche 
+     */
+    public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen)
+    {
+        $message = '';
+        // Poaceae
+        $newPoaceae = $dataPollen[0]->Species->Grass->{"Grass / Poaceae"};
+        $oldPoaceae = $oldData['poaceae'];
+        if ($paramAlertPollen['poaceae_alert_level'] <= $newPoaceae) {
+                $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
+                if (!empty($mess)) {
+                    $message .= $mess;
+                }
+        }
 
-    
+        //Elm
+        $newElm = $dataPollen[0]->Species->Tree->Elm;
+        $oldElm = $oldData['elm'];
+        if ($paramAlertPollen['elm_alert_level'] <= $newElm) {
+            $mess = $this->makeMessagePollen($newElm, $oldElm, 'elm', 'Orme');
+                if (!empty($mess)) {
+                    $message .= $mess;
+                }
+        }
+
+        //Alder
+        $newAlder = $dataPollen[0]->Species->Tree->Alder;
+        $oldAlder = $oldData['alder'];
+        if ($paramAlertPollen['alder_alert_level'] <= $newAlder) {
+            $mess = $this->makeMessagePollen($newAlder, $oldAlder, 'alder', 'Aulne');
+                if (!empty($mess)) {
+                    $message .= $mess;
+                }
+        }
+        // Birch
+        $newBirch = $dataPollen[0]->Species->Tree->Birch;
+        $oldBirch = $oldData['birch'];
+        if ($paramAlertPollen['birch_alert_level'] <= $newBirch) {
+            $mess = $this->makeMessagePollen($newBirch, $oldBirch, 'birch', 'Bouleau');
+                if (!empty($mess)) {
+                    $message .= $mess;
+                }
+        }
+        // Cypress
+        $newCypress = $dataPollen[0]->Species->Tree->Cypress;
+        $oldCypress = $oldData['cypress'];
+        if ($paramAlertPollen['cypress_alert_level'] <= $newCypress) {
+            $mess = $this->makeMessagePollen($newCypress, $oldCypress, 'cypress', 'Cyprès');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Hazel    
+        $newHazel = $dataPollen[0]->Species->Tree->Hazel;
+        $oldHazel = $oldData['hazel'];
+        if ($paramAlertPollen['hazel_alert_level'] <= $newHazel) {
+            $mess = $this->makeMessagePollen($newHazel, $oldHazel, 'hazel', 'Noisetier');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Oak 
+        $newOak = $dataPollen[0]->Species->Tree->Oak;
+        $oldOak = $oldData['oak'];
+        if ($paramAlertPollen['oak_alert_level'] <= $newOak) {
+            $mess = $this->makeMessagePollen($newOak, $oldOak, 'oak', 'Chêne');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Pine 
+        $newPine = $dataPollen[0]->Species->Tree->Pine;
+        $oldPine = $oldData['pine'];
+        if ($paramAlertPollen['pine_alert_level'] <= $newPine) {
+            $mess = $this->makeMessagePollen($newPine, $oldPine, 'pine', 'Pin');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Plane
+        $newPlane = $dataPollen[0]->Species->Tree->Plane;
+        $oldPlane = $oldData['plane'];
+        if ($paramAlertPollen['plane_alert_level'] <= $newPlane) {
+            $mess = $this->makeMessagePollen($newPlane, $oldPlane, 'plane', 'Platane');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Poplar
+        $newPoplar = $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"};
+        $oldPoplar = $oldData['poplar'];
+        if ($paramAlertPollen['poplar_alert_level'] <= $newPoplar) {
+            $mess = $this->makeMessagePollen($newPoplar, $oldPoplar, 'poplar', 'Peuplier');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Chenopod
+        $newChenopod = $dataPollen[0]->Species->Weed->Chenopod;
+        $oldChenopod = $oldData['chenopod'];
+        if ($paramAlertPollen['chenopod_alert_level'] <= $newChenopod) {
+            $mess = $this->makeMessagePollen($newChenopod, $oldChenopod, 'chenopod', 'Chénopodes');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+        // Mugwort
+        $newMugwort = $dataPollen[0]->Species->Weed->Mugwort;
+        $oldMugwort = $oldData['mugwort'];
+        if ($paramAlertPollen['mugwort_alert_level'] <= $newMugwort) {
+            $mess = $this->makeMessagePollen($newMugwort, $oldMugwort, 'mugwort', 'Armoises');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Nettle
+        $newNettle = $dataPollen[0]->Species->Weed->Nettle;
+        $oldNettle = $oldData['nettle'];
+        if ($paramAlertPollen['nettle_alert_level'] <= $newNettle) {
+            $mess = $this->makeMessagePollen($newNettle, $oldNettle, 'nettle', 'Ortie');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+        // Ragweed 
+        $newRagweed = $dataPollen[0]->Species->Weed->Ragweed;
+        $oldRagweed = $oldData['ragweed'];
+        if ($paramAlertPollen['ragweed_alert_level'] <= $newRagweed) {
+            $mess = $this->makeMessagePollen($newRagweed, $oldRagweed, 'ragweed', 'Ambroisie');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+
+        // Others
+        $newOthers = $dataPollen[0]->Species->Others;
+        $oldOthers = $oldData['others'];
+        if ($paramAlertPollen['others_alert_level'] <= $newOthers) {
+            $mess = $this->makeMessagePollen($newOthers, $oldOthers, 'others', 'Autres');
+            if (!empty($mess)) {
+                $message .= $mess;
+            }
+        }
+        message::add('Final Message Pollen', $message);
+        return $message;    
+    }
+
+
     private function makeMessagePollen($newData, $oldData, $type, $typeName)
     {
         $message = '';
-        $increase = 'Dégradation';
-        $decrease = 'Amélioration';
-           
         if ($newData > $oldData) {
-            // Check if change category => compare category
-            $newCategory = $this->getLevelPollen($newData, $type);
-            $oldCategory = $this->getLevelPollen($oldData, $type);
+            $newCategory = strtolower($this->getLevelPollen($newData, $type));
+            $oldCategory = strtolower($this->getLevelPollen($oldData, $type));
             if ($newCategory !== $oldCategory) {
-                // message::add('check ' . $type,  $decrease.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __( $decrease.' des  ' .$typeName . ' au niveau ', __FILE__) . $newCategory.'. ';
+                $message = __('Hausse des  ' . $typeName . ' au niveau ', __FILE__) . $newCategory . '. ';
+            } else {
+                $message = __($typeName . ' légère hausse : reste au niveau ' . $newCategory, __FILE__).'. ';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                // message::add('check ' . $type,  $increase.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __($increase.' des '.$typeName. ' au niveau  ', __FILE__) . $newCategory.'. ';
+                $message = __('Baisse des ' . $typeName . ' au niveau  ', __FILE__) . $newCategory . '. ';
+            } else {
+                $message = __($typeName . ' légère baisse : reste au niveau ' . $newCategory, __FILE__).'. ';
             }
         } else {
             // pour le dev uniquement 
             $newCategory = $this->getLevelPollen($newData, $type);
             $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
-            message::add('check ' . $type, __($typeName . ' stable au niveau ' . $newCategory, __FILE__));
         }
         return $message;
     }
 
+    /**
+     * Retourne le niveau d'alert 
+     */
     public function getLevel($value, $type)
     {
         $allranges = SetupAqi::$aqiRange;
@@ -422,9 +548,9 @@ class DisplayInfo
         $ranges = $allranges[$type];
         foreach ($ranges as $color => $range) {
             if ($range[0] <= $value && $range[1] >= $value) {
-                        return  $this->getElementRiskPollen($color);
+                return  $this->getElementRiskPollen($color);
             }
         }
     }
-
 }
+

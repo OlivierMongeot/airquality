@@ -285,30 +285,30 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
                             <div class="form-group elements polution">
                                 <div class="container">
-                                    <h5>Code Couleurs AQI</h5>
+                                    <h5>Code Couleurs utilisé pour l'AQI et les polluants</h5>
                                 </div>
                                 <br>
                                 <div class="container">
                                     <div>
                                         <input type="color" name="head" disabled value="#00AEEC">
                                         <label for="head">Bon</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#00BD01">
                                         <label for="body">Correct</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#EFE800">
                                         <label for="body">Dégradé</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#E79C00">
                                         <label for="body">Mauvais</label>
-                                        &nbsp; &nbsp;
                                         <br><br>
                                         <input type="color" name="body" disabled value="#B00000">
                                         <label for="body">Très mauvais</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#662D91">
                                         <label for="body">Extrême</label>
                                     </div>
+                                        
                                     <br>
                                     <br>
                                 </div>
@@ -382,7 +382,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 }
 
                 .range-container {
-                    width: 40%;
+                    width: 70%;
                 }
             </style>
             <!-- Onglet reglage Alerte -->
@@ -391,8 +391,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <legend>Seuil d'alertes</legend>
                 <div class="container range-container">
 
-                    <div class="form-group elements polution">
-                       
+                    <div class="form-group elements polution" >
+                    
+                
                         <div class="range-slider aqi">
 
                             <?php
@@ -407,6 +408,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 $levelNh3_ = $eqLogic->getConfiguration('nh3_alert_level');
                                 $levelUV_ = $eqLogic->getConfiguration('uv_alert_level');
                                 $levelVisi_ = $eqLogic->getConfiguration('visibility_alert_level');
+                                $levelNo_ = $eqLogic->getConfiguration('no_alert_level');
 
                                 if ($levelAqi_ != '') {
                                     $levelAqi = $levelAqi_;
@@ -438,55 +440,58 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 if ($levelVisi_ != '') {
                                     $levelVisi = $levelVisi_;
                                 }
+                                if ($levelNo_ != '') {
+                                    $levelNo = $levelNo_;
+                                }
                             }
                             ?>
                             <label for="aqi">Indice AQI</label> <span class="pull-right" id="disp_aqi"></span>
-                            <input type="range" value="<?= $levelAqi ?>" min="1" max="6" class="input-range aqi" orient="vertical" name="aqi" id="aqi"></input>
+                            <input type="range" value="<?= $levelAqi ?>" min="2" max="6" class="input-range aqi" orient="vertical" name="aqi" id="aqi"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="aqi_alert_level" data-l1key="configuration" data-l2key="aqi_alert_level"></input>
                             <br><br>
                     
                             <label for="pm25">PM<sub>2.5</sub></label><div class="pull-right"><span id="disp_pm25"></span> μg/m3</div> 
-                            <input type="range" value="<?= $levelPm25 ?>" min="0" max="75" class="input-range aqi" orient="horizontal" name="pm25" id="pm25"></input>
+                            <input type="range" value="<?= $levelPm25 ?>" min="10" max="75" class="input-range aqi" orient="horizontal" name="pm25" id="pm25"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="pm25_alert_level" data-l1key="configuration" data-l2key="pm25_alert_level"></input>
                             <br><br>
 
                             <label for="pm10">PM<sub>10</sub></label><div class="pull-right" ><span id="disp_pm10"></span> μg/m3</div> 
-                            <input type="range" value="<?= $levelPm10 ?>" min="0" max="150" class="input-range aqi" orient="horizontal" name="pm10" id="pm10"></input>                            
+                            <input type="range" value="<?= $levelPm10 ?>" min="20" max="150" class="input-range aqi" orient="horizontal" name="pm10" id="pm10"></input>                            
                             <input type="hidden" class="eqLogicAttr form-control" id="pm10_alert_level" data-l1key="configuration" data-l2key="pm10_alert_level"></input>
                             <br><br>
                  
                             <label for="o3">O³</label><div  class="pull-right"><span id="disp_o3"></span> μg/m3</div> 
-                            <input type="range" value="<?= $levelO3 ?>" min="0" max="380" class="input-range aqi" orient="horizontal" name="o3" id="o3"></input>
+                            <input type="range" value="<?= $levelO3 ?>" min="50" max="380" class="input-range aqi" orient="horizontal" name="o3" id="o3"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="o3_alert_level" data-l1key="configuration" data-l2key="o3_alert_level"></input>
                             <br><br>
         
                             <label for="so2">SO²</label> <div class="pull-right" ><span id="disp_so2"></span> μg/m3</div>
-                            <input type="range" value="<?= $levelSo2 ?>" min="0" max="750" class="input-range aqi" orient="horizontal" name="so2" id="so2"></input>
+                            <input type="range" value="<?= $levelSo2 ?>" min="100" max="750" class="input-range aqi" orient="horizontal" name="so2" id="so2"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="so2_alert_level" data-l1key="configuration" data-l2key="so2_alert_level"></input>
                             <br><br>
  
                             <label for="no2">NO²</label> <div class="pull-right"><span id="disp_no2"></span> μg/m3</div>
-                            <input type="range" value="<?= $levelNo2 ?>" min="0" max="340" class="input-range aqi" orient="horizontal" name="no2" id="no2"></input>                       
+                            <input type="range" value="<?= $levelNo2 ?>" min="40" max="340" class="input-range aqi" orient="horizontal" name="no2" id="no2"></input>                       
                             <input type="hidden" class="eqLogicAttr form-control" id="no2_alert_level" data-l1key="configuration" data-l2key="no2_alert_level"></input>
                             <br><br>
  
                             <label for="co">CO</label><div class="pull-right"><span id="disp_co"></span> μg/m3</div> 
-                            <input type="range" value="<?= $levelCo ?>" min="0" max="700" class="input-range aqi" orient="horizontal" name="co" id="co"></input>
+                            <input type="range" value="<?= $levelCo ?>" min="360" max="2000000" class="input-range aqi" orient="horizontal" name="co" id="co"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="co_alert_level" data-l1key="configuration" data-l2key="co_alert_level"></input>
                             <br><br>
 
                             <label for="nh3">NH³</label><div class="pull-right"><span  id="disp_nh3"></span> μg/m3</div>
-                            <input type="range" value="<?= $levelNh3 ?>" min="0" max="300" class="input-range aqi" orient="horizontal" name="nh3" id="nh3"></input>
+                            <input type="range" value="<?= $levelNh3 ?>" min="3" max="300" class="input-range aqi" orient="horizontal" name="nh3" id="nh3"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="nh3_alert_level" data-l1key="configuration" data-l2key="nh3_alert_level"></input>
                             <br><br>
 
                             <label for="no">NO</label><div class="pull-right"><span id="disp_no"></span> μg/m3</div>
-                            <input type="range" value="<?= $levelNo ?>" min="0" max="200" class="input-range aqi" orient="horizontal" name="no" id="no"></input>
+                            <input type="range" value="<?= $levelNo ?>" min="30" max="200" class="input-range aqi" orient="horizontal" name="no" id="no"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="no_alert_level" data-l1key="configuration" data-l2key="no_alert_level"></input>   
                             <br><br>
 
                             <label for="uv">Indice UV</label><div class="pull-right"><span id="disp_uv"></span></div>
-                            <input type="range" value="<?= $levelUV ?>" min="0" max="10" class="input-range aqi" orient="horizontal" name="uv" id="uv"></input>
+                            <input type="range" value="<?= $levelUV ?>" min="3" max="11" class="input-range aqi" orient="horizontal" name="uv" id="uv"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="uv_alert_level" data-l1key="configuration" data-l2key="uv_alert_level"></input>
                             <br><br>
 
@@ -495,9 +500,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <input type="hidden" class="eqLogicAttr form-control" id="visibility_alert_level" data-l1key="configuration" data-l2key="visibility_alert_level"></input>
                             <br><br>
                         </div>
+                        <br><br>
+                        <!-- <div>
+                            <img name="Aqi Range" src="/plugins/airquality/docs/photos/aqi_tab.JPG" style="width:100%;" />
+                        </div> -->
+                       
                     </div>
 
                     <div class="form-group elements pollen">
+                       
                        
                         <div class="range-slider aqi">
 
