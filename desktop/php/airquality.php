@@ -506,7 +506,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
                                 $levelElm_ = $eqLogic->getConfiguration('elm_alert_level');
                                 $levelAlder_ = $eqLogic->getConfiguration('alder_alert_level');
-                                $levelBirch_ = $eqLogic->getConfiguration('alder_alert_level');
+                                $levelBirch_ = $eqLogic->getConfiguration('birch_alert_level');
                                 $levelCypress_ = $eqLogic->getConfiguration('cypress_alert_level');
                                 $levelOak_ = $eqLogic->getConfiguration('oak_alert_level');
                                 $levelHazel_ = $eqLogic->getConfiguration('hazel_alert_level');
@@ -537,11 +537,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             }
                             ?>
                             <label for="poaceae">{{Graminées / Poacées}}</label><div class="pull-right"><span id="disp_poaceae"></span> part/m3</div> 
-                            <input type="range" value="<?= $levelPm25 ?>" min="1" max="250" class="input-range aqi" orient="vertical" name="poaceae" id="poaceae"></input>
+                            <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="vertical" name="poaceae" id="poaceae"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
                             <br>
                             <label for="elm">{{Orme}}</label><div class="pull-right"><span id="disp_elm"></span> part/m3</div> 
-                            <input type="range" value="<?= $levelPm25 ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="elm" id="elm"></input> 
+                            <input type="range" value="<?= $levelElm ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="elm" id="elm"></input> 
                             <input type="hidden" class="eqLogicAttr form-control" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
                             <br>
                             <label for="alder">{{Aulne}}</label><div class="pull-right"><span id="disp_alder"></span> part/m3</div> 
@@ -581,7 +581,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <input type="hidden" class="eqLogicAttr form-control" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
                             <br>
                             <label for="mugwort">{{Mugwort / Armoises }}</label><div class="pull-right"><span id="disp_mugwort"></span> part/m3</div> 
-                            <input type="range" value="<?= $levelPlane ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="mugwort" id="mugwort"></input> 
+                            <input type="range" value="<?= $levelMugwort ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="mugwort" id="mugwort"></input> 
                             <input type="hidden" class="eqLogicAttr form-control" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
                             <br>
                             <label for="nettle">{{Ortie}}</label><div class="pull-right"><span id="disp_nettle"></span> part/m3</div> 
@@ -589,7 +589,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <input type="hidden" class="eqLogicAttr form-control" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
                             <br>
                             <label for="ragweed">{{Ambroisie}}</label><div class="pull-right"><span id="disp_ragweed"></span> part/m3</div> 
-                            <input type="range" value="<?= $levelMugwort ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="ragweed" id="ragweed"></input> 
+                            <input type="range" value="<?= $levelRagweed ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="ragweed" id="ragweed"></input> 
                             <input type="hidden" class="eqLogicAttr form-control" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
                             <br>
                             <label for="others">{{Autres Pollens}}</label><div class="pull-right"><span id="disp_others"></span> part/m3</div>

@@ -49,7 +49,7 @@ class DisplayInfo
         }
     }
 
-    public function getElementRiskPollen($color, $nocolor = false)
+    public function getElementRiskPollen($color)
     {
 
         switch ($color) {
@@ -189,15 +189,24 @@ class DisplayInfo
     /**
      * Création message : analyse live si bascule tranche + prevision pic si > norme
      */
-    public function getMessagePollen($oldData, $newData)
+    public function getMessagePollen($oldData, $newData, $paramAlertPollen)
     {
+        $message = '';
+        $newPoaceae = $newData[0]->Species->Grass->{"Grass / Poaceae"};
+        $oldPoaceae = $oldData['poaceae'];
+        message::addInfo('newPollen', $newPoaceae);
+        message::addInfo('oldPollen', $oldPoaceae);
+        message::addInfo('paramPollen', json_encode($paramAlertPollen));
+        if ($paramAlertPollen['poaceae_alert_level'] <= $newPoaceae){
+            if ($newPoaceae > $oldPoaceae){
+                $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
+                if (!empty($mess)) {
+                    $message .= $mess;
+                }
+            }
 
-
-        // if($this)
-        // {
-        //     $message ='';
-        // }
-        return 'new TOTO';
+        }
+        return  $message;
     }
 
 
@@ -209,13 +218,10 @@ class DisplayInfo
         $newAqi = $newDataPollution->main->aqi;
         $oldAqi = $oldData['aqi'];
         if ($paramAlertAqi['aqi_alert_level'] <= $newAqi) {
-
             if ($newAqi > $oldAqi) {
                 $message.= __('Dégradation de l\'AQI à ', __FILE__) . $newAqi.'. ';
             } else if ($newAqi < $oldAqi) {
                 $message.= __('Amélioration de l\'AQI à ', __FILE__) . $newAqi.'. ';
-            } else {
-                $message.= __('AQI stable à ', __FILE__) . $newAqi.'. ';
             }
         }
 
@@ -223,8 +229,10 @@ class DisplayInfo
         $newPm25 = $newDataPollution->components->pm2_5;
         $oldPm25 = $oldData['pm25'];
         if ($paramAlertAqi['pm25_alert_level'] <= $newPm25) {
-
-            $message .= $this->makeMessage($newPm25, $oldPm25, 'pm25', 'PM2.5');
+            $mess = $this->makeMessage($newPm25, $oldPm25, 'pm25', 'PM2.5');
+            if ($mess != '') {
+            $message .= $mess;
+            } 
         }
         // PM10
         $newPm10 = $newDataPollution->components->pm10;
@@ -307,8 +315,7 @@ class DisplayInfo
                 $message .= $mess;
             }
         }
-
-        message::add('Message',  $message);
+        // message::add('Message',  $message);
         return  $message;
     }
 
@@ -318,6 +325,7 @@ class DisplayInfo
         $message = '';
         switch ($type) {
             case 'visibility':
+            case 'uv':
                 $increase = 'Dégradation';
                 $decrease = 'Amélioration';
                 break;
@@ -332,15 +340,15 @@ class DisplayInfo
             $newCategory = $this->getLevel($newData, $type);
             $oldCategory = $this->getLevel($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                message::add('check ' . $type,  $decrease.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __( $decrease.' de la ' . $typeName . ' à : ', __FILE__) . $newCategory.'. ';
+                // message::add('check ' . $type,  $decrease.' de la ' . $typeName . ' à : ' . $newCategory);
+                $message = __( $decrease.' des  ' .$typeName . ' au niveau ', __FILE__) . $newCategory.'. ';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevel($newData, $type);
             $oldCategory = $this->getLevel($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                message::add('check ' . $type,  $increase.' de la ' . $typeName . ' à : ' . $newCategory);
-                $message = __($increase.' de la ' . $typeName . ' à : ', __FILE__) . $newCategory.'. ';
+                // message::add('check ' . $type,  $increase.' de la ' . $typeName . ' à : ' . $newCategory);
+                $message = __($increase.' des '.$typeName. ' au niveau  ', __FILE__) . $newCategory.'. ';
             }
         } else {
             // pour le dev uniquement 
@@ -348,10 +356,40 @@ class DisplayInfo
             // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
             // message::add('check ' . $type, __($typeName . ' stable au niveau ' . $newCategory, __FILE__));
         }
-
         return $message;
     }
 
+
+    
+    private function makeMessagePollen($newData, $oldData, $type, $typeName)
+    {
+        $message = '';
+        $increase = 'Dégradation';
+        $decrease = 'Amélioration';
+           
+        if ($newData > $oldData) {
+            // Check if change category => compare category
+            $newCategory = $this->getLevelPollen($newData, $type);
+            $oldCategory = $this->getLevelPollen($oldData, $type);
+            if ($newCategory !== $oldCategory) {
+                // message::add('check ' . $type,  $decrease.' de la ' . $typeName . ' à : ' . $newCategory);
+                $message = __( $decrease.' des  ' .$typeName . ' au niveau ', __FILE__) . $newCategory.'. ';
+            }
+        } else if ($newData < $oldData) {
+            $newCategory = $this->getLevelPollen($newData, $type);
+            $oldCategory = $this->getLevelPollen($oldData, $type);
+            if ($newCategory !== $oldCategory) {
+                // message::add('check ' . $type,  $increase.' de la ' . $typeName . ' à : ' . $newCategory);
+                $message = __($increase.' des '.$typeName. ' au niveau  ', __FILE__) . $newCategory.'. ';
+            }
+        } else {
+            // pour le dev uniquement 
+            $newCategory = $this->getLevelPollen($newData, $type);
+            $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
+            message::add('check ' . $type, __($typeName . ' stable au niveau ' . $newCategory, __FILE__));
+        }
+        return $message;
+    }
 
     public function getLevel($value, $type)
     {
@@ -359,28 +397,34 @@ class DisplayInfo
         $ranges = $allranges[$type];
         foreach ($ranges as $color => $range) {
             if ($range[0] <= $value && $range[1] >= $value) {
-                return $this->getElementRisk($color, $type, $value);
+                switch ($type) {
+                    case 'pm25':
+                    case 'pm10':
+                    case 'co':
+                    case 'no':
+                    case 'no2':
+                    case 'o3':
+                    case 'so2':
+                    case 'nh3':
+                        return  $this->getElementRiskAqi($color);
+                    case 'uv':
+                        return  $this->getUVRapport($value);
+                    case 'visibility':
+                        return  $this->getVisibilityRapport($value);
+                }
             }
         }
     }
 
-    public function getElementRisk($color, $type, $value)
+    public function getLevelPollen($value, $type)
     {
-
-        switch ($type) {
-            case 'pm25':
-            case 'pm10':
-            case 'co':
-            case 'no':
-            case 'no2':
-            case 'o3':
-            case 'so2':
-            case 'nh3':
-                return  $this->getElementRiskAqi($color);
-            case 'uv':
-                return  $this->getUVRapport($value);
-            case 'visibility':
-                return  $this->getVisibilityRapport($value);
+        $allranges = SetupAqi::$pollenRange;
+        $ranges = $allranges[$type];
+        foreach ($ranges as $color => $range) {
+            if ($range[0] <= $value && $range[1] >= $value) {
+                        return  $this->getElementRiskPollen($color);
+            }
         }
     }
+
 }
