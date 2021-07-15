@@ -293,7 +293,7 @@ class DisplayInfo
                 $message .= $mess;
             }
         }
-        message::add('Final Message AQI', $message);
+        message::add('Message Pollution', $message);
         return  $message;
     }
 
@@ -322,11 +322,11 @@ class DisplayInfo
             $newCategory = $this->getLevel($newData, $type);
             $oldCategory = $this->getLevel($oldData, $type);
                 if ($newCategory !== $oldCategory) {
-                    $message = __($increase . ' des ' . $typeName . ' au niveau  ', __FILE__). $newCategory . '. ';
+                    $message = __($increase . ' des ' . $typeName . ' au niveau ', __FILE__). $newCategory . '. ';
                 }
         } else {
-            $newCategory = $this->getLevel($newData, $type);
-            $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
+            // $newCategory = $this->getLevel($newData, $type);
+            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
         }
         return $message;
     }
@@ -482,7 +482,7 @@ class DisplayInfo
                 $message .= $mess;
             }
         }
-        message::add('Final Message Pollen', $message);
+        message::add('Message Pollen', $message);
         return $message;    
     }
 
@@ -496,7 +496,7 @@ class DisplayInfo
             if ($newCategory !== $oldCategory) {
                 $message = __('Hausse des  ' . $typeName . ' au niveau ', __FILE__) . $newCategory . '. ';
             } else {
-                $message = __($typeName . ' légère hausse : reste au niveau ' . $newCategory, __FILE__).'. ';
+                // $message = __($typeName . ' légère hausse : reste au niveau ' . $newCategory, __FILE__).'. ';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
@@ -504,12 +504,12 @@ class DisplayInfo
             if ($newCategory !== $oldCategory) {
                 $message = __('Baisse des ' . $typeName . ' au niveau  ', __FILE__) . $newCategory . '. ';
             } else {
-                $message = __($typeName . ' légère baisse : reste au niveau ' . $newCategory, __FILE__).'. ';
+                // $message = __($typeName . ' légère baisse : reste au niveau ' . $newCategory, __FILE__).'. ';
             }
         } else {
             // pour le dev uniquement 
-            $newCategory = $this->getLevelPollen($newData, $type);
-            $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
+            // $newCategory = $this->getLevelPollen($newData, $type);
+            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
         }
         return $message;
     }

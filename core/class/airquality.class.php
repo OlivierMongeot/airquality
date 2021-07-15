@@ -43,8 +43,8 @@ class airquality extends eqLogic
     {
         foreach (eqLogic::byType(__CLASS__, true) as $airQuality) {
             if ($airQuality->getConfiguration('elements') == 'pollen') {
-                message::add('debug','deactivation cron Pollen Live');
-                // $airQuality->updatePollen();
+                // message::add('debug','deactivation cron Pollen Live');
+                $airQuality->updatePollen();
             }
         }
     }

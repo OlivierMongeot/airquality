@@ -316,26 +316,25 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <!--  -->
                             <div class="form-group elements pollen">
                                 <div class="container">
-                                    <h6>Code Couleurs Pollen</h6>
+                                    <h6>{{Code Couleurs Pollen utilisé dans le plugin}}</h6>
                                 </div>
                                 <br>
                                 <div class="container">
                                     <div>
                                         <input type="color" name="head" disabled value="#00BD01">
                                         <label for="head">Risque bas</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#EFE800">
                                         <label for="body">Risque modéré</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#E79C00">
                                         <label for="body">Risque haut</label>
-                                        &nbsp; &nbsp;
+                                        <br><br>
                                         <input type="color" name="body" disabled value="#B00000">
                                         <label for="body">Risque très haut</label>
                                     </div>
                                     <br>
                                     <br>
-
                                 </div>
                             </div>
                             <!--  -->
