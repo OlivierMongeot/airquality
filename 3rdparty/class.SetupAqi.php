@@ -35,7 +35,9 @@ class  SetupAqi
         ['name' => 'pm25_max', 'title' => 'PM2.5 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 26, 'display' => 'chart'],
         ['name' => 'pm10_min', 'title' => 'PM10 Mini prévision', 'unit' => '', 'subType' => 'string', 'order' => 27, 'display' => 'chart'],
         ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 28, 'display' => 'chart'],
-        ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none']
+        ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none'],
+        ['name' => 'smsPollution', 'title' => 'SMS Pollution', 'unit' => '', 'subType' => 'string', 'order' => 30, 'display' => 'none'],
+        ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none']
     ];
 
     public static $setupPollen = [
@@ -99,9 +101,9 @@ class  SetupAqi
     public static $pollenRange =
     [
         'poaceae' => [
-            '#00BD01' => [0, 32],
-            '#EFE800' => [32, 60],
-            '#E79C00' => [60, 10000]
+            '#00BD01' => [0, 5],
+            '#EFE800' => [5, 40],
+            '#E79C00' => [40, 10000]
         ],
         'elm' => [
             '#00BD01' => [0, 5],

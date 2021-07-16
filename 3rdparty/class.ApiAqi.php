@@ -248,7 +248,7 @@ class ApiAqi
             $newTabDay = $this->parseData($dataList, $polluant);
             $minMaxTab[$polluant] = $this->pushMinMaxByDay($newTabDay, $polluant);
         }
-        return $minMaxTab;
+        return [$minMaxTab, $dataList];
     }
 
     /**

@@ -10,4 +10,7 @@
 
 - Ajout bouton : ne pas afficher les pollens à zéro
 - commandes inutiles effacées en cas de switch Pollen/Aqi
+- Messages d'alertes paramétrables 
+
+
 

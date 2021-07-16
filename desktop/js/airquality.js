@@ -122,6 +122,7 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 });
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=elements]').on('change', function () {
+    console.log('change elements');
     $('.elements').hide();
     $('.elements.' + $(this).value()).show();
   });

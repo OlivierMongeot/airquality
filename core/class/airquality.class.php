@@ -55,7 +55,8 @@ class airquality extends eqLogic
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
                 try {
                     $c = new Cron\CronExpression('2 7 * * *', new Cron\FieldFactory);
-                    if ($c->isDue()) {
+                    $SecondCron = new Cron\CronExpression('2 18 * * *', new Cron\FieldFactory);
+                    if ($c->isDue() || $SecondCron->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
@@ -144,7 +145,7 @@ class airquality extends eqLogic
             if (is_object($cmdCheckNull) && $cmdCheckNull->execCmd() == null) {
 
                 $cmd = $this->getCmd(null, 'refresh');
-                message::add( 'debug', __('Refresh Pollen Live', __FILE__));
+                message::add( 'debug', __('Refresh Pollen Live et Forecast on Save', __FILE__));
                     if (is_object($cmd)) {
                         $cmd->execCmd();
                     }
@@ -156,7 +157,6 @@ class airquality extends eqLogic
                     }
             }
         }
-
     }
 
 
@@ -637,7 +637,7 @@ class airquality extends eqLogic
 
     private function getParamAlertPollen(){
         $arrayLevel['poaceae_alert_level'] = $this->getConfiguration('poaceae_alert_level');
-        $arrayLevel['adler_alert_level'] = $this->getConfiguration('adler_alert_level');
+        $arrayLevel['alder_alert_level'] = $this->getConfiguration('alder_alert_level');
         $arrayLevel['birch_alert_level'] = $this->getConfiguration('birch_alert_level');
         $arrayLevel['cypress_alert_level'] = $this->getConfiguration('cypress_alert_level');
         $arrayLevel['elm_alert_level'] = $this->getConfiguration('elm_alert_level');
@@ -647,7 +647,7 @@ class airquality extends eqLogic
         $arrayLevel['plane_alert_level'] = $this->getConfiguration('plane_alert_level');
         $arrayLevel['poplar_alert_level'] = $this->getConfiguration('poplar_alert_level');
         $arrayLevel['chenopod_alert_level'] = $this->getConfiguration('chenopod_alert_level');
-        $arrayLevel['mugworth_alert_level'] = $this->getConfiguration('mugwort_alert_level');
+        $arrayLevel['mugwort_alert_level'] = $this->getConfiguration('mugwort_alert_level');
         $arrayLevel['nettle_alert_level'] = $this->getConfiguration('nettle_alert_level');
         $arrayLevel['ragweed_alert_level'] = $this->getConfiguration('ragweed_alert_level');
         $arrayLevel['others_alert_level'] = $this->getConfiguration('others_alert_level');
@@ -733,7 +733,10 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('uv', $dataOneCall->uvi);
         $this->checkAndUpdateCmd('visibility', $dataOneCall->visibility);
         $display = new DisplayInfo;
-        $this->checkAndUpdateCmd('messagePollution', ($display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi)));
+        $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi);
+        $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
+        $this->checkAndUpdateCmd('telegramPollution', ($messagesPollution[1] ));
+        $this->checkAndUpdateCmd('smsPollution', ($messagesPollution[2] ));
         $this->refreshWidget();
 
     }
@@ -743,7 +746,9 @@ class airquality extends eqLogic
      */
     public function updateForecastAQI()
     {
-        $forecast =  $this->getApiData('getForecast');
+        $forecastRaw =  $this->getApiData('getForecast');
+        $forecast = $forecastRaw[0];
+        // $forecastFull = $forecast[1];
         $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
         $this->checkAndUpdateCmd('no2_min', json_encode($forecast['no2']['min']));
         $this->checkAndUpdateCmd('no2_max', json_encode($forecast['no2']['max']));
