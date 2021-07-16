@@ -70,9 +70,7 @@ class DisplayInfo
 
     public function getElementRiskAqi($color)
     {
-
         switch ($color) {
-
             case '#00AEEC':
                 return __("Bon", __FILE__);
             case '#00BD01':
@@ -193,18 +191,7 @@ class DisplayInfo
     public function getAllMessagesPollution($oldData, $newDataPollution, $newDataOc, $paramAlertAqi)
     {
         $message = [];
-        // AQI
-        $newAqi = $newDataPollution->main->aqi;
-        $oldAqi = $oldData['aqi'];
-        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi || $newAqi < $oldAqi) {
-            if ($newAqi > $oldAqi) {
-                $message[] = __('Dégradation de l\'AQI à ', __FILE__) . $newAqi;
-            } else if ($newAqi < $oldAqi) {
-                $message[] = __('Amélioration de l\'AQI à ', __FILE__) . $newAqi;
-            } else {
-                $message[] = __('AQI stable à ', __FILE__) . $newAqi;
-            }
-        }
+
         // PM2.5
         $newPm25 = $newDataPollution->components->pm2_5;
         $oldPm25 = $oldData['pm25'];
@@ -244,7 +231,7 @@ class DisplayInfo
         // SO²
         $newSo2 = $newDataPollution->components->so2;
         $oldSo2 = $oldData['so2'];
-        if ($paramAlertAqi['so2_alert_level'] <= $newSo2 || $newSo2 < $oldSo2 ) {
+        if ($paramAlertAqi['so2_alert_level'] <= $newSo2 || $newSo2 < $oldSo2) {
             $mess = $this->makeMessageAqi($newSo2, $oldSo2, 'so2', 'SO²');
             if ($mess != '') {
                 $message[] = $mess;
@@ -274,7 +261,7 @@ class DisplayInfo
         if ($paramAlertAqi['nh3_alert_level'] <= $newNh3 || $newNh3 < $oldNh3) {
             $mess = $this->makeMessageAqi($newNh3, $oldNh3, 'nh3', 'NH³');
             if ($mess != '') {
-                 $message[] = $mess;
+                $message[] = $mess;
             }
         }
         // UV
@@ -283,45 +270,42 @@ class DisplayInfo
         if ($paramAlertAqi['uv_alert_level'] <= $newUv || $newUv < $oldUv) {
             $mess = $this->makeMessageAqi($newUv, $oldUv, 'uv', 'UV');
             if ($mess != '') {
-                 $message[] = $mess;
+                $message[] = $mess;
             }
         }
         // Visibility
         $newVisibility = $newDataOc->visibility;
         $oldVisibility = $oldData['visibility'];
         if ($paramAlertAqi['visibility_alert_level'] > $newVisibility || $oldVisibility < $newVisibility) {
-            $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'Visibilité', $paramAlertAqi);
+            $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'visibilité', $paramAlertAqi);
             if ($mess != '') {
-                 $message[] = $mess;
+                $message[] = $mess;
             }
         }
+
+        // AQI
+        $newAqi = $newDataPollution->main->aqi;
+        $oldAqi = $oldData['aqi'];
+        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi || $newAqi < $oldAqi || $message != []) {
+            if ($newAqi > $oldAqi) {
+                $message[] = __('Dégradation de l\'AQI à ', __FILE__) . $newAqi;
+            } else if ($newAqi < $oldAqi) {
+                $message[] = __('Amélioration de l\'AQI à ', __FILE__) . $newAqi;
+            } else if ($message != []) {
+                $message[] = __('AQI stable à ', __FILE__) . $newAqi;
+            }
+        }
+
+
         $stringMess = implode(' - ', $message);
-        message::add('Message Pollution', $stringMess);
+
+        if ($paramAlertAqi['alert_notification'] == 1){
+             message::add('Message Pollution', $stringMess);
+        }
         // Format Html For Telegram
-        $telegramMessage = $this->formatToTelegram($message);
-        $smsMessage = $this->formatToSms($message);
+        $telegramMessage = $this->formatAqiForTelegram($message);
+        $smsMessage = $this->formatAqiForSms($message);
         return [$stringMess, $telegramMessage, $smsMessage];
-    }
-
-    private function formatToSms($messages) {
-        $arrayMessage[] = "-- Rapport AQI -- \n";
-        foreach ($messages as $message){
-            $message = str_replace('³', '3', $message);
-            $message = str_replace('²', '2', $message);
-            $arrayMessage[] = $message." \n";
-        }
-        return implode(' ', $arrayMessage);
-        }
-
-
-    private function formatToTelegram($messages) {
-    //    $arrayMessage = explode(".", $message);
-    $icons = [' &#x2757;',''];
-    $arrayMessage[] = "<b><u>Rapport d'AQI :</u></b> \n";
-    foreach ($messages as $message){
-        $arrayMessage[] = "<em>".$message."</em> &#x2757; \n";
-    }
-    return implode(' ', $arrayMessage);
     }
 
 
@@ -336,6 +320,9 @@ class DisplayInfo
                 $increase = 'Dégradation de la ';
                 $decrease = 'Amélioration de la ';
                 break;
+            case 'uv':
+                $increase = 'Baisse des ';
+                $decrease = 'Hausse des';
             default:
                 $decrease = 'Dégradation des ';
                 $increase = 'Amélioration des ';
@@ -343,27 +330,47 @@ class DisplayInfo
         }
 
         if ($newData > $oldData) {
-            $newCategory = $this->getLevel($newData, $type);
-            $oldCategory = $this->getLevel($oldData, $type);
+            $newCategory = $this->getLevelAQI($newData, $type);
+            $oldCategory = $this->getLevelAQI($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __($decrease . $typeName . ' au niveau ', __FILE__) . $newCategory;
-            }  else if ($oldCategory !== 'extrême') {
-                $message = __('Légère '.$decrease . $typeName . ' mais reste au niveau '. $newCategory, __FILE__);
+                $message = __($decrease . $typeName . ' au niveau ', __FILE__). $newCategory ;
+                switch($type){
+                    case 'uv':
+                        $message .= ' avec un indice de '. $newData;
+                        break;
+                    case 'visibility':
+                        $message .= ' avec '. $newData . ' m.';
+                        break;
+                    default:
+                        $message .= ' avec une concentration de '. $newData . ' μg/m3';
+                }
+               
+            } else if ($oldCategory != 'extrême' || $oldCategory != 'très mauvaise') {
+                // $message = __('Légère ' . strtolower($decrease) . $typeName . ', reste au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
             }
-
         } else if ($newData < $oldData) {
-            $newCategory = $this->getLevel($newData, $type);
-            $oldCategory = $this->getLevel($oldData, $type);
-                if ($newCategory !== $oldCategory) {
-                    $message = __($increase . $typeName . ' au niveau ', __FILE__). $newCategory;
-                }  else if ($oldCategory !== 'bon') {
-                    $message = __('Légère '.$increase . $typeName . ' mais reste au niveau '. $newCategory, __FILE__);
-                } 
-        } else {
-            $newCategory =  $this->getLevel($newData, $type);
-            $message = __($typeName . ' stable au niveau ' . $newCategory , __FILE__);
-        }
+            $newCategory = $this->getLevelAQI($newData, $type);
+            $oldCategory = $this->getLevelAQI($oldData, $type);
+            if ($newCategory !== $oldCategory) {
 
+                $message = __($increase . $typeName . ' au niveau ', __FILE__) . $newCategory;
+                switch($type){
+                    case 'uv':
+                        $message .= ' avec un indice de '. $newData;
+                        break;
+                    case 'visibility':
+                        $message .= ' avec '. $newData . ' m.';
+                        break;
+                    default:
+                        $message .= ' avec une concentration de '. $newData . ' μg/m3';
+                }
+            } else if ($oldCategory !== 'bon') {
+                // $message = __('Légère ' . $increase . $typeName . ' ,reste au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
+            }
+        } else {
+            $newCategory =  $this->getLevelAQI($newData, $type);
+            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
+        }
         return $message;
     }
 
@@ -372,15 +379,15 @@ class DisplayInfo
      */
     public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen)
     {
-        $message = '';
+        $message = [];
         // Poaceae
         $newPoaceae = $dataPollen[0]->Species->Grass->{"Grass / Poaceae"};
         $oldPoaceae = $oldData['poaceae'];
         if ($paramAlertPollen['poaceae_alert_level'] <= $newPoaceae) {
-                $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
-                if (!empty($mess)) {
-                    $message .= $mess;
-                }
+            $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
+            if (!empty($mess)) {
+                $message[] = $mess;
+            }
         }
 
         //Elm
@@ -388,9 +395,9 @@ class DisplayInfo
         $oldElm = $oldData['elm'];
         if ($paramAlertPollen['elm_alert_level'] <= $newElm) {
             $mess = $this->makeMessagePollen($newElm, $oldElm, 'elm', 'Orme');
-                if (!empty($mess)) {
-                    $message .= $mess;
-                }
+            if (!empty($mess)) {
+                $message[] = $mess;
+            }
         }
 
         //Alder
@@ -398,18 +405,18 @@ class DisplayInfo
         $oldAlder = $oldData['alder'];
         if ($paramAlertPollen['alder_alert_level'] <= $newAlder) {
             $mess = $this->makeMessagePollen($newAlder, $oldAlder, 'alder', 'Aulne');
-                if (!empty($mess)) {
-                    $message .= $mess;
-                }
+            if (!empty($mess)) {
+                $message[] = $mess;
+            }
         }
         // Birch
         $newBirch = $dataPollen[0]->Species->Tree->Birch;
         $oldBirch = $oldData['birch'];
         if ($paramAlertPollen['birch_alert_level'] <= $newBirch) {
             $mess = $this->makeMessagePollen($newBirch, $oldBirch, 'birch', 'Bouleau');
-                if (!empty($mess)) {
-                    $message .= $mess;
-                }
+            if (!empty($mess)) {
+                $message[] = $mess;
+            }
         }
         // Cypress
         $newCypress = $dataPollen[0]->Species->Tree->Cypress;
@@ -417,7 +424,7 @@ class DisplayInfo
         if ($paramAlertPollen['cypress_alert_level'] <= $newCypress) {
             $mess = $this->makeMessagePollen($newCypress, $oldCypress, 'cypress', 'Cyprès');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -427,7 +434,7 @@ class DisplayInfo
         if ($paramAlertPollen['hazel_alert_level'] <= $newHazel) {
             $mess = $this->makeMessagePollen($newHazel, $oldHazel, 'hazel', 'Noisetier');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -437,7 +444,7 @@ class DisplayInfo
         if ($paramAlertPollen['oak_alert_level'] <= $newOak) {
             $mess = $this->makeMessagePollen($newOak, $oldOak, 'oak', 'Chêne');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -447,7 +454,7 @@ class DisplayInfo
         if ($paramAlertPollen['pine_alert_level'] <= $newPine) {
             $mess = $this->makeMessagePollen($newPine, $oldPine, 'pine', 'Pin');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -457,7 +464,7 @@ class DisplayInfo
         if ($paramAlertPollen['plane_alert_level'] <= $newPlane) {
             $mess = $this->makeMessagePollen($newPlane, $oldPlane, 'plane', 'Platane');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -467,7 +474,7 @@ class DisplayInfo
         if ($paramAlertPollen['poplar_alert_level'] <= $newPoplar) {
             $mess = $this->makeMessagePollen($newPoplar, $oldPoplar, 'poplar', 'Peuplier');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -477,7 +484,7 @@ class DisplayInfo
         if ($paramAlertPollen['chenopod_alert_level'] <= $newChenopod) {
             $mess = $this->makeMessagePollen($newChenopod, $oldChenopod, 'chenopod', 'Chénopodes');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
         // Mugwort
@@ -486,7 +493,7 @@ class DisplayInfo
         if ($paramAlertPollen['mugwort_alert_level'] <= $newMugwort) {
             $mess = $this->makeMessagePollen($newMugwort, $oldMugwort, 'mugwort', 'Armoises');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -496,7 +503,7 @@ class DisplayInfo
         if ($paramAlertPollen['nettle_alert_level'] <= $newNettle) {
             $mess = $this->makeMessagePollen($newNettle, $oldNettle, 'nettle', 'Ortie');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
         // Ragweed 
@@ -505,7 +512,7 @@ class DisplayInfo
         if ($paramAlertPollen['ragweed_alert_level'] <= $newRagweed) {
             $mess = $this->makeMessagePollen($newRagweed, $oldRagweed, 'ragweed', 'Ambroisie');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
 
@@ -513,13 +520,19 @@ class DisplayInfo
         $newOthers = $dataPollen[0]->Species->Others;
         $oldOthers = $oldData['others'];
         if ($paramAlertPollen['others_alert_level'] <= $newOthers) {
-            $mess = $this->makeMessagePollen($newOthers, $oldOthers, 'others', 'Autres');
+            $mess = $this->makeMessagePollen($newOthers, $oldOthers, 'others', 'Autres pollens');
             if (!empty($mess)) {
-                $message .= $mess;
+                $message[] = $mess;
             }
         }
-        message::add('Message Pollen', $message);
-        return $message;    
+        $stringMess = implode(' - ', $message);
+        if ($paramAlertPollen['alert_notification'] == 1){
+            message::add('Message Pollen', $stringMess);
+        } 
+        
+        $telegramMessage = $this->formatPollensForTelegram($message);
+        $smsMessage = $this->formatPollensForSms($message);
+        return [$stringMess, $telegramMessage, $smsMessage];
     }
 
 
@@ -527,25 +540,26 @@ class DisplayInfo
     {
         $message = '';
         if ($newData > $oldData) {
-            $newCategory = strtolower($this->getLevelPollen($newData, $type));
-            $oldCategory = strtolower($this->getLevelPollen($oldData, $type));
+            $newCategory = $this->getLevelPollen($newData, $type);
+            $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __('Hausse des  ' . $typeName . ' au niveau ', __FILE__) . $newCategory . '. ';
-            } else {
-                $message = __($typeName . ' légère hausse, mais reste au niveau ' . $newCategory, __FILE__).'. ';
+                $message = __($typeName . ' en hausse au niveau : ', __FILE__) . $newCategory.
+                 ' avec '. $newData . 'part/m³';
+            } else if ($oldCategory != 'risque très haut') {
+                // $message = __($typeName . ' en légère hausse, mais reste au niveau ' . $newCategory, __FILE__);
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __('Baisse des ' . $typeName . ' au niveau  ', __FILE__) . $newCategory . '. ';
+                $message = __($typeName . ' en baisse au niveau : ', __FILE__) . $newCategory.' avec '. $newData . 'part/m³';
             } else {
-                $message = __($typeName . ' légère baisse, mais reste au niveau ' . $newCategory, __FILE__).'. ';
+                // $message = __($typeName . ' en légère baisse, mais reste au niveau ' . $newCategory, __FILE__);
             }
         } else {
             // pour le dev uniquement 
             // $newCategory = $this->getLevelPollen($newData, $type);
-            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).'. ';
+            // $message = __($typeName . ' : stable au niveau ' . $newCategory, __FILE__);
         }
         return $message;
     }
@@ -553,7 +567,7 @@ class DisplayInfo
     /**
      * Retourne le niveau d'alert 
      */
-    public function getLevel($value, $type)
+    public function getLevelAQI($value, $type)
     {
         $allranges = SetupAqi::$aqiRange;
         $ranges = $allranges[$type];
@@ -570,9 +584,9 @@ class DisplayInfo
                     case 'nh3':
                         return  strtolower($this->getElementRiskAqi($color));
                     case 'uv':
-                        return  $this->getUVRapport($value);
+                        return  strtolower($this->getUVRapport($value));
                     case 'visibility':
-                        return  $this->getVisibilityRapport($value);
+                        return  strtolower($this->getVisibilityRapport($value));
                 }
             }
         }
@@ -584,9 +598,71 @@ class DisplayInfo
         $ranges = $allranges[$type];
         foreach ($ranges as $color => $range) {
             if ($range[0] <= $value && $range[1] >= $value) {
-                return  $this->getElementRiskPollen($color);
+                return strtolower($this->getElementRiskPollen($color));
             }
         }
     }
-}
 
+    private function formatAqiForSms($messages)
+    {
+        $arrayMessage[] = "-- Alerte AQI -- \n";
+        foreach ($messages as $message) {
+            $message = str_replace('³', '3', $message);
+            $message = str_replace('²', '2', $message);
+            $arrayMessage[] = $message . " \n";
+        }
+        return implode(' ', $arrayMessage);
+    }
+
+
+    private function formatAqiForTelegram($messages)
+    {
+
+        $arrayMessage[] = "&#127757; <b><u>Alerte AQI </u></b> \n";
+        $findLetters = [
+            '&#128166;' => 'bon', '&#127795;' => 'correct', '&#128549;'=> 'élevé',
+            '&#128543;' => 'mauvais', '&#128545;' => 'très', '&#128520;' => 'extrême', '&#128551;' => 'modéré',
+            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;'=> 'nul' , '&#127748;'=> 'faible'
+           
+        ];
+        foreach ($messages as $message) {
+            $icon = '';
+            foreach ($findLetters as $key => $value) {
+                $match = (str_replace($value, '', $message) != $message);
+                if ($match) {
+                    $icon = $key;
+                }
+            }
+            $arrayMessage[] = "<em>" . $icon . $message . "</em>  \n";
+        }
+        return implode(' ', $arrayMessage);
+    }
+
+    private function formatPollensForTelegram($messages)
+    {
+        $arrayMessage[] = "&#127804; <b><u>Alerte Pollens </u></b> \n";
+        $findLetters = [
+            '&#127808;' => 'bas', '&#127809;' => 'haut', '&#127810;' => 'très', '&#127803;' => 'modéré'
+        ];
+        foreach ($messages as $message) {
+            $icon = '';
+            foreach ($findLetters as $key => $value) {
+                $match = (str_replace($value, '', $message) != $message);
+                if ($match) {
+                    $icon = $key;
+                }
+            }
+            $arrayMessage[] = "<em>" . $message . "</em> " . $icon . " \n";
+        }
+        return implode(' ', $arrayMessage);
+    }
+
+    private function formatPollensForSms($messages)
+    {
+        $arrayMessage[] = "-- Alerte Pollens -- \n";
+        foreach ($messages as $message) {
+            $arrayMessage[] = $message . " \n";
+        }
+        return implode(' ', $arrayMessage);
+    }
+}

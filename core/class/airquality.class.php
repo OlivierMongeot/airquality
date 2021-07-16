@@ -135,8 +135,8 @@ class airquality extends eqLogic
             }
             $cmd = $this->getCmd(null, 'refresh_forecast');
             if (is_object($cmd)) {
-                message::add( 'debug', __('Refresh forecast disable', __FILE__));
-                // $cmd->execCmd();
+                // message::add( 'debug', __('Refresh forecast disable', __FILE__));
+                $cmd->execCmd();
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
@@ -246,7 +246,7 @@ class airquality extends eqLogic
             if (!is_object($cmdInfo)) {
                 $cmdInfo = new airqualityCmd();
                 $cmdInfo->setName($command['title']);
-                message::add('new cmd', $command['title'] );
+                // message::add('New cmd', $command['title'] );
             }
             $cmdInfo->setEqLogic_id($this->getId())
             ->setLogicalId($command['name'])
@@ -423,6 +423,7 @@ class airquality extends eqLogic
                         $displaySlide = (array_sum($max) > 0) ? true : false;
     
                         if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true ) {
+                           
                             $iconePollen = new IconesPollen;
                             $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $unitreplace['#icone#'] =  $isObjet ? $newIcon: '';
@@ -489,9 +490,7 @@ class airquality extends eqLogic
                             $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
                             $templateZero = getTemplate('core', $version, 'elementPollenZero', 'airquality');
                             $tabZero[] = template_replace($pollenZeroReplace, $templateZero);
-
                            }
-                              
                         }
                     }
             }
@@ -632,6 +631,7 @@ class airquality extends eqLogic
         $arrayLevel['no_alert_level'] = $this->getConfiguration('no_alert_level');
         $arrayLevel['uv_alert_level'] = $this->getConfiguration('uv_alert_level');
         $arrayLevel['visibility_alert_level'] = $this->getConfiguration('visibility_alert_level');
+        $arrayLevel['alert_notification'] = $this->getConfiguration('alert_notification');
         return $arrayLevel;
     }
 
@@ -651,6 +651,7 @@ class airquality extends eqLogic
         $arrayLevel['nettle_alert_level'] = $this->getConfiguration('nettle_alert_level');
         $arrayLevel['ragweed_alert_level'] = $this->getConfiguration('ragweed_alert_level');
         $arrayLevel['others_alert_level'] = $this->getConfiguration('others_alert_level');
+        $arrayLevel['alert_notification'] = $this->getConfiguration('alert_notification');
         return $arrayLevel;
     }
 
@@ -676,6 +677,7 @@ class airquality extends eqLogic
         
         $dataAll = $this->getApiData('getAmbee');
         if(isset($dataAll->data)){
+            $oldData = $this->getCurrentValues();
             $dataPollen = $dataAll->data;  
             $this->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
             $this->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
@@ -700,13 +702,12 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
             $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
             $this->reorderCmdPollen();
-            $oldData = $this->getCurrentValues();
             $paramAlertPollen = $this->getParamAlertPollen();
             $display = new DisplayInfo;
-            // message::add('OldData', json_encode($oldData));
-            // message::add('paramAlertPollen', json_encode($paramAlertPollen));
-            // message::add('dataPollen', json_encode($dataPollen)); 
-            $this->checkAndUpdateCmd('messagePollen',  $display->getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen));
+            $messagesPollens =  $display->getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen);
+            $this->checkAndUpdateCmd('messagePollen', $messagesPollens[0]);
+            $this->checkAndUpdateCmd('telegramPollen', ($messagesPollens[1]));
+            $this->checkAndUpdateCmd('smsPollen', ($messagesPollens[2]));
             $this->refreshWidget();
         }
     }

@@ -223,19 +223,6 @@ function addCmdToTable(_cmd) {
 }
 
 
-getSlider('aqi');
-getSlider('pm25');
-getSlider('pm10');
-getSlider('o3');
-getSlider('so2');
-getSlider('no2');
-getSlider('co');
-getSlider('nh3');
-getSlider('no');
-
-getSlider('uv');
-getSlider('visibility');
-
 getSlider('poaceae');
 getSlider('elm');
 getSlider('alder');
@@ -251,8 +238,6 @@ getSlider('mugwort');
 getSlider('nettle');
 getSlider('ragweed');
 getSlider('others');
-
-
 
 function getSlider(element) {
         var slider = document.getElementById(element);

@@ -77,14 +77,28 @@ class ApiAqi
     {
         $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
-
+        $coordinates = json_decode($response[0]);
         if ($response[1]) {
-            throw new Exception(__('Impossible de récupérer les coordonnées de cette ville :' . json_encode($response[1]), __FILE__));
-        } else {
-            $coordinates = json_decode($response[0]);
-            return  [$coordinates[0]->lat, $coordinates[0]->lon];
+            return (__('Impossible de récupérer les coordonnées de cette ville' , __FILE__));
+        } 
+
+        if (!isset($coordinates[0]->name) ) {
+            // header('X-PHP-Response-Code: 404', true, 404);
+            return ([0,0]);
+        } 
+        else {
+         
+            if (isset($coordinates[0]->lat) && isset($coordinates[0]->lon)){
+              
+                 return  [$coordinates[0]->lat, $coordinates[0]->lon];
+            } else {
+                message::add('Info callApiGeoLoc ', 'Pas de ville trouvée avec ce nom');
+            }
+           
         }
     }
+
+    
 
 
     /**
@@ -105,8 +119,8 @@ class ApiAqi
                 return  $city;
             }
         } else {
-            throw new Exception(__('Les coordonnées sont vides', __FILE__));
-            return null;
+            return (__('Les coordonnées sont vides', __FILE__));
+            // return null;
         }
     }
 
