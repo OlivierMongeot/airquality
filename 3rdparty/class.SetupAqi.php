@@ -37,7 +37,7 @@ class  SetupAqi
         ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 28, 'display' => 'chart'],
         ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none'],
         ['name' => 'smsPollution', 'title' => 'SMS Pollution', 'unit' => '', 'subType' => 'string', 'order' => 30, 'display' => 'none'],
-        ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none']
+        ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none']        
     ];
 
     public static $setupPollen = [
