@@ -81,18 +81,15 @@ class ApiAqi
         if ($response[1]) {
             return (__('Impossible de récupérer les coordonnées de cette ville' , __FILE__));
         } 
-
         if (!isset($coordinates[0]->name) ) {
             // header('X-PHP-Response-Code: 404', true, 404);
-            return ([0,0]);
+            return [0,0];
         } 
         else {
-         
             if (isset($coordinates[0]->lat) && isset($coordinates[0]->lon)){
-              
                  return  [$coordinates[0]->lat, $coordinates[0]->lon];
             } else {
-                message::add('Info callApiGeoLoc ', 'Pas de ville trouvée avec ce nom');
+                return [0,0];
             }
            
         }
@@ -115,12 +112,11 @@ class ApiAqi
             }
             else {
                 $data = json_decode($response[0]);
-                $city = $data[0]->name;
-                return  $city;
+                return  $data[0]->name;
             }
         } else {
             return (__('Les coordonnées sont vides', __FILE__));
-            // return null;
+          
         }
     }
 
@@ -275,6 +271,9 @@ class ApiAqi
             "Chenopod", "Mugwort", "Nettle", "Ragweed", "Others"
         ];
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
+        // Parse data forecast to get message
+        $this->makeMessageForecast($dataList);
+
         log::add('airquality', 'debug', json_encode($dataList));
         if (isset($dataList) && $dataList != []){
             foreach ($pollens as $pollen) {
@@ -287,7 +286,6 @@ class ApiAqi
         {
             return [];
         }
-       
     }
 
 
@@ -381,5 +379,17 @@ class ApiAqi
         ];
         $ppm = 24.45 * ($microGramByM3 / 1000) / $molecularWeight[$molecule];
         return number_format((float)$ppm, 3, '.', '');
+    }
+
+
+
+    public function makeMessageForecast($dataList){
+        $message = '';
+        // find the max of week foreach element 
+        foreach ($dataList as $key => $value) {
+            $max = max($value);
+            $message .= $key . ' : ' . $max . '<br>';
+        }
+        log::add('airquality', 'debug', json_encode($message));
     }
 }

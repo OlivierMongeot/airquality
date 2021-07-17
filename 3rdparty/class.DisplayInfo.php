@@ -276,8 +276,8 @@ class DisplayInfo
         // Visibility
         $newVisibility = $newDataOc->visibility;
         $oldVisibility = $oldData['visibility'];
-        if ($paramAlertAqi['visibility_alert_level'] > $newVisibility || $oldVisibility < $newVisibility) {
-            $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'visibilité', $paramAlertAqi);
+        if ($paramAlertAqi['visibility_alert_level'] <= $newVisibility || $oldVisibility < $newVisibility) {
+            $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'Visibilité', $paramAlertAqi);
             if ($mess != '') {
                 $message[] = $mess;
             }
@@ -299,8 +299,8 @@ class DisplayInfo
 
         $stringMess = implode(' - ', $message);
 
-        if ($paramAlertAqi['alert_notification'] == 1){
-             message::add('Message Pollution', $stringMess);
+        if ($paramAlertAqi['alert_notification'] == 1) {
+            message::add('Message Pollution', $stringMess);
         }
         // Format Html For Telegram
         $telegramMessage = $this->formatAqiForTelegram($message);
@@ -322,10 +322,11 @@ class DisplayInfo
                 break;
             case 'uv':
                 $increase = 'Baisse des ';
-                $decrease = 'Hausse des';
+                $decrease = 'Hausse des ';
+                break;
             default:
-                $decrease = 'Dégradation des ';
-                $increase = 'Amélioration des ';
+                $decrease = 'Dégradation';
+                $increase = 'Amélioration';
                 break;
         }
 
@@ -333,43 +334,42 @@ class DisplayInfo
             $newCategory = $this->getLevelAQI($newData, $type);
             $oldCategory = $this->getLevelAQI($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __($decrease . $typeName . ' au niveau ', __FILE__). $newCategory ;
-                switch($type){
+                $message = __( "<b>" . $typeName . "</b> ". $decrease .  " au niveau ", __FILE__) . $newCategory;
+                switch ($type) {
                     case 'uv':
-                        $message .= ' avec un indice de '. $newData;
+                        $message .= ' avec un indice de ' . $newData;
                         break;
                     case 'visibility':
-                        $message .= ' avec '. $newData . ' m.';
+                        $message .= ' avec ' . $newData . ' m.';
                         break;
                     default:
-                        $message .= ' avec une concentration de '. $newData . ' μg/m3';
+                        $message .= ' avec une concentration de ' . $newData . ' μg/m3';
                 }
-               
             } else if ($oldCategory != 'extrême' || $oldCategory != 'très mauvaise') {
-                // $message = __('Légère ' . strtolower($decrease) . $typeName . ', reste au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
+                $message = __("<b>" . $typeName . "</b>" . ' Légère ' . strtolower($decrease). ', reste au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelAQI($newData, $type);
             $oldCategory = $this->getLevelAQI($oldData, $type);
             if ($newCategory !== $oldCategory) {
 
-                $message = __($increase . $typeName . ' au niveau ', __FILE__) . $newCategory;
-                switch($type){
+                $message = __("<b>" . $typeName . "</b> ".$increase .' au niveau ', __FILE__) . $newCategory;
+                switch ($type) {
                     case 'uv':
-                        $message .= ' avec un indice de '. $newData;
+                        $message .= ' avec un indice de ' . $newData;
                         break;
                     case 'visibility':
-                        $message .= ' avec '. $newData . ' m.';
+                        $message .= ' avec ' . $newData . ' m.';
                         break;
                     default:
-                        $message .= ' avec une concentration de '. $newData . ' μg/m3';
+                        $message .= ' avec une concentration de ' . $newData . ' μg/m3';
                 }
             } else if ($oldCategory !== 'bon') {
-                // $message = __('Légère ' . $increase . $typeName . ' ,reste au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
+                $message = __("<b>" . $typeName . "</b> Légère". $increase . ', reste au niveau ' . $newCategory, __FILE__) . ' avec ' . $newData . ' μg/m3';
             }
         } else {
             $newCategory =  $this->getLevelAQI($newData, $type);
-            // $message = __($typeName . ' stable au niveau ' . $newCategory, __FILE__).' avec '. $newData . ' μg/m3';
+            $message = __("<b>" . $typeName . "</b> stable au niveau " . $newCategory, __FILE__);
         }
         return $message;
     }
@@ -526,10 +526,10 @@ class DisplayInfo
             }
         }
         $stringMess = implode(' - ', $message);
-        if ($paramAlertPollen['alert_notification'] == 1){
+        if ($paramAlertPollen['alert_notification'] == 1) {
             message::add('Message Pollen', $stringMess);
-        } 
-        
+        }
+
         $telegramMessage = $this->formatPollensForTelegram($message);
         $smsMessage = $this->formatPollensForSms($message);
         return [$stringMess, $telegramMessage, $smsMessage];
@@ -543,23 +543,23 @@ class DisplayInfo
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __($typeName . ' en hausse au niveau : ', __FILE__) . $newCategory.
-                 ' avec '. $newData . 'part/m³';
+                $message = __('<b>' . $typeName . '</b>  en hausse au niveau ', __FILE__) . $newCategory .
+                    ' avec ' . $newData . ' part/m³ ';
             } else if ($oldCategory != 'risque très haut') {
-                // $message = __($typeName . ' en légère hausse, mais reste au niveau ' . $newCategory, __FILE__);
+                $message = __('<b>' . $typeName . '</b> en légère hausse, reste au niveau ' . $newCategory, __FILE__) . ' avec ' . $newData . ' part/m³ ';
             }
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __($typeName . ' en baisse au niveau : ', __FILE__) . $newCategory.' avec '. $newData . 'part/m³';
+                $message = '<b>' . $typeName . '</b> en baisse au niveau ' . $newCategory . ' avec ' . $newData . ' part/m³ ';
             } else {
-                // $message = __($typeName . ' en légère baisse, mais reste au niveau ' . $newCategory, __FILE__);
+                $message = __($typeName . ' en légère baisse, reste au niveau ' . $newCategory, __FILE__);
             }
         } else {
             // pour le dev uniquement 
-            // $newCategory = $this->getLevelPollen($newData, $type);
-            // $message = __($typeName . ' : stable au niveau ' . $newCategory, __FILE__);
+            $newCategory = $this->getLevelPollen($newData, $type);
+            $message = __('<b>' . $typeName . '</b> : stable au niveau ' . $newCategory, __FILE__) . ' avec ' . $newData . ' part/m³ ';
         }
         return $message;
     }
@@ -620,10 +620,10 @@ class DisplayInfo
 
         $arrayMessage[] = "&#127757; <b><u>Alerte AQI </u></b> \n";
         $findLetters = [
-            '&#128166;' => 'bon', '&#127795;' => 'correct', '&#128549;'=> 'élevé',
+            '&#128166;' => 'bon', '&#127795;' => 'correct', '&#128549;' => 'élevé',
             '&#128543;' => 'mauvais', '&#128545;' => 'très', '&#128520;' => 'extrême', '&#128551;' => 'modéré',
-            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;'=> 'nul' , '&#127748;'=> 'faible'
-           
+            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;' => 'nul', '&#127752;' => 'faible'
+
         ];
         foreach ($messages as $message) {
             $icon = '';
@@ -633,7 +633,7 @@ class DisplayInfo
                     $icon = $key;
                 }
             }
-            $arrayMessage[] = "<em>" . $icon . $message . "</em>  \n";
+            $arrayMessage[] = "<em>" . $message . "</em> " .  $icon . "  \n";
         }
         return implode(' ', $arrayMessage);
     }
@@ -642,7 +642,7 @@ class DisplayInfo
     {
         $arrayMessage[] = "&#127804; <b><u>Alerte Pollens </u></b> \n";
         $findLetters = [
-            '&#127808;' => 'bas', '&#127809;' => 'haut', '&#127810;' => 'très', '&#127803;' => 'modéré'
+            '&#127808;' => 'bas', '&#128545;' => 'haut', '&#128520;' => 'très', '&#127803;' => 'modéré'
         ];
         foreach ($messages as $message) {
             $icon = '';
