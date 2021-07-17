@@ -2,8 +2,8 @@
 	"id" : "airquality",
 	"name" : "Air Quality",
 	"description" : {
-		"fr_FR": "Ce plugin affiche les concentrations de polluants et pollens, il indique également les prévisons : 5 jours pour l'AQI et 48h pour les pollens",
-		"en_US": "This plugin displays the concentrations of pollutants and pollens, it also shows the forecasts: 5 days for AQI and 48h for pollens"
+		"fr_FR": "Ce plugin affiche les concentrations de polluants et pollens, il indique également les prévisons sur 5 jours pour l'AQI et 48h pour les pollens ainsi que des alertes",
+		"en_US": "This plugin displays the concentrations of pollutants and pollens, it also shows the forecasts: 5 days for AQI, 48h for pollens and give alerts"
 	},
 	"licence" : "AGPL",
 	"author" : "Olivrius",

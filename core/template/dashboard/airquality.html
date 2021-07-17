@@ -15,7 +15,7 @@
     }
 
     .header-#id#-container {
-        margin-top: 15px;
+        margin: 15px 0;
         vertical-align: middle;
     }
 
@@ -77,6 +77,10 @@
         color: var(--link-color) !important;
     }
 
+    #airquality-min#uid# {
+    margin-top: 20px;
+}
+
 </style>
 <div class="aqi-#id#-container">
 
@@ -100,8 +104,12 @@
             <div class="display-aqi aqi-#id#-aqi state">#visibility_level#</div>
         </div>    
     </div>
+    <div style="text-align: center;">
+        <marquee scrollamount="4" width="80%" style="font-size: 110%;">#message_alert#</marquee>
+    </div>
+    
 
-    <div id="airquality-min#uid#" class="carousel slide aqi-#id#-space" data-ride="carousel" data-pause="true" #classCaroussel#>
+    <div id="airquality-min#uid#" class="carousel slide" data-ride="carousel" data-pause="true" #classCaroussel#>
         <div class="carousel-inner" id="chart#id#">
             #mini_slide#
         </div>

@@ -247,6 +247,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Alertes détaillées}}</label>
+                                <div class="col-sm-6">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="alert_details" />{{activer}}
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
                             <!-- <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Mini, Maxi, Moyenne, Tendance, Statistiques}}</label>
                                 <div class="col-sm-6">

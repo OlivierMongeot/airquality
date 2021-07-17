@@ -382,14 +382,24 @@ class ApiAqi
     }
 
 
-
-    public function makeMessageForecast($dataList){
+    public function makeMessageForecast($forecast){
         $message = '';
         // find the max of week foreach element 
-        foreach ($dataList as $key => $value) {
-            $max = max($value);
-            $message .= $key . ' : ' . $max . '<br>';
+        foreach ($forecast as $hourcast) {
+         
+            //build array with datetime for index
+            $date = $hourcast->dt;
+            $values['aqi'] = $hourcast->main->aqi;
+            $values['pm25'] = $hourcast->components->pm2_5;  
+            $values['pm10'] = $hourcast->components->pm10;
+            $values['o3'] = $hourcast->components->o3;
+            $values['so2'] = $hourcast->components->so2;
+            $values['co'] = $hourcast->components->co;
+            $values['no2'] = $hourcast->components->no2;
+            $values['no'] = $hourcast->components->no;
+            $values['nh3'] = $hourcast->components->nh3;
+            $hourcastArray[$date] = $values;         
         }
-        log::add('airquality', 'debug', json_encode($message));
+        log::add('airquality', 'debug', json_encode($hourcastArray));
     }
 }

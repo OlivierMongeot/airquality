@@ -312,7 +312,10 @@ class airquality extends eqLogic
                         $replace[$nameIcon] = $isObjet ? $newIcon: '';
                         $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()): '';
     
-                    } else if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
+                    } else if ($nameCmd == 'telegramPollution') {
+                        $replace['#message_alert#'] = $isObjet ?$cmd->execCmd(): '';
+                    
+                    } else  if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
                        
                         if ( $cmd->getIsVisible() == 1 ) {
                             $icone = new IconesAqi;
@@ -632,6 +635,7 @@ class airquality extends eqLogic
         $arrayLevel['uv_alert_level'] = $this->getConfiguration('uv_alert_level');
         $arrayLevel['visibility_alert_level'] = $this->getConfiguration('visibility_alert_level');
         $arrayLevel['alert_notification'] = $this->getConfiguration('alert_notification');
+        $arrayLevel['alert_details'] = $this->getConfiguration('alert_details');
         return $arrayLevel;
     }
 
@@ -652,6 +656,7 @@ class airquality extends eqLogic
         $arrayLevel['ragweed_alert_level'] = $this->getConfiguration('ragweed_alert_level');
         $arrayLevel['others_alert_level'] = $this->getConfiguration('others_alert_level');
         $arrayLevel['alert_notification'] = $this->getConfiguration('alert_notification');
+        $arrayLevel['alert_details'] = $this->getConfiguration('alert_details');
         return $arrayLevel;
     }
 
