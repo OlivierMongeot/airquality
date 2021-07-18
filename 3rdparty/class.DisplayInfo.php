@@ -428,7 +428,7 @@ class DisplayInfo
             'amélioration' => ['amélioration','embellie'],
             'dégradation' => ['dégradation','altération','détérioration'],
             'hausse' => ['hausse','augmentation', 'élévation'],
-            'stable' => ['stable','persistant','constant','équilibré','stabilisé'],
+            'stable' => ['stable','constant','équilibré','stabilisé'],
             'niveau' => ['au niveau','au palier', 'à l\'échelon'],
             'reste' => ['reste', 'se stabilise','stable'],
             ' à cause d\'' => [' avec ',' avec ',' avec '],
