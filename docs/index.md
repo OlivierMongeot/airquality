@@ -16,8 +16,7 @@ Vous pouvez les désactiver en décochant 'Historiser' une fois les commandes cr
 
 Des alertes sont disponibles. Elles sont affichés à intervalles régulières sur le dashboard. Vous pouvez régler le niveaux des alertes.
 
-Elles sont formatées pour Telegram et SMS : deux commandes infos sont disponibles avec des infos d'alertes mises à jour. Elles peuvent vous servir pour lancer un scénario d'envoi de message facilement ( ex : envoi si un message est disponible ( != '') dans la commande/info ()
-
+Elles sont formatées pour Telegram et SMS : deux commandes infos sont disponibles avec des infos d'alertes mises à jour. Elles peuvent vous servir pour lancer un scénario d'envoi de message facilement ( ex : envoi si un message est disponible ( != '') dans la commande/info 'Telegram Pollution')
 
 
 <p align="center">
