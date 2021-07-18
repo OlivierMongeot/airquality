@@ -14,9 +14,9 @@
 
 # 18/07/2012
 
-- Messages d'alertes affiché sur le widget
-- correction de bugs
-- formatage des alertes pour SMS et télégramme dispo dans 2 nouvelles commandes info 
+- Messages d'alertes affichés sur le widget
+- Correction de bugs
+- Formatage des alertes pour SMS et telegram dispo dans 2 nouvelles commandes info 
 
 
 

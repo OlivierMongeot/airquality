@@ -23,7 +23,7 @@ class ApiAqi
      * @param string $url  The url for connect the API
      * @param string $apiKey  The apikey
      * @param string $apiName  The API Name : 'Openwheather' or 'Ambee'
-     * @return array  The response with errors and responsecodeHttp 
+     * @return array The response with maybe errors and responsecodeHttp 
      */
     private function curlApi(string $url, string $apiKey, string $apiName = 'openwheather')
     {
