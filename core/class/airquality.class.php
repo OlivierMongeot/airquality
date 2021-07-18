@@ -524,13 +524,16 @@ class airquality extends eqLogic
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                     // Incrémentation Compteur de pollens actifs 
                     $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
-
+                    $displaySlide === false;
                     // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les charts/slides
-                    $maxCmd = $this->getCmd(null, $nameCmd . '_max');
-                    $max = $maxCmd->execCmd();
-                    $max = str_replace(['[', ']'], '', $max);
-                    $max = array_map('self::toInt', explode(",", $max));
-                    $displaySlide = (array_sum($max) > 0) ? true : false;
+                    if ($this->getConfiguration('displayZeroPollen') == 1) {
+                        $maxCmd = $this->getCmd(null, $nameCmd . '_max');
+                        $max = $maxCmd->execCmd();
+                        $max = str_replace(['[', ']'], '', $max);
+                        $max = array_map('self::toInt', explode(",", $max));
+                        $displaySlide = (array_sum($max) > 0) ? true : false;
+                    }
+                   
 
                     if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true) {
 
@@ -968,6 +971,7 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('messagePollen', '');
         $this->checkAndUpdateCmd('telegramPollen', '');
         $this->checkAndUpdateCmd('smsPollen', '');
+        $this->reorderCmdPollen();
         $this->refreshWidget();
     }
 
@@ -1005,6 +1009,7 @@ class airquality extends eqLogic
         }
         arsort($tabOrder, SORT_REGULAR);
         $k = 0;
+        message::add('setOrder Pollen','Check');
         foreach ($tabOrder as $key => $unuse) {
             $cmd = $this->getCmd(null, $key);
             $cmd->setOrder($k);
