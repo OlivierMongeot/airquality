@@ -192,6 +192,7 @@ class DisplayInfo
     {
         $message = [];
         $messageInMore = [];
+        $finalMessage = [];
 
         // PM2.5
         $newPm25 = $newDataPollution->components->pm2_5;
@@ -317,18 +318,17 @@ class DisplayInfo
             }
         }
 
-        if (!empty($message)  && $paramAlertAqi['alert_details'] == 1) {
-            $message  = $message + $messageInMore;
-        }
-
-        $stringMess = implode(' - ', $message);
+ 
+        $finalMessage = ($paramAlertAqi['alert_details'] == 1) ? $message + $messageInMore : $message;
+        
+        $stringMess = implode(' - ', $finalMessage);
 
         if ($paramAlertAqi['alert_notification'] == 1) {
             message::add('Message Pollution', $stringMess);
         }
 
-        $telegramMessage = $this->formatAqiForTelegram($message);
-        $smsMessage = $this->formatAqiForSms($message);
+        $telegramMessage = $this->formatAqiForTelegram($finalMessage);
+        $smsMessage = $this->formatAqiForSms($finalMessage);
         return [$stringMess, $telegramMessage, $smsMessage];
     }
 
@@ -340,6 +340,7 @@ class DisplayInfo
     {
         $message = '';
         $messageInMore = '';
+     
         switch ($type) {
             case 'visibility':
                 $increase = 'dégradation';
@@ -354,12 +355,12 @@ class DisplayInfo
                 $increase = 'amélioration';
                 break;
         }
+    
+       [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
+        [$oldCategory] = $this->getLevelAQI($oldData, $type);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
-            $newCategory = $this->getLevelAQI($newData, $type);
-            $oldCategory = $this->getLevelAQI($oldData, $type);
             if ($newCategory !== $oldCategory) {
-
                 $message = __("- <b>" . $typeName . "</b> " . $decrease .  " au niveau ", __FILE__) . $newCategory;
                 $message .= $this->makeEndMessage($newData, $type);
             } else if ($oldCategory != 'extrême' || $oldCategory != 'très mauvaise') {
@@ -368,25 +369,20 @@ class DisplayInfo
             }
             // Cas 2 : Baisse de l'AQI
         } else if ($newData < $oldData) {
-            $newCategory = $this->getLevelAQI($newData, $type);
-            $oldCategory = $this->getLevelAQI($oldData, $type);
-
             if ($newCategory !== $oldCategory) {
-
                 $message = __("- <b>" . $typeName . "</b> " . $increase . ' au niveau ', __FILE__) . $newCategory;
                 $message .= $this->makeEndMessage($newData, $type);
             } else if ($oldCategory !== 'bon' || $oldCategory != 'bonne' || $oldCategory != 'faible') {
                 $messageInMore = __("- <b>" . $typeName . "</b> légère " . $increase . ', reste au niveau ' . $newCategory, __FILE__);
                 $messageInMore .= $this->makeEndMessage($newData, $type);
             }
-
             // Cas 3 : niveau stable
         } else {
-            $newCategory =  $this->getLevelAQI($newData, $type);
             $messageInMore = __("<b> - " . $typeName . "</b> stable au niveau " . $newCategory, __FILE__);
             $messageInMore .= $this->makeEndMessage($newData, $type);
         }
-        return [$message, $messageInMore];
+        // message::add('messageInMore', json_encode($messageInMore));
+        return [$message, $messageInMore, $importance];
     }
 
     /**
@@ -644,7 +640,9 @@ class DisplayInfo
     {
         $allranges = SetupAqi::$aqiRange;
         $ranges = $allranges[$type];
+        $indexLevel = 0;
         foreach ($ranges as $color => $range) {
+            $indexLevel++;
             if ($range[0] <= $value && $range[1] >= $value) {
                 switch ($type) {
                     case 'pm25':
@@ -655,7 +653,7 @@ class DisplayInfo
                     case 'o3':
                     case 'so2':
                     case 'nh3':
-                        return   strtolower($this->getElementRiskAqi($color));
+                        return   [strtolower($this->getElementRiskAqi($color)), $indexLevel];
                     case 'uv':
                         $level =  strtolower($this->getUVRapport($value));
                         return str_replace('Élevé', 'élevé', $level);
@@ -717,18 +715,18 @@ class DisplayInfo
     private function formatAqiForTelegram($messages)
     {
         if (!empty($messages)) {
-        $arrayMessage[] = "&#127757; <b><u>Alerte AQI</u></b>"." "." \n ";
-        foreach ($messages as $message) {
-            $icon = '';
-            foreach ($this->getIconsWithStatus() as $key => $value) {
-                $match = (str_replace($value, '', $message) != $message);
-                if ($match) {
-                    $icon = $key;
+            $arrayMessage[] = "&#127757; <b><u>Alerte AQI</u></b>" . " " . " \n ";
+            foreach ($messages as $message) {
+                $icon = '';
+                foreach ($this->getIconsWithStatus() as $key => $value) {
+                    $match = (str_replace($value, '', $message) != $message);
+                    if ($match) {
+                        $icon = $key;
+                    }
                 }
+                $arrayMessage[] = "<em>" . $message . "</em> " .  $icon . " " . "   \n ";
             }
-            $arrayMessage[] = "<em>" . $message . "</em> " .  $icon ." ". "   \n ";
-        }
-        return implode(' ', $arrayMessage);
+            return implode(' ', $arrayMessage);
         } else {
             return '';
         }

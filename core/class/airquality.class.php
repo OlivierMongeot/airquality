@@ -29,6 +29,7 @@ class airquality extends eqLogic
 
     public static $_widgetPossibility = ['custom' => true, 'custom::layout' => false];
 
+    public static $alertAqiCronTwoMin = '';
 
     public static function cron30()
     {
@@ -58,7 +59,7 @@ class airquality extends eqLogic
                 // Pollution refresh forecast
                 try {
                     $c = new Cron\CronExpression('2 7,14,20 * * *', new Cron\FieldFactory);
-                    if ($c->isDue()) {
+                    if ($c->isDue() ) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
@@ -73,11 +74,18 @@ class airquality extends eqLogic
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
                 }
-                // Refresh alert AQI
+                // Refresh Alert AQI
                 try {
-                    $c = new Cron\CronExpression('2,12,22,32,42,52 * * * *', new Cron\FieldFactory);
+                     if  (self::$alertAqiCronTwoMin == ''){
+                        $AlertCron =  '2,32 * * * *';
+                     } else {
+                        $AlertCron = self::$alertAqiCronTwoMin; // in two minute time + 2 min 
+                     }                      
+                    message::add('debug', 'AlertCron : ' . $AlertCron);
+                    $cManual = new Cron\CronExpression($AlertCron, new Cron\FieldFactory);
+                    // $c = new Cron\CronExpression('2,32 * * * *', new Cron\FieldFactory);
                    
-                    if ($c->isDue()) {
+                    if (!empty($AlertCron) && $cManual->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_alert_aqi');
                             if (is_object($refresh)) {
@@ -139,6 +147,7 @@ class airquality extends eqLogic
         }
     }
 
+   
     public function preInsert()
     {
         $this->setCategory('heating', 1);
@@ -176,12 +185,12 @@ class airquality extends eqLogic
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'polution') {
             $cmd = $this->getCmd(null, 'refresh');
             if (is_object($cmd)) {
-                $cmd->execCmd();
+                // $cmd->execCmd();
             }
             $cmd = $this->getCmd(null, 'refresh_forecast');
             if (is_object($cmd)) {
-                // message::add( 'debug', __('Refresh forecast aqi  disable', __FILE__));
-                $cmd->execCmd();
+                message::add( 'debug', __('Refresh all aqi  disable', __FILE__));
+                // $cmd->execCmd();
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
@@ -386,6 +395,8 @@ class airquality extends eqLogic
                             $replace['#message_alert#'] = "";
                         } else {
                             $replace['#message_alert#'] = $cmd->execCmd();
+                            // Set Time Cron 
+                          self::setThreeMinuteAction('message_alert_aqi');
                         }
                         
                     } else  if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
@@ -625,6 +636,18 @@ class airquality extends eqLogic
         } else {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'pollen', __CLASS__)));
         }
+    }
+
+
+    public static function setThreeMinuteAction(){
+        // get hours and minute
+        $now = new \DateTime();
+        $hour = $now->format('H');
+        $minute = $now->format('i');
+        $minute = $minute + 2;
+        $cron =  $minute.' '.$hour.' * * *';
+        self::$alertAqiCronTwoMin = $cron;
+        message::add('Get  alertAqiCronTwoMin', self::$alertAqiCronTwoMin);
     }
 
     public static function toInt($string)
