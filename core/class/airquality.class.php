@@ -1008,7 +1008,7 @@ class airquality extends eqLogic
         }
         arsort($tabOrder, SORT_REGULAR);
         $k = 0;
-        message::add('setOrder Pollen','Check');
+        // message::add('setOrder Pollen','Check');
         foreach ($tabOrder as $key => $unuse) {
             $cmd = $this->getCmd(null, $key);
             $cmd->setOrder($k);
