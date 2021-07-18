@@ -1,9 +1,8 @@
 <?php
-session_start();
 // Setup Error : only dev 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -30,7 +29,6 @@ class airquality extends eqLogic
 
     public static $_widgetPossibility = ['custom' => true, 'custom::layout' => false];
 
-    public static $alertAqiCronTwoMin;
 
     public static function cron30()
     {
@@ -40,8 +38,6 @@ class airquality extends eqLogic
             }
         }
     }
-
-
 
     public static function cronHourly()
     {
@@ -55,12 +51,8 @@ class airquality extends eqLogic
 
     public static function cron()
     {
-
-
         foreach (self::byType('airquality') as $airQuality) {
-
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
-
                 // Pollution refresh forecast
                 try {
                     $c = new Cron\CronExpression('2 7,14,20 * * *', new Cron\FieldFactory);
@@ -79,20 +71,16 @@ class airquality extends eqLogic
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
                 }
-                // Refresh Alert AQI auto after 2 min 
+                // Refresh Alert AQI auto after 3 min 
                 try {
 
                     $specialCron =  $airQuality->getConfiguration('alertAqiCronTwoMin');
-                    // $c = new Cron\CronExpression('2,32 * * * *', new Cron\FieldFactory);
                     $cManual = new Cron\CronExpression($specialCron, new Cron\FieldFactory);
-
-
                     if (!empty($specialCron) && $cManual->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_alert_aqi');
                             if (is_object($refresh)) {
                                 $refresh->execCmd();
-                                $airQuality->setConfiguration('alertAqiCronTwoMin', '')->save();
                             } else {
                                 log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName());
                             }
@@ -124,18 +112,18 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh . ' - ' .  $e->getMessage());
                 }
 
-
                 // Refresh alert Pollen
                 try {
 
                     $specialCron =  $airQuality->getConfiguration('alertPollenCronTwoMin');
                     $cManual = new Cron\CronExpression($specialCron, new Cron\FieldFactory);
-                    // $c = new Cron\CronExpression('2,11,21,31,41,51 * * * *', new Cron\FieldFactory);
                     if (!empty($specialCron) && $cManual->isDue()){
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_alert_pollen');
                             if (is_object($refresh)) {
                                 $refresh->execCmd();
+                                // pas obliger de supprimer la configuration car elle sera remise à jour à la prochaine cron
+                                // $airQuality->setConfiguration('alertPollenCronTwoMin', '')->save();
                             } else {
                                 log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName());
                             }
@@ -163,7 +151,6 @@ class airquality extends eqLogic
     {
         if ($this->getIsEnable()) {
             switch ($this->getConfiguration('searchMode')) {
-
                 case 'city_mode':
                     if ($this->getConfiguration('city') == '' || $this->getConfiguration('country_code') == '') {
                         throw new Exception(__('La ville ou le code pays ne peuvent être vide', __FILE__));
@@ -185,7 +172,7 @@ class airquality extends eqLogic
 
     public function postSave()
     {
-
+    // Annulation du refresh à la sauvegarde si il y a déjà des data
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'polution') {
             $cmdCheckNull =  $this->getCmd(null, 'co');
             if (is_object($cmdCheckNull) && $cmdCheckNull->execCmd() == null) {
@@ -195,22 +182,18 @@ class airquality extends eqLogic
                 }
                 $cmd = $this->getCmd(null, 'refresh_forecast');
                 if (is_object($cmd)) {
-                    message::add('debug', __('Refresh forecast aqi postsave if no data ', __FILE__));
                     $cmd->execCmd();
                 }
             }
         }
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'pollen') {
-
             $cmdCheckNull =  $this->getCmd(null, 'poaceae_max');
             if (is_object($cmdCheckNull) && $cmdCheckNull->execCmd() == null) {
-
                 $cmd = $this->getCmd(null, 'refresh');
                 if (is_object($cmd)) {
                     $cmd->execCmd();
                 }
                 // !!  1 appel décompté comme 48 appels (2x 24h de données) de l'API ambee sur un quota de 100 appels gratuits/ jours 
-                // Annulation du refresh inutile à la sauvegarde si il y a déjà des data
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
                     $cmd->execCmd();
@@ -364,7 +347,7 @@ class airquality extends eqLogic
 
         // Pollution 
         if ($this->getConfiguration('elements') == 'polution') {
-
+            $counterActivePolluant = 0;
             $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
 
             foreach ($this->getCmd('info') as $cmd) {
@@ -385,7 +368,12 @@ class airquality extends eqLogic
                     $icone = new IconesAqi;
                     $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                     $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                    $replace['#uv_level#'] = $isObjet ?  $display->getUVRapport($cmd->execCmd()) : '';
+                    [$uvLevel,$indiceLevel] = $display->getUVLevel($cmd->execCmd());
+                    $replace['#uv_level#'] = $isObjet ?  $uvLevel : '';
+                    if ($indiceLevel >= 3 ){
+                        // $counterActivePolluant++;
+                    }
+
                 } else if ($nameCmd == 'visibility') {
                     $replace[$commandValue] = $isObjet ? $cmd->execCmd() : '';
                     $replace[$commandNameId] = $isObjet ? $cmd->getId() : '';
@@ -393,15 +381,24 @@ class airquality extends eqLogic
                     $icone = new IconesAqi;
                     $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                     $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                    $replace['#visibility_level#'] =  $isObjet ? $display->getVisibilityRapport($cmd->execCmd()) : '';
-                } else if ($nameCmd == 'telegramPollution') {
-                    if (empty($cmd->execCmd()) && $isObjet == true) {
-                        $replace['#message_alert#'] = "";
-                    } else {
-                        $replace['#message_alert#'] = $cmd->execCmd();
-                        // Set Time Cron 
-                        self::setThreeMinuteAction('alertAqiCronTwoMin');
+                    [$visibilityLevel,$indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
+                    $replace['#visibility_level#'] =  $isObjet ? $visibilityLevel : '';
+                    if ($indiceLevel >= 3 ){
+                        // $counterActivePolluant++;
                     }
+                } else if ($nameCmd == 'telegramPollution') {
+
+                    $message_alert =  $isObjet ? $cmd->execCmd() : '';
+                    $alert = (!empty($message_alert)) ? true : false;
+                    if ($alert) {
+                        $htmlAlertAqi = '<div style="text-align: center;">';
+                        $htmlAlertAqi .= '<marquee scrollamount="4" width="85%" height="20px" class="state" style="font-size: 110%;">'.$cmd->execCmd().'</marquee>';  
+                        $htmlAlertAqi .= '</div>';
+                        $replace['#message#'] =  $htmlAlertAqi;
+                        // Set Time Cron 
+                        self::makeThreeMinuteAction('alertAqiCronTwoMin');
+                    }
+
                 } else  if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
 
                     if ($cmd->getIsVisible() == 1) {
@@ -423,7 +420,13 @@ class airquality extends eqLogic
                         $unitreplace['#color#'] =  ($isObjet && !empty($icone->getColor())) ?  $icone->getColor() : '#333333';
                         $labels = $this->getCmd(null, 'days');
                         $unitreplace['#labels#'] = (is_object($labels) && !empty($labels->execCmd())) ? $labels->execCmd() :  "['no','-','data']";
-                        $unitreplace['#level-particule#'] =  $isObjet ?  $display->getElementRiskAqi($icone->getColor()) : '';
+                     
+                        [$levelRiskAQI, $indiceLevel] = $display->getElementRiskAqi($icone->getColor());
+                        $unitreplace['#level-particule#'] =  $isObjet ?  $levelRiskAQI : '';
+                        if ($indiceLevel >= 3 ){
+                            $counterActivePolluant++;
+                        }
+                                            
                         $unitreplace['#info-tooltips#'] =   __("Cliquez pour + d'info", __FILE__);
                         $unitreplace['#mini#'] = __("Mini 10 jours", __FILE__);
                         $unitreplace['#maxi#'] = __("Maxi 10 jours", __FILE__);
@@ -465,8 +468,17 @@ class airquality extends eqLogic
                     }
                 }
             }
+
+
             $replace['#index_name#'] = __('Indice', __FILE__);
-            $k = 0;
+            $k = 0; // for slider 
+            if (!$alert){
+                      $active_aqi_label = __('Polluants en alerte : ', __FILE__);
+                        // $htmlActivePollen = '<div class="cmd noRefresh header-' . $this->getId() . '-mini active-aqi-' . $this->getId() . ' ">';
+                        $htmlActivePollen = '<div style="text-align: center; font-size:110%; margin:10px 0px;" class="cmd noRefresh">';
+                        $htmlActivePollen .=  $active_aqi_label. $counterActivePolluant . ' / 8 </div>';
+                        $replace['#message#'] = $htmlActivePollen;
+            }
         }
 
         // Pollen 
@@ -507,7 +519,7 @@ class airquality extends eqLogic
                         $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;">' . $message_alert . '</marquee>';
                         $htmlAlertPollen .= '</div>';
                         $replace['#message_alert#'] =  $htmlAlertPollen;
-                        self::setThreeMinuteAction('alertPollenCronTwoMin');
+                        self::makeThreeMinuteAction('alertPollenCronTwoMin');
                     }
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                     // Incrémentation Compteur de pollens actifs 
@@ -602,9 +614,12 @@ class airquality extends eqLogic
                     $k++;
                 }
             }
+
             if (!$alert) {
                 $active_pollen_label = __('Pollens actifs', __FILE__);
-                $htmlActivePollen = '<div title="' . $updatedAt . '#" class="cmd header-' . $this->getId() . '-mini active-pollen-' . $this->getId() . ' ">';
+                $htmlActivePollen = '<div title="' . $updatedAt .'" class="cmd noRefresh header-'.$this->getId().'-mini ';
+                $htmlActivePollen .= 'active-pollen-' . $this->getId() . ' " data-type="info" data-subtype="string" data-cmd_id="'.$cmd->getId().'">';
+               
                 $htmlActivePollen .= $active_pollen_label . ' : ' . $activePollenCounter . ' / 15 </div>';
                 $replace['#message_alert#'] = $htmlActivePollen;
             }
@@ -635,18 +650,16 @@ class airquality extends eqLogic
         }
     }
 
-
-    public static function setThreeMinuteAction($ConfigId)
+    public static function makeThreeMinuteAction($ConfigName)
     {
+      
         $now = new \DateTime();
         $hour = $now->format('H');
         $minute = $now->format('i');
-        $minute = $minute + 2;
+        $minute = $minute + 3;
         $cron =  $minute . ' ' . $hour . ' * * *';
         foreach (self::byType('airquality') as $airQuality) {
-            if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
-                $airQuality->setConfiguration($ConfigId, $cron)->save();
-            }
+                $airQuality->setConfiguration($ConfigName, $cron)->save();
         }
     }
 

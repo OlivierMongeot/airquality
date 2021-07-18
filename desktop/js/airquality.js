@@ -134,9 +134,12 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 });
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=elements]').on('change', function () {
-    console.log('change elements');
+    console.log($('.elements'));
+    $('.elements').prop( "disabled", true );
     $('.elements').hide();
+    $('.elements.' + $(this).value()).prop( "disabled", false );
     $('.elements.' + $(this).value()).show();
+   
 });
 
 /*

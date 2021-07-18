@@ -229,7 +229,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                             <br>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Animation}}</label>
+                                <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="animation_aqi">
                                         <option value="disable_anim">{{Désactiver}}</option>
@@ -398,26 +398,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     outline: none;
                     writing-mode: bt-lr;
                 }
-
                 .range-container {
-                    width: 60%;
+                    width:60%;
                 }
-                
             </style>
             <!-- Onglet reglage Alerte -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
                 <br /><br />
-                <legend>Plancher d'alertes</legend>
-
-
-                <div class="container range-container">
+                <legend>Plancher de déclenchement des alertes</legend>
+              
+                <div class="container range-container aqi">
 
                     <div class="form-group elements polution col-lg-12">
-
                     <div class="col-lg-6">
-
                        <div class="form-group">
-                        
                             <label class="col-sm-3 control-label ">{{AQI}}</label>
                             <div class="col-sm-6">
                                 <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="aqi_alert_level">
@@ -552,26 +546,25 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </select>
                         </div>
                         <br><br><br>
-
                         <label class="col-sm-3 control-label">{{Visibilité}}</label>
                         <div class="col-sm-6">
                             <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="visibility_alert_level">
-                                <option value="0">{{Très mauvaise}} : 0 - 700 m</option>
-                                <option value="700">{{Mauvaise}} : 700 - 3210 m</option>
-                                <option value="3210">{{Moyenne}} : 3210 - 8000 m</option>
-                                <option value="8000">{{Bonne}} : + 8000 m</option>
+                                <option value="700">{{Très mauvaise}} : 0 - 700 m</option>
+                                <option value="3210">{{Mauvaise}} : 700 - 3210 m</option>
+                                <option value="8000">{{Moyenne}} : 3210 - 8000 m</option>
+                                <option value="10000">{{Bonne}} : + 8000 m</option>
                             </select>
                         </div>
                         <br><br>
 
 
                     </div>
+
                 </div>
+                <div class="container range-container pollen">
+
                     <div class="form-group elements pollen">
-
-
                         <div class="range-slider aqi">
-
                             <?php
                             foreach ($eqLogics as $eqLogic) {
                                 $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
@@ -589,7 +582,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 $levelNettle_ = $eqLogic->getConfiguration('nettle_alert_level');
                                 $levelRagweed_ = $eqLogic->getConfiguration('ragweed_alert_level');
                                 $levelOthers_ = $eqLogic->getConfiguration('others_alert_level');
-
                                 if ($levelPoaceae_ != '') {
                                     $levelPoaceae = $levelPoaceae_;
                                 }
@@ -715,6 +707,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </div>
                     </div>
 
+                </div>
                 </div>
                 <!-- </div> -->
             </div>

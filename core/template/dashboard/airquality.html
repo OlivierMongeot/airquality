@@ -80,10 +80,8 @@
     #airquality-min#uid# {
     margin-top: 15px;
 }
-
 </style>
 <div class="aqi-#id#-container">
-
     <div class="header-#id#-container">
         <div class="#history# tooltips  header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
             <div title="#info-tooltips#" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
@@ -92,7 +90,6 @@
             <div class="display-aqi aqi-#id#-aqi state">#uv_level#</div>
         </div>
         <div class="#history# tooltips header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
-        
             <div title="#info-tooltips#" id="info-modal-aqi#id#" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
             <div title="#updateAt#" style="font-size: 1.8rem;" class="display-aqi aqi-#id#-aqi state tooltips">#aqi_name# #aqi#</div>
             <div style="font-size: 1.2rem;" class="display-aqi aqi-#id#-space state">#aqiinfo#</div>
@@ -104,11 +101,7 @@
             <div class="display-aqi aqi-#id#-aqi state">#visibility_level#</div>
         </div>    
     </div>
-    <div style="text-align: center;">
-        <marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;">#message_alert#</marquee>
-    </div>
-    
-
+    #message# 
     <div id="airquality-min#uid#" class="carousel slide" data-ride="carousel" data-pause="true" #classCaroussel#>
         <div class="carousel-inner" id="chart#id#">
             #mini_slide#
@@ -124,11 +117,7 @@
     </div>
 </div>
 <script>
-
-// Boite Modal Info  todo
-
     $(document).on ("click", "#info-modal-aqi#id#", function () {
-      
         $('#md_modal2').dialog({
         title: "Info AQI"
         });
@@ -195,12 +184,10 @@
         $('#md_modal2').load('index.php?v=d&plugin=airquality&modal=InfoCo&id=co#id#').dialog('open');
         });
         
-            var  mySlider#id# = $('#airquality-min#uid#').carousel({pause: "true"});
+    var  mySlider#id# = $('#airquality-min#uid#').carousel({pause: "true"});
                 
-
     if ('#animation#'== 'active') {
                     var t#uid#;
-
                     var start#uid# = $('#airquality-min#uid#').find('.active').attr('data-interval');
                     t#uid# = setTimeout("$('#airquality-min#uid#').carousel({interval: 1000});",
                          start#uid# - 1000);
