@@ -424,14 +424,14 @@ class DisplayInfo
 
     private function getSynonyme($name){
         $synonymes = [
-            'concentration' => ['concentration','densité', 'quantité','mesure', 'teneur'], 
+            'concentration' => ['quantité','mesure', 'teneur'], 
             'amélioration' => ['amélioration','embellie'],
             'dégradation' => ['dégradation','altération','détérioration'],
             'hausse' => ['hausse','augmentation', 'élévation'],
             'stable' => ['stable','persistant','constant','équilibré','stabilisé'],
             'niveau' => ['au niveau','au palier', 'à l\'échelon'],
             'reste' => ['reste', 'se stabilise','stable'],
-            ' à cause d\'' => [' à cause d\'','avec ',' en raison d\''],
+            ' à cause d\'' => [' avec ',' avec ',' avec '],
             ' grâce à ' => [' grâce à ',' avec '],
             ' avec ' => [' grâce à ',' avec ', ' avec '],
             'baisse' => ['baisse','diminution']
