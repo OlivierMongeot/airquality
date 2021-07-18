@@ -12,5 +12,12 @@
 - commandes inutiles effacées en cas de switch Pollen/Aqi
 - Messages d'alertes paramétrables 
 
+# 18/07/2012
+
+- Messages d'alertes affiché sur le widget
+- correction de bugs
+- formatage des alertes pour SMS et télégramme dispo dans 2 nouvelles commandes info 
+
+
 
 

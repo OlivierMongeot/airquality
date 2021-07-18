@@ -14,6 +14,12 @@ Cela historise aussi les données et donne accès la représentation graphique.
 
 Vous pouvez les désactiver en décochant 'Historiser' une fois les commandes créées dans l'onglet 'Commandes'
 
+Des alertes sont disponibles. Elles sont affichés à intervalles régulières sur le dashboard. Vous pouvez régler le niveaux des alertes.
+
+Elles sont formatées pour Telegram et SMS : deux commandes infos sont disponibles avec des infos d'alertes mises à jour. Elles peuvent vous servir pour lancer un scénario d'envoi de message facilement ( ex : envoi si un message est disponible ( != '') dans la commande/info ()
+
+
+
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png" class="img-responsive" alt="Pollen">
 </p>

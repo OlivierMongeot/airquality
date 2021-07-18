@@ -534,7 +534,6 @@ class airquality extends eqLogic
                         $displaySlide = (array_sum($max) > 0) ? true : false;
                     }
                    
-
                     if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 ||  $displaySlide === true) {
 
                         $iconePollen = new IconesPollen;
