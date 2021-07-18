@@ -319,7 +319,7 @@ class DisplayInfo
         }
 
  
-        $finalMessage = ($paramAlertAqi['alert_details'] == 1) ? $message + $messageInMore : $message;
+        $finalMessage = ($paramAlertAqi['alert_details'] == 1) ? array_merge($message, $messageInMore) : $message;
         
         $stringMess = implode(' - ', $finalMessage);
 
@@ -585,9 +585,9 @@ class DisplayInfo
             }
         }
 
-        if (!empty($message) && $paramAlertPollen['alert_details'] == 1) {
-            $message = $message + $messageInmore;
-        }
+        if ( $paramAlertPollen['alert_details'] == 1) {
+            $message = array_merge($message, $messageInmore);
+        } 
 
         $stringMess = implode(' - ', $message);
         if ($paramAlertPollen['alert_notification'] == 1) {
