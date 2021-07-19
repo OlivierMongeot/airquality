@@ -510,8 +510,6 @@ class airquality extends eqLogic
                 } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
                     $replace[$commandValue] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
 
-
-
                 } else  if ($nameCmd == 'updatedAt') {
 
                     $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate() : '';
