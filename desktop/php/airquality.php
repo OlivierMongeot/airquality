@@ -393,9 +393,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </style>
             <!-- Onglet reglage Alerte -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
-                <br /><br />
-                <legend>Plancher de déclenchement des alertes</legend>
-              
+                <br />
+                <legend><center> Plancher de déclenchement des alertes et de l'affichage sur le slider</center></legend>
+              <br />
                 <div class="container range-container aqi">
 
                     <div class="form-group elements polution col-lg-12">

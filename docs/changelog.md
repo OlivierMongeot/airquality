@@ -18,6 +18,15 @@
 - Correction de bugs
 - Formatage des alertes pour SMS et telegram dispo dans 2 nouvelles commandes info 
 
+# 19/07/2012
+
+- Bouton afficher tendances/min/max/moyenne pour toutes les infos 
+- Affichage des 3 familles de pollens sur 4 au total par niveaux décroissant. 
+- Formatage des alertes en Markdown pour Discord ou autres 
+- Affinage des niveaux d'alertes 
+- Décalage alerte Pollen / AQI de 1 min pour ne pas avoir toutes les alertes en même temps
+
+
 
 
 

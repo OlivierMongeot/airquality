@@ -44,15 +44,23 @@ class IconesPollen
     }
 
 
-    public function getColor()
+    public function getColor($value = false, $type = false)
     {
-        if ( $this->noColor == true)
+        if ($this->noColor == true)
         {
             $this->color = 'currentColor';
             return 'currentColor';
         }
-        
-        $composants = SetupAqi::$pollenRange;
+      $composants = SetupAqi::$pollenRange;
+
+        if ($value && $type){
+            foreach ($composants[$type] as $color => $range) {
+                if ($range[0] <= $value && $range[1] > $value) {
+                    return $color;
+                }
+            }
+        } 
+   
        
         foreach ($composants[$this->name] as $color => $range) {
             if ($range[0] <= $this->value && $range[1] > $this->value) {

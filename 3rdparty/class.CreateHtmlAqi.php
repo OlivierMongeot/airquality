@@ -11,7 +11,7 @@ class CreateHtmlAqi
     private $gender;
     private $slidesAtZero;
  
-    public function __construct($slides, $id, $itemByCell = 1, $version, $gender, $slidesAtZero)
+    public function __construct($slides = [], $id, $itemByCell = 1, $version, $gender, $slidesAtZero)
     {
         $this->id = $id;
         $this->countElements = count($slides);
@@ -28,7 +28,7 @@ class CreateHtmlAqi
         // log::add('airquality','debug', json_encode( $this->slides));
         $newTab = [];
         $array = $this->slides;
-
+        $html = [];
         if($this->itemByCell == 1) {
             for ( $i = 0 ; $i < ($this->countCell) ; $i++ ) {
                 $newTab[] = [$array[$i]] ;
@@ -38,7 +38,13 @@ class CreateHtmlAqi
                 $html[] =  $this->getStartCell($k, $total) . $item[0] . $this->getEndCell($k, $total);
             }
         }
-
+        
+        if (empty($html)){
+            $type = str_replace('polution', 'pollution', $this->gender);
+            $html[] = '<div style="display:flex;justify-content:center;height:100%;">';
+            $html[] = '<div style="display:flex;justify-content:center;height:50px;align-items: center">Pas de '.$type.' à afficher</div><br>';
+            $html[] =  '</div>';
+        }
         return implode( '', $html); 
     }
 
