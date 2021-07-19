@@ -1,8 +1,8 @@
 <?php
 // Setup Error : only dev 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -52,7 +52,6 @@ class airquality extends eqLogic
     public static function cron()
     {
         // Cron Pollution Toutes demie heure decalé 
-       
         foreach (self::byType('airquality') as $airQuality) {
             if ($airQuality->getConfiguration('elements') == 'polution') {
                 try {
