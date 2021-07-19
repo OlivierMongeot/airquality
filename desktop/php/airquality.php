@@ -620,7 +620,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             ?>
                             <label for="poaceae">{{Graminées / Poacées}}</label>
                             <div class="pull-right"><span id="disp_poaceae"></span> part/m3</div>
-                            <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="vertical" name="poaceae" id="poaceae"></input>
+                            <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="poaceae" id="poaceae"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
                             <br>
                             <label for="elm">{{Orme}}</label>
