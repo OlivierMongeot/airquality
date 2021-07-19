@@ -1,8 +1,8 @@
 <?php
 // Setup Error : only dev 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -524,7 +524,7 @@ class airquality extends eqLogic
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                     // Incrémentation Compteur de pollens actifs 
                     $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
-                    $displaySlide === false;
+                    $displaySlide = false;
                     // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les charts/slides
                     if ($this->getConfiguration('displayZeroPollen') == 1) {
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');

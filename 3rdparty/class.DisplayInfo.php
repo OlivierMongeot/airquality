@@ -734,7 +734,7 @@ class DisplayInfo
             foreach ($messages as $message) {
                 $message = str_replace('³', '3', $message);
                 $message = str_replace('²', '2', $message);
-                $arrayMessage[] = $message . " \n";
+                $arrayMessage[] = strip_tags($message) . " \n";
             }
             return implode(' ', $arrayMessage);
         }
