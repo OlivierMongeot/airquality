@@ -341,9 +341,10 @@ class DisplayInfo
             message::add('Message Pollution', $stringMess);
         }
 
-        $telegramMessage = $this->formatAqiForTelegram($finalMessage);
+        $htmlMessage = $this->formatAqiForTelegram($finalMessage);
         $smsMessage = $this->formatAqiForSms($finalMessage);
-        return [$stringMess, $telegramMessage, $smsMessage];
+        $markdownMessage = $this->formatAqiMarkdown($finalMessage);
+        return [$stringMess, $htmlMessage, $smsMessage, $markdownMessage];
     }
 
 
@@ -428,12 +429,12 @@ class DisplayInfo
             'amélioration' => ['amélioration','embellie'],
             'dégradation' => ['dégradation','altération','détérioration'],
             'hausse' => ['hausse','augmentation', 'élévation'],
-            'stable' => ['stable','constant','équilibré','stabilisé'],
+            'stable' => ['stable','constant','stabilisé'],
             'niveau' => ['au niveau','au palier', 'à l\'échelon'],
             'reste' => ['reste', 'se stabilise','stable'],
             ' à cause d\'' => [' avec ',' avec ',' avec '],
-            ' grâce à ' => [' grâce à ',' avec '],
-            ' avec ' => [' grâce à ',' avec ', ' avec '],
+            ' grâce à ' => [' grâce à ',' avec ',' avec '],
+            ' avec ' => [' avec ', ' avec ', ' avec ',' grâce à '],
             'baisse' => ['baisse','diminution']
 
         ];
@@ -638,10 +639,11 @@ class DisplayInfo
         if ($paramAlertPollen['alert_notification'] == 1) {
             message::add('Message Pollen', $stringMess);
         }
-
+        
         $telegramMessage = $this->formatPollensForTelegram($message);
+        $markdownMessage = $this->formatPollenMarkDown($message);
         $smsMessage = $this->formatPollensForSms($message);
-        return [$stringMess, $telegramMessage, $smsMessage];
+        return [$stringMess, $telegramMessage, $smsMessage, $markdownMessage];
     }
 
 
@@ -778,6 +780,7 @@ class DisplayInfo
                 }
                 $arrayMessage[] = "<em>" . $message . "</em> " .  $icon . " " . "   \n ";
             }
+            // log::add('airquality', 'debug', json_encode($arrayMessage));
             return implode(' ', $arrayMessage);
         } else {
             return '';
@@ -810,5 +813,62 @@ class DisplayInfo
             $arrayMessage[] = $message . " \n";
         }
         return implode(' ', $arrayMessage);
+    }
+
+
+    private function formatPollenMarkDown($messages){
+
+        $arrayMessage[] = ":blossom: **Alerte Pollens** :herb:". " ";
+        $findLetters = [
+            ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré'
+        ];
+        foreach ($messages as $message) {
+            $icon = '';
+            $message = str_replace('<b>', '**', $message);
+            $message = str_replace('</b>', '**', $message);
+            $message = strip_tags($message);
+
+            foreach ($findLetters as $key => $value) {
+                $match = (str_replace($value, '', $message) != $message);
+                if ($match) {
+                    $icon = $key;
+                }
+            }
+            $arrayMessage[] = $message."  " . $icon;
+        }
+        log::add('airquality', 'debug', 'Markdown Pollen : '. (implode(' ', $arrayMessage)));
+        return implode(' ', $arrayMessage);
+    }
+
+    private function formatAqiMarkdown($messages)
+    {
+        if (!empty($messages)) {
+            $arrayMessage[] = ":earth_africa:  **Alerte AQI** ";
+            foreach ($messages as $message) {
+                $icon = '';
+                $message = str_replace('<b>', '**', $message);
+                $message = str_replace('</b>', '**', $message);
+                $message = strip_tags($message);
+                foreach ($this->getIconsMarkdownWithStatus() as $key => $value) {
+                    $match = (str_replace($value, '', $message) != $message);
+                    if ($match) {
+                        $icon = $key;
+                    }
+                }
+                $arrayMessage[] =  $message ." " . " " .  $icon ;
+            }
+            log::add('airquality', 'debug', 'Markdown Pollution : '. (implode(' ', $arrayMessage)));
+            return implode(' ', $arrayMessage);
+        } else {
+            return '';
+        }
+    }
+
+    private function getIconsMarkdownWithStatus()
+    {
+         return  [
+            ':expressionless:' => 'correct', ':warning:' => 'élevé', ':persevere:' => 'mauvais', ':scream:' => 'très', ':imp:' => 'extrême', ':relaxed:' => 'modéré',
+            ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon'
+        ];
     }
 }

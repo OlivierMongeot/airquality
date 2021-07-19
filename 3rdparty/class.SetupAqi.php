@@ -37,7 +37,8 @@ class  SetupAqi
         ['name' => 'pm10_max', 'title' => 'PM10 Maxi prévision', 'unit' => '', 'subType' => 'string', 'order' => 28, 'display' => 'chart'],
         ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none'],
         ['name' => 'smsPollution', 'title' => 'SMS Pollution', 'unit' => '', 'subType' => 'string', 'order' => 30, 'display' => 'none'],
-        ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none']        
+        ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none'],
+        ['name' => 'markdownPollution', 'title' => 'Markdown Pollution', 'unit' => '', 'subType' => 'string', 'order' => 32, 'display' => 'none']     
     ];
 
     public static $setupPollen = [
@@ -101,7 +102,8 @@ class  SetupAqi
         ['name' => 'others_max', 'title' => 'Others Maxi prévision', 'unit' => 'part/m³', 'subType' => 'string', 'order' => 53, 'display' => 'chart'],
         ['name' => 'messagePollen', 'title' => 'Alerte Pollen', 'unit' => '', 'subType' => 'string', 'order' => 54, 'display' => 'none'],
         ['name' => 'telegramPollen', 'title' => 'Telegram Pollen', 'unit' => '', 'subType' => 'string', 'order' => 55, 'display' => 'none'],
-        ['name' => 'smsPollen', 'title' => 'SMS Pollen', 'unit' => '', 'subType' => 'string', 'order' => 56, 'display' => 'none']
+        ['name' => 'smsPollen', 'title' => 'SMS Pollen', 'unit' => '', 'subType' => 'string', 'order' => 56, 'display' => 'none'],
+        ['name' => 'markdownPollen', 'title' => 'Markdown Pollen', 'unit' => '', 'subType' => 'string', 'order' => 57, 'display' => 'none']
     ];
 
 

@@ -69,7 +69,7 @@ class airquality extends eqLogic
                         }
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                    log::add('airquality', 'debug', __('Expression cron non valide pour Pollution refresh forecast', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
                 // Refresh Alert AQI auto after 3 min 
                 try {
@@ -89,7 +89,7 @@ class airquality extends eqLogic
                         }
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                    log::add('airquality', 'debug', __('Expression cron non valide pour Refresh Alert AQI', __FILE__) . $airQuality->getHumanName() . ' : ' .  json_encode($e));
                 }
             }
             // Pollen refresh forecast
@@ -109,7 +109,7 @@ class airquality extends eqLogic
                         }
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh . ' - ' .  $e->getMessage());
+                    log::add('airquality', 'debug', __('Expression cron non valide pour Pollen refresh forecast', __FILE__) . $airQuality->getHumanName() . ' - ' .  $e->getMessage());
                 }
 
                 // Refresh alert Pollen
@@ -132,7 +132,7 @@ class airquality extends eqLogic
                         }
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $autorefresh);
+                    log::add('airquality', 'debug', __('Expression cron non valide pour Refresh alert Pollen', __FILE__) . $airQuality->getHumanName() . ' : '. json_encode($specialCron)  . json_encode($e));
                 }
             }
         }
@@ -318,7 +318,7 @@ class airquality extends eqLogic
             $cmdInfo->setEqLogic_id($this->getId())
                 ->setLogicalId($command['name'])
                 ->setType('info')
-                ->setOrder($command['order'])
+                // ->setOrder($command['order'])
                 ->setTemplate('dashboard', 'tile')
                 ->setSubType($command['subType'])
                 ->setUnite($command['unit'])
@@ -339,7 +339,7 @@ class airquality extends eqLogic
             return $replace;
         }
 
-        $this->emptyCacheWidget(); //vide le cache. Pour le développement
+        // $this->emptyCacheWidget(); //vide le cache. Pour le développement
 
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
@@ -371,7 +371,7 @@ class airquality extends eqLogic
                     [$uvLevel,$indiceLevel] = $display->getUVLevel($cmd->execCmd());
                     $replace['#uv_level#'] = $isObjet ?  $uvLevel : '';
                     if ($indiceLevel >= 3 ){
-                        // $counterActivePolluant++;
+                        $counterActivePolluant++;
                     }
 
                 } else if ($nameCmd == 'visibility') {
@@ -507,6 +507,9 @@ class airquality extends eqLogic
                     $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
                 } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
                     $replace[$commandValue] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
+
+
+                    
                 } else  if ($nameCmd == 'updatedAt') {
 
                     $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate() : '';
@@ -519,7 +522,7 @@ class airquality extends eqLogic
                         $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;">' . $message_alert . '</marquee>';
                         $htmlAlertPollen .= '</div>';
                         $replace['#message_alert#'] =  $htmlAlertPollen;
-                        self::makeThreeMinuteAction('alertPollenCronTwoMin');
+                        self::makeThreeMinuteAction('alertPollenCronTwoMin', 2);
                     }
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                     // Incrémentation Compteur de pollens actifs 
@@ -621,7 +624,6 @@ class airquality extends eqLogic
                 $active_pollen_label = __('Pollens actifs', __FILE__);
                 $htmlActivePollen = '<div title="' . $updatedAt .'" class="cmd noRefresh header-'.$this->getId().'-mini ';
                 $htmlActivePollen .= 'active-pollen-' . $this->getId() . ' " data-type="info" data-subtype="string" data-cmd_id="'.$cmd->getId().'">';
-               
                 $htmlActivePollen .= $active_pollen_label . ' : ' . $activePollenCounter . ' / 15 </div>';
                 $replace['#message_alert#'] = $htmlActivePollen;
             }
@@ -652,19 +654,19 @@ class airquality extends eqLogic
         }
     }
 
-    public static function makeThreeMinuteAction($ConfigName)
+    public static function makeThreeMinuteAction($configName, $delay = 3)
     {
-      
         $now = new \DateTime();
         $hour = $now->format('H');
         $minute = $now->format('i');
-        $minute = $minute + 3;
+        $minute = $minute + $delay;
         $cron =  $minute . ' ' . $hour . ' * * *';
+        log::add('airquality', 'debug', 'Make cron + '.$delay .' - '. $cron);
         foreach (self::byType('airquality') as $airQuality) {
-                $airQuality->setConfiguration($ConfigName, $cron)->save();
+                $airQuality->setConfiguration($configName, $cron)->save();
         }
     }
-
+    // Callback
     public static function toInt($string)
     {
         return (int)$string;
@@ -810,7 +812,6 @@ class airquality extends eqLogic
      */
     public function updatePollen()
     {
-
         $dataAll = $this->getApiData('getAmbee');
         if (isset($dataAll->data)) {
             $oldData = $this->getCurrentValues();
@@ -846,6 +847,8 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('telegramPollen', $telegramMess);
             $smsMess = !empty($messagesPollens[0]) ? $messagesPollens[2] : '';
             $this->checkAndUpdateCmd('smsPollen',  $smsMess);
+            $markdownMessage = !empty($messagesPollens[0]) ? $messagesPollens[3] : '';
+            $this->checkAndUpdateCmd('markdownPollen', $markdownMessage);
             $this->refreshWidget();
         }
     }
@@ -878,6 +881,8 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('telegramPollution', $telegramMess);
         $smsMess = !empty($messagesPollution[0]) ? $messagesPollution[2] : '';
         $this->checkAndUpdateCmd('smsPollution',  $smsMess);
+        $markdownMessage = !empty($messagesPollution[0]) ? $messagesPollution[3] : '';
+        $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
         $this->refreshWidget();
     }
 
@@ -961,6 +966,7 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('messagePollution', '');
         $this->checkAndUpdateCmd('telegramPollution', '');
         $this->checkAndUpdateCmd('smsPollution', '');
+        $this->checkAndUpdateCmd('markdownPollution', '');
         $this->refreshWidget();
     }
 
@@ -970,6 +976,7 @@ class airquality extends eqLogic
         $this->checkAndUpdateCmd('messagePollen', '');
         $this->checkAndUpdateCmd('telegramPollen', '');
         $this->checkAndUpdateCmd('smsPollen', '');
+        $this->checkAndUpdateCmd('markdownPollen', '');
         $this->reorderCmdPollen();
         $this->refreshWidget();
     }
@@ -1008,7 +1015,8 @@ class airquality extends eqLogic
         }
         arsort($tabOrder, SORT_REGULAR);
         $k = 0;
-        // message::add('setOrder Pollen','Check');
+        // message::add('set Ordre Pollen','Range pollen décroissant : '. json_encode($tabOrder));
+        log::add('airquality', 'debug','Range pollen décroissant : '. json_encode($tabOrder));
         foreach ($tabOrder as $key => $unuse) {
             $cmd = $this->getCmd(null, $key);
             $cmd->setOrder($k);

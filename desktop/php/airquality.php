@@ -218,16 +218,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-                            <div style="display:none" class="form-group">
-                                <label class="col-sm-3 control-label">{{Affichage}}</label>
-                                <div class="col-sm-6">
-                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="displayMode">
-                                        <option value="min_display">{{Digital}}</option>
-                                        <option disabled value="full_display">{{Analogique}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
                                 <div class="col-sm-6">
@@ -239,7 +229,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                             <br>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Alertes par notifications}}</label>
+                                <label class="col-sm-3 control-label">{{Alertes notifications Jeedom}}</label>
                                 <div class="col-sm-6">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="alert_notification" />{{activer}}
@@ -294,7 +284,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <label class="checkbox-inline">
                                         <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{Visible}}
                                     </label>
-
                                 </div>
                             </div>
 
