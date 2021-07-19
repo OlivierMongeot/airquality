@@ -512,6 +512,7 @@ class airquality extends eqLogic
                         case 'weed_pollen':
                             $weedPollenCmd = $this->getCmd(null, 'weed_risk');
                             $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($weedPollenCmd->execCmd()) : '';
+
                     }
 
                     $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
@@ -576,7 +577,7 @@ class airquality extends eqLogic
                         $unitreplace['#color#'] =  ($isObjet &&  !empty($iconePollen->getColor())) ?  $iconePollen->getColor() : '#222222';
                         $labels = $this->getCmd(null, 'daysPollen');
                         $unitreplace['#labels#'] =  (is_object($labels) && !empty($labels->execCmd())) ? $labels->execCmd() : "['no','-','data']";
-                        //  Message
+                        //  Risk
                         $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                         $unitreplace['#risk#'] =  $isObjet ?  $display->getElementRiskPollen($iconePollen->getColor()) : '';
                         // Moyenne Min Max Tendance 
@@ -625,6 +626,23 @@ class airquality extends eqLogic
                             $tabZero[] = template_replace($pollenZeroReplace, $templateZero);
                         }
                     }
+
+                     // Affichage central pour AQI à la fin/(double passage if) car double affichage
+                    if ($nameCmd == 'others') {
+                   
+                        $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
+                        $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
+                        $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
+                        $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
+                        $iconePollen = new IconesPollen;
+                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
+                        $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
+                        // $listPollen = '#list_' . $nameCmd . '#';
+                        $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
+                        $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
+                        $indexValue = $isObjet ? $cmd->execCmd() : '';
+                        $tabHeader[$indexValue] = template_replace($headerReplace, $headerTemplate);
+                    }
                 }
             }
 
@@ -648,11 +666,11 @@ class airquality extends eqLogic
 
             ksort($tabHeader);
             $tabHeader = array_reverse($tabHeader);
+            array_pop($tabHeader);
             $headerHtml =  implode('', $tabHeader);
             log::add('airquality', 'debug', json_encode($headerHtml));
             $replace['#header#'] =  $headerHtml;
         }
-
 
         // Replace Global        
 

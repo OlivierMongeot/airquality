@@ -153,7 +153,7 @@ class DisplayInfo
             case 'weed_pollen':
                 return __('Chenopod', __FILE__) . ' - ' . __('Armoise', __FILE__) . ' - ' . __('Ortie', __FILE__) . ' - ' . __('Ambroisie', __FILE__);
                 break;
-            case 'autres':
+            default:
                 return __("Autres pollens d'origine inconnue", __FILE__);
         }
     }
