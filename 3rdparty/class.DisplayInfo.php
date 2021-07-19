@@ -320,7 +320,7 @@ class DisplayInfo
         // AQI
         $newAqi = $newDataPollution->main->aqi;
         $oldAqi = $oldData['aqi'];
-        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi || $newAqi < $oldAqi || $message != []) {
+        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi < $oldAqi || $message != []) {
             if ($newAqi > $oldAqi) {
                 $message[] = __('- Dégradation de l\'AQI à l\'indice ', __FILE__) . $newAqi;
             } else if ($newAqi < $oldAqi) {
@@ -331,8 +331,6 @@ class DisplayInfo
             }
             $importance['aqi'] =  $newAqi;
         }
-
-        // message::add('Importance', json_encode($importance));
 
         $finalMessage = ($paramAlertAqi['alert_details'] == 1) ? array_merge($message, $messageInMore) : $message;
         $stringMess = implode(' - ', $finalMessage);
@@ -425,13 +423,13 @@ class DisplayInfo
 
     private function getSynonyme($name){
         $synonymes = [
-            'concentration' => ['quantité','mesure', 'teneur'], 
-            'amélioration' => ['amélioration','embellie'],
+            'concentration' => ['quantité','mesure', 'teneur','mesure','quantité'], 
+            'amélioration' => ['amélioration','embellie','amélioration'],
             'dégradation' => ['dégradation','altération','détérioration'],
-            'hausse' => ['hausse','augmentation', 'élévation'],
-            'stable' => ['stable','constant','stabilisé'],
-            'niveau' => ['au niveau','au palier', 'à l\'échelon'],
-            'reste' => ['reste', 'se stabilise','stable'],
+            'hausse' => ['hausse','augmentation', 'élévation','hausse'],
+            'stable' => ['stable','constant','stabilisé','stable'],
+            'niveau' => ['au niveau','au palier', 'à l\'échelon','au niveau'],
+            'reste' => ['reste', 'se stabilise','stable','stable'],
             ' à cause d\'' => [' avec ',' avec ',' avec '],
             ' grâce à ' => [' grâce à ',' avec ',' avec '],
             ' avec ' => [' avec ', ' avec ', ' avec ',' grâce à '],
@@ -810,14 +808,13 @@ class DisplayInfo
     {
         $arrayMessage[] = "-- Alerte Pollens -- \n";
         foreach ($messages as $message) {
-            $arrayMessage[] = $message . " \n";
+            $arrayMessage[] = strip_tags($message) . " \n";
         }
         return implode(' ', $arrayMessage);
     }
 
 
     private function formatPollenMarkDown($messages){
-
         $arrayMessage[] = ":blossom: **Alerte Pollens** :herb:". " ";
         $findLetters = [
             ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré'
