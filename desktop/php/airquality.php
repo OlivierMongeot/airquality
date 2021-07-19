@@ -279,10 +279,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <br>
                 
                             <div class="form-group elements pollen">
-                                <label class="col-sm-3 control-label">{{Pollens Niveau Zéro}}</label>
+                                <label class="col-sm-3 control-label">{{Pollens niveaux zéro}}</label>
                                 <div class="col-sm-6">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{Visible}}
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{visibles à la fin du slide}}
                                     </label>
                                 </div>
                             </div>

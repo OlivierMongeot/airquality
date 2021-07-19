@@ -635,7 +635,7 @@ class airquality extends eqLogic
                         $tab[] = template_replace($unitreplace, $elementTemplate);
                     } else {
                         // Cas Pollen à ZERO 
-                        if ($this->getConfiguration('displayZeroPollen') == 1) {
+                        if ($this->getConfiguration('displayZeroPollen') == 1 && $cmd->execCmd() == 0) {
 
                             $iconePollen = new IconesPollen;
                             $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
