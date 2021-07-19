@@ -384,7 +384,7 @@ class airquality extends eqLogic
                     [$visibilityLevel,$indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
                     $replace['#visibility_level#'] =  $isObjet ? $visibilityLevel : '';
                     if ($indiceLevel >= 3 ){
-                        // $counterActivePolluant++;
+                        $counterActivePolluant++;
                     }
                 } else if ($nameCmd == 'telegramPollution') {
 
@@ -473,7 +473,7 @@ class airquality extends eqLogic
             $replace['#index_name#'] = __('Indice', __FILE__);
             $k = 0; // for slider 
             if (!$alert){
-                      $active_aqi_label = __('Polluants en alerte : ', __FILE__);
+                      $active_aqi_label = __('Indices en alerte : ', __FILE__);
                         // $htmlActivePollen = '<div class="cmd noRefresh header-' . $this->getId() . '-mini active-aqi-' . $this->getId() . ' ">';
                         $htmlActivePollen = '<div style="text-align: center; font-size:110%; margin:10px 0px;" class="cmd noRefresh">';
                         $htmlActivePollen .=  $active_aqi_label. $counterActivePolluant . ' / 8 </div>';
@@ -505,11 +505,13 @@ class airquality extends eqLogic
                     $replace[$nameIcon] = $isObjet ?  $newIcon : '';
                     $listPollen = '#list_' . $nameCmd . '#';
                     $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
+
+
                 } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
                     $replace[$commandValue] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
 
 
-                    
+
                 } else  if ($nameCmd == 'updatedAt') {
 
                     $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate() : '';
