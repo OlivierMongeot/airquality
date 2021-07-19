@@ -201,7 +201,7 @@ class airquality extends eqLogic
             }
         }
 
-        
+
     }
 
 
@@ -344,9 +344,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-
         // $this->emptyCacheWidget(); //vide le cache. Pour le développement
-
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
         $display = new DisplayInfo;
@@ -491,7 +489,7 @@ class airquality extends eqLogic
         if ($this->getConfiguration('elements') == 'pollen') {
 
             $elementTemplate = getTemplate('core', $version, 'elementPollen', 'airquality');
-            // $headerTemplate = getTemplate('core', $version, 'headerPollen', 'airquality');
+            $headerTemplate = getTemplate('core', $version, 'headerPollen', 'airquality');
 
             foreach ($this->getCmd('info') as $cmd) {
 
@@ -503,19 +501,44 @@ class airquality extends eqLogic
                 $info = '#' . $nameCmd . 'info#';
                 $isObjet = is_object($cmd);
 
+               
+                // if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
+                //     $replaceRisk[$nameCmd] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
+
+                // } else
                 if ($nameCmd == 'tree_pollen' || $nameCmd == 'grass_pollen'  || $nameCmd == 'weed_pollen') {
-                    $replace[$commandValue] =  $isObjet ? $cmd->execCmd() : '';
-                    $replace[$commandNameId] =   $isObjet ? $cmd->getId() : '';
-                    $replace[$commandName] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
+                    // $replace[$commandValue] =  $isObjet ? $cmd->execCmd() : '';
+                    // $replace[$commandNameId] =   $isObjet ? $cmd->getId() : '';
+                    // $replace[$commandName] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
+                    // $iconePollen = new IconesPollen;
+                    // $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
+                    // $replace[$nameIcon] = $isObjet ?  $newIcon : '';
+                    // $listPollen = '#list_' . $nameCmd . '#';
+                    // $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
+                    switch ($nameCmd) {
+                        case 'tree_pollen':
+                            $treePollenCmd = $this->getCmd(null, 'tree_risk');
+                            $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($treePollenCmd->execCmd()) : '';
+                        case 'grass_pollen':
+                            $grassPollenCmd = $this->getCmd(null, 'grass_risk');
+                            $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($grassPollenCmd->execCmd()) : '';
+                        case 'weed_pollen':
+                            $weedPollenCmd = $this->getCmd(null, 'weed_risk');
+                            $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($weedPollenCmd->execCmd()) : '';
+                    }
+                  
+                    $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
+                    $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
+                    $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
+                    $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
                     $iconePollen = new IconesPollen;
                     $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
-                    $replace[$nameIcon] = $isObjet ?  $newIcon : '';
-                    $listPollen = '#list_' . $nameCmd . '#';
-                    $replace[$listPollen] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
+                    $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
+                    // $listPollen = '#list_' . $nameCmd . '#';
+                    $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
 
+                    $tabHeader[] = template_replace($headerReplace, $headerTemplate);
 
-                } else  if ($nameCmd == 'grass_risk' || $nameCmd == 'tree_risk' || $nameCmd == 'weed_risk') {
-                    $replace[$commandValue] =  $isObjet ? $display->getPollenRisk($cmd->execCmd()) : '';
 
                 } else  if ($nameCmd == 'updatedAt') {
 
@@ -636,8 +659,11 @@ class airquality extends eqLogic
             }
         }
 
-
         // Replace Global        
+        $headerHtml =  implode('', $tabHeader ); 
+        log::add('airquality','debug', json_encode($headerHtml));
+        $replace['#header#'] =  $headerHtml;
+
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
 
         $elementHtml = new CreateHtmlAqi($tab, $this->getId(), 1, $version, $this->getConfiguration('elements'), $k);
