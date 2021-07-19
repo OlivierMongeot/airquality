@@ -246,16 +246,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-                            <!-- <div class="form-group">
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Mini, Maxi, Moyenne, Tendance, Statistiques}}</label>
                                 <div class="col-sm-6">
-                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="historize">
+                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="data_history">
                                         <option value="actived">{{Activer}}</option>
                                         <option value="disable">{{Désactiver}}</option>
                                     </select>
                                 </div>
                             </div>
-                            <br> -->
+                            <br>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Elements à afficher}}</label>
                                 <div class="col-sm-6">
@@ -620,7 +620,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             ?>
                             <label for="poaceae">{{Graminées / Poacées}}</label>
                             <div class="pull-right"><span id="disp_poaceae"></span> part/m3</div>
-                            <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="vertical" name="poaceae" id="poaceae"></input>
+                            <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="poaceae" id="poaceae"></input>
                             <input type="hidden" class="eqLogicAttr form-control" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
                             <br>
                             <label for="elm">{{Orme}}</label>

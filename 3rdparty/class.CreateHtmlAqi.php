@@ -97,5 +97,11 @@ class CreateHtmlAqi
             }
         }
     }
+
+    public function getHeader(){
+        // $html = '<div class="header"><div class="title">';
+        log::add('airquality','debug', json_encode(implode('', $this->slides)));
+        return implode('', $this->slides); 
+    }
 }
 
