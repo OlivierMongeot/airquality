@@ -25,7 +25,6 @@ class CreateHtmlAqi
 
     public function getLayer(){
        
-        // log::add('airquality','debug', json_encode( $this->slides));
         $newTab = [];
         $array = $this->slides;
         $html = [];
@@ -47,12 +46,7 @@ class CreateHtmlAqi
             $html[] = '<div style="display:flex;justify-content:center;height:30px;align-items: center">configuration</div><br>';
             $html[] =  '</div>';
         }
-        return implode( '', $html); 
-       
-  
-    
-
-        
+        return implode( '', $html);  
     }
 
     private function getEndCell($k, $total){
@@ -77,16 +71,16 @@ class CreateHtmlAqi
 
 
         if ($this->version == 'mobile' && $this->gender == 'polution' ){
-            return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row">';
+            return '<div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row">';
         } 
         else
         if ($this->version == 'mobile' && $this->gender == 'pollen' ){
             if ($k >= ($total - $this->slidesAtZero)){
 
-                return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row" ><div >';
+                return '<div id="slide-'.($k+1).'-'.$this->id.'-aqi row aqi-'.$this->id.'-row" ><div >';
             } else 
             {
-                return ' <div id="slide-'.($k+1).'-'.$this->id.'-aqi row first-row aqi-'.$this->id.'-row">';
+                return '<div id="slide-'.($k+1).'-'.$this->id.'-aqi row first-row aqi-'.$this->id.'-row">';
             }
 
         } 
@@ -111,10 +105,10 @@ class CreateHtmlAqi
         }
     }
 
-    public function getHeader(){
+    // public function getHeader(){
         // $html = '<div class="header"><div class="title">';
-        log::add('airquality','debug', json_encode(implode('', $this->slides)));
-        return implode('', $this->slides); 
-    }
+        // log::add('airquality','debug', json_encode(implode('', $this->slides)));
+    //     return implode('', $this->slides); 
+    // }
 }
 

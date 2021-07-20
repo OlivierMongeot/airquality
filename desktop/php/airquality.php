@@ -282,7 +282,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <label class="col-sm-3 control-label">{{Pollens niveaux zéro}}</label>
                                 <div class="col-sm-6">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{visibles à la fin du slide}}
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="displayZeroPollen" />{{visibles}}
                                     </label>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
                             <div class="form-group elements polution">
                                 <div class="container">
-                                    <h5>Code Couleurs utilisé pour l'AQI et les polluants</h5>
+                                    <h5>Code Couleur utilisé pour l'AQI et les polluants</h5>
                                 </div>
                                 <br>
                                 <div class="container">
@@ -324,7 +324,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <!--  -->
                             <div class="form-group elements pollen">
                                 <div class="container">
-                                    <h6>{{Code Couleurs Pollen utilisé dans le plugin}}</h6>
+                                    <h6>{{Code Couleur Pollen utilisé dans le plugin}}</h6>
                                 </div>
                                 <br>
                                 <div class="container">
