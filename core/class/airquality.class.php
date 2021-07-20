@@ -502,7 +502,7 @@ class airquality extends eqLogic
         // Pollen 
         if ($this->getConfiguration('elements') == 'pollen') {
             $tab = [];
-            $tabHeader =[];
+            $tabHeader = [];
             $elementTemplate = getTemplate('core', $version, 'elementPollen', 'airquality');
             $headerTemplate = getTemplate('core', $version, 'headerPollen', 'airquality');
 
@@ -533,26 +533,24 @@ class airquality extends eqLogic
                             $headerReplace['#main_risk#'] =  $isObjet ? $display->getPollenRisk($weedPollenCmd->execCmd()) : '';
 
                     }
-                    $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
                     $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
                     $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
                     $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
-                    $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
-                    $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
                     $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
-                    $indexValue = $isObjet ? $cmd->execCmd() : '';
-                    // Check force valeur debug 
-                    // if($nameCmd === 'tree_pollen'){
-                    //     $valueX = 300;
-                    //     $headerReplace['#main_pollen_value#'] = $valueX;
-                    //     $indexValue = $isObjet ? $valueX : '';
-                    //     $tabIndexValue[] = $indexValue;
+                    $value = $isObjet ? $cmd->execCmd() : '';
+                    // Hack Value tree //
+                    // if ($nameCmd == 'tree_pollen') {
+                        // $value = rand(0, 0);
+                        // $headerReplace['#main_pollen_value#'] = $value;
+                        // $newIcon = $iconePollen->getIcon($nameCmd, $value, $cmd->getId(), false);
                     // } else {
-                    //     $tabIndexValue[] = $indexValue;
-                    // }
-                    $tabIndexValue[] = $indexValue;
-                    $tabHeader[$indexValue] = template_replace($headerReplace, $headerTemplate);
-             
+                        $headerReplace['#main_pollen_value#'] = $value;
+                        $newIcon = $iconePollen->getIcon($nameCmd, $value, $cmd->getId(), false);
+                    // }                   
+                    $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
+                    $tabHederOne = template_replace($headerReplace, $headerTemplate);
+                    $tabHeader[] = [$tabHederOne, $value];
+                                
                 } else  if ($nameCmd == 'updatedAt') {
 
                     $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate() : '';
@@ -570,25 +568,13 @@ class airquality extends eqLogic
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
                    
                     $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
-                    // Check si les previsons pollen sont > 0 en partant d'une string-data pour l'inclure ou pas dans les charts/slides
-                    //   $displaySlide = false;
-                    // if ($this->getConfiguration('displayZeroPollen') == 1) {
-                    //     $maxCmd = $this->getCmd(null, $nameCmd . '_max');
-                    //     $max = $maxCmd->execCmd();
-                    //     $max = str_replace(['[', ']'], '', $max);
-                    //     $max = array_map('self::toInt', explode(",", $max));
-                    //     $displaySlide = (array_sum($max) > 0) ? true : false;
-                    // }
                     // Recup du setup 
                     $setupAlert = $this->getParamAlertPollen();
                     $index = $nameCmd.'_alert_level';
                     $maxAlertLevel = $setupAlert[$index];
                     $valueCurrent = $isObjet ? $cmd->execCmd() : '';
-
+                   
                     if ( $cmd->getIsVisible() == 1 && $maxAlertLevel <= $valueCurrent) {
-                    // if ($cmd->execCmd() > 0 && $cmd->getIsVisible() == 1 || $displaySlide === true ) {
-
-                        // $iconePollen = new IconesPollen;
                         $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                         $unitreplace['#icone#'] =  $isObjet ? $newIcon : '';
                         $unitreplace['#id#'] =  $isObjet ? $this->getId() : '';
@@ -641,11 +627,10 @@ class airquality extends eqLogic
                     } else {
                         // Cas Pollen à ZERO 
                         if ($this->getConfiguration('displayZeroPollen') == 1 && $cmd->execCmd() == 0) {
-                            // $iconePollen = new IconesPollen;
                             $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon : '';
                             $pollenZeroReplace['#id#'] = $isObjet ? $this->getId() : '';
-                            $pollenZeroReplace['#value#'] = $isObjet ?  $cmd->execCmd() : '';
+                            $pollenZeroReplace['#value#'] = $isObjet ? 0 : '';
                             $pollenZeroReplace['#name#'] = $isObjet ?  $cmd->getLogicalId() : '';
                             $pollenZeroReplace['#display-name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
                             $pollenZeroReplace['#cmdid#'] = $isObjet ?  $cmd->getId() : '';
@@ -662,14 +647,15 @@ class airquality extends eqLogic
                         $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
                         $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
                         $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
-                        
                         $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                         $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
                         $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';            
                         $headerReplace['#main_risk#'] =  $isObjet ? $display->getElementRiskPollen($iconePollen->getColor($cmd->execCmd(), $nameCmd)) : '';
-                        $indexValue = $isObjet ? $cmd->execCmd() : '';
-                        $tabHeader[$indexValue] = template_replace($headerReplace, $headerTemplate);
-                        $tabIndexValue[] = $indexValue;
+                        $value = $isObjet ? $cmd->execCmd() : '';
+                        // $headerReplace['#main_pollen_value#'] =  $isObjet ? 1000 : '';
+                        // $value = $isObjet ? 1000 : '';
+                        $tabHeaderOne = template_replace($headerReplace, $headerTemplate);
+                        $tabHeader[] = [$tabHeaderOne, $value];
                     }
                 }
             }
@@ -692,13 +678,14 @@ class airquality extends eqLogic
                 $replace['#message_alert#'] = $htmlActivePollen;
             }
 
-            ksort($tabHeader);
-            $tabHeader = array_reverse($tabHeader);
-            if (in_array(0, $tabIndexValue) && $this->getConfiguration('displayZeroPollen') == 0) {
-                array_pop($tabHeader);
+            $tabValue  = array_column($tabHeader, 1);
+            $tabHtml = array_column($tabHeader, 0);
+            array_multisort($tabValue, SORT_DESC, $tabHtml);
+           
+            if (in_array(0, $tabValue) && $this->getConfiguration('displayZeroPollen') == 0) {
+                array_pop($tabHtml);
             }
-            $headerHtml = implode('', $tabHeader);
-            $replace['#header#'] =  $headerHtml;
+            $replace['#header#'] = implode('', $tabHtml);
         }
 
         // Replace Global        
@@ -736,12 +723,7 @@ class airquality extends eqLogic
             $airQuality->setConfiguration($configName, $cron)->save();
         }
     }
-    // Callback
-    // public static function toInt($string)
-    // {
-    //     return (int)$string;
-    // }
-
+ 
 
     public static function postConfig_apikey()
     {

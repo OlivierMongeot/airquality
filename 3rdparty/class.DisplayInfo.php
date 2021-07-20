@@ -713,13 +713,7 @@ class DisplayInfo
         $allranges = SetupAqi::$pollenRange;
         $ranges = $allranges[$type];
         foreach ($ranges as $color => $range) {
-            // if($type == 'others'){
-            //     $value = 5;
-            //     message::add('Message Pollen Range', $range[0] . ' - ' . $range[1]);
-            //     message::add('Message Pollen Value', $value);
-            //     message::add('Message Pollen Color', $color);
-            // }
-            if ($range[0] <= $value && $range[1] > $value) {
+                if ($range[0] <= $value && $range[1] > $value) {
                 return strtolower($this->getElementRiskPollen($color));
             }
         }

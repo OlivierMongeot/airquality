@@ -48,9 +48,7 @@ class  SetupAqi
         ['name' => 'grass_risk', 'title' => 'Risque herbe', 'unit' => '', 'subType' => 'string', 'order' => 55, 'display' => 'main'],
         ['name' => 'weed_risk', 'title' => 'Risque mauvaise herbe', 'unit' => '', 'subType' => 'string', 'order' => 56, 'display' => 'main'],
         ['name' => 'tree_risk', 'title' => 'Risque arbres', 'unit' => '', 'subType' => 'string', 'order' => 57, 'display' => 'main'],
-
         ['name' => 'poaceae', 'title' => 'Graminées', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 6, 'display' => 'slide'],
-
         ['name' => 'alder', 'title' => 'Aulne', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 19, 'display' => 'slide'],
         ['name' => 'birch', 'title' => 'Bouleau', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 18, 'display' => 'slide'],
         ['name' => 'cypress', 'title' => 'Cyprès', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 8, 'display' => 'slide'],
@@ -60,14 +58,11 @@ class  SetupAqi
         ['name' => 'pine', 'title' => 'Pin', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 12, 'display' => 'slide'],
         ['name' => 'plane', 'title' => 'Platane', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 13, 'display' => 'slide'],
         ['name' => 'poplar', 'title' => 'Peuplier', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 14, 'display' => 'slide'],
-
         ['name' => 'chenopod', 'title' => 'Chenopod', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 15, 'display' => 'slide'],
         ['name' => 'mugwort', 'title' => 'Armoise', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 9, 'display' => 'slide'],
         ['name' => 'nettle', 'title' => 'Ortie', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 10, 'display' => 'slide'],
         ['name' => 'ragweed', 'title' => 'Ambroisie', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 7, 'display' => 'slide'],
-
         ['name' => 'others', 'title' => 'Autres', 'unit' => 'part/m3', 'subType' => 'numeric', 'order' => 22, 'display' => 'slide'],
-
         ['name' => 'updatedAt', 'title' => 'Update at', 'unit' => '', 'subType' => 'string', 'order' => 60, 'display' => 'main'],
         ['name' => 'daysPollen', 'title' => 'Forecast days Pollen', 'unit' => '', 'subType' => 'string', 'order' => 23, 'display' => 'chart'],
         ['name' => 'poaceae_min', 'title' => "Grass-Poaceae Mini prévision", 'unit' => 'part/m³', 'subType' => 'string', 'order' => 24, 'display' => 'chart'],
@@ -112,39 +107,39 @@ class  SetupAqi
         'poaceae' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 60],
-            '#E79C00' => [60, 128],
-            '#B00000' => [128, 1000] // 128 le 20/07
+            '#E79C00' => [60, 130],
+            '#B00000' => [130, 10000] // 130 le 20/07
 
         ],
         'elm' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'alder' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'birch' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'grass_pollen' => [
             '#00BD01' => [0, 30],
             '#EFE800' => [30, 60],
-            '#E79C00' => [60, 128], //128 le 20/07
-            '#B00000' => [128, 1000]
+            '#E79C00' => [60, 130], //130 le 20/07
+            '#B00000' => [130, 10000]
         ],
         'tree_pollen' => [
             '#00BD01' => [0, 80],
             '#EFE800' => [80, 200],
             '#E79C00' => [200, 300],
-            '#B00000' => [300, 1000]
+            '#B00000' => [300, 10000]
         ],
         'weed_pollen' => [
             '#00BD01' => [0, 25],
@@ -156,68 +151,68 @@ class  SetupAqi
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'oak' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'hazel' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'pine' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'plane' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'poplar' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],  
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'chenopod' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
 
         ],
         'mugwort' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'nettle' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 200],
-            '#B00000' => [200, 1000]
+            '#B00000' => [200, 10000]
         ],
         'ragweed' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ],
         'others' => [
             '#00BD01' => [0, 5],
             '#EFE800' => [5, 40],
             '#E79C00' => [40, 100],
-            '#B00000' => [100, 1000]
+            '#B00000' => [100, 10000]
         ]
     ];
 
