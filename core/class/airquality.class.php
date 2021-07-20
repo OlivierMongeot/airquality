@@ -392,6 +392,7 @@ class airquality extends eqLogic
                     $index = $nameCmd.'_alert_level';
                     $maxAlertLevel = $setupAlert[$index];
                     $valueCurrent = $isObjet ? $cmd->execCmd() : '';
+                    
                     if ($cmd->getIsVisible() == 1 && $maxAlertLevel <= $valueCurrent) {
                         $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), '30px');
                         $unitreplace['#icone#'] =  $isObjet ? $newIcon : '';
