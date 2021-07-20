@@ -12,21 +12,28 @@
 - commandes inutiles effacées en cas de switch Pollen/Aqi
 - Messages d'alertes paramétrables 
 
-# 18/07/2012
+# 18/07/2021
 
 - Messages d'alertes affichés sur le widget
 - Correction de bugs
 - Formatage des alertes pour SMS et telegram dispo dans 2 nouvelles commandes info 
 
-# 19/07/2012
+# 19/07/2021
 
 - Bouton afficher tendances/min/max/moyenne pour toutes les infos 
 - Affichage des 3 familles de pollens sur 4 au total par niveaux décroissant. 
-- Formatage des alertes en Markdown pour Discord ou autres 
+- Formatage des alertes en Markdown et Html pour pre-connection à Discord, Telegram ou autres (nouvelles commande info dispo : markdownPollution et markdownPollen)
 - Affinage des niveaux d'alertes 
 - Décalage alerte Pollen / AQI de 1 min pour ne pas avoir toutes les alertes en même temps
 
-
+# 20/07/2021
+- Affichage des 4 familles 
+- Bouton afficher/historiser les tendances/min/max/moyenne pour toutes les infos
+- Affinage des niveaux d’alertes pollen et AQI
+- Décalage alerte Pollen / AQI de 1 min pour ne pas avoir toutes les alertes en même temps
+- Synchro des réglages Alerte & Affichage : vous affichez les éléments sur le slide en fonction de sa valeur mini, même principe que pour les alertes
+- Affichage de la 4ème famille de pollen sur le header si elle est > 0
+- Affichage des polluants classés par ordre décroissant d’indice de pollution comme pour les pollens
 
 
 
