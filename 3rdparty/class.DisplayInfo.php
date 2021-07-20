@@ -320,16 +320,15 @@ class DisplayInfo
         // AQI
         $newAqi = $newDataPollution->main->aqi;
         $oldAqi = $oldData['aqi'];
-        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi < $oldAqi || $message != []) {
+        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi <= $oldAqi || $message != []) {
             if ($newAqi > $oldAqi) {
                 $message[] = __('- Dégradation de l\'AQI à l\'indice ', __FILE__) . $newAqi;
             } else if ($newAqi < $oldAqi) {
                 $message[] = __('- Amélioration de l\'AQI à l\'indice ', __FILE__) . $newAqi;
-            // } else if ($message != []) {
             }else {
                 $message[] = __('- AQI stable à l\'indice ', __FILE__) . $newAqi;
             }
-            $importance['aqi'] =  $newAqi;
+            $importance['aqi'] = $newAqi;
         }
 
         $finalMessage = ($paramAlertAqi['alert_details'] == 1) ? array_merge($message, $messageInMore) : $message;
@@ -378,23 +377,23 @@ class DisplayInfo
                 $message = __("- <b>" . $typeName . "</b> " . $decrease .  " ".$this->getSynonyme('niveau'), __FILE__) ." ". $newCategory;
                 $message .= $this->getSynonyme(' à cause d\'').$this->makeEndMessage($newData, $type);
             } else if ($oldCategory != 'extrême' && $oldCategory != 'très mauvaise') {
-                $messageInMore = __("- <b>" . $typeName . "</b>" . ' légère ' . strtolower($decrease) . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." ". $newCategory, __FILE__);
+                $messageInMore = __("- <b>" . $typeName . "</b>" . " ".$this->getSynonyme('petite')." " . strtolower($decrease) . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." ". $newCategory, __FILE__);
                 $messageInMore .= ' avec '.$this->makeEndMessage($newData, $type);
             }   else {
-                $messageInMore = __("- <b>" . $typeName . "</b> légère " . $decrease . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." max ". $newCategory, __FILE__);
+                $messageInMore = __("- <b>" . $typeName . "</b> ".$this->getSynonyme('petite')." " . $decrease . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." maximum ". $newCategory, __FILE__);
                 $messageInMore .= ' avec '.$this->makeEndMessage($newData, $type);
             }
             // Cas 2 : Baisse de l'AQI
         } else if ($newData < $oldData) {
             if ($newCategory != $oldCategory) {
                 $message = __("- <b>" . $typeName . "</b> " . $increase . " ".$this->getSynonyme('niveau'), __FILE__) ." ". $newCategory;
-                $message .=  $this->getSynonyme(' grâce à '). $this->makeEndMessage($newData, $type);
+                $message .=  $this->getSynonyme(' avec '). $this->makeEndMessage($newData, $type);
             } else if ($newCategory != 'bon' && $newCategory != 'bonne' && $newCategory != 'faible') {
             
-                $messageInMore = __("- <b>" . $typeName . "</b> petite " . $increase . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." ". $newCategory, __FILE__);
+                $messageInMore = __("- <b>" . $typeName . "</b> ".$this->getSynonyme('petite')." " . $increase . ", ".$this->getSynonyme('reste')." ".$this->getSynonyme('niveau')." ". $newCategory, __FILE__);
                 $messageInMore .= ' avec '. $this->makeEndMessage($newData, $type);
             } else {
-                $messageInMore = __("- <b>" . $typeName . "</b> légère " . $increase . ", ". $this->getSynonyme('reste')." au meilleur niveau", __FILE__);
+                $messageInMore = __("- <b>" . $typeName . "</b> ".$this->getSynonyme('petite')." " . $increase . ", ". $this->getSynonyme('reste')." au meilleur niveau", __FILE__);
                 $messageInMore .= ' avec '.$this->makeEndMessage($newData, $type);
             }
             // Cas 3 : niveau stable
@@ -423,18 +422,17 @@ class DisplayInfo
 
     private function getSynonyme($name){
         $synonymes = [
-            'concentration' => ['quantité','mesure', 'teneur','mesure','quantité'], 
+            'concentration' => ['quantité','mesure', 'concentration','mesure','quantité'], 
             'amélioration' => ['amélioration','embellie','amélioration'],
             'dégradation' => ['dégradation','altération','détérioration'],
             'hausse' => ['hausse','augmentation', 'élévation','hausse'],
             'stable' => ['stable','constant','stabilisé','stable'],
             'niveau' => ['au niveau','au palier', 'à l\'échelon','au niveau'],
             'reste' => ['reste', 'se stabilise','stable','stable'],
-            ' à cause d\'' => [' avec ',' avec ',' avec '],
-            ' grâce à ' => [' grâce à ',' avec ',' avec '],
+            ' à cause d\'' => [' avec ',' avec ',' en raison d\''],
             ' avec ' => [' avec ', ' avec ', ' avec ',' grâce à '],
-            'baisse' => ['baisse','diminution']
-
+            'baisse' => ['baisse','diminution'],
+            'petite'=>['petite','légère','légère','petite']
         ];
         if (isset($synonymes[$name])){
             $tab = $synonymes[$name];
