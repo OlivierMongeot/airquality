@@ -1,8 +1,8 @@
 <?php
 // Setup Error : only dev 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -493,7 +493,7 @@ class airquality extends eqLogic
                 $active_aqi_label = __('Indices en alerte : ', __FILE__);
                 // $htmlActivePollen = '<div class="cmd noRefresh header-' . $this->getId() . '-mini active-aqi-' . $this->getId() . ' ">';
                 $htmlActivePollen = '<div style="text-align: center; font-size:110%; margin:10px 0px;" class="cmd noRefresh">';
-                $htmlActivePollen .=  $active_aqi_label . $counterActivePolluant . ' / 8 </div>';
+                $htmlActivePollen .=  $active_aqi_label . $counterActivePolluant . ' / 11 </div>';
                 $replace['#message#'] = $htmlActivePollen;
             }
         }
@@ -501,6 +501,7 @@ class airquality extends eqLogic
         // Pollen 
         if ($this->getConfiguration('elements') == 'pollen') {
             $tab = [];
+            $tabHeader =[];
             $elementTemplate = getTemplate('core', $version, 'elementPollen', 'airquality');
             $headerTemplate = getTemplate('core', $version, 'headerPollen', 'airquality');
 
@@ -555,7 +556,7 @@ class airquality extends eqLogic
                     $alert = (!empty($message_alert)) ? true : false;
                     if ($alert) {
                         $htmlAlertPollen = '<div style="text-align: center; margin-top:20px">';
-                        $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;">' . $message_alert . '</marquee>';
+                        $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;height:18px">' . $message_alert . '</marquee>';
                         $htmlAlertPollen .= '</div>';
                         $replace['#message_alert#'] =  $htmlAlertPollen;
                         self::makeThreeMinuteAction('alertPollenCronTwoMin', 2);
@@ -717,7 +718,7 @@ class airquality extends eqLogic
         }
     }
 
-    public static function makeThreeMinuteAction($configName, $delay = 3)
+    public static function makeThreeMinuteAction($configName, $delay = 2)
     {
         $now = new \DateTime();
         $hour = $now->format('H');

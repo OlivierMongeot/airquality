@@ -320,7 +320,7 @@ class DisplayInfo
         // AQI
         $newAqi = $newDataPollution->main->aqi;
         $oldAqi = $oldData['aqi'];
-        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi <= $oldAqi || $message != []) {
+        if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi != $oldAqi || $message != []) {
             if ($newAqi > $oldAqi) {
                 $message[] = __('- Dégradation de l\'AQI à l\'indice ', __FILE__) . $newAqi;
             } else if ($newAqi < $oldAqi) {
