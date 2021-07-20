@@ -691,7 +691,7 @@ class airquality extends eqLogic
             $tabHeader = array_reverse($tabHeader);
             array_pop($tabHeader);
             $headerHtml =  implode('', $tabHeader);
-            log::add('airquality', 'debug', json_encode($headerHtml));
+            // log::add('airquality', 'debug', json_encode($headerHtml));
             $replace['#header#'] =  $headerHtml;
         }
 
@@ -731,10 +731,10 @@ class airquality extends eqLogic
         }
     }
     // Callback
-    public static function toInt($string)
-    {
-        return (int)$string;
-    }
+    // public static function toInt($string)
+    // {
+    //     return (int)$string;
+    // }
 
 
     public static function postConfig_apikey()

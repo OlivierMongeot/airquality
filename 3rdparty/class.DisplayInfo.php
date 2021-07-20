@@ -831,7 +831,7 @@ class DisplayInfo
             }
             $arrayMessage[] = $message."  " . $icon;
         }
-        log::add('airquality', 'debug', 'Markdown Pollen : '. (implode(' ', $arrayMessage)));
+        // log::add('airquality', 'debug', 'Markdown Pollen : '. (implode(' ', $arrayMessage)));
         return implode(' ', $arrayMessage);
     }
 
@@ -852,7 +852,7 @@ class DisplayInfo
                 }
                 $arrayMessage[] =  $message ." " . " " .  $icon ;
             }
-            log::add('airquality', 'debug', 'Markdown Pollution : '. (implode(' ', $arrayMessage)));
+            // log::add('airquality', 'debug', 'Markdown Pollution : '. (implode(' ', $arrayMessage)));
             return implode(' ', $arrayMessage);
         } else {
             return '';
