@@ -95,7 +95,6 @@ var getCoordinates = (cityName, cityCode) => {
                 } else {
                     html += '<i class="fas fa-times"></i>'
                 }
-
                 html += '</div><div class="form-group searchMode city_mode">	<label class="col-sm-3 control-label">{{Latitude}}</label><div class="col-sm-4">'
                 html += '<input value="' + data.result[0] + '" id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />'
                 html += '</div>'
@@ -114,7 +113,6 @@ var getCoordinates = (cityName, cityCode) => {
 }
 
 
-
 $('#validate-city').on('click', () => {
 
     let cityName = $('.eqLogicAttr[data-l1key=configuration][data-l2key=city]').value()
@@ -131,11 +129,10 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 });
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=elements]').on('change', function () {
-    $('.elements').prop( "disabled", true );
+    // $('.elements').prop( "disabled", true );
     $('.elements').hide();
-    $('.elements.' + $(this).value()).prop( "disabled", false );
+    // $('.elements.' + $(this).value()).prop( "disabled", false );
     $('.elements.' + $(this).value()).show();
-
 });
 
 /*
