@@ -252,6 +252,8 @@ getSlider('mugwort');
 getSlider('nettle');
 getSlider('ragweed');
 getSlider('others');
+getSlider('pollen');
+
 
 function getSlider(element) {
     var slider = document.getElementById(element);
