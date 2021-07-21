@@ -138,7 +138,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast test if new data available / date collect 
                 try {
-                    $c = new Cron\CronExpression('43 7,8,0 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('33 7,8 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             // Check if date collecté est normal 
@@ -151,20 +151,19 @@ class airquality extends eqLogic
                                 $interval = $datetimeCollected->diff($dateNow);
                                 log::add('airquality', 'debug', 'Intervale : derniere heure Collecte / maintenant pour forecast Pollen : ' . $interval->h);
                                 if ($interval->h >= 23) {
-                                            log::add('airquality', 'debug', 'Date de collecte trop ancienne : 2eme cron car le 1er refresh de 7h03 n\'a pas marcher');
                                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
                                             if (is_object($refresh)) {
+                                                 log::add('airquality', 'debug', 'Date de collecte >= 23h : 2eme cron lancé car 1er refresh de 7h03 n\'a pas marcher');
                                                 $refresh->execCmd();
                                             } else {
                                                 log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
                                             }
                                 } else {
-                                    log::add('airquality', 'debug', 'Test Date de collecte forecast Pollen OK : pas de relance du cron -> refresh');
+                                    log::add('airquality', 'debug', 'Test Date de collecte forecast Pollen OK : pas de relance du cron et refresh');
                                 }
                             } else {
                                 log::add('airquality', 'debug', 'Impossible de trouver la commande others_min pour ' . $airQuality->getHumanName());
                             }
-
 
                         } catch (Exception $e) {
                             log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $e->getMessage());
@@ -673,7 +672,7 @@ class airquality extends eqLogic
 
             $counterPollenZero = 0;
             if (isset($tabZero)) {
-                $newArray = array_chunk($tabZero, 4);
+                $newArray = array_chunk($tabZero, 3);
                 foreach ($newArray as $arr) {
                     $tabUnityHtml[] = implode('', $arr);
                     $counterPollenZero++;

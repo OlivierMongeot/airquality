@@ -392,7 +392,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <!-- Onglet Niveaux des Alertes -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
 
-                <div class="col-lg-7" style="padding:35px">
+                <div class="col-lg-7" style="padding:10px 35px">
                     <legend>
                         <span> Plancher de déclenchement des alertes</span>
                     </legend>
@@ -790,7 +790,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </div>
                 </div>
 
-                <div class="col-lg-5" style="padding:35px">
+                <div class="col-lg-5" style="padding:15px 35px">
                     <legend>
                         <span style="text-align:left">Options des alertes</span>
                     </legend>
