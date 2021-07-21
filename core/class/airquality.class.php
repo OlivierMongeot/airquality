@@ -413,7 +413,7 @@ class airquality extends eqLogic
                     $alert = (!empty($message_alert)) ? true : false;
                     if ($alert) {
                         $htmlAlertAqi = '<div style="text-align: center;">';
-                        $htmlAlertAqi .= '<marquee scrollamount="4" width="85%" height="20px" class="state" style="font-size: 110%;">' . $cmd->execCmd() . '</marquee>';
+                        $htmlAlertAqi .= '<marquee scrollamount="4" width="85%" height="20px" class="state" style="font-size: 100%;">' . $cmd->execCmd() . '</marquee>';
                         $htmlAlertAqi .= '</div>';
                         $replace['#message#'] =  $htmlAlertAqi;
                         self::makeThreeMinuteAction('alertAqiCronTwoMin');
@@ -504,7 +504,6 @@ class airquality extends eqLogic
                     $htmlActivePollen .=  $active_aqi_label.'&nbsp;&nbsp;'. $counterActivePolluant . ' / 11 </div>';
                     $replace['#message#'] = $htmlActivePollen;
                 }
-              
             }
             $tabUnityValue  = array_column($tabUnitReplace, 1);
             $tabUnityHtml = array_column($tabUnitReplace, 0);
@@ -568,8 +567,8 @@ class airquality extends eqLogic
                     $message_alert =  $isObjet ? $cmd->execCmd() : '';
                     $alert = (!empty($message_alert)) ? true : false;
                     if ($alert) {
-                        $htmlAlertPollen = '<div style="text-align: center; margin-top:20px">';
-                        $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 110%;height:20px">' . $message_alert . '</marquee>';
+                        $htmlAlertPollen = '<div style="text-align: center; margin-top:15px">';
+                        $htmlAlertPollen .= '<marquee scrollamount="4" width="85%" class="state" style="font-size: 100%;height:20px">' . $message_alert . '</marquee>';
                         $htmlAlertPollen .= '</div>';
                         $replace['#message_alert#'] =  $htmlAlertPollen;
                         self::makeThreeMinuteAction('alertPollenCronTwoMin', 2);
@@ -635,7 +634,6 @@ class airquality extends eqLogic
                     } else 
                         // Cas Pollen à ZERO 
                         if ($this->getConfiguration('pollen_alert_level') == 0 && $cmd->execCmd() == 0) {
-                        // if ($this->getConfiguration('displayZeroPollen') == 1 && $cmd->execCmd() == 0) {
                             $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon : '';
                             $pollenZeroReplace['#id#'] = $isObjet ? $this->getId() : '';
@@ -647,7 +645,6 @@ class airquality extends eqLogic
                             $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
                             $templateZero = getTemplate('core', $version, 'elementPollenZero', 'airquality');
                             $tabZero[] = template_replace($pollenZeroReplace, $templateZero);
-                        
                     }
 
 
@@ -670,7 +667,6 @@ class airquality extends eqLogic
                     }
                 }
             }
-
             $tabUnityValue  = array_column($tabUnitReplace, 1);
             $tabUnityHtml = array_column($tabUnitReplace, 0);
             array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
@@ -704,7 +700,6 @@ class airquality extends eqLogic
             array_multisort($tabValue, SORT_DESC, $tabHtml);
            
             if ( in_array(0, $tabValue) && $this->getConfiguration('pollen_alert_level') > 0  ) {
-            // if (in_array(0, $tabValue) && $this->getConfiguration('displayZeroPollen') == 0) {
                 array_pop($tabHtml);
             }
             $replace['#header#'] = implode('', $tabHtml);

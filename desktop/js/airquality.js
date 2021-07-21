@@ -38,26 +38,25 @@ var getCity = (latitude, longitude, displayFor) => {
     });
 }
 
-$('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', () => {
 
-    if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').value() == 'dynamic_mode') {
+$('#validate_dyn_mode').on('click', () => {
 
-        if (navigator.geolocation) {
-            console.log('Check New Location')
-            navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout: 10000, enableHighAccuracy: true });
-        }
+    if (navigator.geolocation) {
+        console.log('Check New Location')
+        navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout: 10000, enableHighAccuracy: true });
+    }
 
-        function maPosition(position) {
-            document.getElementById("latitude").value = position.coords.latitude;
-            document.getElementById("longitude").value = position.coords.longitude;
-            getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
-        }
-        function noLocation() {
-            console.log("Could not find location");
-        }
-
+    function maPosition(position) {
+        document.getElementById("latitude").value = position.coords.latitude;
+        document.getElementById("longitude").value = position.coords.longitude;
+        getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
+    }
+    function noLocation() {
+        console.log("Could not find location");
     }
 })
+
+
 
 
 $('#validate-llm').on('click', () => {
@@ -93,7 +92,7 @@ var getCoordinates = (cityName, cityCode) => {
                 html += '</div>'
                 if (data.result[1] != 0) {
                     html += '<i class="fas fa-check"></i>'
-                }else {
+                } else {
                     html += '<i class="fas fa-times"></i>'
                 }
 
@@ -120,13 +119,11 @@ $('#validate-city').on('click', () => {
 
     let cityName = $('.eqLogicAttr[data-l1key=configuration][data-l2key=city]').value()
     let cityCode = $('.eqLogicAttr[data-l1key=configuration][data-l2key=country_code]').value()
-
     if (cityCode.length >= 2 && cityName.length >= 2) {
         getCoordinates(cityName, cityCode)
     }
-
-
 });
+
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', function () {
     $('.searchMode').hide();
@@ -134,11 +131,11 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=searchMode]').on('change', 
 });
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=elements]').on('change', function () {
-    // $('.elements').prop( "disabled", true );
+    $('.elements').prop( "disabled", true );
     $('.elements').hide();
-    // $('.elements.' + $(this).value()).prop( "disabled", false );
+    $('.elements.' + $(this).value()).prop( "disabled", false );
     $('.elements.' + $(this).value()).show();
-   
+
 });
 
 /*
@@ -158,7 +155,6 @@ $("#table_cmd").sortable({
  */
 function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
-
         var _cmd = {
             configuration: {}
         };

@@ -72,7 +72,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
-            <li role="presentation"><a href="#alerttab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-exclamation-circle"></i><span class="hidden-xs"> {{Niveaux des alertes}}</span></a></li>
+            <li role="presentation"><a href="#alerttab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-exclamation-circle"></i><span class="hidden-xs"> {{Paramétrage des alertes}}</span></a></li>
         </ul>
         <div class="tab-content">
             <!-- Onglet de configuration de l'équipement -->
@@ -144,7 +144,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </select>
                                 </div>
                             </div>
-                            <!-- city_mode  -->
+                            <!-- city_mode Par Ville  -->
                             <div class="form-group searchMode city_mode">
                                 <label class="col-sm-3 control-label">{{Ville}}</label>
                                 <div class="col-sm-6">
@@ -171,7 +171,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <!-- Js -->
                             </div>
 
-                            <!-- longitude latitude mode -->
+                            <!-- longitude latitude mode long_lat_mode-->
                             <div class="form-group searchMode long_lat_mode">
                                 <label class="col-sm-3 control-label">{{Longitude}}</label>
                                 <div class="col-sm-6">
@@ -198,7 +198,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <input id="geo-loc-llm" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city-llm" />
                                 </div>
                             </div>
-                            <!-- dynamic_mode -->
+                            <!-- dynamic_mode Geoloc du navigateur -->
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Longitude }}</label>
                                 <div class="col-sm-6">
@@ -215,6 +215,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <label class="col-sm-3 control-label">{{Ville}}</label>
                                 <div class="col-sm-6">
                                     <input id="geoCity" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoCity" />
+                                </div>
+                            </div>
+                            <div class="form-group searchMode dynamic_mode">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-6">
+                                    <a id="validate_dyn_mode" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> {{Géolocaliser}}</a>
                                 </div>
                             </div>
                             <br>
@@ -244,12 +250,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
                                         <?php
                                         if (config::byKey('apikey', 'airquality') !== '') {
-                                            echo '<option value="polution">{{Polluant}}</option>';
+                                            echo '<option value="polution">{{Polluants (AQI, Ozone, PM}}<sub style="font-size: 50% important!;bottom:-0.25rem">2.5</sub>{{, PM}}<sub>10</sub>{{, Monoxyde de carbone, Amoniac,...)}}</option>';
                                         } else {
                                             echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef Openwheather avant utilisation}}</option>';
                                         }
                                         if (config::byKey('apikeyAmbee', 'airquality') !== '') {
-                                            echo '<option value="pollen">{{Pollen}}</option>';
+                                            echo '<option value="pollen">{{Pollens (Graminées, Orties, Ambroisies, Chénopodes, Bouleau, Chêne,...)  }}</option>';
                                         } else {
                                             echo '<option disabled="disabled" value="no-pollen-key">{{Pollen : Veuiller renseigner la clef Ambee avant utilisation}}</option>';
                                         }
@@ -274,7 +280,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 }
                             </style>
                             <div class="form-group elements pollen">
-                                <label class="col-sm-3 control-label">{{Quantité minimum pour être l'affiché}}</label>
+                                <label class="col-sm-3 control-label">{{Afficher à partir de}}</label>
                                 <div class="col-sm-6">
                                     <?php
                                     foreach ($eqLogics as $eqLogic) {
@@ -382,21 +388,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </table>
                 </div>
             </div><!-- /.tabpanel #commandtab-->
-            <!-- <style>
-                .range-slider.aqi .input-range.aqi {
-                    -webkit-appearance: none;
-                    height: 5px;
-                    border-radius: 5px;
-                    background: #ccc;
-                    outline: none;
-                    writing-mode: bt-lr;
-                }
-
-                .range-container {
-                    width: 60%;
-                }
-            </style> -->
-
+          
             <!-- Onglet Niveaux des Alertes -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
 
@@ -415,8 +407,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <thead>
                                     <tr>
                                         <th style="text-align:center">{{Éléments à suivre}}</th>
-                                        <th style="text-align:center">{{Niveau de l'alerte}}</th>
-                                        <th style="text-align:center">{{Synchroniser alerte & affichage}}</th>
+                                        <th style="text-align:center">{{Niveau de déclenchement des alertes}}</th>
+                                        <th style="text-align:center">{{Synchroniser alerte et affichage}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -477,7 +469,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </tr>
                                     <tr style="height: 50px !important;">
                                         <td>
-                                            <label class="control-label ">{{NO2}}</label>
+                                            <label class="control-label ">{{NO²}}</label>
                                         </td>
                                         <td>
                                             <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="no2_alert_level">
@@ -509,24 +501,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         </td>
                                         <td>
                                             <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="o3_synchro" />
-                                        </td>
-                                    </tr>
-                                    <tr style="height: 50px !important;">
-                                        <td>
-                                            <label class="control-label ">{{SO}}</label>
-                                        </td>
-                                        <td>
-                                            <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="so_alert_level">
-                                                <option value="0">{{Bon}} : 0 - 100 μg/m3 </option>
-                                                <option value="100">{{Correct}} : 100 - 200 μg/m3 </option>
-                                                <option value="200">{{Dégradé}} : 200 - 350 μg/m3</option>
-                                                <option value="350">{{Mauvais}} : 350 - 500 μg/m3 </option>
-                                                <option value="500">{{Très mauvais}} : 500 - 750 μg/m3</option>
-                                                <option value="750">{{Extrême}} : + 750 μg/m3</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="so_synchro" />
                                         </td>
                                     </tr>
                                     <tr style="height: 50px !important;">
@@ -564,6 +538,24 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         </td>
                                         <td>
                                             <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="co_synchro" />
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 50px !important;">
+                                        <td>
+                                            <label class="control-label ">{{SO}}</label>
+                                        </td>
+                                        <td>
+                                            <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="so_alert_level">
+                                                <option value="0">{{Bon}} : 0 - 100 μg/m3 </option>
+                                                <option value="100">{{Correct}} : 100 - 200 μg/m3 </option>
+                                                <option value="200">{{Dégradé}} : 200 - 350 μg/m3</option>
+                                                <option value="350">{{Mauvais}} : 350 - 500 μg/m3 </option>
+                                                <option value="500">{{Très mauvais}} : 500 - 750 μg/m3</option>
+                                                <option value="750">{{Extrême}} : + 750 μg/m3</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="so_synchro" />
                                         </td>
                                     </tr>
                                     <tr style="height: 50px !important;">
