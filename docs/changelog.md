@@ -35,5 +35,16 @@
 - Affichage de la 4ème famille de pollen sur le header si elle est > 0
 - Affichage des polluants classés par ordre décroissant d’indice de pollution comme pour les pollens
 
+# 22/07/2021
+
+- Redesing de la configuration 'Paramétrage des alertes'
+- Synchro 'Alerte et affichage' au choix pour les polluants (au lieu d'obligatoire)
+- Reglage du niveau mini d'affichage des pollens de zéro à 100 (au lieu de zéro ou tous) 
+- Debug CRON forecast Pollen ajout fonction de reflexion
+- Affichage 'Pas d'indice en alerte' au lieu de 'Indices en alerte 0 / 15'
+- Affichage 'Aucun pollen actif' au lieu de 'Pollens actifs 0 / 15'
+- Optimisation / allègement du code 
+
+
 
 

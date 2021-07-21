@@ -250,12 +250,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
                                         <?php
                                         if (config::byKey('apikey', 'airquality') !== '') {
-                                            echo '<option value="polution">{{Polluants (AQI, Ozone, PM}}<sub style="font-size: 50% important!;bottom:-0.25rem">2.5</sub>{{, PM}}<sub>10</sub>{{, Monoxyde de carbone, Amoniac,...)}}</option>';
+                                            echo '<option value="polution">{{Polluants (AQI, Ozone, PM}}2.5{{, PM}}<sub>10</sub>{{, Monoxyde de carbone,...)}}</option>';
                                         } else {
                                             echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef Openwheather avant utilisation}}</option>';
                                         }
                                         if (config::byKey('apikeyAmbee', 'airquality') !== '') {
-                                            echo '<option value="pollen">{{Pollens (Graminées, Orties, Ambroisies, Chénopodes, Bouleau, Chêne,...)  }}</option>';
+                                            echo '<option value="pollen">{{Pollens (Graminées, Orties, Ambroisies, Chénopodes, Bouleau,...)  }}</option>';
                                         } else {
                                             echo '<option disabled="disabled" value="no-pollen-key">{{Pollen : Veuiller renseigner la clef Ambee avant utilisation}}</option>';
                                         }
