@@ -140,7 +140,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             echo '<option disabled="disabled" value="server_mode">{{Localisation Jeedom non renseigné dans la configuration générale}}</option>';
                                         }
                                         ?>
-                                        <!-- <option value="dynamic_mode_live">{{Géolocalisation Live}}</option> -->
                                     </select>
                                 </div>
                             </div>
@@ -202,13 +201,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Longitude }}</label>
                                 <div class="col-sm-6">
-                                    <input id="longitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
+                                    <input id="longitude" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Latitude}}</label>
                                 <div class="col-sm-6">
-                                    <input id="latitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
+                                    <input id="latitude" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
@@ -220,10 +219,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-6">
-                                    <a id="validate_dyn_mode" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> {{Géolocaliser}}</a>
+                                    <a id="validate_dyn_mode" class="btn btn-sm btn-success"><i class="fas fa-map-marked-alt"></i> {{Géolocaliser}}</a>
                                 </div>
                             </div>
-                            <br>
+                            <div class="form-group searchMode dynamic_mode">
+                                <label class="col-sm-3 control-label">{{Options}}</label>
+                                <div class="col-sm-7">
+                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="mobile_live" />{{Activer Mobile live}}</label>
+                                </div>
+                            </div>
+                            <br />
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
                                 <div class="col-sm-6">
@@ -265,6 +270,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
+                            <?php
+                            //   foreach ($eqLogics as $eqLogic) {
+                            //    $eqLogic->getId() ;
+                            //    log::add('airquality', 'debug', 'ID EqLogic : ' . $eqLogic->getId());
+                            // }
+                            // $idSave = 
+                            // $id = random_int(1, 100000);
+
+
+
+
+                            ?>
                             <style>
                                 .range-slider.aqi .input-range.aqi {
                                     -webkit-appearance: none;
@@ -388,7 +405,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </table>
                 </div>
             </div><!-- /.tabpanel #commandtab-->
-          
+
             <!-- Onglet Niveaux des Alertes -->
             <div role="tabpanel" class="tab-pane" id="alerttab">
 
@@ -482,7 +499,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="checkbox" class="eqLogicAttr"  data-l1key="configuration" data-l2key="no2_synchro"/>
+                                            <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="no2_synchro" />
                                         </td>
                                     </tr>
                                     <tr style="height: 50px !important;">
@@ -591,7 +608,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="checkbox" class="eqLogicAttr"  data-l1key="configuration" data-l2key="nh3_synchro" />
+                                            <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="nh3_synchro" />
                                         </td>
                                     </tr>
                                     <tr style="height: 50px !important;">
@@ -615,22 +632,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                     <tr style="height: 50px !important;">
                                         <td>
-                                        <label class="control-label">{{Visibilité}}</label>
+                                            <label class="control-label">{{Visibilité}}</label>
                                         </td>
                                         <td>
                                             <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="visibility_alert_level">
-                                            <option value="700">{{Très mauvaise}} : 0 - 700 m</option>
-                                            <option value="3210">{{Mauvaise}} : 700 - 3210 m</option>
-                                            <option value="8000">{{Moyenne}} : 3210 - 8000 m</option>
-                                            <option value="10000">{{Bonne}} : + 8000 m</option>
+                                                <option value="700">{{Très mauvaise}} : 0 - 700 m</option>
+                                                <option value="3210">{{Mauvaise}} : 700 - 3210 m</option>
+                                                <option value="8000">{{Moyenne}} : 3210 - 8000 m</option>
+                                                <option value="10000">{{Bonne}} : + 8000 m</option>
                                             </select>
                                         </td>
                                         <td>
                                             <!-- <input type="checkbox" class="eqLogicAttr" data-l1key="visibility_synchro" checked /> -->
                                         </td>
                                     </tr>
-                                
-                                    
+
+
 
                                 </tbody>
                             </table>

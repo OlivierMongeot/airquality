@@ -40,7 +40,7 @@ try {
       break;
 
     case 'setDynGeoloc':
-      $setup =  airquality::setDynGeoLoc(init('longitude'), init('latitude'));
+      $setup =  airquality::setNewGeoloc(init('longitude'), init('latitude'));
       ajax::success($setup);
       break;
 

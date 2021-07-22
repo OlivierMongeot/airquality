@@ -38,7 +38,7 @@ class  SetupAqi
         ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none'],
         ['name' => 'smsPollution', 'title' => 'SMS Pollution', 'unit' => '', 'subType' => 'string', 'order' => 30, 'display' => 'none'],
         ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none'],
-        ['name' => 'markdownPollution', 'title' => 'Markdown Pollution', 'unit' => '', 'subType' => 'string', 'order' => 32, 'display' => 'none']     
+        ['name' => 'markdownPollution', 'title' => 'Markdown Pollution', 'unit' => '', 'subType' => 'string', 'order' => 32, 'display' => 'none']
     ];
 
     public static $setupPollen = [

@@ -191,7 +191,7 @@ class DisplayInfo
     /**
      * Retourne tous les messages pollution 
      */
-    public function getAllMessagesPollution($oldData, $newDataPollution, $newDataOc, $paramAlertAqi)
+    public function getAllMessagesPollution($oldData, $newDataPollution, $newDataOc, $paramAlertAqi, $city = '')
     {
         $message = [];
         $messageInMore = [];
@@ -339,7 +339,7 @@ class DisplayInfo
             message::add('Message Pollution', $stringMess);
         }
 
-        $htmlMessage = $this->formatAqiForTelegram($finalMessage);
+        $htmlMessage = $this->formatAqiForTelegram($finalMessage, $city);
         $smsMessage = $this->formatAqiForSms($finalMessage);
         $markdownMessage = $this->formatAqiMarkdown($finalMessage);
         return [$stringMess, $htmlMessage, $smsMessage, $markdownMessage];
@@ -449,7 +449,7 @@ class DisplayInfo
     /**
      * Création messages : analyse si bascule de tranche 
      */
-    public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen)
+    public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $city = '')
     {
         $message = [];
         $messageInMore = [];
@@ -638,7 +638,7 @@ class DisplayInfo
             message::add('Message Pollen', $stringMess);
         }
 
-        $telegramMessage = $this->formatPollensForTelegram($message);
+        $telegramMessage = $this->formatPollensForTelegram($message, $city = '');
         $markdownMessage = $this->formatPollenMarkDown($message);
         $smsMessage = $this->formatPollensForSms($message);
         return [$stringMess, $telegramMessage, $smsMessage, $markdownMessage];
@@ -758,10 +758,10 @@ class DisplayInfo
         ];
     }
 
-    private function formatAqiForTelegram($messages)
+    private function formatAqiForTelegram($messages, $city = '')
     {
         if (!empty($messages)) {
-            $arrayMessage[] = "&#127757; <b>Alerte AQI</b>" . " " . " \n ";
+            $arrayMessage[] = "&#127757; <b>Alerte AQI - ". $city . "</b> " . " \n ";
             foreach ($messages as $message) {
                 $icon = '';
                 foreach ($this->getIconsWithStatus() as $key => $value) {
@@ -772,16 +772,15 @@ class DisplayInfo
                 }
                 $arrayMessage[] = "<em>" . $message . "</em> " .  $icon . " " . "   \n ";
             }
-            // log::add('airquality', 'debug', json_encode($arrayMessage));
             return implode(' ', $arrayMessage);
         } else {
             return '';
         }
     }
 
-    private function formatPollensForTelegram($messages)
+    private function formatPollensForTelegram($messages, $city = '')
     {
-        $arrayMessage[] = "&#127804; <b>Alerte Pollens</b> \n" . " ";
+        $arrayMessage[] = "&#127804; <b>Alerte Pollens - ". $city . "</b> " ." \n" . " ";
         $findLetters = [
             '&#127808;' => 'bas', '&#128545;' => 'haut', '&#128520;' => 'très', '&#127803;' => 'modéré'
         ];
@@ -863,4 +862,9 @@ class DisplayInfo
             ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon'
         ];
     }
+
+
+    
+
+
 }
