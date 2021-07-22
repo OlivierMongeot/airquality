@@ -87,7 +87,8 @@ class ApiAqi
         } 
         else {
             if (isset($coordinates[0]->lat) && isset($coordinates[0]->lon)){
-                 return  [$coordinates[0]->lat, $coordinates[0]->lon];
+                return  [$coordinates[0]->lon, $coordinates[0]->lat];
+                //  return  [$coordinates[0]->lat, $coordinates[0]->lon];
             } else {
                 return [0,0];
             }
@@ -123,7 +124,8 @@ class ApiAqi
     /**
      * Appel API AQI Pollution Live
      */
-    public function getAqi($latitude, $longitude)
+    // public function getAqi($latitude, $longitude)
+    public function getAqi($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
@@ -144,7 +146,8 @@ class ApiAqi
     /**
      * Appel API OneCall OpenWheather UV et Visibilité
      */
-    public function getOneCallApi($latitude, $longitude)
+    // public function getOneCallApi($latitude, $longitude)
+     public function getOneCallApi($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
@@ -165,7 +168,8 @@ class ApiAqi
     /**
      * Appel AQI Forecast OpenWheather Pollution
      */
-    public function callApiForecastAQI($latitude = null, $longitude = null)
+    // public function callApiForecastAQI($latitude = null, $longitude = null)
+    public function callApiForecastAQI($longitude = null, $latitude = null)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
@@ -188,7 +192,8 @@ class ApiAqi
     /**
      * Appel Pollen Live
      */
-    public function getAmbee($latitude = null, $longitude = null)
+    // public function getAmbee($latitude = null, $longitude = null)
+    public function getAmbee($longitude = null, $latitude = null)
     {
         // Param auto pour test clef avant insertion des params
         if ($latitude === null && $longitude === null) {
@@ -220,7 +225,8 @@ class ApiAqi
     /**
      * Appel Forecast Pollen 
      */
-    public function callApiForecastPollen($latitude = null, $longitude = null)
+    // public function callApiForecastPollen($latitude = null, $longitude = null)
+    public function callApiForecastPollen($longitude = null, $latitude = null)
     {
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey ,'ambee');
@@ -249,7 +255,8 @@ class ApiAqi
     /**
      * Retourne Forecast parsé min/max/jour AQI 
      */
-    public function getForecast($latitude = null, $longitude = null)
+    // public function getForecast($latitude = null, $longitude = null)
+    public function getForecast($longitude = null, $latitude = null)
     {
         $polluants = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($latitude, $longitude);
@@ -264,17 +271,18 @@ class ApiAqi
     /**
      * Retourne Forecast parsé min/max/jour Pollen 
      */
-    public function getForecastPollen($latitude = null, $longitude = null)
+    // public function getForecastPollen($latitude = null, $longitude = null)
+    public function getForecastPollen($longitude = null, $latitude = null)
     {
         $pollens = [
             "Poaceae", "Alder", "Birch", "Cypress", "Elm", "Hazel", "Oak", "Pine", "Plane", "Poplar",
             "Chenopod", "Mugwort", "Nettle", "Ragweed", "Others"
         ];
         $dataList = $this->callApiForecastPollen($latitude, $longitude);
-        // Parse data forecast to get message
-        $this->makeMessageForecast($dataList);
+        // Parse data forecast to get message todo
+        // $this->makeMessageForecast($dataList);
 
-        log::add('airquality', 'debug', json_encode($dataList));
+        // log::add('airquality', 'debug', json_encode($dataList));
         if (isset($dataList) && $dataList != []){
             foreach ($pollens as $pollen) {
                 $newTabDay = $this->parseDataPollen($dataList, $pollen);
@@ -382,24 +390,24 @@ class ApiAqi
     }
 
 
-    public function makeMessageForecast($forecast){
-        $message = '';
-        // find the max of week foreach element 
-        foreach ($forecast as $hourcast) {
+    // public function makeMessageForecast($forecast){
+    //     $message = '';
+    //     // find the max of week foreach element 
+    //     foreach ($forecast as $hourcast) {
          
-            //build array with datetime for index
-            $date = $hourcast->dt;
-            $values['aqi'] = $hourcast->main->aqi;
-            $values['pm25'] = $hourcast->components->pm2_5;  
-            $values['pm10'] = $hourcast->components->pm10;
-            $values['o3'] = $hourcast->components->o3;
-            $values['so2'] = $hourcast->components->so2;
-            $values['co'] = $hourcast->components->co;
-            $values['no2'] = $hourcast->components->no2;
-            $values['no'] = $hourcast->components->no;
-            $values['nh3'] = $hourcast->components->nh3;
-            $hourcastArray[$date] = $values;         
-        }
-        log::add('airquality', 'debug', json_encode($hourcastArray));
-    }
+    //         //build array with datetime for index
+    //         $date = $hourcast->dt;
+    //         $values['aqi'] = $hourcast->main->aqi;
+    //         $values['pm25'] = $hourcast->components->pm2_5;  
+    //         $values['pm10'] = $hourcast->components->pm10;
+    //         $values['o3'] = $hourcast->components->o3;
+    //         $values['so2'] = $hourcast->components->so2;
+    //         $values['co'] = $hourcast->components->co;
+    //         $values['no2'] = $hourcast->components->no2;
+    //         $values['no'] = $hourcast->components->no;
+    //         $values['nh3'] = $hourcast->components->nh3;
+    //         $hourcastArray[$date] = $values;         
+    //     }
+    //     log::add('airquality', 'debug', json_encode($hourcastArray));
+    // }
 }

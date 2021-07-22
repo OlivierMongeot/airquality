@@ -201,13 +201,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Longitude }}</label>
                                 <div class="col-sm-6">
-                                    <input id="longitude" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
+                                    <input id="longitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Latitude}}</label>
                                 <div class="col-sm-6">
-                                    <input id="latitude" type="text" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
+                                    <input id="latitude" type="number"  class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
@@ -222,12 +222,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <a id="validate_dyn_mode" class="btn btn-sm btn-success"><i class="fas fa-map-marked-alt"></i> {{Géolocaliser}}</a>
                                 </div>
                             </div>
-                            <div class="form-group searchMode dynamic_mode">
-                                <label class="col-sm-3 control-label">{{Options}}</label>
-                                <div class="col-sm-7">
-                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="mobile_live" />{{Activer Mobile live}}</label>
-                                </div>
-                            </div>
+                          
                             <br />
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
@@ -269,6 +264,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </select>
                                 </div>
                             </div>
+                            <br/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-7">
+                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="long_lat_view" />{{Voir la ville, longitude & latitude sur le widget}}</label>
+                                </div>
+                            </div>
                             <br>
                             <?php
                             //   foreach ($eqLogics as $eqLogic) {
@@ -277,9 +279,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             // }
                             // $idSave = 
                             // $id = random_int(1, 100000);
-
-
-
 
                             ?>
                             <style>

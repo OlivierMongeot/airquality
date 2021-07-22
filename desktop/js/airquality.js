@@ -14,16 +14,17 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var getCity = (latitude, longitude, displayFor) => {
-    console.log("requete ajax : getcity" + ' Latitude : ' + latitude + ' Longitude : ' + longitude)
+// var getCity = (latitude, longitude, displayFor) => {
+    var getCity = (longitude, latitude, displayFor) => {   
+    console.log("requete ajax : getcity" +  ' Longitude : ' + longitude + ' latitude ' + Latitude  )
     $.ajax({
         type: "POST",
         url: "plugins/airquality/core/ajax/airquality.ajax.php",
-        data: { action: "getcity", longitude: longitude, latitude: latitude },
+        data: { action: "getcity", longitude: longitude, latitude: latitude, save: 'false' },
         dataType: 'json',
         error: function (request, status, error) { handleAjaxError(request, status, error); },
         success: function (data) {
-            console.log("requete ajax succes : " + data.result)
+            console.log("Requete ajax succes getCity(): " + data.result)
             if (displayFor == 'geoCity') {
                 // Geo city
                 document.getElementById("geoCity").value = data.result;
@@ -49,7 +50,8 @@ $('#validate_dyn_mode').on('click', () => {
     function maPosition(position) {
         document.getElementById("latitude").value = position.coords.latitude;
         document.getElementById("longitude").value = position.coords.longitude;
-        getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
+        // getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
+        getCity(position.coords.longitude, position.coords.latitude, 'geoCity')
     }
     function noLocation() {
         console.log("Could not find location");
@@ -63,7 +65,8 @@ $('#validate-llm').on('click', () => {
 
     let longi = $('.eqLogicAttr[data-l1key=configuration][data-l2key=longitude]').value()
     let lati = $('.eqLogicAttr[data-l1key=configuration][data-l2key=latitude]').value()
-    getCity(lati, longi, 'longLatMode')
+    // getCity(lati, longi, 'longLatMode')
+    getCity(longi, lati, 'longLatMode')
 });
 
 
@@ -86,9 +89,9 @@ var getCoordinates = (cityName, cityCode) => {
             if (data.state != 'ok') {
                 console.log('Erreur AJAX : ' + data.result);
             } else {
-                console.log("Ajax succes : Latitude et longitude = " + data.result)
+                console.log("Ajax succes : Longitude et Latitude = " + data.result)
                 let html = '<div class="form-group searchMode city_mode"><label class="col-sm-3 control-label">{{Longitude}}</label><div class="col-sm-4">'
-                html += '<input value="' + data.result[1] + '" disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />'
+                html += '<input value="' + data.result[0] + '" disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />'
                 html += '</div>'
                 if (data.result[1] != 0) {
                     html += '<i class="fas fa-check"></i>'
@@ -96,7 +99,7 @@ var getCoordinates = (cityName, cityCode) => {
                     html += '<i class="fas fa-times"></i>'
                 }
                 html += '</div><div class="form-group searchMode city_mode">	<label class="col-sm-3 control-label">{{Latitude}}</label><div class="col-sm-4">'
-                html += '<input value="' + data.result[0] + '" id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />'
+                html += '<input value="' + data.result[1] + '" id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />'
                 html += '</div>'
                 if (data.result[0] != 0) {
                     html += '<i class="fas fa-check"></i>'

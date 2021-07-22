@@ -1,9 +1,7 @@
 <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#; background-color: #background-color#; color: #color#;width: #width#;height: #height#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#"
      data-tags="#tags#"><span class="statusCmd"></span>
-        #button#
      <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
          <i class="fas fa-sync"></i></span>
-      
      <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
      <center class="widget-name"><strong>
          <a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display# 
@@ -122,6 +120,13 @@
             <i class="fas fa-chevron-right"></i>
         </a>
     </div>
+    <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;">
+        <div> #button#</div>  
+        <div>#long_lat#</div> 
+        <div id="ajaxlat"></div>
+        <div id="ajaxlon"></div>
+    </div>
+ 
 </div>
 <script>
     $(document).on ("click", "#info-modal-aqi#id#", function () {
@@ -216,5 +221,73 @@
     $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
             jeedom.cmd.execute({ id: $(this).data('cmd_id') });
         });
+
+    $('#lon_lat_refresh#id#').on('click', function () {
+
+        setLocation(5.2219,43.1742) //marseille
+        // setLocation(-99.133178,19.43263) //mexico
+        // setLocation(-33.8688,18.4239) //melbourne
+            
+            // if (navigator.geolocation) {
+            //     console.log('Check New Location')
+            //     navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout: 10000, enableHighAccuracy: true });
+            // }
+
+            // function maPosition(position) {
+            //     document.getElementById("latitude").value = position.coords.latitude;
+            //     document.getElementById("longitude").value = position.coords.longitude;
+            //     setLocation(position.coords.latitude, position.coords.longitude, 'geoCity')
+            // }
+            // function noLocation() {
+            //     console.log("Could not find location");
+            // }
+            // get cmd id de refresh_location
+            // var cmd_id = $('#lon_lat_refresh#id#').data('cmd_id');
+            // jeedom.cmd.execute({ id: cmd_id });
+          
+
+        function setLocation(longitude, latitude) {
+
+            console.log(" ajax")
+            $.ajax({
+                type: "POST",
+                url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                data: { action: "setDynGeoloc", longitude: longitude, latitude: latitude },
+                dataType: 'json',
+                error: function (request, status, error) { handleAjaxError(request, status, error); },
+                success: function (data) {
+                    console.log("Requete ajax succes de save Location : data = " + data.result)
+                    // console.log('setLocation() success de airquality.js : Lat  ' + latitude, 'Long ' + longitude)
+                    // AJAX IN AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                        data: { action: "getcity", longitude: longitude, latitude: latitude, save: true },
+                        dataType: 'json',
+                        error: function (request, status, error) { handleAjaxError(request, status, error); },
+                        success: function (data) {
+                        console.log('Requete ajax succes : Ville trouvée mode Mobile et enregsirement ok de : ' + data.result)
+                        // Lancer refresh du widget
+                        let cmdRefresh = $('.cmd-widget[data-cmd_id=#refresh_id#]')
+                        let id = cmdRefresh.data('cmd_id')
+                        jeedom.cmd.execute({ id: id });        
+                            if (data.state != 'ok') {
+                                console.log('erreur AJAX : ' + data.result);
+                            }
+                        }
+                    });
+
+                    // AJAX IN first AJAX END
+                    if (data.state != 'ok') {
+                        console.log('erreur AJAX : ' + data.result);
+                    }
+                }
+            });
+        }
+          
+
+        });
+
+
 </script>
 </div>
