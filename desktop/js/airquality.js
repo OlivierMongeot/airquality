@@ -65,7 +65,6 @@ $('#validate-llm').on('click', () => {
 
     let longi = $('.eqLogicAttr[data-l1key=configuration][data-l2key=longitude]').value()
     let lati = $('.eqLogicAttr[data-l1key=configuration][data-l2key=latitude]').value()
-    // getCity(lati, longi, 'longLatMode')
     getCity(longi, lati, 'longLatMode')
 });
 

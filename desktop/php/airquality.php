@@ -806,6 +806,38 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </div>
                 </div>
 
+                <!-- <script type="text/javascript">
+                    getSlider('poaceae');
+                    getSlider('elm');
+                    getSlider('alder');
+                    getSlider('birch');
+                    getSlider('cypress');
+                    getSlider('oak');
+                    getSlider('hazel');
+                    getSlider('pine');
+                    getSlider('plane');
+                    getSlider('poplar');
+                    getSlider('chenopod');
+                    getSlider('mugwort');
+                    getSlider('nettle');
+                    getSlider('ragweed');
+                    getSlider('others');
+                    getSlider('pollen');
+
+
+                    function getSlider(element) {
+                        var slider = document.getElementById(element);
+                        var output = document.getElementById("disp_" + element);
+                        var inputVal = document.getElementById(element + "_alert_level");
+                        output.innerHTML = slider.value;
+                        // Update the current slider value and the input 
+                        slider.oninput = function () {
+                            output.innerHTML = this.value;
+                            inputVal.value = this.value;
+                        }
+                    }
+                </script> -->
+
                 <div class="col-lg-5" style="padding:15px 35px">
                     <legend>
                         <span style="text-align:left">Options des alertes</span>

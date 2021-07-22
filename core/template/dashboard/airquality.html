@@ -9,15 +9,10 @@
  hidden>#object_name#</span></a></strong></center>
 <style>
 /* Desktop */
-    .aqi-#id#-container{
-        padding: 0 3px 0 3px;
-    }
-    .aqi-#id#-row, .header-#id#-container {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-around;
-    }
+    .aqi-#id#-container{ padding: 0 3px 0 3px; }
+    .aqi-#id#-row, .header-#id#-container { display: flex;
+        align-items: center; flex-direction: row;
+        justify-content: space-around; }
 
     .header-#id#-container {
         margin: 15px 0 20px 0;
@@ -85,6 +80,7 @@
     #airquality-min#uid# {
     margin-top: 15px;
 }
+
 footer {position: absolute; bottom: 0; left: 0; right: 0}
 </style>
 <div class="aqi-#id#-container">
@@ -122,15 +118,12 @@ footer {position: absolute; bottom: 0; left: 0; right: 0}
         </a>
     </div>
     <footer>
-        <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:40px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;">
+        <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:45px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
         <div> #button#</div>  
         <div>#long_lat#</div> 
-        <div id="ajaxlat"></div>
-        <div id="ajaxlon"></div>
-    </div>
+       </div>
     </footer>
     
- 
 </div>
 <script>
     $(document).on ("click", "#info-modal-aqi#id#", function () {

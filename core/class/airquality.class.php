@@ -529,14 +529,14 @@ class airquality extends eqLogic
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), 0);
 
 
-            if ($this->getConfiguration('long_lat_view') == 1) {
-                [$lon, $lat] = $this->getCurrentLonLat();
-                $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
-                $replace['#long_lat#'] = 'Lat ' . $lat . '° - Lon ' . $lon . '°';
-            } else {
-                $replace['#button#'] = '';
-                $replace['#long_lat#'] = '';
-            }
+            // if ($this->getConfiguration('long_lat_view') == 1) {
+            //     [$lon, $lat] = $this->getCurrentLonLat();
+            //     $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
+            //     $replace['#long_lat#'] = 'Lat ' . $lat . '° - Lon ' . $lon . '°';
+            // } else {
+            //     $replace['#button#'] = '';
+            //     $replace['#long_lat#'] = '';
+            // }
 
             // refresh_location
             // $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
@@ -733,7 +733,16 @@ class airquality extends eqLogic
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), $counterPollenZero);
         }
 
-        // Replace Global   
+        // Replace Global  
+           if ($this->getConfiguration('long_lat_view') == 1) {
+                [$lon, $lat] = $this->getCurrentLonLat();
+                $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
+                $replace['#long_lat#'] = 'Lat ' . $lat . '° - Lon ' . $lon . '°';
+            } else {
+                $replace['#button#'] = '';
+                $replace['#long_lat#'] = '';
+            }
+        
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
         $replace['#mini_slide#'] =  $elementHtml->getLayer();
 
