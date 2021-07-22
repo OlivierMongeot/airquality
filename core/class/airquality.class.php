@@ -539,9 +539,9 @@ class airquality extends eqLogic
             }
 
             // refresh_location
-            $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
+            // $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
             // log::add('airquality', 'debug', 'ComandNameId'. json_encode($refresh_locationCmd->getId()) );
-            $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
+            // $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
         }
 
         // Pollen // ---------------------------
@@ -607,9 +607,6 @@ class airquality extends eqLogic
                 } else if ($cmd->getConfiguration($nameCmd) == 'slide') {
 
                     $activePollenCounter = ($cmd->execCmd() > 0) ? $activePollenCounter + 1 : $activePollenCounter;
-                    // $setupAlert = $this->getParamAlertPollen();
-                    // $index = $nameCmd . '_alert_level';
-                    // $maxDisplayLevel = $setupAlert[$index];
                     $valueCurrent = $isObjet ? $cmd->execCmd() : '';
                     $maxDisplayLevel = $this->getConfiguration('pollen_alert_level');
 
@@ -737,10 +734,6 @@ class airquality extends eqLogic
         }
 
         // Replace Global   
-
-
-
-
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
         $replace['#mini_slide#'] =  $elementHtml->getLayer();
 
@@ -812,21 +805,13 @@ class airquality extends eqLogic
         log::add('airquality', 'debug', 'airquality->setNewGeoloc  save DynLatitude et DynLongitude en config');
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
-
-        // log::add('airquality', 'debug', 'Get default Config : ' . json_encode(config::getDefaultConfiguration('airquality')));
-        log::add('airquality', 'debug', 'Get DynLatitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLatitude', 'airquality')));
-        log::add('airquality', 'debug', 'Get DynLongitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLongitude', 'airquality')));
+        // log::add('airquality', 'debug', 'Get DynLatitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLatitude', 'airquality')));
+        // log::add('airquality', 'debug', 'Get DynLongitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLongitude', 'airquality')));
         return [$latitude, $longitude];
     }
 
 
-    public static function refreshAfterNewGeolc()
-    {
-    }
-
-
-
-
+   
     private function getCurrentCityName()
     {
         if ($this->getConfiguration('searchMode') == 'city_mode') {
@@ -837,8 +822,6 @@ class airquality extends eqLogic
         } elseif ($this->getConfiguration('searchMode') == 'dynamic_mode') {
             switch  ($this->getConfiguration('long_lat_view') ) {
                 case 1:
-                log::add('airquality', 'debug', 'Current city from config:byKey taking for display  ');
-
                 $city =  config::byKey('DynCity', 'airquality');
                 break;
                 default:
@@ -859,8 +842,6 @@ class airquality extends eqLogic
         } elseif ($this->getConfiguration('searchMode') == 'dynamic_mode') {
             switch  ($this->getConfiguration('long_lat_view') ) {
                 case 1:
-                    log::add('airquality', 'debug', 'Current long lat from config:byKey taking for display  ');
-
                     $lat =  config::byKey('DynLatitude', 'airquality');
                     $lon =  config::byKey('DynLongitude', 'airquality');
                     break;
@@ -887,14 +868,12 @@ class airquality extends eqLogic
                     $this->getConfiguration('city_longitude') && $this->getConfiguration('city_latitude') &&
                     $this->getConfiguration('city_longitude') != '' && $this->getConfiguration('city_latitude') != ''
                 ) {
-                    // return $api->$apiName($this->getConfiguration('city_latitude'), $this->getConfiguration('city_longitude'));
                     return $api->$apiName($this->getConfiguration('city_longitude'), $this->getConfiguration('city_latitude'));
                 } else {
                     throw new Exception(__('Les coordonnées sont vides, testez la ville dans la configuration', __FILE__));
                 }
             case 'long_lat_mode':
-                // return $api->$apiName($this->getConfiguration('latitude'), $this->getConfiguration('longitude'));
-                return $api->$apiName($this->getConfiguration('longitude'), $this->getConfiguration('latitude'));
+                 return $api->$apiName($this->getConfiguration('longitude'), $this->getConfiguration('latitude'));
 
             case 'dynamic_mode':
                 if ($this->getConfiguration('long_lat_view') == 1) {
@@ -906,20 +885,17 @@ class airquality extends eqLogic
                         throw new Exception(__('Probleme de localisation mode live mobile ', __FILE__));
                     }
                     return $api->$apiName(config::byKey('DynLongitude', 'airquality'), config::byKey('DynLatitude', 'airquality'));
-                    // return $api->$apiName(77.2167,28.6667);
-
-
+                   
                 } else if ($this->getConfiguration('geoLongitude') == '' || $this->getConfiguration('geoLatitude') == '') {
 
                     throw new Exception(__('Probleme de localisation dynamique', __FILE__));
                 }
-                // return $api->$apiName($this->getConfiguration('geoLatitude'), $this->getConfiguration('geoLongitude'));
                 return $api->$apiName($this->getConfiguration('geoLongitude'), $this->getConfiguration('geoLatitude'));
 
 
             case 'server_mode':
                 return $api->$apiName(config::byKey('info::latitude'), config::byKey('info::longitude'));
-                 // return $api->$apiName(config::byKey('info::longitude'), config::byKey('info::latitude'));
+                 
         }
     }
 
@@ -1035,7 +1011,6 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
             $paramAlertPollen = $this->getParamAlertPollen();
             $display = new DisplayInfo;
-
             $messagesPollens =  $display->getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $this->getCurrentCityName());
             $this->checkAndUpdateCmd('messagePollen', $messagesPollens[0]);
             $telegramMess = !empty($messagesPollens[0]) ? $messagesPollens[1] : '';
@@ -1053,13 +1028,9 @@ class airquality extends eqLogic
      */
     public function updatePollution()
     {
-        // ChecK si Mode live geoloc activé
         if ($this->getConfiguration('long_lat_view') == 1) {
-            // $this->setNewGeoloc(10, 10);
-            log::add('airquality', 'debug', 'Update Pollution en configuration long_lat_view');
-            log::add('airquality', 'debug', 'Verification des valeurs long et lat : '. config::byKey('DynLongitude', 'airquality').' & '.config::byKey('DynLatitude', 'airquality'));
+            log::add('airquality', 'debug', 'Update Pollution en configuration Live Mobile');
         }
-
         $paramAlertAqi = $this->getParamAlertAqi();
         $oldData = $this->getCurrentValues();
         $data = $this->getApiData('getAqi');
@@ -1207,9 +1178,8 @@ class airqualityCmd extends cmd
             $this->getEqLogic()->deleteAlertPollen();
         }
 
-        if ($this->getLogicalId() == 'refresh_location') {
-            log::add('airquality', 'debug', 'refresh_location sert a rien pour linstant !!!!');
-            // $this->getEqLogic()->getNewLocation();
-        }
+        // if ($this->getLogicalId() == 'refresh_location') {
+        //     log::add('airquality', 'debug', 'refresh_location sert a rien pour linstant !!!!');
+        // }
     }
 }

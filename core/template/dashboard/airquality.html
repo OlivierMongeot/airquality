@@ -85,6 +85,7 @@
     #airquality-min#uid# {
     margin-top: 15px;
 }
+footer {position: absolute; bottom: 0; left: 0; right: 0}
 </style>
 <div class="aqi-#id#-container">
     <div class="header-#id#-container">
@@ -120,12 +121,15 @@
             <i class="fas fa-chevron-right"></i>
         </a>
     </div>
-    <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;">
+    <footer>
+        <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:40px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;">
         <div> #button#</div>  
         <div>#long_lat#</div> 
         <div id="ajaxlat"></div>
         <div id="ajaxlon"></div>
     </div>
+    </footer>
+    
  
 </div>
 <script>
