@@ -100,7 +100,7 @@ class airquality extends eqLogic
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
                 //  Refresh forecast 
                 try {
-                    $c = new Cron\CronExpression('3 7 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('7 7 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
@@ -138,7 +138,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast test if new data available / date collect 
                 try {
-                    $c = new Cron\CronExpression('33 7,8 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('12,18,26,37 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             // Check if date collecté est normal 
@@ -149,11 +149,11 @@ class airquality extends eqLogic
                                 $dateNow = new DateTime();
                                 $dateNow->setTimezone(new DateTimeZone('Europe/Paris'));
                                 $interval = $datetimeCollected->diff($dateNow);
-                                log::add('airquality', 'debug', 'Intervale : derniere heure Collecte / maintenant pour forecast Pollen : ' . $interval->h);
-                                if ($interval->h >= 23) {
+                                log::add('airquality', 'debug', 'Intervale : derniere Collecte Forecast Pollen : ' . $interval->h. ' h et '.$interval->d.' jours');
+                                if ($interval->d >= 1) {
                                     $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
                                     if (is_object($refresh)) {
-                                        log::add('airquality', 'debug', 'Date de collecte >= 23h : 2eme cron lancé car 1er refresh de 7h03 n\'a pas marcher');
+                                        log::add('airquality', 'debug', 'Date de collecte > 24h : 2eme cron lancé car 1er refresh de 7h03 n\'a pas marcher');
                                         $refresh->execCmd();
                                     } else {
                                         log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());

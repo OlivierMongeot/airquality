@@ -190,7 +190,7 @@ class ApiAqi
     }
 
     /**
-     * Appel Pollen Live
+     * Appel Pollen Live GetAmbee
      */
     // public function getAmbee($latitude = null, $longitude = null)
     public function getAmbee($longitude = null, $latitude = null)
@@ -199,16 +199,18 @@ class ApiAqi
         if ($latitude === null && $longitude === null) {
             $latitude = 50 && $longitude = 50;
         }
-        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
+        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
 
             if ( $response[2] == '429'){
-                message::add('Ambee',__('Quota journalier données pollen dépassé',__FILE__));
+                message::add('Ambee',__('Quota journalier données pollen dépassé, vous pouvez passer à la version premium de l\'API',__FILE__));
+                log::add('airquality', 'debug', 'Quota journalier données pollen dépassé');
             } else  if ($response[2] == '401'){
                 throw new Exception('Api Key is not actived');
             } else if( $response[2] == '200'){
                 $data = json_decode($response[0]);
                 if (property_exists($data, 'data')){
+                    log::add('airquality', 'debug', 'Data Ambee Forecast Response Code : '. json_encode($response[2]));
                     log::add('airquality', 'debug', 'Data Ambee Live : '. json_encode($data));
                     return $data;
                 }
@@ -223,7 +225,7 @@ class ApiAqi
 
 
     /**
-     * Appel Forecast Pollen 
+     * Appel Forecast Pollen Getambee
      */
     // public function callApiForecastPollen($latitude = null, $longitude = null)
     public function callApiForecastPollen($longitude = null, $latitude = null)
