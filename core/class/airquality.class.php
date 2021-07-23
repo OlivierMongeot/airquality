@@ -539,9 +539,9 @@ class airquality extends eqLogic
             // }
 
             // refresh_location
-            // $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
-            // log::add('airquality', 'debug', 'ComandNameId'. json_encode($refresh_locationCmd->getId()) );
-            // $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
+            $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
+            log::add('airquality', 'debug', 'ComandNameId'. json_encode($refresh_locationCmd->getId()) );
+            $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
         }
 
         // Pollen // ---------------------------

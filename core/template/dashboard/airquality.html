@@ -221,31 +221,31 @@ footer {position: absolute; bottom: 0; left: 0; right: 0}
 
     $('#lon_lat_refresh#id#').on('click', function () {
 
-        setLocation(5.2219,43.1742) //marseille
+        // setLocation(5.2219,43.1742) //marseille
         // setLocation(-99.133178,19.43263) //mexico
         // setLocation(-33.8688,18.4239) //melbourne
             
-            // if (navigator.geolocation) {
-            //     console.log('Check New Location')
-            //     navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout: 10000, enableHighAccuracy: true });
-            // }
+            if (navigator.geolocation) {
+                console.log('Check New Location')
+                navigator.geolocation.getCurrentPosition(maPosition, noLocation, { timeout: 10000, enableHighAccuracy: true });
+            }
 
-            // function maPosition(position) {
-            //     document.getElementById("latitude").value = position.coords.latitude;
-            //     document.getElementById("longitude").value = position.coords.longitude;
-            //     setLocation(position.coords.latitude, position.coords.longitude, 'geoCity')
-            // }
-            // function noLocation() {
-            //     console.log("Could not find location");
-            // }
+            function maPosition(position) {
+                // document.getElementById("latitude").value = position.coords.latitude;
+                // document.getElementById("longitude").value = position.coords.longitude;
+                setLocation(position.coords.latitude, position.coords.longitude, 'geoCity')
+                console.log('latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
+            }
+            function noLocation() {
+                console.log("Could not find location");
+            }
             // get cmd id de refresh_location
-            // var cmd_id = $('#lon_lat_refresh#id#').data('cmd_id');
-            // jeedom.cmd.execute({ id: cmd_id });
+            var cmd_id = $('#lon_lat_refresh#id#').data('cmd_id');
+            jeedom.cmd.execute({ id: cmd_id });
           
 
         function setLocation(longitude, latitude) {
 
-            console.log(" ajax")
             $.ajax({
                 type: "POST",
                 url: "plugins/airquality/core/ajax/airquality.ajax.php",
@@ -253,8 +253,7 @@ footer {position: absolute; bottom: 0; left: 0; right: 0}
                 dataType: 'json',
                 error: function (request, status, error) { handleAjaxError(request, status, error); },
                 success: function (data) {
-                    console.log("Requete ajax succes de save Location : data = " + data.result)
-                    // console.log('setLocation() success de airquality.js : Lat  ' + latitude, 'Long ' + longitude)
+                        console.log('setLocation() success mobile : data = ' + data.result)
                     // AJAX IN AJAX
                     $.ajax({
                         type: "POST",
@@ -263,7 +262,7 @@ footer {position: absolute; bottom: 0; left: 0; right: 0}
                         dataType: 'json',
                         error: function (request, status, error) { handleAjaxError(request, status, error); },
                         success: function (data) {
-                        console.log('Requete ajax succes : Ville trouvée mode Mobile et enregsirement ok de : ' + data.result)
+                        console.log('Requete succes : Ville trouvée mode Mobile et enregsitrement ok de : ' + data.result)
                         // Lancer refresh du widget
                         let cmdRefresh = $('.cmd-widget[data-cmd_id=#refresh_id#]')
                         let id = cmdRefresh.data('cmd_id')
