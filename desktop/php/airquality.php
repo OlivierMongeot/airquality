@@ -207,7 +207,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Latitude}}</label>
                                 <div class="col-sm-6">
-                                    <input id="latitude" type="number"  class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
+                                    <input id="latitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
@@ -222,7 +222,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <a id="validate_dyn_mode" class="btn btn-sm btn-success"><i class="fas fa-map-marked-alt"></i> {{Géolocaliser}}</a>
                                 </div>
                             </div>
-                          
+
                             <br />
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
@@ -264,7 +264,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </select>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-7">
@@ -275,7 +275,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <?php
                             //   foreach ($eqLogics as $eqLogic) {
                             //    $eqLogic->getId() ;
-                            //    log::add('airquality', 'debug', 'ID EqLogic : ' . $eqLogic->getId());
+
                             // }
                             // $idSave = 
                             // $id = random_int(1, 100000);
@@ -290,27 +290,54 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     outline: none;
                                     writing-mode: bt-lr;
                                 }
-
-                                .range-container {
-                                    width: 90%;
-                                }
                             </style>
                             <div class="form-group elements pollen">
                                 <label class="col-sm-3 control-label">{{Afficher à partir de}}</label>
                                 <div class="col-sm-6">
                                     <?php
-                                    foreach ($eqLogics as $eqLogic) {
-                                        $levelPollenDisplay_ = $eqLogic->getConfiguration('pollen_alert_level');
-                                        if ($levelPollenDisplay_ != '') {
-                                            $levelPollenDisplay = $levelPollenDisplay_;
-                                        }
-                                    }
+                                    // foreach ($eqLogics as $eqLogic) {
+                                    //     $levelPollenDisplay_ = $eqLogic->getConfiguration('pollen_alert_level');
+                                    //     if ($levelPollenDisplay_ != '') {
+                                    //         $levelPollenDisplay = $levelPollenDisplay_;
+                                    //     }
+                                    // }
                                     ?>
-                                    <div class="pull-right range-slider aqi" style="margin-bottom:5px"><span id="disp_pollen"></span style="margin-bottom:3px"> part/m3</div>
+                                    <div class="pull-right range-slider aqi" style="margin-bottom:5px"><span id="display_pollen"></span style="margin-bottom:3px"> part/m3</div>
                                     <div class="range-slider aqi">
-                                        <input type="range" value="<?= $levelPollenDisplay ?>" min="0" max="40" class="input-range aqi" orient="horizontal" name="pollen" id="pollen"></input>
-                                        <input type="hidden" class="eqLogicAttr form-control" id="pollen_alert_level" data-l1key="configuration" data-l2key="pollen_alert_level"></input>
+                                        <input type="range" min="0" max="40" oninput="myFunction(this.value)" onload="mySecondFunction(this.value)" class="input-range aqi" orient="horizontal" name="pollen" id="pollen" style=" -webkit-appearance: none; height: 6px; border-radius: 5px;background: #ccc;outline: none;writing-mode: bt-lr;"></input>
+                                        <input type="number" class="eqLogicAttr form-control" id="pollen_alert_level" data-l1key="configuration" data-l2key="pollen_alert_level"></input>
+
+
+                                        <!-- <input type="range"  min="0" max="40" 
+                                         orient="horizontal" name="pollen" id="pollen"  class="eqLogicAttr form-control input-range aqi" 
+                                         id="pollen_alert_level"  data-l1key="configuration" data-l2key="pollen_alert_level"  ></input> -->
+
+                                        <!-- <input type="number" class="eqLogicAttr form-control input-range aqi" id="pollen_alert_level" data-l1key="configuration" data-l2key="pollen_alert_level"></input> -->
+
                                     </div>
+                                    <script>
+                                        function myFunction(val) {
+                                            console.log('myFunction')
+                                            document.getElementById("display_pollen").innerHTML = val;
+                                            document.getElementById("pollen_alert_level").value = val;
+                                        }
+
+                                        function mySecondFunction(val) {
+                                            console.log('mySecondFunction')
+                                            document.getElementById("display_pollen").innerHTML = val;
+                                            document.getElementById("pollen_alert_level").value = val;
+                                        }
+
+
+
+
+                                        $(function () {
+                                        var startvalue = document.getElementById("pollen_alert_level")
+                                        console.log('startvalue')
+                                        console.log(startvalue.value);
+
+                                        })
+                                    </script>
                                     <br>
                                 </div>
                             </div>
@@ -413,7 +440,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         <span> Plancher de déclenchement des alertes</span>
                     </legend>
                     <br />
-                    <div class="container range-container aqi">
+                    <div class="container range-container aqi" style="width: 90%;">
 
                         <div class="form-group elements polution col-lg-12">
                             <!-- <div class="col-lg-6"> -->
@@ -654,9 +681,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <!-- </div> -->
                         </div>
 
+                        <style>
+                            .range-slider.aqi .input-range.aqi {
+                                -webkit-appearance: none;
+                                height: 6px;
+                                border-radius: 5px;
+                                background: #ccc;
+                                outline: none;
+                                writing-mode: bt-lr;
+                            }
+                        </style>
 
-
-                        <div class="container range-container pollen">
+                        <div class="container range-container pollen" style=" width: 90%;">
 
                             <div class="form-group elements pollen">
                                 <div class="range-slider aqi">

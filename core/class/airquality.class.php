@@ -232,7 +232,7 @@ class airquality extends eqLogic
                 }
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
-                    $cmd->execCmd();
+                    // $cmd->execCmd();
                 }
             }
         }
@@ -245,7 +245,7 @@ class airquality extends eqLogic
         $this->setDisplay("height", "375px");
         if ($this->getConfiguration('long_lat_view') == 1) {
             $this->setDisplay("width", "265px");
-            $this->setDisplay("height", "420px");
+            $this->setDisplay("height", "415px");
         }
     }
 
@@ -292,18 +292,18 @@ class airquality extends eqLogic
                 ->setType('action')
                 ->setSubType('other')->save();
 
-            $refresh = $this->getCmd(
-                null,
-                'refresh_location'
-            );
-            if (!is_object($refresh)) {
-                $refresh = new airqualityCmd();
-                $refresh->setName('Rafraichir la localisation');
-            }
-            $refresh->setEqLogic_id($this->getId())
-                ->setLogicalId('refresh_location')
-                ->setType('action')
-                ->setSubType('other')->save();
+            // $refresh = $this->getCmd(
+            //     null,
+            //     'refresh_location'
+            // );
+            // if (!is_object($refresh)) {
+            //     $refresh = new airqualityCmd();
+            //     $refresh->setName('Rafraichir la localisation');
+            // }
+            // $refresh->setEqLogic_id($this->getId())
+            //     ->setLogicalId('refresh_location')
+            //     ->setType('action')
+            //     ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupAqi;
         }
