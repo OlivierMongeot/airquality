@@ -138,7 +138,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast test if new data available / date collect 
                 try {
-                    $c = new Cron\CronExpression('12,18,26,37 * * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('50 2,9,12,16,22 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             // Check if date collecté est normal 

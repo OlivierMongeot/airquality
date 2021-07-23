@@ -210,7 +210,7 @@ class ApiAqi
             } else if( $response[2] == '200'){
                 $data = json_decode($response[0]);
                 if (property_exists($data, 'data')){
-                    log::add('airquality', 'debug', 'Data Ambee Forecast Response Code : '. json_encode($response[2]));
+                    log::add('airquality', 'debug', 'Data Ambee Live Response Code : '. json_encode($response[2]));
                     log::add('airquality', 'debug', 'Data Ambee Live : '. json_encode($data));
                     return $data;
                 }
@@ -232,7 +232,7 @@ class ApiAqi
     {
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 4)) . "&lng=" . trim(round($longitude, 4));
         $response = $this->curlApi($url, $this->ambeeApiKey ,'ambee');
-
+        log::add('airquality', 'debug', 'Data Ambee Forecast Response Full : '. json_encode($response));
         $data = json_decode($response[0]);
         if ($response[1] != '') {
             throw new Exception('No pollen data forecast yet : ' . $response[1]);
@@ -241,9 +241,10 @@ class ApiAqi
             message::add('Ambee',__('Quota journalier données pollen dépassé pour les prévisions',__FILE__));
         }
         else {
-            if ($data == [] || $data == null) {
+            if ($data->data == [] || !empty($data->message)) {
                 throw new Exception('No Data Pollen Forecast : ' . $data->message);
             } else {
+                log::add('airquality', 'debug', 'Data Ambee Forecast Response Code : '. json_encode($response[2]));
                 log::add('airquality', 'debug', 'Data Pollen Forecast : '. json_encode($data->data));
                 return $data->data;
             }
