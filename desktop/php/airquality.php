@@ -657,160 +657,130 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                             <div class="form-group elements pollen">
                                 <div class="range-slider aqi">
-                                    <?php
-                                    foreach ($eqLogics as $eqLogic) {
-                                        // $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
-                                        $levelElm_ = $eqLogic->getConfiguration('elm_alert_level');
-                                        $levelAlder_ = $eqLogic->getConfiguration('alder_alert_level');
-                                        $levelBirch_ = $eqLogic->getConfiguration('birch_alert_level');
-                                        $levelCypress_ = $eqLogic->getConfiguration('cypress_alert_level');
-                                        $levelOak_ = $eqLogic->getConfiguration('oak_alert_level');
-                                        $levelHazel_ = $eqLogic->getConfiguration('hazel_alert_level');
-                                        $levelPine_ = $eqLogic->getConfiguration('pine_alert_level');
-                                        $levelPlane_ = $eqLogic->getConfiguration('plane_alert_level');
-                                        $levelPoplar_ = $eqLogic->getConfiguration('poplar_alert_level');
-                                        $levelChenopod_ = $eqLogic->getConfiguration('chenopod_alert_level');
-                                        $levelMugwort_ = $eqLogic->getConfiguration('mugwort_alert_level');
-                                        $levelNettle_ = $eqLogic->getConfiguration('nettle_alert_level');
-                                        $levelRagweed_ = $eqLogic->getConfiguration('ragweed_alert_level');
-                                        $levelOthers_ = $eqLogic->getConfiguration('others_alert_level');
-                                        // if ($levelPoaceae_ != '') {
-                                        //     $levelPoaceae = $levelPoaceae_;
-                                        // }
-                                        if ($levelElm_ != '') {
-                                            $levelElm = $levelElm_;
-                                        }
-                                        if ($levelAlder_ != '') {
-                                            $levelAlder = $levelAlder_;
-                                        }
-                                        if ($levelBirch_ != '') {
-                                            $levelBirch = $levelBirch_;
-                                        }
-                                        if ($levelCypress_ != '') {
-                                            $levelCypress = $levelCypress_;
-                                        }
-                                        if ($levelOak_ != '') {
-                                            $levelOak = $levelOak_;
-                                        }
-                                        if ($levelHazel_ != '') {
-                                            $levelHazel = $levelHazel_;
-                                        }
-                                        if ($levelPine_ != '') {
-                                            $levelPine = $levelPine_;
-                                        }
-                                        if ($levelPlane_ != '') {
-                                            $levelPlane = $levelPlane_;
-                                        }
-                                        if ($levelPoplar_ != '') {
-                                            $levelPoplar = $levelPoplar_;
-                                        }
-                                        if ($levelChenopod_ != '') {
-                                            $levelChenopod = $levelChenopod_;
-                                        }
-                                        if ($levelMugwort_ != '') {
-                                            $levelMugwort = $levelMugwort_;
-                                        }
-                                        if ($levelNettle_ != '') {
-                                            $levelNettle = $levelNettle_;
-                                        }
-                                        if ($levelRagweed_ != '') {
-                                            $levelRagweed = $levelRagweed_;
-                                        }
-                                        if ($levelOthers_ != '') {
-                                            $levelOthers = $levelOthers_;
-                                        }
-                                    }
-                                    ?>
-                       
-
+                                 
                                     <label for="poaceae_alert_level" >{{Graminées / Poacées}}</label>
-                                    <div class="">
-                                       
                                             <style> .output-poaceae::after { content: " part/m³";} </style>
-                                            <output class='output-poaceae pull-right' style="color: var(--linkHover-color) !important;margin-bottom:5px;"></output>
+                                            <output class='output-poaceae pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
                                             <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" 
                                             onchange="this.previousElementSibling.value = this.value" id="poaceae" class="input-range aqi eqLogicAttr" orient="horizontal" 
-                                            name="pollen" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                                            name="poaceae" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                                    <br>
+
+                                    <label for="elm_alert_level" >{{Orme}}</label>
+                                            <style> .output-elm::after { content: " part/m³";} </style>
+                                            <output class='output-elm pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="elm" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="elm" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
+                                    <br>
+                                  
+                                    <label for="alder_alert_level" >{{Auln}}</label>
+                                            <style> .output-alder::after { content: " part/m³";} </style>
+                                            <output class='output-alder pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="alder" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="alder" id="alder_alert_level" data-l1key="configuration" data-l2key="alder_alert_level"></input>
+                                    <br>
+
+                                    <label for="birch_alert_level" >{{Bouleau}}</label>
+                                            <style> .output-birch::after { content: " part/m³";} </style>
+                                            <output class='output-birch pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="birch" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="birch" id="birch_alert_level" data-l1key="configuration" data-l2key="birch_alert_level"></input>
+                                    <br>
+
+                                    <label for="cypress_alert_level" >{{Cyprès}}</label>
+                                            <style> .output-cypress::after { content: " part/m³";} </style>
+                                            <output class='output-cypress pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="cypress" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="cypress" id="cypress_alert_level" data-l1key="configuration" data-l2key="cypress_alert_level"></input>
+                                    <br>
+
+
+                                    <label for="oak_alert_level" >{{Chêne}}</label>
+                                            <style> .output-oak::after { content: " part/m³";} </style>
+                                            <output class='output-oak pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="oak" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="oak" id="oak_alert_level" data-l1key="configuration" data-l2key="oak_alert_level"></input>
+                                    <br>
                                     
-                                    </div>
+                                    <label for="hazel_alert_level" >{{Noisetier}}</label>
+                                            <style> .output-hazel::after { content: " part/m³";} </style>
+                                            <output class='output-hazel pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="hazel" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="hazel" id="hazel_alert_level" data-l1key="configuration" data-l2key="hazel_alert_level"></input>
                                     <br>
+                                    
+                                    <label for="pine_alert_level" >{{Pin}}</label>
+                                            <style> .output-pine::after { content: " part/m³";} </style>
+                                            <output class='output-pine pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="pine" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="pollen" id="pine_alert_level" data-l1key="configuration" data-l2key="pine_alert_level"></input>
                                     <br>
+
+                                    <label for="plane_alert_level" >{{Platane}}</label>
+                                            <style> .output-plane::after { content: " part/m³";} </style>
+                                            <output class='output-plane pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="plane" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="plane" id="plane_alert_level" data-l1key="configuration" data-l2key="plane_alert_level"></input>
+                                    <br>
+
+                                    <label for="poplar_alert_level">{{Peuplier}}</label>
+                                            <style> .output-poplar::after { content: " part/m³";} </style>
+                                            <output class='output-poplar pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="poplar" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="poplar" id="poplar_alert_level" data-l1key="configuration" data-l2key="poplar_alert_level"></input>
+                                    <br>
+
+                                    <label for="chenopod_alert_level" >{{Chénopodes}}</label>
+                                            <style> .output-chenopod::after { content: " part/m³";} </style>
+                                            <output class='output-chenopod pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="chenopod" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="chenopod" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
                                     <br>
 
 
+                                    <label for="mugwort_alert_level">{{Armoises }}</label>
+                                            <style> .output-mugwort::after { content: " part/m³";} </style>
+                                            <output class='output-mugwort pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="mugwort" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="mugwort" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
+                                    <br>
+
+                                    <label for="nettle_alert_level">{{Ortie }}</label>
+                                            <style> .output-nettle::after { content: " part/m³";} </style>
+                                            <output class='output-nettle pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output> 
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="nettle" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="nettle" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
+                                    <br>
 
 
+                                    <label for="ragweed_alert_level">{{Ambroisie}}</label>
+                                            <style> .output-ragweed::after { content: " part/m³";} </style>
+                                            <output class='output-ragweed pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="ragweed" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="ragweed" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
+                                    <br>
 
-                                    <label for="elm">{{Orme}}</label>
-                                    <div class="pull-right"><span id="disp_elm"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelElm ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="elm" id="elm"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
+                                    <label for="others_alert_level">{{Autres Pollens d'origine inconnue}}</label>
+                                            <style> .output-others::after { content: " part/m³";} </style>
+                                            <output class='output-others pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
+                                            onchange="this.previousElementSibling.value = this.value" id="others" class="input-range aqi eqLogicAttr" orient="horizontal"
+                                            name="others" id="others_alert_level" data-l1key="configuration" data-l2key="others_alert_level"></input>
                                     <br>
-                                    <label for="alder">{{Aulne}}</label>
-                                    <div class="pull-right"><span id="disp_alder"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelAlder ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="alder" id="alder"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="alder_alert_level" data-l1key="configuration" data-l2key="alder_alert_level"></input>
-                                    <br>
-                                    <label for="birch">{{Bouleau}}</label>
-                                    <div class="pull-right"><span id="disp_birch"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelBirch ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="birch" id="birch"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="birch_alert_level" data-l1key="configuration" data-l2key="birch_alert_level"></input>
-                                    <br>
-                                    <label for="cypress">{{Cyprès}}</label>
-                                    <div class="pull-right"><span id="disp_cypress"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelCypress ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="cypress" id="cypress"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="cypress_alert_level" data-l1key="configuration" data-l2key="cypress_alert_level"></input>
-                                    <br>
-                                    <label for="oak">{{Chêne}}</label>
-                                    <div class="pull-right"><span id="disp_oak"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelOak ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="oak" id="oak"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="oak_alert_level" data-l1key="configuration" data-l2key="oak_alert_level"></input>
-                                    <br>
-                                    <label for="hazel">{{Noisetier}}</label>
-                                    <div class="pull-right"><span id="disp_hazel"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelHazel ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="hazel" id="hazel"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="hazel_alert_level" data-l1key="configuration" data-l2key="hazel_alert_level"></input>
-                                    <br>
-                                    <label for="pine">{{Pin}}</label>
-                                    <div class="pull-right"><span id="disp_pine"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelPine ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="pine" id="pine"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="pine_alert_level" data-l1key="configuration" data-l2key="pine_alert_level"></input>
-                                    <br>
-                                    <label for="plane">{{Platane}}</label>
-                                    <div class="pull-right"><span id="disp_plane"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelPlane ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="plane" id="plane"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="plane_alert_level" data-l1key="configuration" data-l2key="plane_alert_level"></input>
-                                    <br>
-                                    <label for="poplar">{{Peuplier}}</label>
-                                    <div class="pull-right"><span id="disp_poplar"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelPoplar ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="poplar" id="poplar"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="poplar_alert_level" data-l1key="configuration" data-l2key="poplar_alert_level"></input>
-                                    <br>
-                                    <label for="chenopod">{{Chénopodes}}</label>
-                                    <div class="pull-right"><span id="disp_chenopod"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelChenopod ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="chenopod" id="chenopod"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
-                                    <br>
-                                    <label for="mugwort">{{Mugwort / Armoises }}</label>
-                                    <div class="pull-right"><span id="disp_mugwort"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelMugwort ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="mugwort" id="mugwort"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
-                                    <br>
-                                    <label for="nettle">{{Ortie}}</label>
-                                    <div class="pull-right"><span id="disp_nettle"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelNettle ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="nettle" id="nettle"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
-                                    <br>
-                                    <label for="ragweed">{{Ambroisie}}</label>
-                                    <div class="pull-right"><span id="disp_ragweed"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelRagweed ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="ragweed" id="ragweed"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
-                                    <br>
-                                    <label for="others">{{Autres Pollens}}</label>
-                                    <div class="pull-right"><span id="disp_others"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelOthers ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="others" id="others"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="others_alert_level" data-l1key="configuration" data-l2key="others_alert_level"></input>
-                                    <br><br>
+
                                 </div>
                             </div>
 

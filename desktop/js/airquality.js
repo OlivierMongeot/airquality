@@ -231,50 +231,5 @@ function addCmdToTable(_cmd) {
 }
 
 
-    
-function getSlider(element) {
-    var sliderInput = document.getElementById(element);
-    var output = document.getElementById("disp_" + element);
-    var inputValElement = document.getElementById(element + "_alert_level");
-    // if (element == 'pollen') {
-        // console.log('element');
-        // console.log(element);
-        // console.log('sliderInput'); 
-        // console.log(sliderInput.value);
-        // console.log('output');
-        // console.log(output);
-        // console.log('inputValElement'); 
-        // console.log(inputValElement.value);
-      
-    // }
-   
-    output.innerHTML = sliderInput.value;
-    // Update the current slider value and the input 
-    sliderInput.oninput = function () {
-        output.innerHTML = this.value;
-        inputValElement.value = this.value;
-        //   console.log(inputValElement.value);
-
-        
-    }
-}
-
-
-// getSlider('poaceae');
-getSlider('elm');
-getSlider('alder');
-getSlider('birch');
-getSlider('cypress');
-getSlider('oak');
-getSlider('hazel');
-getSlider('pine');
-getSlider('plane');
-getSlider('poplar');
-getSlider('chenopod');
-getSlider('mugwort');
-getSlider('nettle');
-getSlider('ragweed');
-getSlider('others');
-// getSlider('pollen');
 
 
