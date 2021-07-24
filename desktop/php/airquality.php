@@ -6,6 +6,9 @@ if (!isConnect('admin')) {
 $plugin = plugin::byId('airquality');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
+
+// $myEqLogic = eqLogic::byId(init('eqLogic_id'));
+// log::add('airquality', 'debug', 'Plugin AirQuality ID : ' . $myEqLogic );
 ?>
 <div id='aqi-alert'></div>
 <div class="row row-overflow">
@@ -104,6 +107,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Catégorie}}</label>
                                 <div class="col-sm-7">
@@ -272,75 +276,32 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-                            <?php
-                            //   foreach ($eqLogics as $eqLogic) {
-                            //    $eqLogic->getId() ;
 
-                            // }
-                            // $idSave = 
-                            // $id = random_int(1, 100000);
-
-                            ?>
-                            <style>
-                                .range-slider.aqi .input-range.aqi {
+                            <!-- <style> -->
+                            <!-- /* .range-slider.aqi .input-range.aqi {
                                     -webkit-appearance: none;
                                     height: 6px;
                                     border-radius: 5px;
                                     background: #ccc;
                                     outline: none;
                                     writing-mode: bt-lr;
-                                }
-                            </style>
+                                } */ -->
+                            <!-- </style> -->
+
                             <div class="form-group elements pollen">
-                                <label class="col-sm-3 control-label">{{Afficher à partir de}}</label>
+                                <label style="margin-top:7px;" class="col-sm-3 control-label">{{Afficher à partir de}}</label>
                                 <div class="col-sm-6">
-                                    <?php
-                                    // foreach ($eqLogics as $eqLogic) {
-                                    //     $levelPollenDisplay_ = $eqLogic->getConfiguration('pollen_alert_level');
-                                    //     if ($levelPollenDisplay_ != '') {
-                                    //         $levelPollenDisplay = $levelPollenDisplay_;
-                                    //     }
-                                    // }
-                                    ?>
-                                    <div class="pull-right range-slider aqi" style="margin-bottom:5px"><span id="display_pollen"></span style="margin-bottom:3px"> part/m3</div>
                                     <div class="range-slider aqi">
-                                        <input type="range" min="0" max="40" oninput="myFunction(this.value)" onload="mySecondFunction(this.value)" class="input-range aqi" orient="horizontal" name="pollen" id="pollen" style=" -webkit-appearance: none; height: 6px; border-radius: 5px;background: #ccc;outline: none;writing-mode: bt-lr;"></input>
-                                        <input type="number" class="eqLogicAttr form-control" id="pollen_alert_level" data-l1key="configuration" data-l2key="pollen_alert_level"></input>
-
-
-                                        <!-- <input type="range"  min="0" max="40" 
-                                         orient="horizontal" name="pollen" id="pollen"  class="eqLogicAttr form-control input-range aqi" 
-                                         id="pollen_alert_level"  data-l1key="configuration" data-l2key="pollen_alert_level"  ></input> -->
-
-                                        <!-- <input type="number" class="eqLogicAttr form-control input-range aqi" id="pollen_alert_level" data-l1key="configuration" data-l2key="pollen_alert_level"></input> -->
-
+                                        <style>
+                                            .output-pollen::after {
+                                                content: " part/m³";
+                                            }
+                                        </style><output class='output-pollen' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                        <input type="range" min="0" max="40" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" class="input-range aqi eqLogicAttr" orient="horizontal" name="pollen" id="pollen" data-l1key="configuration" data-l2key="pollen_alert_level"></input>
                                     </div>
-                                    <script>
-                                        function myFunction(val) {
-                                            console.log('myFunction')
-                                            document.getElementById("display_pollen").innerHTML = val;
-                                            document.getElementById("pollen_alert_level").value = val;
-                                        }
-
-                                        function mySecondFunction(val) {
-                                            console.log('mySecondFunction')
-                                            document.getElementById("display_pollen").innerHTML = val;
-                                            document.getElementById("pollen_alert_level").value = val;
-                                        }
-
-
-
-
-                                        $(function () {
-                                        var startvalue = document.getElementById("pollen_alert_level")
-                                        console.log('startvalue')
-                                        console.log(startvalue.value);
-
-                                        })
-                                    </script>
-                                    <br>
                                 </div>
                             </div>
+
                         </div>
                         <!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
                         <div class="col-lg-6">
@@ -689,7 +650,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 background: #ccc;
                                 outline: none;
                                 writing-mode: bt-lr;
-                            }
+                               }
                         </style>
 
                         <div class="container range-container pollen" style=" width: 90%;">
@@ -698,7 +659,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <div class="range-slider aqi">
                                     <?php
                                     foreach ($eqLogics as $eqLogic) {
-                                        $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
+                                        // $levelPoaceae_ = $eqLogic->getConfiguration('poaceae_alert_level');
                                         $levelElm_ = $eqLogic->getConfiguration('elm_alert_level');
                                         $levelAlder_ = $eqLogic->getConfiguration('alder_alert_level');
                                         $levelBirch_ = $eqLogic->getConfiguration('birch_alert_level');
@@ -713,9 +674,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         $levelNettle_ = $eqLogic->getConfiguration('nettle_alert_level');
                                         $levelRagweed_ = $eqLogic->getConfiguration('ragweed_alert_level');
                                         $levelOthers_ = $eqLogic->getConfiguration('others_alert_level');
-                                        if ($levelPoaceae_ != '') {
-                                            $levelPoaceae = $levelPoaceae_;
-                                        }
+                                        // if ($levelPoaceae_ != '') {
+                                        //     $levelPoaceae = $levelPoaceae_;
+                                        // }
                                         if ($levelElm_ != '') {
                                             $levelElm = $levelElm_;
                                         }
@@ -760,11 +721,26 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         }
                                     }
                                     ?>
-                                    <label for="poaceae">{{Graminées / Poacées}}</label>
-                                    <div class="pull-right"><span id="disp_poaceae"></span> part/m3</div>
-                                    <input type="range" value="<?= $levelPoaceae ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="poaceae" id="poaceae"></input>
-                                    <input type="hidden" class="eqLogicAttr form-control" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                       
+
+                                    <label for="poaceae_alert_level" >{{Graminées / Poacées}}</label>
+                                    <div class="">
+                                       
+                                            <style> .output-poaceae::after { content: " part/m³";} </style>
+                                            <output class='output-poaceae pull-right' style="color: var(--linkHover-color) !important;margin-bottom:5px;"></output>
+                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" 
+                                            onchange="this.previousElementSibling.value = this.value" id="poaceae" class="input-range aqi eqLogicAttr" orient="horizontal" 
+                                            name="pollen" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                                    
+                                    </div>
                                     <br>
+                                    <br>
+                                    <br>
+
+
+
+
+
                                     <label for="elm">{{Orme}}</label>
                                     <div class="pull-right"><span id="disp_elm"></span> part/m3</div>
                                     <input type="range" value="<?= $levelElm ?>" min="1" max="250" class="input-range aqi" orient="horizontal" name="elm" id="elm"></input>
@@ -842,37 +818,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </div>
                 </div>
 
-                <!-- <script type="text/javascript">
-                    getSlider('poaceae');
-                    getSlider('elm');
-                    getSlider('alder');
-                    getSlider('birch');
-                    getSlider('cypress');
-                    getSlider('oak');
-                    getSlider('hazel');
-                    getSlider('pine');
-                    getSlider('plane');
-                    getSlider('poplar');
-                    getSlider('chenopod');
-                    getSlider('mugwort');
-                    getSlider('nettle');
-                    getSlider('ragweed');
-                    getSlider('others');
-                    getSlider('pollen');
 
-
-                    function getSlider(element) {
-                        var slider = document.getElementById(element);
-                        var output = document.getElementById("disp_" + element);
-                        var inputVal = document.getElementById(element + "_alert_level");
-                        output.innerHTML = slider.value;
-                        // Update the current slider value and the input 
-                        slider.oninput = function () {
-                            output.innerHTML = this.value;
-                            inputVal.value = this.value;
-                        }
-                    }
-                </script> -->
 
                 <div class="col-lg-5" style="padding:15px 35px">
                     <legend>
@@ -889,6 +835,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                         </div>
                         <br /><br />
+                        <br />
                         <div class="form-group">
                             <label class="col-sm-4 control-label">{{Alertes détaillées}}</label>
                             <div class="col-sm-1">

@@ -41,9 +41,9 @@ class CreateHtmlAqi
         if (empty($html)){
             $type = str_replace('polution', 'pollution', $this->gender);
             $html[] = '<div disable class="" style="margin-top:20px;color:#00AEEC;display:flex;justify-content:center;align-item:center;flex-direction:column;height:auto;font-size:110%">';
-            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center">Pas de '.$type.' à afficher</div><br>';
-            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center"><i class="far fa-times-circle fa-3x"></i></div><br>';
-            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center">Sorry !!</div><br>';
+            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center">Pas de '.$type.' disponibles</div><br>';
+            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center"><i class="far fa-times-circle fa-2x"></i></div><br>';
+            $html[] = '<div style="display:flex;justify-content:center;height:35px;align-items: center">pour cette configuration</div><br>';
             $html[] =  '</div>';
         }
         return implode( '', $html);  

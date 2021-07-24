@@ -41,7 +41,7 @@ try {
 
     case 'setDynGeoloc':
       $setup =  airquality::setNewGeoloc(init('longitude'), init('latitude'));      
-      log::add('airquality', 'debug', 'Set DynGeoloc response : ' . json_encode( $setup));
+      log::add('airquality', 'debug', 'Set DynGeoloc response : ' . json_encode($setup));
       ajax::success($setup);
       break;
 

@@ -3,8 +3,11 @@
 class DisplayInfo
 {
 
-    public function formatValueForDisplay($value, $style = 'normal')
+    public function formatValueForDisplay($value, $style = 'normal', $decimal = null)
     {
+        if(!empty($decimal)){
+            return number_format((float)($value), $decimal, '.', '');
+        }
         if ($style === 'normal') {
             switch ($value) {
                 case 1:
@@ -315,7 +318,6 @@ class DisplayInfo
             } else if (!empty($mess[1])) {
                 $messageInMore[] = $mess[1];
             }
-            // $importance['visibility'] =  $mess[2];
         }
 
         // AQI
@@ -454,7 +456,8 @@ class DisplayInfo
         $message = [];
         $messageInMore = [];
         // Poaceae
-        $newPoaceae = $dataPollen[0]->Species->Grass->{"Grass / Poaceae"};
+        $newPoaceae = isset($dataPollen[0]->Species->Grass->{"Grass / Poaceae"}) ? $dataPollen[0]->Species->Grass->{"Grass / Poaceae"} : -1;
+        // $newPoaceae = $dataPollen[0]->Species->Grass->{"Grass / Poaceae"};
         $oldPoaceae = $oldData['poaceae'];
         if ($paramAlertPollen['poaceae_alert_level'] <= $newPoaceae) {
             $mess = $this->makeMessagePollen($newPoaceae, $oldPoaceae, 'poaceae', 'Graminées');
@@ -466,7 +469,8 @@ class DisplayInfo
         }
 
         //Elm
-        $newElm = $dataPollen[0]->Species->Tree->Elm;
+        $newElm = isset($dataPollen[0]->Species->Tree->Elm) ? $dataPollen[0]->Species->Tree->Elm : -1;
+        // $newElm = $dataPollen[0]->Species->Tree->Elm;
         $oldElm = $oldData['elm'];
         if ($paramAlertPollen['elm_alert_level'] <= $newElm) {
             $mess = $this->makeMessagePollen($newElm, $oldElm, 'elm', 'Orme');
@@ -478,7 +482,8 @@ class DisplayInfo
         }
 
         //Alder
-        $newAlder = $dataPollen[0]->Species->Tree->Alder;
+        $newAlder = isset($dataPollen[0]->Species->Tree->Alder) ? $dataPollen[0]->Species->Tree->Alder : -1;
+        // $newAlder = $dataPollen[0]->Species->Tree->Alder;
         $oldAlder = $oldData['alder'];
         if ($paramAlertPollen['alder_alert_level'] <= $newAlder) {
             $mess = $this->makeMessagePollen($newAlder, $oldAlder, 'alder', 'Aulne');
@@ -489,7 +494,8 @@ class DisplayInfo
             }
         }
         // Birch
-        $newBirch = $dataPollen[0]->Species->Tree->Birch;
+        $newBirch = isset($dataPollen[0]->Species->Tree->Birch) ? $dataPollen[0]->Species->Tree->Birch : -1;
+        // $newBirch = $dataPollen[0]->Species->Tree->Birch;
         $oldBirch = $oldData['birch'];
         if ($paramAlertPollen['birch_alert_level'] <= $newBirch) {
             $mess = $this->makeMessagePollen($newBirch, $oldBirch, 'birch', 'Bouleau');
@@ -500,7 +506,8 @@ class DisplayInfo
             }
         }
         // Cypress
-        $newCypress = $dataPollen[0]->Species->Tree->Cypress;
+        $newCypress = isset($dataPollen[0]->Species->Tree->Cypress) ? $dataPollen[0]->Species->Tree->Cypress : -1;
+        // $newCypress = $dataPollen[0]->Species->Tree->Cypress;
         $oldCypress = $oldData['cypress'];
         if ($paramAlertPollen['cypress_alert_level'] <= $newCypress) {
             $mess = $this->makeMessagePollen($newCypress, $oldCypress, 'cypress', 'Cyprès');
@@ -512,7 +519,8 @@ class DisplayInfo
         }
 
         // Hazel    
-        $newHazel = $dataPollen[0]->Species->Tree->Hazel;
+        $newHazel = isset($dataPollen[0]->Species->Tree->Hazel) ? $dataPollen[0]->Species->Tree->Hazel : -1;
+        // $newHazel = $dataPollen[0]->Species->Tree->Hazel;
         $oldHazel = $oldData['hazel'];
         if ($paramAlertPollen['hazel_alert_level'] <= $newHazel) {
             $mess = $this->makeMessagePollen($newHazel, $oldHazel, 'hazel', 'Noisetier');
@@ -524,7 +532,8 @@ class DisplayInfo
         }
 
         // Oak 
-        $newOak = $dataPollen[0]->Species->Tree->Oak;
+        $newOak = isset($dataPollen[0]->Species->Tree->Oak) ? $dataPollen[0]->Species->Tree->Oak : -1;
+        // $newOak = $dataPollen[0]->Species->Tree->Oak;
         $oldOak = $oldData['oak'];
         if ($paramAlertPollen['oak_alert_level'] <= $newOak) {
             $mess = $this->makeMessagePollen($newOak, $oldOak, 'oak', 'Chêne');
@@ -536,7 +545,8 @@ class DisplayInfo
         }
 
         // Pine 
-        $newPine = $dataPollen[0]->Species->Tree->Pine;
+        $newPine = isset($dataPollen[0]->Species->Tree->Pine) ? $dataPollen[0]->Species->Tree->Pine : -1;
+        // $newPine = $dataPollen[0]->Species->Tree->Pine;
         $oldPine = $oldData['pine'];
         if ($paramAlertPollen['pine_alert_level'] <= $newPine) {
             $mess = $this->makeMessagePollen($newPine, $oldPine, 'pine', 'Pin');
@@ -548,7 +558,8 @@ class DisplayInfo
         }
 
         // Plane
-        $newPlane = $dataPollen[0]->Species->Tree->Plane;
+        $newPlane = isset($dataPollen[0]->Species->Tree->Plane) ? $dataPollen[0]->Species->Tree->Plane : -1;
+        // $newPlane = $dataPollen[0]->Species->Tree->Plane;
         $oldPlane = $oldData['plane'];
         if ($paramAlertPollen['plane_alert_level'] <= $newPlane) {
             $mess = $this->makeMessagePollen($newPlane, $oldPlane, 'plane', 'Platane');
@@ -560,7 +571,8 @@ class DisplayInfo
         }
 
         // Poplar
-        $newPoplar = $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"};
+        $newPoplar = isset($dataPollen[0]->Species->Tree->Poplar) ? $dataPollen[0]->Species->Tree->Poplar : -1;
+        // $newPoplar = $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"};
         $oldPoplar = $oldData['poplar'];
         if ($paramAlertPollen['poplar_alert_level'] <= $newPoplar) {
             $mess = $this->makeMessagePollen($newPoplar, $oldPoplar, 'poplar', 'Peuplier');
@@ -572,7 +584,8 @@ class DisplayInfo
         }
 
         // Chenopod
-        $newChenopod = $dataPollen[0]->Species->Weed->Chenopod;
+        $newChenopod = isset($dataPollen[0]->Species->Weed->Chenopod) ? $dataPollen[0]->Species->Weed->Chenopod : -1;
+        // $newChenopod = $dataPollen[0]->Species->Weed->Chenopod;
         $oldChenopod = $oldData['chenopod'];
         if ($paramAlertPollen['chenopod_alert_level'] <= $newChenopod) {
             $mess = $this->makeMessagePollen($newChenopod, $oldChenopod, 'chenopod', 'Chénopodes');
@@ -583,7 +596,8 @@ class DisplayInfo
             }
         }
         // Mugwort
-        $newMugwort = $dataPollen[0]->Species->Weed->Mugwort;
+        $newMugwort = isset($dataPollen[0]->Species->Weed->Mugwort) ? $dataPollen[0]->Species->Weed->Mugwort : -1;
+        // $newMugwort = $dataPollen[0]->Species->Weed->Mugwort;
         $oldMugwort = $oldData['mugwort'];
         if ($paramAlertPollen['mugwort_alert_level'] <= $newMugwort) {
             $mess = $this->makeMessagePollen($newMugwort, $oldMugwort, 'mugwort', 'Armoises');
@@ -595,7 +609,8 @@ class DisplayInfo
         }
 
         // Nettle
-        $newNettle = $dataPollen[0]->Species->Weed->Nettle;
+        $newNettle = isset($dataPollen[0]->Species->Weed->Nettle) ? $dataPollen[0]->Species->Weed->Nettle : -1;
+        // $newNettle = $dataPollen[0]->Species->Weed->Nettle;
         $oldNettle = $oldData['nettle'];
         if ($paramAlertPollen['nettle_alert_level'] <= $newNettle) {
             $mess = $this->makeMessagePollen($newNettle, $oldNettle, 'nettle', 'Ortie');
@@ -606,7 +621,8 @@ class DisplayInfo
             }
         }
         // Ragweed 
-        $newRagweed = $dataPollen[0]->Species->Weed->Ragweed;
+        $newRagweed = isset($dataPollen[0]->Species->Weed->Ragweed) ? $dataPollen[0]->Species->Weed->Ragweed : -1;
+        // $newRagweed = $dataPollen[0]->Species->Weed->Ragweed;
         $oldRagweed = $oldData['ragweed'];
         if ($paramAlertPollen['ragweed_alert_level'] <= $newRagweed) {
             $mess = $this->makeMessagePollen($newRagweed, $oldRagweed, 'ragweed', 'Ambroisie');
@@ -618,7 +634,8 @@ class DisplayInfo
         }
 
         // Others
-        $newOthers = $dataPollen[0]->Species->Others;
+        $newOthers = isset($dataPollen[0]->Species->Others) ? $dataPollen[0]->Species->Others : -1;
+        // $newOthers = $dataPollen[0]->Species->Others;
         $oldOthers = $oldData['others'];
         if ($paramAlertPollen['others_alert_level'] <= $newOthers) {
             $mess = $this->makeMessagePollen($newOthers, $oldOthers, 'others', 'Autres pollens');

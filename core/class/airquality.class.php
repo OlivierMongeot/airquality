@@ -48,7 +48,7 @@ class airquality extends eqLogic
 
                 // Cron Pollution Toutes demie heure decalé de  1 minute 
                 try {
-                    $c = new Cron\CronExpression('1,31 * * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('0,30 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         $airQuality->updatePollution();
                     }
@@ -56,7 +56,7 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
-                // Pollution refresh forecast 3x 
+                // AQI Pollution refresh forecast 3x 
                 try {
                     $c = new Cron\CronExpression('2 7,14,20 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
@@ -138,7 +138,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast test if new data available / date collect 
                 try {
-                    $c = new Cron\CronExpression('50 2,9,12,16,22 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('40 2,8,12,16,22 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             // Check if date collecté est normal 
@@ -232,7 +232,7 @@ class airquality extends eqLogic
                 }
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
-                    // $cmd->execCmd();
+                    $cmd->execCmd();
                 }
             }
         }
@@ -431,7 +431,7 @@ class airquality extends eqLogic
                         $htmlAlertAqi .= '<marquee scrollamount="4" width="85%" height="18px" class="state" style="font-size: 100%;margin: -10px 0px !important;">' . $cmd->execCmd() . '</marquee>';
                         $htmlAlertAqi .= '</div>';
                         $replace['#message#'] =  $htmlAlertAqi;
-                        $this->setMinutedAction('alertAqiCronTwoMin');
+                        $this->setMinutedAction('alertAqiCronTwoMin', 2);
                     }
                 } else  if ($cmd->getConfiguration($nameCmd) == 'slideAqi' || $cmd->getConfiguration($nameCmd) == 'both') {
 
@@ -506,8 +506,6 @@ class airquality extends eqLogic
                 }
             }
 
-
-
             if (!$alert) {
                 if ($counterActivePolluant == 0) {
                     $active_aqi_label = __("Pas d'indice en alerte", __FILE__);
@@ -529,18 +527,9 @@ class airquality extends eqLogic
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), 0);
 
 
-            // if ($this->getConfiguration('long_lat_view') == 1) {
-            //     [$lon, $lat] = $this->getCurrentLonLat();
-            //     $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
-            //     $replace['#long_lat#'] = 'Lat ' . $lat . '° - Lon ' . $lon . '°';
-            // } else {
-            //     $replace['#button#'] = '';
-            //     $replace['#long_lat#'] = '';
-            // }
-
             // refresh_location
             $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
-            log::add('airquality', 'debug', 'ComandNameId'. json_encode($refresh_locationCmd->getId()) );
+            // log::add('airquality', 'debug', 'ComandNameId'. json_encode($refresh_locationCmd->getId()) );
             $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
         }
 
@@ -737,7 +726,7 @@ class airquality extends eqLogic
            if ($this->getConfiguration('long_lat_view') == 1) {
                 [$lon, $lat] = $this->getCurrentLonLat();
                 $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
-                $replace['#long_lat#'] = 'Lat ' . $lat . '° - Lon ' . $lon . '°';
+                $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
             } else {
                 $replace['#button#'] = '';
                 $replace['#long_lat#'] = '';
@@ -769,7 +758,12 @@ class airquality extends eqLogic
         $now = new \DateTime();
         $hour = $now->format('H');
         $minute = $now->format('i');
-        $minute = $minute + $delay;
+       
+        $minute = $minute + $delay; 
+        if($minute > 60 ){
+            $minute = str_replace('6', '', $minute);
+            $hour = $hour + 1;
+        }
         $cron =  $minute . ' ' . $hour . ' * * *';
         log::add('airquality', 'debug', 'Make cron + ' . $delay . ' - ' . $cron . ' for ID ' . $this->getHumanName());
         $this->setConfiguration($configName, $cron)->save();
@@ -986,7 +980,6 @@ class airquality extends eqLogic
         return $dataArray;
     }
 
-
     /**
      * Appel api Pollen Live + Update des Commands + reorder by level  
      */
@@ -1002,21 +995,36 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('tree_pollen', $dataPollen[0]->Count->tree_pollen);
             $this->checkAndUpdateCmd('weed_pollen', $dataPollen[0]->Count->weed_pollen);
             $this->checkAndUpdateCmd('grass_pollen', $dataPollen[0]->Count->grass_pollen);
-            $this->checkAndUpdateCmd('poaceae', $dataPollen[0]->Species->Grass->{"Grass / Poaceae"});
-            $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
-            $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
-            $this->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
-            $this->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
-            $this->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
-            $this->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
-            $this->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
-            $this->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
-            $this->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
-            $this->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
-            $this->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
-            $this->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
-            $this->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
-            $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);
+          
+                $this->checkAndUpdateCmd('poaceae', isset($dataPollen[0]->Species->Grass->{"Grass / Poaceae"}) ? $dataPollen[0]->Species->Grass->{"Grass / Poaceae"} : ''); 
+                $this->checkAndUpdateCmd('alder',  isset($dataPollen[0]->Species->Tree->Alder) ? $dataPollen[0]->Species->Tree->Alder : '');
+                $this->checkAndUpdateCmd('birch', isset($dataPollen[0]->Species->Tree->Birch) ? $dataPollen[0]->Species->Tree->Birch : '');
+                $this->checkAndUpdateCmd('cypress', isset($dataPollen[0]->Species->Tree->Cypress) ? $dataPollen[0]->Species->Tree->Cypress : '');
+                $this->checkAndUpdateCmd('elm',  isset($dataPollen[0]->Species->Tree->Elm) ? $dataPollen[0]->Species->Tree->Elm : '');
+                $this->checkAndUpdateCmd('hazel', isset($dataPollen[0]->Species->Tree->Hazel) ? $dataPollen[0]->Species->Tree->Hazel : '');
+                $this->checkAndUpdateCmd('oak', isset($dataPollen[0]->Species->Tree->Oak) ? $dataPollen[0]->Species->Tree->Oak : '');
+                $this->checkAndUpdateCmd('pine', isset($dataPollen[0]->Species->Tree->Pine ) ? $dataPollen[0]->Species->Tree->Pine  : '');
+                $this->checkAndUpdateCmd('plane', isset($dataPollen[0]->Species->Tree->Plane ) ? $dataPollen[0]->Species->Tree->Plane  : '');
+                $this->checkAndUpdateCmd('poplar', isset($dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"} ) ? $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"}  : '');
+                $this->checkAndUpdateCmd('chenopod', isset( $dataPollen[0]->Species->Weed->Chenopod ) ? $dataPollen[0]->Species->Weed->Chenopod : '');
+                $this->checkAndUpdateCmd('mugwort', isset( $dataPollen[0]->Species->Weed->Mugwort ) ? $dataPollen[0]->Species->Weed->Mugwort : '');
+                $this->checkAndUpdateCmd('nettle', isset($dataPollen[0]->Species->Weed->Nettle ) ? $dataPollen[0]->Species->Weed->Nettle : '');
+                $this->checkAndUpdateCmd('ragweed', isset($dataPollen[0]->Species->Weed->Ragweed ) ? $dataPollen[0]->Species->Weed->Ragweed : '');
+                $this->checkAndUpdateCmd('others', isset($dataPollen[0]->Species->Others ) ? $dataPollen[0]->Species->Others : '');
+                // $this->checkAndUpdateCmd('alder', $dataPollen[0]->Species->Tree->Alder);
+                // $this->checkAndUpdateCmd('birch', $dataPollen[0]->Species->Tree->Birch);
+                // $this->checkAndUpdateCmd('cypress', $dataPollen[0]->Species->Tree->Cypress);
+                // $this->checkAndUpdateCmd('elm', $dataPollen[0]->Species->Tree->Elm);
+                // $this->checkAndUpdateCmd('hazel', $dataPollen[0]->Species->Tree->Hazel);
+                // $this->checkAndUpdateCmd('oak', $dataPollen[0]->Species->Tree->Oak);
+                // $this->checkAndUpdateCmd('pine', $dataPollen[0]->Species->Tree->Pine);
+                // $this->checkAndUpdateCmd('plane', $dataPollen[0]->Species->Tree->Plane);
+                // $this->checkAndUpdateCmd('poplar', $dataPollen[0]->Species->Tree->{"Poplar / Cottonwood"});
+                // $this->checkAndUpdateCmd('chenopod', $dataPollen[0]->Species->Weed->Chenopod);
+                // $this->checkAndUpdateCmd('mugwort', $dataPollen[0]->Species->Weed->Mugwort);
+                // $this->checkAndUpdateCmd('nettle', $dataPollen[0]->Species->Weed->Nettle);
+                // $this->checkAndUpdateCmd('ragweed', $dataPollen[0]->Species->Weed->Ragweed);
+                // $this->checkAndUpdateCmd('others', $dataPollen[0]->Species->Others);       
             $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
             $paramAlertPollen = $this->getParamAlertPollen();
             $display = new DisplayInfo;
