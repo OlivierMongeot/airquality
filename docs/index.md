@@ -7,6 +7,7 @@ Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles 
 Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens.  
 
 
+
 <img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
 Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
@@ -14,12 +15,22 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
 
+
+
+
+## Mobilité
+
 <img align="left" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
 
-# Historisation
+
+
+
+
+
+## Historisation
 
 J'ai repris le système de Jeedom pour l'historisation des données.
 
@@ -34,7 +45,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 </p>
 
 
-# Les API
+## Les APIs
 
 Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
 
@@ -92,7 +103,7 @@ Vous pouvez créer plusieurs équipement pour plusieurs villes pour les données
 Vous devrez alors choisir une version payante de l'API Ambee.
 
 
-# Utilisation
+## Utilisation
 
 En cliquant sur les moyennes vous accèder au graphique représentant ces données (fonction native de Jeedom)
 
@@ -112,7 +123,7 @@ Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
 
-**Important**
+# Important
 
 L'AQI en Europe est désormais calculée de 1 (Bon) à 6 (Extrèmement mauvais)
 
@@ -136,7 +147,7 @@ Mais comme tout le monde est différent, vous pouvez régler les alertes selon v
 <img height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
 </p>
 
-**Note**
+# Note
 
 Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast trois fois par jour à 7h00, 12h00 et 18h00
 
