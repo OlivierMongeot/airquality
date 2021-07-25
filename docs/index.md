@@ -30,7 +30,7 @@ Cela historise aussi les données et donne accès la représentation graphique c
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
 
 <p align="center">
-  <img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
+  <img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
 </p>
 
 
@@ -90,6 +90,10 @@ Vous devrez alors choisir une version payante de l'API Ambee.
 
 Pour afficher les moyennes, mini, maxi et tendances sur le dashboard, Vous devez historiser vos données (cochez 'Historiser' sur les éléments dans la partie 'Commandes' de votre équipement, une fois l'équipement créé).   
 
+<p align="center">
+<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
+</p>
+
 # Utilisation
 
 En cliquant sur les moyennes vous accèder au graphique représentant ces données (fonction native de Jeedom)
@@ -100,10 +104,10 @@ Pour l'AQI, tous les polluants sont affichés par défault, il vous suffit de d�
 
 Pour les pollens, tous sont affichés par défaut, le plugin les classe automatiquement par ordre décroissant de risque.
 
-Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à la fin du caroussel ou il peuvent ne pas être affiché en réglant la molette ci-dessous :
+Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à la fin du caroussel comme la photo ci-dessus ou il peuvent ne pas être affichés en réglant la molette ci-dessous :
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.jpg">
+  <img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.JPG">
 </p>
 
 
@@ -121,21 +125,19 @@ Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (
 Vous pouvez régler les alertes par polluant dans la configuration : 
 
 
-<img align="center" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
+<img align="center" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
 
-J'ai rajouté des niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP (pdf dans le repertoire docs) :
+J'ai calé les niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP (pdf dans le repertoire docs) :
 
-Les alertes sont basées sur des seuils de 40 particules/m³ , ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.  
+Les niveaux d'alertes moyen sont basées sur des seuils d'environs 40 particules/m³, ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.  
 
-J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque est limité, et à partir de 40 le risque est élevé. Ces seuils sont valablent pour les personnes sensibles.
+Mais comme tout le monde est différent, vous pouvez régler les alertes selon vos caractéristiques.
 
-Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et les sensibles dès 40, vous pouvez régler les alertes de chaque pollen comme vous voulez. 
-
-<img align="center" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
+<img align="center" height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
 
 **Note**
 
-Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast tous les matin à 7h00
+Le rafraîchissement des données AQI s’effectue toutes les 30 minutes et le forecast trois fois par jour à 7h00, 12h00 et 18h00
 
 Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et le forecast tous les matin à 7h00
 
