@@ -15,7 +15,7 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-<br/><br/><br/>
+<br/>
 
 ## Mobilité
 
@@ -34,7 +34,7 @@ Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affiché
 Cela historise aussi les données et donne accès la représentation graphique classique de Jeedom.
 
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
-<br/>
+<br/><br/>
 <p align="center">
   <img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
 </p>
@@ -42,17 +42,17 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 ## Les APIs
 
-Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
+Les données sont récupérées par trois API gratuites: Openwheather, Ambee et navigator.geolocation(HTML)
 
 Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, le plugin est conçu pour être aux limites du gratuit, c'est à dire 100 appels/jour.
 
 Ce qui veux dire que les prévisons de pollens sont mises à jour une fois par jour seulement, j'ai choisi 7h du matin, car seulement 24h sont en fait disponibles. Ce qui veux dire que pour le troisième jour de prévision, les infos vont jusqu'a 7h00 du matin et donc sont suceptiblent dévoluer en s'affinant.
 
-C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
+<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
-En effet, lors du refresh des prévisons pollens l'api compte 1 appel par heure de données fournie, donc l'appel forecast sur 48 heures coûte 48 appels sur les 100 journalier. Ce qui explique mon choix d'appel une fois par jour.  
+En effet, lors du refresh des prévisons pollens l'api compte 1 appel par heure de données fournie, donc l'appel forecast sur 48 heures coûte 48 appels sur les 100 journalier. Ce qui explique mon choix d'appel une fois par jour. 
 
-<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
+Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
 
 J'ai mis en place, un systeme de bridage qui vous empêche des rafraichissements trop important des données.
 
