@@ -121,15 +121,97 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
             </div>
         </div>
     </div>
-
+    <footer>
+        <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:50px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
+        <div> #button#</div>  
+        <div>#long_lat#</div> 
+       </div>
+    </footer>
 <script>
 
     $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
         jeedom.cmd.execute({
             id: $(this).data('cmd_id')
         });
+    });
+
+    function waitForFiveSeconds() {
+    var startTime = new Date();
+    while (new Date() - startTime < 5000) {}
+}
+
+    // $('#lon_lat_refresh#id#').on('click', function () {
+  $('#lon_lat_refresh#id#').on('click', function handler() {
+        // setLocation(5.2219,43.1742) //marseille
+        // setLocation(-99.133178,19.43263) //mexico
+        // setLocation(-33.8688,18.4239) //melbourne
+        $('#lon_lat_refresh#id#').off('click');
+        console.log('Click refresh OFF!');
+
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(maPositionPollen, noLocationPollen, { timeout: 10000, enableHighAccuracy: true });
+        }
+
+        function maPositionPollen(position) {
+
+            setLocationPollen(position.coords.longitude, position.coords.latitude)
+            console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
+        }
+        function noLocationPollen() {
+            console.log("Could not find location");
+        }
+
+        function setLocationPollen(longitude, latitude) {
+
+            $.ajax({
+                type: "POST",
+                url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                data: { action: "setDynGeoloc", longitude: longitude, latitude: latitude },
+                dataType: 'json',
+                error: function (request, status, error) { handleAjaxError(request, status, error); },
+                success: function (data) {
+                    console.log('setLocation() success mobile : data = ' + data.result)
+                    // AJAX IN AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                        data: { action: "getcity", longitude: longitude, latitude: latitude, save: true },
+                        dataType: 'json',
+                        error: function (request, status, error) { handleAjaxError(request, status, error); },
+                        success: function (data) {
+                            console.log('Requete succes : Ville trouvée mode Mobile et enregsitrement de : ' + data.result)
+                            // Lancer refresh du widget
+                            let cmdRefresh = $('.cmd-widget[data-cmd_id=#refresh_id#]')
+                            let id = cmdRefresh.data('cmd_id')
+                            jeedom.cmd.execute({ id: id });
+                            if (data.state != 'ok') {
+                                console.log('erreur AJAX : ' + data.result);
+                            }
+                        }
+                    });
+
+                    // AJAX IN first AJAX END
+                    if (data.state != 'ok') {
+                        console.log('erreur AJAX : ' + data.result);
+                    }
+                }
+            });
+        }
+
+
+        waitForFiveSeconds();
+	    setTimeout(function () { 
+             $('#lon_lat_refresh#id#').click(handler);
+             console.log('Click refresh ON!');
+             }, 0 );
+
+
 
     });
+  
+  
+
 
 </script>
 </div>

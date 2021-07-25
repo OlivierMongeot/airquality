@@ -46,8 +46,10 @@ class IconesAqi
     private function firstPartIcon()
     {
         return '<?xml version="1.0" encoding="utf-8"?>
-                <svg version="1.1" class="gaze' . $this->id . $this->name . '" id="id-gaze' . $this->id .
-                $this->name . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                <svg version="1.1" class="gaze' . $this->id . $this->name .
+                 '" id="id-gaze' . $this->id .
+                $this->name . '" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink" 
                 viewBox="' . $this->viewBox[$this->name] . '">
                 <style type="text/css">
                     .gaze' . $this->id . $this->name . '{

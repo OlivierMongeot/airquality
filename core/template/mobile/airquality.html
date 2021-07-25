@@ -1,18 +1,11 @@
-<!-- <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
-background-color: #background-color#; color: #color#; width: #width#; height:auto; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
-<span class="statusCmd"></span>
-<span class="cmd Norefresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
-<span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
-<center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
-<span style="font-size: 0.85em;position: relative;top:-2px;" hidden>#object_name#</span></a></strong></center> -->
-<!-- Mobile -->
 <div class="eqLogic eqLogic-widget allowResize allowReorderCmd col2" style="border:#border#;border-radius:#border-radius#;
 background-color: #background-color#; color: #color#; width: #width#; height:auto; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" data-tags="#tags#">
-<span class="statusCmd"></span>#button#
+<span class="statusCmd"></span>
 <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#"><i class="fas fa-sync"></i></span>
 <span class="cmd cmd-widget" data-cmd_id="#refresh_id#" style="display:none;"></span>
 <center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#
 <span style="font-size: 0.85em;position: relative;top:-2px;" hidden>#object_name#</span></a></strong></center>
+<!-- Mobile -->
 <style>
         .aqi-#id#-row {
             display: flex;
@@ -98,7 +91,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
 
         .slides-#id#-aqi::-webkit-scrollbar {
             width: 10px;
-            height: 8px;
+            height: 4px;
         }
         
         .slides-#id#-aqi::-webkit-scrollbar-track {
@@ -127,10 +120,8 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
         .hidden{
         display: none;
     }
-    
-    </style>
-    
-        <div class="header-#id#-container">
+</style> 
+       <div class="header-#id#-container">
           
             <div class="#history# tooltips header-#id#-min" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
                 <div title="Cliquez pour + d'info" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
@@ -152,25 +143,79 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 <div class="display-aqi aqi-#id#-aqi">#visibility_level#</div>
             </div>    
         </div>
-       
-      
-                
             <div>
                 #message#
             </div>
-        
-
         <div class="slider-#id#-aqi ">
             <div class="slides-#id#-aqi">
                 #mini_slide#
             </div>
         </div>
-
+        <footer>
+            <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:50px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
+            <div> #button#</div>  
+            <div>#long_lat#</div> 
+           </div>
+        </footer>
 <script>
-                 
     $('.eqLogic[data-eqLogic_uid=#uid#] .cmd').on('click', function () {
-                        jeedom.cmd.execute({ id: $(this).data('cmd_id') });
-                        });
+        jeedom.cmd.execute({ id: $(this).data('cmd_id') });
+    });
+
+
+    $('#lon_lat_refresh#id#').on('click', function () {
+
+        // setLocation(5.2219,43.1742) //marseille
+        // setLocation(-99.133178,19.43263) //mexico
+        // setLocationMobile(-33.8688,18.4239) //melbourne
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(maPositionMobile, noLocationMobile, { timeout: 10000, enableHighAccuracy: true });
+        }
+
+        function maPositionMobile(position) {
  
+            setLocationMobile(position.coords.longitude, position.coords.latitude)
+            console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
+        }
+        function noLocationMobile() {
+            console.log("Could not find location");
+        }
+ 
+        function setLocationMobile(longitude, latitude) {
+
+            $.ajax({
+                type: "POST",
+                url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                data: { action: "setDynGeoloc", longitude: longitude, latitude: latitude },
+                dataType: 'json',
+                error: function (request, status, error) { handleAjaxError(request, status, error); },
+                success: function (data) {
+                    console.log('setLocation() success mobile : data = ' + data.result)
+                    // AJAX IN AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "plugins/airquality/core/ajax/airquality.ajax.php",
+                        data: { action: "getcity", longitude: longitude, latitude: latitude, save: true },
+                        dataType: 'json',
+                        error: function (request, status, error) { handleAjaxError(request, status, error); },
+                        success: function (data) {
+                            console.log('Requete succes : Ville trouvée mode Mobile et enregsitrement de : ' + data.result)
+                            // Lancer refresh du widget
+                            let cmdRefresh = $('.cmd-widget[data-cmd_id=#refresh_id#]')
+                            let id = cmdRefresh.data('cmd_id')
+                            jeedom.cmd.execute({ id: id });
+                            if (data.state != 'ok') {
+                                console.log('erreur AJAX : ' + data.result);
+                            }
+                        }
+                    });
+                    if (data.state != 'ok') {
+                        console.log('erreur AJAX : ' + data.result);
+                    }
+                }
+            });
+        }
+    });
 </script>
 </div>

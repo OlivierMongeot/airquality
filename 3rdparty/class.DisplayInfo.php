@@ -344,6 +344,7 @@ class DisplayInfo
         $htmlMessage = $this->formatAqiForTelegram($finalMessage, $city);
         $smsMessage = $this->formatAqiForSms($finalMessage);
         $markdownMessage = $this->formatAqiMarkdown($finalMessage);
+        log::add('airquality', 'debug', 'Makdown Message' . json_encode( $markdownMessage));
         return [$stringMess, $htmlMessage, $smsMessage, $markdownMessage];
     }
 
