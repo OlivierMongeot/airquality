@@ -13,7 +13,7 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-<br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
 ## Mobilité
 
@@ -21,7 +21,7 @@ Des messages d'alertes sont crées en fonctions des changement et les déclenche
 
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
-<br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
 ## Historisation
 
@@ -39,7 +39,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
   <img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
 </p>
 
-<br/><br/>
+<br/>
 ## Les APIs
 
 Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
@@ -60,13 +60,11 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
-<br/>
-
 
 <p align="center">
 <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
 </p>
-<br/>
+
 
 # Configuration principale du plugin
 
@@ -114,7 +112,7 @@ Pour les pollens, tous sont affichés par défaut, le plugin les classe automati
 Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à la fin du caroussel comme la photo ci-dessus ou il peuvent ne pas être affichés en réglant la molette ci-dessous :
 
 <p align="center">
-  <img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.JPG">
+  <img height="70" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.JPG">
 </p>
 
 
@@ -132,7 +130,7 @@ Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (
 Vous pouvez régler les alertes par polluant dans la configuration : 
 
 <p align="center">
-<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/plancherAqi.JPG">
+<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/plancherAqi.JPG">
 </p>
 
 J'ai calé les niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP (pdf dans le repertoire docs) :
@@ -158,12 +156,12 @@ Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota jour
 Exemple Message Telegram :
 
 <p align="center">
-<img height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.jpg">
+<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.jpg">
 </p>
 
 Exemple Message Discord :
 
 <p align="center">
-<img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
+<img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
 </p>
 
