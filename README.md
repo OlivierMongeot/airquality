@@ -1,6 +1,6 @@
 # Plugin Jeedom Air Quality & Pollen
 
-<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
+<img align="right" height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
 
 It works with the **Jeedom** soft and it's compatible with Version 4.
 
@@ -44,9 +44,9 @@ For test you can use the CLI with a linux systeme for installation or going to t
     sudo rm /airquality/.git
     ```
 
-5. See the documentation for configuration
+5. See the last documentation for configuration
 
-     https://custom-one.fr/plugin-jeedom-air-quality-pollen/
+    https://github.com/OlivierMongeot/airquality/blob/Master/docs/index.md/
 
 6. To have pollen data you must still get a free API Key at [ Ambee.com ](https://www.getambee.com/) but it's not required to test the plugin.
 

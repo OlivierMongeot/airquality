@@ -1,11 +1,13 @@
 # Plugin Jeedom AirQuality
+
 <br/>
-Le plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens presque partout dans le monde.
+
+<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Le plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 <br/>
 
-<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens. 
+Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens. 
 
 Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
@@ -13,12 +15,12 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/>
 
 ## Mobilité
 
-<img align="left" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
-
+<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+><br/>
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
 <br/><br/><br/><br/><br/><br/><br/>
@@ -50,7 +52,7 @@ C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API 
 
 En effet, lors du refresh des prévisons pollens l'api compte 1 appel par heure de données fournie, donc l'appel forecast sur 48 heures coûte 48 appels sur les 100 journalier. Ce qui explique mon choix d'appel une fois par jour.  
 
-Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
+<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
 
 J'ai mis en place, un systeme de bridage qui vous empêche des rafraichissements trop important des données.
 
@@ -58,11 +60,7 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
-
-<p align="center">
-<img height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
-</p>
-
+<br/>
 
 # Configuration principale du plugin
 
@@ -149,7 +147,6 @@ Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et l
 
 Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin ou tout autre corps médicale.
 
-Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota journalier de données gratuites. C'est normal, il faut attendre le lendemain matin pour que tout rentre dans l'ordre.
 
 Exemple Message Telegram :
 
