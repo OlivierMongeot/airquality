@@ -10,16 +10,19 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemeple.
-
 <p align="center">
   <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">
 </p>
 
-Un nouveau mode est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app Jeedom, un bouton vous permet de mettre à jour les données en fonction de votre localisation (fonctionne en https uniquement).
+Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemeple.
+
+Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API). 
 
+<p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">
+</p>
 
 Sinon, j'ai repris le systeme de Jeedom pour l'historisation des données.
 
@@ -30,7 +33,7 @@ Cela historise aussi les données et donne accès la représentation graphique c
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
 
 <p align="center">
-  <img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
+  <img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
 </p>
 
 
@@ -88,7 +91,6 @@ Vous pouvez créer plusieurs équipement pour plusieurs villes pour les données
 
 Vous devrez alors choisir une version payante de l'API Ambee.
 
-Pour afficher les moyennes, mini, maxi et tendances sur le dashboard, Vous devez historiser vos données (cochez 'Historiser' sur les éléments dans la partie 'Commandes' de votre équipement, une fois l'équipement créé).   
 
 <p align="center">
 <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
@@ -124,8 +126,9 @@ Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (
 
 Vous pouvez régler les alertes par polluant dans la configuration : 
 
-
-<img align="center" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
+<p align="center">
+<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/plancherAqi.JPG">
+</p>
 
 J'ai calé les niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP (pdf dans le repertoire docs) :
 
@@ -133,7 +136,9 @@ Les niveaux d'alertes moyen sont basées sur des seuils d'environs 40 particules
 
 Mais comme tout le monde est différent, vous pouvez régler les alertes selon vos caractéristiques.
 
-<img align="center" height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
+<p align="center">
+<img height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
+</p>
 
 **Note**
 
@@ -144,3 +149,9 @@ Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et l
 Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin ou tout autre corps médicale.
 
 Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota journalier de données gratuites. C'est normal, il faut attendre le lendemain matin pour que tout rentre dans l'ordre.
+
+Exemple Message Télégram :
+
+<p align="center">
+<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.JPG">
+</p>
