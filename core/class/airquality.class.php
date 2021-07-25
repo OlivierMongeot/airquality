@@ -164,7 +164,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast Pollen  test if new data available / date collect > 24h 
                 try {
-                    $c = new Cron\CronExpression('*/2 * * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('15 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                                 $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');

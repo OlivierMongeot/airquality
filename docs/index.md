@@ -4,24 +4,35 @@ Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les poll
 
 Il s'adresse essentiellement aux personnes sensibles, allergiques, asthmatiques et sportifs, mai aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
-Grâce aux informations des  prévisons et données live, vous pouvez manager votre planning et vous protéger plus efficacement.  
+Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens.  
 
-Vous accèdez aux données en direct et aux prévisions sur 5 jours pour la pollution et sur 3 jours pour les pollens.
+Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
 
-Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault.
+Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-Cela historise aussi les données et donne accès la représentation graphique.
-
-Vous pouvez les désactiver en décochant 'Historiser' une fois les commandes créées dans l'onglet 'Commandes'
-
-Des alertes sont disponibles. Elles sont affichés à intervalles régulières sur le dashboard. Vous pouvez régler le niveaux des alertes.
-
-Elles sont formatées pour Telegram et SMS : deux commandes infos sont disponibles avec des infos d'alertes mises à jour. Elles peuvent vous servir pour lancer un scénario d'envoi de message facilement ( ex : envoi si un message est disponible ( != '') dans la commande/info 'Telegram Pollution')
-
+Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemeple.
 
 <p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.png" class="img-responsive" alt="Pollen">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">
 </p>
+
+Un nouveau mode est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app Jeedom, un bouton vous permet de mettre à jour les données en fonction de votre localisation (fonctionne en https uniquement).
+
+Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API). 
+
+
+Sinon, j'ai repris le systeme de Jeedom pour l'historisation des données.
+
+Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault sur Jeedom, seule le timing est modifié.
+
+Cela historise aussi les données et donne accès la représentation graphique classique de Jeedom.
+
+Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
+
+<p align="center">
+  <img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
+</p>
+
 
 Il fonctionne sous Jeedom et est compatible avec la version 4.
 
@@ -31,7 +42,7 @@ Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, 
 
 Ce qui veux dire que les prévisons de pollens sont mises à jour une fois par jour seulement, j'ai choisi 7h du matin, car seulement 24h sont en fait disponibles. Ce qui veux dire que pour le troisième jour de prévision, les infos vont jusqu'a 7h00 du matin et donc sont suceptiblent dévoluer en s'affinant.
 
-C'est un choix qui est fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
+C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
 En effet, lors du refresh des prévisons pollens l'api compte 1 appel par heure de données fournie, donc l'appel forecast sur 48 heures coûte 48 appels sur les 100 journalier. Ce qui explique mon choix d'appel une fois par jour.  
 
@@ -42,7 +53,7 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
 <p align="center">
-<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen2.jpg" class="img-responsive" alt="Pollen">
+<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
 </p>
 
 # Configuration principale du plugin
@@ -53,7 +64,7 @@ Si vous avez déjà une clef pour le plugin Weather officiel de Jeedom, la clef 
 
 Pour obtenir une clef api OpenWheather il faut aller [ici](https://home.openweathermap.org), créer un compte gratuit et ensuite il faut copier votre clef api dans la zone prévue sur la page "Configuration du Plugin".
 
-Pour obtenir la clef api ambee il faut aller [ici](https://api-dashboard.getambee.com/#/signup), c'est à peu près le même principe qu'avant : vous récupérez une clef  gratuite que vous coller dans la configuration du plugin".
+Pour obtenir la clef api ambee il faut aller [ici](https://api-dashboard.getambee.com/#/signup), c'est à peu près le même principe qu'avant : vous récupérez une clef gratuite que vous coller dans la configuration du plugin".
 
 # Configuration principale de l'équipement
 
@@ -89,13 +100,15 @@ Pour l'AQI, tous les polluants sont affichés par défault, il vous suffit de d�
 
 Pour les pollens, tous sont affichés par défaut, le plugin les classe automatiquement par ordre décroissant de risque.
 
-Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à la fin du caroussel.  
+Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à la fin du caroussel ou il peuvent ne pas être affiché en réglant la molette ci-dessous :
+
+<p align="center">
+  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.jpg">
+</p>
+
 
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/aqi2.jpg">
-</p>
 
 **Important**
 
@@ -105,13 +118,20 @@ J'ai utilisé les code couleur officiel pour l'affichage : [voir ici](https://fr
 
 Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (de 1 Risque nul à 4 Risque très élevé).
 
+Vous pouvez régler les alertes par polluant dans la configuration : 
+
+
+<img align="center" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen.JPG">
+
 J'ai rajouté des niveaux alertes par pollens, les calculs sont basés sur un Mémoire de l’École Nationale de la Santé Publique et une étude de l'ENSP (pdf dans le repertoire docs) :
 
 Les alertes sont basées sur des seuils de 40 particules/m³ , ce qui correspond au plancher de niveau de sensibilité de la plupart des personnes allergiques. Certains sujets hypersensibles, sont touchés dès 5 part/m³.  
 
 J'ai donc défini comme 5 part/m3 le plancher d'alerte. A partir de 5, le risque est limité, et à partir de 40 le risque est élevé. Ces seuils sont valablent pour les personnes sensibles.
 
-Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et les sensibles dès 40.  
+Pour résumer, les personnes hypersensibles peuvent réagir dès 5 part/m3 et les sensibles dès 40, vous pouvez régler les alertes de chaque pollen comme vous voulez. 
+
+<img align="center" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/rangesPollen.JPG">
 
 **Note**
 
