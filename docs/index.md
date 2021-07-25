@@ -1,13 +1,13 @@
 # Plugin Jeedom AirQuality
-
+<br/>
 Le plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
-
-Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens.  
 <br/>
 
-<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
+<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens. 
+
+Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
 Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
 
@@ -21,7 +21,7 @@ Des messages d'alertes sont crées en fonctions des changement et les déclenche
 
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/>
 
 ## Historisation
 
@@ -31,15 +31,13 @@ Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affiché
 
 Cela historise aussi les données et donne accès la représentation graphique classique de Jeedom.
 
-<br/>
-
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
 <br/>
 <p align="center">
   <img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
 </p>
-
 <br/>
+
 ## Les APIs
 
 Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
@@ -62,7 +60,7 @@ Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 202
 
 
 <p align="center">
-<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
+<img height="250" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
 </p>
 
 
