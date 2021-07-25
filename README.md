@@ -1,22 +1,22 @@
 # Plugin Jeedom Air Quality & Pollen
 
-Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
+<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
 
-It works with the open source **Jeedom** soft and it's compatible with Version 4. 
-
-<img  align="right" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">
+It works with the **Jeedom** soft and it's compatible with Version 4.
 
 ### Built With
 
 * [Jeedom V4.1.22](https://jeedom.com)
 
-* [HighCharts](https://highcharts.com)   
+* [HighCharts](https://highcharts.com)  (include in Jeedom)
 
 * [Raspberry Pi 3](https://www.raspberrypi.org)
 
 * [Raspbian GNU/Linux 10 (buster)](https://www.raspberrypi.org/software)
 
 * [Visual Studio Code + Remote SSH](https://code.visualstudio.com/)
+
+* [No external library]()
 
 ### Installation
 
@@ -63,7 +63,7 @@ For test you can use the CLI with a linux systeme for installation or going to t
 
 
 
-<img  align="left" height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG">
+<img  align="left" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG">
 
 ## Usage
 
