@@ -1,8 +1,8 @@
 # Plugin Jeedom AirQuality
 
-Ce plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens.
+Le plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens.
 
-Il s'adresse essentiellement aux personnes sensibles, allergiques, asthmatiques et sportifs, mai aussi à tous ceux qui prennent attention à l'air qu'il respire. 
+Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
 Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens.  
 
@@ -10,21 +10,14 @@ Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours po
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">
-</p>
+<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
-Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemeple.
+<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 
-Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
-Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API). 
 
-<p align="center">
-  <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">
-</p>
-
-Sinon, j'ai repris le systeme de Jeedom pour l'historisation des données.
+Sinon, j'ai repris le système de Jeedom pour l'historisation des données.
 
 Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault sur Jeedom, seule le timing est modifié.
 
@@ -92,10 +85,6 @@ Vous pouvez créer plusieurs équipement pour plusieurs villes pour les données
 Vous devrez alors choisir une version payante de l'API Ambee.
 
 
-<p align="center">
-<img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
-</p>
-
 # Utilisation
 
 En cliquant sur les moyennes vous accèder au graphique représentant ces données (fonction native de Jeedom)
@@ -150,8 +139,15 @@ Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuel
 
 Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota journalier de données gratuites. C'est normal, il faut attendre le lendemain matin pour que tout rentre dans l'ordre.
 
-Exemple Message Télégram :
+Exemple Message Telegram :
 
 <p align="center">
 <img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.JPG">
 </p>
+
+Exemple Message Discord :
+
+<p align="center">
+<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
+</p>
+
