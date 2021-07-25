@@ -6,18 +6,22 @@ Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles 
 
 Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens.  
 
+
+<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
+
 Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
 
 Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
 
-<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
-<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+<img align="left" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
 
-Sinon, j'ai repris le système de Jeedom pour l'historisation des données.
+# Historisation
+
+J'ai repris le système de Jeedom pour l'historisation des données.
 
 Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault sur Jeedom, seule le timing est modifié.
 
@@ -30,7 +34,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 </p>
 
 
-Il fonctionne sous Jeedom et est compatible avec la version 4.
+# Les API
 
 Les données sont récupérées par deux API gratuites: Openwheather et Ambee.
 
@@ -48,9 +52,12 @@ Les deux Api fonctionnent presque partout dans le monde et vous pouvez l'utilise
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
+
+
 <p align="center">
 <img height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">
 </p>
+
 
 # Configuration principale du plugin
 
@@ -62,8 +69,8 @@ Pour obtenir une clef api OpenWheather il faut aller [ici](https://home.openweat
 
 Pour obtenir la clef api ambee il faut aller [ici](https://api-dashboard.getambee.com/#/signup), c'est à peu près le même principe qu'avant : vous récupérez une clef gratuite que vous coller dans la configuration du plugin".
 
-# Configuration principale de l'équipement
 
+# Configuration principale de l'équipement
 
 Vous avez quatre choix de localisation : 
 
@@ -142,12 +149,12 @@ Lors des mise à jours, vous pouvez vous retrouver en dépassement de quota jour
 Exemple Message Telegram :
 
 <p align="center">
-<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.JPG">
+<img height="200" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.jpg">
 </p>
 
 Exemple Message Discord :
 
 <p align="center">
-<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
+<img height="40" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
 </p>
 
