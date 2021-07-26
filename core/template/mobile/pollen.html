@@ -121,7 +121,7 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
             </div>
         </div>
     </div>
-    <footer>
+    <footer style='position: absolute; bottom: 0; left: 0; right: 0'>
         <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
         <div> #button#</div>  
         <div>#long_lat#</div> 
@@ -150,19 +150,19 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
 
 
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(maPositionPollen, noLocationPollen, { timeout: 10000, enableHighAccuracy: true });
+            navigator.geolocation.getCurrentPosition(maPositionPollenMobile, noLocationPollenMobile, { timeout: 10000, enableHighAccuracy: true });
         }
 
-        function maPositionPollen(position) {
+        function maPositionPollenMobile(position) {
 
-            setLocationPollen(position.coords.longitude, position.coords.latitude)
+            setLocationPollenMobile(position.coords.longitude, position.coords.latitude)
             console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
         }
-        function noLocationPollen() {
+        function noLocationPollenMobile() {
             console.log("Could not find location");
         }
 
-        function setLocationPollen(longitude, latitude) {
+        function noLocationPollenMobile(longitude, latitude) {
 
             $.ajax({
                 type: "POST",
@@ -200,11 +200,11 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
         }
 
 
-        waitForFiveSeconds();
-	    setTimeout(function () { 
-             $('#lon_lat_refresh#id#').click(handler);
-             console.log('Click refresh ON!');
-             }, 0 );
+        // waitForFiveSeconds();
+	    // setTimeout(function () { 
+        //      $('#lon_lat_refresh#id#').click(handler);
+        //      console.log('Click refresh ON!');
+        //      }, 0 );
 
 
 

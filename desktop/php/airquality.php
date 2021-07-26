@@ -75,7 +75,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
-            <li role="presentation"><a href="#alerttab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-exclamation-circle"></i><span class="hidden-xs"> {{Paramétrage des alertes}}</span></a></li>
+            <li role="presentation"><a href="#alerttab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-exclamation-circle"></i><span class="hidden-xs"> {{Alertes}}</span></a></li>
         </ul>
         <div class="tab-content">
             <!-- Onglet de configuration de l'équipement -->
@@ -144,6 +144,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             echo '<option disabled="disabled" value="server_mode">{{Localisation Jeedom non renseigné dans la configuration générale}}</option>';
                                         }
                                         ?>
+                                         <option value="follow_me">{{Mobile Follow Me (https requis)}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -269,13 +270,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br />
-                            <div class="form-group searchMode dynamic_mode">
+                            <!-- <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-7">
                                     <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="long_lat_view" />{{Activer Follow me}}</label>
                                 </div>
                             </div>
-                            <br>
+                            <br> -->
                             <div class="form-group elements pollen">
                                 <label style="margin-top:7px;" class="col-sm-3 control-label">{{Afficher à partir de}}</label>
                                 <div class="col-sm-6">
