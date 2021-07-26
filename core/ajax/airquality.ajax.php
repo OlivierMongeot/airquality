@@ -30,12 +30,12 @@ try {
   switch (init('action')) {
 
     case 'getcity':
-      $city = airquality::ReverseGeoLoc(init('longitude'), init('latitude'), init('save'));
+      $city = airquality::getCityName(init('longitude'), init('latitude'), init('save'));
       ajax::success($city);
       break;
 
     case 'getCoordinates':
-      $coordinates =  airquality::GeoLoc(init('cityName'), init('cityCode'));
+      $coordinates =  airquality::getCoordinates(init('cityName'), init('cityCode'));
       ajax::success($coordinates);
       break;
 

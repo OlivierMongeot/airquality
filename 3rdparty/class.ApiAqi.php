@@ -223,13 +223,11 @@ class ApiAqi
     /**
      * Appel Forecast Pollen Getambee
      */
-    // public function callApiForecastPollen($latitude = null, $longitude = null)
     public function callApiForecastPollen($longitude = null, $latitude = null)
     {
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
-        log::add('airquality', 'debug', 'Data Ambee Forecast Response : ' . json_encode($response));
-        $data = json_decode($response[0]);
+      
         if ($response[2] == '429') {
             message::add('Ambee', __('Quota journalier données pollen dépassé pour les prévisions', __FILE__));
         } else if ($response[2] == '401') {
@@ -238,20 +236,16 @@ class ApiAqi
             message::add('Ambee', __('Clef API n\'a pas les bonnes permission ', __FILE__));
         } else if ($response[2] == '404') {
             message::add('Ambee', __('La source demandé n\'existe pas ', __FILE__));
-        }
-
-        if ($data->data == [] || !empty($data->message)) {
-            message::add('Pollen Forecast', 'Message :  '. $data->message);
-
-        } else {
-            log::add('airquality', 'debug', 'Data Ambee Forecast Response Code : ' . json_encode($response[2]));
-            log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($data->data));
+        } else if ($response[2] == '200') {     
+            $data = json_decode($response[0]);
+            log::add('airquality', 'debug', 'Data Pollen Forecast Return OK: ');
+            log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
             return $data->data;
+        } else {
+            throw new Exception('No data pollen - Http code : ' . $response[2]);
         }
-
-       
+     
         // $response = file_get_contents(dirname(__DIR__) . '/core/dataModel/pollen2f.json', 1);     
-        // log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
         // return json_decode($response);
     }
 

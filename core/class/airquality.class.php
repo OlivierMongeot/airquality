@@ -164,7 +164,7 @@ class airquality extends eqLogic
 
                 //  Refresh forecast Pollen  test if new data available / date collect > 24h 
                 try {
-                    $c = new Cron\CronExpression('15 8 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('4 19 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                                 $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
@@ -255,10 +255,10 @@ class airquality extends eqLogic
     {
         $this->setDisplay("width", "265px");
         $this->setDisplay("height", "375px");
-        // if ($this->getConfiguration('long_lat_view') == 1) {
-        //     $this->setDisplay("width", "265px");
-        //     $this->setDisplay("height", "415px");
-        // }
+        if ($this->getConfiguration('long_lat_view') == 1) {
+            $this->setDisplay("width", "265px");
+            $this->setDisplay("height", "415px");
+        }
     }
 
     public function postUpdate()
@@ -723,7 +723,7 @@ class airquality extends eqLogic
         }
 
         // Global  ----------------
-        if ($this->getConfiguration('long_lat_view') == 1 && $_version == 'mobile') {
+        if ($this->getConfiguration('long_lat_view') == 1) {
             [$lon, $lat] = $this->getCurrentLonLat();
             $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
             $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
@@ -782,7 +782,7 @@ class airquality extends eqLogic
     /**
      * Pour recevoir appel Ajax. Utilisé dans la configuration mode "Geolocalisation du Navigateur"
      */
-    public static function ReverseGeoLoc($longitude, $latitude, $save = false)
+    public static function getCityName($longitude, $latitude, $save = false)
     {
         $api = new ApiAqi;
         $city  = $api->callApiReverseGeoLoc($longitude, $latitude);
@@ -796,7 +796,7 @@ class airquality extends eqLogic
     /**
      * Pour appel Ajax. Utilisé dans la configuration mode "Par ville" et Follow me 
      */
-    public static function GeoLoc($city, $country_code, $state_code = null)
+    public static function getCoordinates($city, $country_code, $state_code = null)
     {
         $api = new ApiAqi;
         return $api->callApiGeoLoc($city, $country_code, $state_code = null);
@@ -807,13 +807,12 @@ class airquality extends eqLogic
      */
     public static function setNewGeoloc($longitude, $latitude)
     {
-        log::add('airquality', 'debug', 'airquality->setNewGeoloc  save DynLatitude et DynLongitude en config');
+        log::add('airquality', 'debug', 'Save DynLatitude et DynLongitude en config generale');
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
-        // log::add('airquality', 'debug', 'Get DynLatitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLatitude', 'airquality')));
-        // log::add('airquality', 'debug', 'Get DynLongitude from config de methode setNewGeoloc: ' . json_encode(config::byKey('DynLongitude', 'airquality')));
         return [$latitude, $longitude];
     }
+    
 
 
     private function getCurrentCityName()
@@ -1122,8 +1121,8 @@ class airquality extends eqLogic
         $cmdXToTest = $this->getCmd(null, 'others_min');
         $interval = $this->getIntervalLastRefresh( $cmdXToTest );
         log::add('airquality', 'debug', 'Refresh Forecast Pollen : Test Interval last refresh = ' . $interval .' min');
-        if ($interval > 1330) {
-            log::add('airquality', 'debug', 'Interval Ok refresh forecast Pollen niveau 1400 min a modif');
+        if ($interval > 600) {
+            log::add('airquality', 'debug', 'Interval Ok refresh forecast Pollen niveau 745 min a modif');
             $forecast =  $this->getApiData('getForecastPollen');
             // log::add('airquality', 'debug', json_encode($forecast));
             if (is_array($forecast) || $forecast != []) {
