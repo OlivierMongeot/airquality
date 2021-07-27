@@ -824,7 +824,7 @@ class airquality extends eqLogic
 
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
-        log::add('airquality', 'debug', 'API Calling Cit : ' . $city);
+        log::add('airquality', 'debug', 'API Calling City : ' . $city);
         [$lon, $lat] = $this->getCurrentLonLat('use to call API ');
         return $api->$apiName($lon, $lat);
     }
