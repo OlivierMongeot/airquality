@@ -5,33 +5,35 @@
 <img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Le plugin Air Quality & Pollen vous informe sur la qualité de l'air et les pollens presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
-<br/>
 
-Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous protéger des polluants ou pollens. 
+## Prévisions & live
+
+Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous prémunir des polluants ou pollens. 
+Vous accèdez aux informations en direct mais aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
+
+## Alertes
 
 Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
 
-Vous accèdez aux informations en direct et aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
+Des messages d'alertes sont crées en fonctions des changements des données les déclenchements sont paramétrables individuelements.
 
-Des messages d'alertes sont crées en fonctions des changement et les déclenchements sont paramétrables.
-
-<br/>
+Regardez le bouton 'Alertes' sur la page de confuguration de votre équipement, c'est là que vous pouvez tout régler.
 
 ## Mobilité
 
 <img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est dispo dans la nouvelle version, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 ><br/>
-Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
+Cela vous permet d'avoir les infos locales partout où vous vous trouver (dans les limites des possibilités des API).
 
 Avec cette option, le bouton refresh du desktop de l'équipement est désactivé, pour laisser la main à la page mobile.  
 
-<br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
 ## Historisation
 
 J'ai repris le système de Jeedom pour l'historisation des données.
 
-Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés par défault sur Jeedom, seule le timing est modifié.
+Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés seule le timing est modifié.
 
 Cela historise aussi les données et donne accès la représentation graphique classique de Jeedom.
 
