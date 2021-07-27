@@ -151,9 +151,9 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 #mini_slide#
             </div>
         </div>
-        <footer style='position: absolute; bottom: 0; left: 0; right: 0;'>
+        <footer style='position: relative; bottom: 0; left: 0; right: 0; margin-top: 5px'>
             <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="height:50px;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
-            <div> #button#</div>  
+            <div style="font-size: large;"> #button#</div>  
             <div>#long_lat#</div> 
            </div>
         </footer>
@@ -166,21 +166,21 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
     $('#lon_lat_refresh#id#').on('click', function () {
 
         // setLocation(5.2219,43.1742) //marseille
-        setLocationMobile(-99.133178,19.43263) //mexico
+        // setLocationMobile(-99.133178,19.43263) //mexico
         // setLocationMobile(-33.8688,18.4239) //melbourne
 
-        // if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(maPositionMobile, noLocationMobile, { timeout: 10000, enableHighAccuracy: true });
-        // }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(maPositionMobile, noLocationMobile, { timeout: 10000, enableHighAccuracy: true });
+        }
 
-        // function maPositionMobile(position) {
+        function maPositionMobile(position) {
  
-        //     setLocationMobile(position.coords.longitude, position.coords.latitude)
-        //     console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
-        // }
-        // function noLocationMobile() {
-        //     console.log("Could not find location");
-        // }
+            setLocationMobile(position.coords.longitude, position.coords.latitude)
+            console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
+        }
+        function noLocationMobile() {
+            console.log("Could not find location");
+        }
  
         function setLocationMobile(longitude, latitude) {
 
