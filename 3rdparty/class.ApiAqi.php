@@ -27,7 +27,7 @@ class ApiAqi
      */
     private function curlApi(string $url, string $apiKey, string $apiName = 'openwheather')
     {
-         $curl = curl_init();
+        $curl = curl_init();
         if ($apiName == 'openwheather'){
             curl_setopt_array($curl, [
                 CURLOPT_URL => $url,
@@ -123,7 +123,7 @@ class ApiAqi
     /**
      * Appel API AQI Pollution Live
      */
-    public function getAqi($longitude, $latitude)
+    public function getAQI($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
@@ -145,7 +145,7 @@ class ApiAqi
     /**
      * Appel API OneCall OpenWheather UV et Visibilité
      */
-     public function getOneCallApi($longitude, $latitude)
+     public function getOneCallAQI($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
@@ -157,97 +157,16 @@ class ApiAqi
             if ($data == [] || $data == null) {
                 throw new Exception('No UV data and visibility with these coordinates');
             } else {
-                log::add('airquality', 'debug', 'Données OneCallapi : '. json_encode($data->current));
+                log::add('airquality', 'debug', 'Data OneCallapi : '. json_encode($data->current));
                 return $data->current;
             }
         }
     }
 
-    /**
-     * Appel AQI Forecast OpenWheather Pollution
-     */
-    public function callApiForecastAQI($longitude = null, $latitude = null)
-    {
-        $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
-        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
-        $data = json_decode($response[0]);
-        if ($response[1] != '') {
-              throw new Exception('No Forecast AQI data at this time : '. $response[1] . ' Http code : ' . $response[2]);
-        }
-        else {
-            if ($data == [] || $data == null) {
-                throw new Exception('AQI Forecast : No data with these coordinates');
-            } else {
-                if (property_exists($data, 'list')){
-                    log::add('airquality', 'debug', 'AQI forecast for equipement '. $this->getName().', Longitude: '. $longitude . ' & Latitude: '. $latitude);
-                    log::add('airquality', 'debug', 'Data Aqi Forecast : '. json_encode($data->list));
-                    return $data->list;
-                }
-            }
-        }
-    }
-
-    /**
-     * Appel Pollen latest GetAmbee
-     */
-    public function getAmbee($longitude = 7.7, $latitude = 48.5)
-    {
-        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
-        $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
-
-            if ( $response[2] == '429'){
-                message::add('Ambee',__('Quota journalier données pollen dépassé, vous pouvez passer à la version premium de l\'API',__FILE__));
-                log::add('airquality', 'debug', 'Quota journalier données pollen dépassé');
-            } else  if ($response[2] == '401'){
-                throw new Exception('Api Key is not actived');
-            } else if( $response[2] == '200'){
-                $data = json_decode($response[0]);
-                if (property_exists($data, 'data')){
-                    log::add('airquality', 'debug', 'Pollen latest for equipement '. $this->getName().', Longitude: '. $longitude . ' & Latitude: '. $latitude);
-                    // log::add('airquality', 'debug', 'Ambee data latest : '. json_encode($data));
-                    return $data;
-                }
-            } else {
-                    throw new Exception('No data pollen - Http code : ' . $response[2]);
-            }        
-    }
-
-
-
-    /**
-     * Appel Forecast Pollen Getambee
-     */
-    public function callApiForecastPollen($longitude , $latitude)
-    {
-        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
-        $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
-      
-        if ($response[2] == '429') {
-            message::add('Ambee', __('Quota journalier données pollen dépassé pour les prévisions', __FILE__));
-        } else if ($response[2] == '401') {
-            message::add('Ambee', __('Clef API fournie non valide', __FILE__));
-        } else if ($response[2] == '403') {
-            message::add('Ambee', __('Clef API n\'a pas les bonnes permission ', __FILE__));
-        } else if ($response[2] == '404') {
-            message::add('Ambee', __('La source demandé n\'existe pas ', __FILE__));
-        } else if ($response[2] == '200') {     
-            $data = json_decode($response[0]);
-            log::add('airquality', 'debug', 'Pollen forecast for equipement '. $this->getName().', Longitude: '. $longitude . ' & Latitude: '. $latitude);
-            log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
-            return $data->data;
-        } else {
-            throw new Exception('No data pollen - Http code : ' . $response[2]);
-        }
-        // Test
-        // $response = file_get_contents(dirname(__DIR__) . '/core/dataModel/pollen2f.json', 1);     
-        // return json_decode($response);
-    }
-
-
-    /**
+/**
      * Retourne Forecast parsé min/max/jour AQI 
      */
-    public function getForecast($longitude = null, $latitude = null)
+    public function getForecastAQI($longitude = null, $latitude = null)
     {
         $polluants = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($longitude,$latitude);
@@ -271,7 +190,6 @@ class ApiAqi
         log::add('airquality', 'debug', 'getForecastPollen Methode Start');
         $dataList = $this->callApiForecastPollen($longitude, $latitude);
 
-        // log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($dataList));
         if (isset($dataList) && $dataList != []){
             foreach ($pollens as $pollen) {
                 $newTabDay = $this->parseDataPollen($dataList, $pollen);
@@ -284,6 +202,96 @@ class ApiAqi
             return [];
         }
     }
+
+
+
+    /**
+     * Appel AQI Forecast OpenWheather Pollution
+     */
+    public function callApiForecastAQI($longitude = null, $latitude = null)
+    {
+        $url = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" . $latitude . "&lon=" . $longitude;
+        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
+        $data = json_decode($response[0]);
+        if ($response[1] != '') {
+              throw new Exception('No Forecast AQI data at this time : '. $response[1] . ' Http code : ' . $response[2]);
+        }
+        else {
+            if ($data == [] || $data == null) {
+                throw new Exception('AQI Forecast : No data with these coordinates');
+            } else {
+                if (property_exists($data, 'list')){
+                    log::add('airquality', 'debug', 'Cell AQI forecast with Longitude: '. $longitude . ' & Latitude: '. $latitude);
+                    log::add('airquality', 'debug', 'Data Aqi Forecast : '. json_encode($data->list));
+                    return $data->list;
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Appel Pollen latest GetAmbee
+     */
+    public function getAmbee($longitude = 7.7, $latitude = 48.5)
+    {
+
+        $url =  "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
+        $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
+
+            if ( $response[2] == '429'){
+                message::add('Ambee',__('Quota journalier données pollen dépassé, vous pouvez passer à la version premium de l\'API',__FILE__));
+                log::add('airquality', 'debug', 'Quota journalier données pollen dépassé');
+            } else  if ($response[2] == '401'){
+                throw new Exception('Api Key is not actived');
+            } else if( $response[2] == '200'){
+                $data = json_decode($response[0]);
+                if (property_exists($data, 'data')){
+                    log::add('airquality', 'debug', 'Pollen latest for Longitude: '. $longitude . ' & Latitude: '. $latitude);
+                    log::add('airquality', 'debug', 'Ambee data latest : '. json_encode($data));
+                    return $data;
+                }
+            } else {
+                    throw new Exception('No data pollen - Http code : ' . $response[2]);
+            }        
+    }
+
+
+
+    /**
+     * Appel Forecast Pollen Getambee
+     */
+    public function callApiForecastPollen($longitude , $latitude)
+    {
+        log::add('airquality', 'debug', 'Call API Forecast Pollen');
+        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
+        $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
+      
+        if ($response[2] == '429') {
+            message::add('Ambee', __('Quota journalier données pollen dépassé pour les prévisions', __FILE__));
+        } else if ($response[2] == '401') {
+            message::add('Ambee', __('Clef API fournie non valide', __FILE__));
+        } else if ($response[2] == '403') {
+            message::add('Ambee', __('Clef API n\'a pas les bonnes permission ', __FILE__));
+        } else if ($response[2] == '404') {
+            message::add('Ambee', __('La source demandé n\'existe pas ', __FILE__));
+        } else if ($response[2] == '200') {     
+            $data = json_decode($response[0]);
+            log::add('airquality', 'debug', 'Pollen forecast Longitude: '. $longitude . ' & Latitude: '. $latitude);
+            log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
+            log::add('airquality', 'debug', 'Return Pollen Forecast');
+            return $data->data;
+        } else {
+            throw new Exception('No data pollen - Http code : ' . $response[2]);
+        }
+        // Test
+        // $response = file_get_contents(dirname(__DIR__) . '/core/dataModel/pollen2f.json', 1);     
+        // return json_decode($response);
+    }
+
+
+    
 
 
     /**

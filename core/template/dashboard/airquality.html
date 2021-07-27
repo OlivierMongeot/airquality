@@ -234,10 +234,10 @@
 
     $('#lon_lat_refresh#id#').on('click', function () {
 
-//              setLocation(5.2219,43.1742) //marseille
-//             setLocation(-99.133178,19.43263) //mexico
-//             setLocation(-33.8688,18.4239) //melbourne
-//   setLocation(18.4239,-33.8688) //melbourne
+//          setLocation(5.2219,43.1742) //marseille
+//          setLocation(-99.133178,19.43263) //mexico
+//          setLocation(-33.8688,18.4239) //melbourne
+//          setLocation(18.4239,-33.8688) //melbourne
             if (navigator.geolocation) {
                 // console.log('Check New Location')
                 navigator.geolocation.getCurrentPosition(maPositionDesktop, noLocationDesktop, { timeout: 10000, enableHighAccuracy: true });
