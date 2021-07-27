@@ -689,9 +689,6 @@ class DisplayInfo
             $newCategory = $this->getLevelPollen($newData, $type);
             $messageMore = __(' - <b>' . $typeName . "</b> : " . $this->getSynonyme('stable') . " " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__) . ' avec ' . $newData . ' part/m³ ';
         }
-
-
-
         return [$message,  $messageMore];
     }
 
@@ -824,7 +821,9 @@ class DisplayInfo
         return implode(' ', $arrayMessage);
     }
 
-
+    /**
+     *  Format for discord
+     */
     private function formatPollenMarkDown($messages)
     {
         $arrayMessage[] = ":blossom: **Alerte Pollens** :herb:" . " ";

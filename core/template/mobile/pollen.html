@@ -121,9 +121,9 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
             </div>
         </div>
     </div>
-    <footer style='position: absolute; bottom: 0; left: 0; right: 0'>
-        <div class="cmd noRefresh" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
-        <div> #button#</div>  
+    <footer style='position: relative; bottom: 0; left: 0; right: 0;font-size:80;padding:5px'>
+        <div class="state" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;justify-content: space-around">
+        <div style='font-size:small ;'> #button#</div>  
         <div>#long_lat#</div> 
        </div>
     </footer>
@@ -158,11 +158,13 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
             setLocationPollenMobile(position.coords.longitude, position.coords.latitude)
             console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
         }
+     
+     
         function noLocationPollenMobile() {
             console.log("Could not find location");
         }
 
-        function noLocationPollenMobile(longitude, latitude) {
+        function setLocationPollenMobile(longitude, latitude) {
 
             $.ajax({
                 type: "POST",

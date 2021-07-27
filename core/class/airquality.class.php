@@ -529,10 +529,10 @@ class airquality extends eqLogic
             array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), 0);
 
-
-            // refresh_location
+            // Refresh_location btn id 
             $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
             $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
+
         }
 
         // Pollen ---------------
@@ -727,7 +727,7 @@ class airquality extends eqLogic
         // Global  ----------------
         if ($this->getConfiguration('searchMode') == 'follow_me' ) {
             [$lon, $lat] = $this->getCurrentLonLat('html');
-            $replace['#button#'] = '<i class="fas fa-map-marker-alt"></i> ' . $this->getCurrentCityName();
+            $replace['#button#'] = '<span style="height:15px;"><i class="fas fa-map-marker-alt fa-lg"></i></span> ' . $this->getCurrentCityName();
             $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
             $replace['#height_footer#'] = 'height:50px';
         } else {
@@ -749,6 +749,7 @@ class airquality extends eqLogic
             $replace['#animation#'] = 'active';
             $replace['#classCaroussel#'] = '';
         }
+
 
         if ($this->getConfiguration('elements') == 'polution') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
@@ -836,32 +837,9 @@ class airquality extends eqLogic
     {
 
         $api = new ApiAqi();
-        // switch ($this->getConfiguration('searchMode')) {
-        //     case 'city_mode':
-             
-        //         log::add('airquality', 'debug', 'Mode city_mode for ' . $this->getHumanName());
-        //         return $api->$apiName($this->getConfiguration('city_longitude'), $this->getConfiguration('city_latitude'));
-                
-        //     case 'long_lat_mode':
-        //         log::add('airquality', 'debug', 'Mode long_lat_mode for ' . $this->getHumanName());
-        //         return $api->$apiName($this->getConfiguration('longitude'), $this->getConfiguration('latitude'));
-
-
-        //     case 'dynamic_mode':        
-        //         log::add('airquality', 'debug', 'Mode dynamic_mode for ' . $this->getHumanName());
-        //         return $api->$apiName($this->getConfiguration('geoLongitude'), $this->getConfiguration('geoLatitude'));
-  
-        //     case 'follow_me':
-        //             log::add('airquality', 'debug', 'Mode follow_me for ' . $this->getHumanName());
-        //             return $api->$apiName(config::byKey('DynLongitude', 'airquality'), config::byKey('DynLatitude', 'airquality'));
-               
-        //     case 'server_mode':
-        //         log::add('airquality', 'debug', 'Mode server_mode for ' . $this->getHumanName());
-        //         return $api->$apiName(config::byKey('info::longitude'), config::byKey('info::latitude'));
-            // }
         $city = $this->getCurrentCityName();
         log::add('airquality', 'debug', 'City Checked : ' . $city);
-        [$lon, $lat] = $this->getCurrentLonLat('use to call');
+        [$lon, $lat] = $this->getCurrentLonLat('use to call API ');
         return $api->$apiName($lon, $lat);
     }
 
