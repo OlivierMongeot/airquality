@@ -23,6 +23,8 @@ Des messages d'alertes sont crées en fonctions des changement et les déclenche
 ><br/>
 Cela vous permet d'avoir donc les infos locales partout où vous vous trouver (dans les limites des données des API).
 
+Avec cette option, le bouton refresh du desktop de l'équipement est désactivé, pour laisser la main à la page mobile.  
+
 <br/><br/><br/><br/><br/><br/><br/>
 
 ## Historisation
