@@ -152,7 +152,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
             </div>
         </div>
         <footer style='position: relative; bottom: 0; left: 0; right: 0;'>
-            <div class="cmd noRefresh" id="follow_me_fresh#id#" data-cmd_id="#refresh_locationid#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
+            <div class="label" id="follow_me_fresh#id#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;font-size:90%;justify-content: space-around">
             <div style="font-size: large;"> #button#</div>  
             <div>#long_lat#</div> 
            </div>
@@ -178,7 +178,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
             setLocationMobile(position.coords.longitude, position.coords.latitude)
             console.log('Get Location from browser : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
         }
-        
+
         function noLocationMobile() {
             console.log("Could not find location");
         }

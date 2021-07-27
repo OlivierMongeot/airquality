@@ -54,7 +54,7 @@ class airquality extends eqLogic
                 try {
                     $c = new Cron\CronExpression('0,30 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
-                        $airQuality->updatePollution();
+                        // $airQuality->updatePollution();
                     }
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
@@ -67,7 +67,7 @@ class airquality extends eqLogic
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
-                                $refresh->execCmd();
+                                // $refresh->execCmd();
                             } else {
                                 log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName());
                             }
@@ -169,10 +169,15 @@ class airquality extends eqLogic
     public function getIntervalLastRefresh($cmdXToTest)
     {
         if (is_object($cmdXToTest)) {
+
             $collectDate = $cmdXToTest->getCollectDate();
+            if ($collectDate == null) {
+                return 5000;
+            }
             $datetimeCollected = DateTime::createFromFormat('Y-m-d H:i:s', $collectDate);
             $dateNow = new DateTime();
             $dateNow->setTimezone(new DateTimeZone('Europe/Paris'));
+            
             $interval = $datetimeCollected->diff($dateNow);
             log::add('airquality', 'debug', 'Check Intervale : derniere Collecte commande ' . $cmdXToTest->getLogicalId() . '  : ' . $interval->i . ' m ' . $interval->h . ' h et ' . $interval->d . ' jours');
             $minuteToAdd = 0;
@@ -247,7 +252,7 @@ class airquality extends eqLogic
                 }
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
-                    $cmd->execCmd();
+                    // $cmd->execCmd();
                 }
             }
         }
@@ -266,6 +271,7 @@ class airquality extends eqLogic
 
     public function postUpdate()
     {
+        // Pollution
         if ($this->getConfiguration('elements') == 'polution') {
             // Remove pollen cmd 
             $setupPollen = SetupAqi::$setupPollen;
@@ -299,6 +305,7 @@ class airquality extends eqLogic
 
             $refresh = $this->getCmd(null, 'refresh_alert_aqi');
             if (!is_object($refresh)) {
+                $this->setConfiguration('alertAqiCronTwoMin', '1 1 1 1 *')->save();
                 $refresh = new airqualityCmd();
                 $refresh->setName('Rafraichir les alertes');
             }
@@ -308,8 +315,9 @@ class airquality extends eqLogic
                 ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupAqi;
+           
         }
-
+        //Pollen 
         if ($this->getConfiguration('elements') == 'pollen') {
 
             $setupAqi = SetupAqi::$setupAqi;
@@ -344,13 +352,17 @@ class airquality extends eqLogic
             if (!is_object($refresh)) {
                 $refresh = new airqualityCmd();
                 $refresh->setName('Rafraichir les alertes pollens');
+                $this->setConfiguration('alertPollenCronTwoMin', '1 1 1 1 *')->save();
             }
             $refresh->setEqLogic_id($this->getId())
+            
                 ->setLogicalId('refresh_alert_pollen')
                 ->setType('action')
                 ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupPollen;
+
+           
         }
 
         foreach ($setup as $command) {
@@ -530,8 +542,8 @@ class airquality extends eqLogic
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), 0);
 
             // Refresh_location btn id 
-            $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
-            $replace['#refresh_locationid#'] =   $isObjet ? $refresh_locationCmd->getId() : '';
+            // $refresh_locationCmd = $this->getCmd(null, 'refresh_location');
+            // $replace['#refresh_locationid#'] =  '';
 
         }
 
@@ -585,6 +597,7 @@ class airquality extends eqLogic
                 } else  if ($nameCmd == 'updatedAt') {
 
                     $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate($cmd->getCollectDate()) : '';
+
                 } else if ($nameCmd == 'telegramPollen') {
                     $message_alert =  $isObjet ? $cmd->execCmd() : '';
                     $alert = (!empty($message_alert)) ? true : false;
@@ -727,13 +740,15 @@ class airquality extends eqLogic
         // Global  ----------------
         if ($this->getConfiguration('searchMode') == 'follow_me' ) {
             [$lon, $lat] = $this->getCurrentLonLat('html');
-            $replace['#button#'] = '<span style="height:15px;"><i class="fas fa-map-marker-alt fa-lg"></i></span> ' . $this->getCurrentCityName();
+            $replace['#button#'] = '<span><i class="fas fa-map-marker-alt fa-lg"></i></span> ' . $this->getCurrentCityName();
             $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
             $replace['#height_footer#'] = 'height:50px';
+            $replace['#stateRefreshDesktop#'] = 'style="display:none"';
         } else {
             $replace['#button#'] = '';
             $replace['#long_lat#'] = '';
             $replace['#height_footer#'] = 'height:0px';
+            $replace['#stateRefreshDesktop#'] = '';
         }
 
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
@@ -1026,8 +1041,13 @@ class airquality extends eqLogic
     {
 
         // Verifier la date de dernier maj pour faire ou pas maj
-        $iMinute = $this->getIntervalLastRefresh($this->getCmd(null, 'co'));
-            if ($iMinute > 5) {
+
+        $cmToTest = $this->getCmd(null, 'co');
+        $iMinute = 6;
+        if (is_object($cmToTest)) {
+            $iMinute = $this->getIntervalLastRefresh($cmToTest);
+        }
+        if ($iMinute > 5) {
             log::add('airquality', 'debug', 'Interval OK Refresh Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();

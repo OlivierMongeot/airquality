@@ -122,7 +122,7 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
         </div>
     </div>
     <footer style='position: relative; bottom: 0; left: 0; right: 0;font-size:80;padding:5px'>
-        <div class="state" id="lon_lat_refresh#id#" data-cmd_id="#refresh_locationid#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;justify-content: space-around">
+        <div class="label" id="lon_lat_refresh#id#" style="#height_footer#;padding:5px;display:flex;flex-direction:column;width:100%;align-items: center;justify-content: space-around">
         <div style='font-size:small ;'> #button#</div>  
         <div>#long_lat#</div> 
        </div>
@@ -140,14 +140,11 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
     while (new Date() - startTime < 5000) {}
 }
 
-    // $('#lon_lat_refresh#id#').on('click', function () {
+  
   $('#lon_lat_refresh#id#').on('click', function handler() {
         // setLocation(5.2219,43.1742) //marseille
         // setLocation(-99.133178,19.43263) //mexico
-        // setLocation(-33.8688,18.4239) //melbourne
-        $('#lon_lat_refresh#id#').off('click');
-        console.log('Click refresh OFF!');
-
+       
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(maPositionPollenMobile, noLocationPollenMobile, { timeout: 10000, enableHighAccuracy: true });
@@ -202,18 +199,13 @@ data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-ca
         }
 
 
-        // waitForFiveSeconds();
-	    // setTimeout(function () { 
-        //      $('#lon_lat_refresh#id#').click(handler);
-        //      console.log('Click refresh ON!');
-        //      }, 0 );
-
-
-
     });
-  
-  
 
+     $('#lon_lat_refresh#id#').off('click', function handler() {
+         console.log('Click refresh OFF!');
+        }
+         );
+        
 
 </script>
 </div>
