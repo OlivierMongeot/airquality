@@ -1,8 +1,8 @@
 <?php
 // Setup Error : only dev 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -33,8 +33,8 @@ class airquality extends eqLogic
     {
         foreach (self::byType(__CLASS__, true) as $airQuality) {
             if ($airQuality->getConfiguration('elements') == 'pollen') {
-                log::add('airquality', 'debug', 'Pollen disabled update / please decomment line 36 airquality.class');
-                // $airQuality->updatePollen();
+                // log::add('airquality', 'debug', 'Pollen disabled update / please decomment line 36 airquality.class');
+                $airQuality->updatePollen();
             }
         }
     }
@@ -53,8 +53,8 @@ class airquality extends eqLogic
                 try {
                     $c = new Cron\CronExpression('0,30 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
-                        log::add('airquality', 'debug', 'Polution update Disable');
-                        // $airQuality->updatePollution();
+                        // log::add('airquality', 'debug', 'Polution update Disable');
+                        $airQuality->updatePollution();
                     }
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
@@ -67,8 +67,8 @@ class airquality extends eqLogic
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                             if (is_object($refresh)) {
-                                log::add('airquality', 'debug', 'Refresh forecast update disable');
-                                // $refresh->execCmd();
+                                // log::add('airquality', 'debug', 'Refresh forecast update disable');
+                                $refresh->execCmd();
                             } else {
                                 log::add('airquality', 'debug', __('Impossible de trouver la commande refresh pour ', __FILE__) . $airQuality->getHumanName());
                             }
@@ -145,26 +145,6 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour Refresh alert Pollen', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($specialCron)  . json_encode($e));
                 }
 
-                //  Refresh forecast Pollen  test if new data available / date collect > 24h 
-                // try {
-                //     $c = new Cron\CronExpression('15 8 * * *', new Cron\FieldFactory);
-                //     if ($c->isDue()) {
-                //         try {
-                //                 $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
-                //                 if (is_object($refresh)) {
-                //                     log::add('airquality', 'debug', 'Execution Commande secours refreh Pollen forecast lancé');
-                //                     $refresh->execCmd();
-                //                 } else {
-                //                     log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
-                //                 }
-                //         } catch (Exception $e) {
-                //             log::add('airquality', 'debug', __('Erreur pour ', __FILE__) . $airQuality->getHumanName() . ' : ' . $e->getMessage());
-                //         }
-                //     }
-                // } catch (Exception $e) {
-                //     log::add('airquality', 'debug', __('Expression cron non valide pour Pollen refresh forecast', __FILE__) . $airQuality->getHumanName() . ' - ' .  $e->getMessage());
-                // }
-
 
             }
         }
@@ -182,9 +162,9 @@ class airquality extends eqLogic
             $datetimeCollected = DateTime::createFromFormat('Y-m-d H:i:s', $collectDate);
             $dateNow = new DateTime();
             $dateNow->setTimezone(new DateTimeZone('Europe/Paris'));
-            
             $interval = $datetimeCollected->diff($dateNow);
-            log::add('airquality', 'debug', 'Check Intervale : derniere Collecte commande ' . $cmdXToTest->getLogicalId() . '  : ' . $interval->i . ' m ' . $interval->h . ' h et ' . $interval->d . ' jours');
+            log::add('airquality', 'debug', '***************************************************************');
+            log::add('airquality', 'debug', 'Check Intervale derniere Collecte pour ' . $cmdXToTest->getHumanName() . '  : ' . $interval->i . ' m ' . $interval->h . ' h et ' . $interval->d . ' jours');
             $minuteToAdd = 0;
             if ($interval->d > 0) {
                 $minuteToAdd = $interval->d * 24 * 60;
@@ -193,7 +173,6 @@ class airquality extends eqLogic
                 $minuteToAdd .= $interval->h * 60;
             }
             $total = $interval->i + $minuteToAdd;
-            // log::add('airquality', 'debug', 'Intervale en minute derniere Collecte Forecast Pollen : '. $total);
             return $total;
         } else {
             throw new Exception('Commande non trouvée pour calculer l`\'interval de temps');
@@ -245,8 +224,8 @@ class airquality extends eqLogic
                 }
                 $cmd = $this->getCmd(null, 'refresh_forecast');
                 if (is_object($cmd)) {
-                    log::add('airquality', 'debug', 'refresh forecast disable at start décommenter line 246 airquality.class');
-                    // $cmd->execCmd();
+                    // log::add('airquality', 'debug', 'refresh forecast disable at start décommenter line 246 airquality.class');
+                    $cmd->execCmd();
                 }
             }
         }
@@ -256,13 +235,13 @@ class airquality extends eqLogic
             if (is_object($cmdXCheckNull) && $cmdXCheckNull->execCmd() == null) {
                 $cmd = $this->getCmd(null, 'refresh');
                 if (is_object($cmd)) {
-                    log::add('airquality', 'debug', 'refresh disable at start décommenter line 255 airquality.class');
-                    // $cmd->execCmd();
+                    // log::add('airquality', 'debug', 'refresh disable at start décommenter line 255 airquality.class');
+                    $cmd->execCmd();
                 }
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
-                    log::add('airquality', 'debug', 'refresh forecast pollen disable at start décommenter line 259 airquality.class');
-                    // $cmd->execCmd();
+                    // log::add('airquality', 'debug', 'refresh forecast pollen disable at start décommenter line 259 airquality.class');
+                    $cmd->execCmd();
                 }
             }
         }
@@ -274,17 +253,14 @@ class airquality extends eqLogic
     {
         $this->setDisplay("width", "265px");
         $this->setDisplay("height", "375px");
-        if ($this->getConfiguration('long_lat_view') == 1 && $this->getConfiguration('dynamic_mode') == 1) {
-            $this->setDisplay("width", "265px");
-            $this->setDisplay("height", "415px");
-        }
     }
+
 
     public function postUpdate()
     {
         // Pollution
         if ($this->getConfiguration('elements') == 'polution') {
-            // Remove pollen cmd 
+            // Remove pollen cmd if switch 
             $setupPollen = SetupAqi::$setupPollen;
             foreach ($setupPollen as $command) {
                 $cmdInfo = $this->getCmd(null, $command['name']);
@@ -325,8 +301,8 @@ class airquality extends eqLogic
                 ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupAqi;
-           
         }
+
         //Pollen 
         if ($this->getConfiguration('elements') == 'pollen') {
 
@@ -403,7 +379,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        $this->emptyCacheWidget(); //vide le cache. Pour le développement
+        $this->emptyCacheWidget(); //vide le cache. Pour le dev
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
         $display = new DisplayInfo;
@@ -525,14 +501,12 @@ class airquality extends eqLogic
                         $replace[$nameIcon] = $isObjet ? $newIcon : '';
                         $updatedAt = ($isObjet && $cmd->execCmd()) ? $display->parseDate($cmd->getCollectDate()) : 'No data';
                         $replace['#updateAt#'] =  'Lieu : ' . $this->getCurrentCityName();
-
-
                     }
                 }
             }
             if (!isset($alert) || !$alert) {
                 if ($counterActivePolluant == 0) {
-                    $active_aqi_label = __("Pas d'indice en alerte", __FILE__);
+                    $active_aqi_label = __("Pas d'alerte", __FILE__);
                     $htmlActivePollen = '<div title="' .  $updatedAt . '" style="text-align: center; font-size:110%; margin:10px 0px;"';
                     $htmlActivePollen .= ' class="cmd noRefresh tooltips"  data-type="info" data-subtype="other" data-cmd_id="' . $cmd->getId() . '">';
                     $htmlActivePollen .=  $active_aqi_label . ' </div>';
@@ -549,7 +523,6 @@ class airquality extends eqLogic
             $tabUnityHtml = array_column($tabUnitReplace, 0);
             array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
             $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version, $this->getConfiguration('elements'), 0);
-
         }
 
         // Pollen ---------------
@@ -775,7 +748,6 @@ class airquality extends eqLogic
 
     private function setMinutedAction($configName, $delay = 2)
     {
-
         $now = new \DateTime();
         $hour = $now->format('H');
         $minute = $now->format('i');
@@ -785,7 +757,7 @@ class airquality extends eqLogic
             $hour = $hour + 1;
         }
         $cron =  $minuteEnd . ' ' . $hour . ' * * *';
-        log::add('airquality', 'debug', 'Make cron + ' . $delay . ' - ' . $cron . ' for ID ' . $this->getName());
+        log::add('airquality', 'debug', 'Make cron + ' . $delay . ' - ' . $cron . ' for Equipement ' . $this->getName());
         $this->setConfiguration($configName, $cron)->save();
     }
 
@@ -852,7 +824,7 @@ class airquality extends eqLogic
 
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
-        log::add('airquality', 'debug', 'City Checked : ' . $city);
+        log::add('airquality', 'debug', 'API Calling Cit : ' . $city);
         [$lon, $lat] = $this->getCurrentLonLat('use to call API ');
         return $api->$apiName($lon, $lat);
     }
@@ -867,7 +839,7 @@ class airquality extends eqLogic
         $api = new ApiAqi;
         $city  = $api->callApiReverseGeoLoc($longitude, $latitude);
         if ($save) {
-            log::add('airquality', 'debug', 'Save City : ' . $city . ' en config pour la méthode long_lat_view');
+            log::add('airquality', 'debug', 'Save City : ' . $city . ' en config general');
             config::save('DynCity', $city, 'airquality');
         }
         return $city;
@@ -880,7 +852,7 @@ class airquality extends eqLogic
     public static function getCoordinates($city, $country_code, $state_code = null)
     {
         $api = new ApiAqi;
-        log::add('airquality', 'debug', 'Get new Coordinate Ajax');
+        log::add('airquality', 'debug', 'Get new Coordinate Ajax ');
         return $api->callApiGeoLoc($city, $country_code, $state_code = null);
     }
 
@@ -891,7 +863,6 @@ class airquality extends eqLogic
     public static function setNewGeoloc($longitude, $latitude)
     {
         log::add('airquality', 'debug', 'Save Latitude et Longitude en config generale');
-        // Add checker time to avoid call too often
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
         return [$latitude, $longitude];
