@@ -1,0 +1,10 @@
+
+Fatal error: Uncaught Error: Call to a member function getId() on null 
+in /var/www/html/plugins/airquality/core/class/airquality.class.php:526 
+
+Stack trace: #0 /var/www/html/core/ajax/object.ajax.php(125): airquality->toHtml('dashboard') 
+
+#1 /var/www/html/core/ajax/object.ajax.php(171):
+ jeeAjax_objectToHtml('1', 'dashboard', 'all', 'all', '')
+ 
+ #2 {main} thrown in /var/www/html/plugins/airquality/core/class/airquality.class.php on line 526
