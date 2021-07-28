@@ -11,6 +11,8 @@ Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles 
 Grâce aux informations des prévisons et données live, vous pouvez manager votre planning et vous prémunir des polluants ou pollens. 
 Vous accèdez aux informations en direct mais aussi aux prévisions sur 5 jours pour la pollution et sur 2 jours pour les pollens.
 
+Les polluants et pollens sont affichés par niveau décroissant pour simplifier la lisibilité. 
+
 ## Alertes
 
 Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple. Une explication détaillé se trouve plus bas.
@@ -33,7 +35,7 @@ Avec cette option, le bouton refresh du desktop de l'équipement est désactivé
 
 J'ai repris le système de Jeedom pour l'historisation des données.
 
-Les Mini 10 jours, Maxi 10 jours, Moyenne 10 jours et Tendance 12h sont affichés seule le timing est modifié.
+Les Mini, Maxi, Moyenne et Tendance sont affichés seule le timing est modifié pour l'adapter au plugin.(Mini, Maxi, Moyenne sur 10j et Tendance sur 12h)  
 
 Cela historise aussi les données et donne accès la représentation graphique classique de Jeedom.
 
@@ -163,7 +165,7 @@ Ex pour les pollens vers Telegram :
  
 ## Créez un nouveau scénarion Jeedom :
 
-- Declenchement -> Programation  :``` 1 * * * * ```     soit à la minute 1 chaque heure apres le refresh
+- Declenchement -> Programation  : ``` 1 * * * * ```     soit à la minute 1 chaque heure apres le refresh
 - Dans l'onglet Scénario :  
 -   Ajouter un bloc SI/ALORS/SINON
 -   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)

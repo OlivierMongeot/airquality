@@ -130,7 +130,6 @@ class ApiAqi
             if ($result == [] || $result == null) {
                 throw new Exception('No pollution data with these coordinates');
             } else {
-                log::add('airquality', 'debug', 'AQI latest for Longitude: '. $longitude . ' & Latitude: '. $latitude);
                 log::add('airquality', 'debug', 'Data AQI latest : '. json_encode($data->list[0]));
                 return $data->list[0];
             }
