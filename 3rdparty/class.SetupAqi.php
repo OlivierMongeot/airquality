@@ -102,6 +102,9 @@ class  SetupAqi
     ];
 
 
+    /**
+     * Les niveaux sont basé sur un recoupement d'information que j'ai pu obtenir et ne sont pas officiel. 
+     */
     public static $pollenRange =
     [
         'poaceae' => [

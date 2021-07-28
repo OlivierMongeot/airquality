@@ -13,11 +13,11 @@ Vous accèdez aux informations en direct mais aussi aux prévisions sur 5 jours 
 
 ## Alertes
 
-Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple.
+Les alertes s'affichent sur le widget, mais sont aussi préformatées et dispo dans une commande info, vous pouvez facilement les remonter dans vos SMS, Discord(Markdown) et Télégram(HTML) par exemple. Une explication détaillé se trouve plus bas.
 
 Des messages d'alertes sont crées en fonctions des changements des données les déclenchements sont paramétrables individuelements.
 
-Regardez le bouton 'Alertes' sur la page de confuguration de votre équipement, c'est là que vous pouvez tout régler.
+Regardez le bouton 'Alertes' sur la page de configuration de votre équipement, c'est là que vous pouvez tout régler.
 
 ## Mobilité
 
@@ -152,11 +152,34 @@ Le rafraîchissement des données Pollen s’effectue toutes les 60 minutes et l
 Ce plugin est simplement informatif, il ne remplace en aucun cas pas d'éventuels indications données par votre médecin ou tout autre corps médicale.
 
 
+
+# Gestion des alertes 
+
+Pour connecter le plugin à Telegram, Discord ou un téléphone(sms), c'est le même principe :
+
+Ex pour les pollens vers Telegram : 
+- Il faut avoir le plugin Telegram installé auparavant.
+- Le principe :  Vous allez récupérez le message d'alerte toutes les heures, juste après la mise à jour des infos qui est à la minute 0 de chaque heure et l'envoyer vers votre bot Telegram
+- Vous créez un nouveau scénarion Jeedom : 
+- Declenchement -> Programation  :``` 1 * * * * ```     soit 1 minute chaque heure apres le refresh
+- Dans l'onglet Scénarion :  
+                -   Ajouter un bloc SI/ALORS/SINON
+                -   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)
+                -   Pas d’espace entre les '' et un != pas de == (Ce qui va déclencher un message Telegram, seulement si un message est disponible.)
+                -   ALORS -> action  inserez ```#[nom_de_votre_objet][nom_de_votre_equipement_telegram][votre bot]#```
+                -   Puis dans message vous allez cherchez la commande du plugin qui s'appelle : Markdown Pollen
+                -   Cela donne : ```#[nom_de_votre_objet][nom_de_votre_equipement_pollen][Markdown Pollen]#```
+                -   Option : vide 
+
+Cela devrait marcher, le cas échéant, faites moi remonter vos problèmes.
+
+
 Exemple Message Telegram :
 
 <p align="center">
 <img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.jpg">
 </p>
+
 
 Exemple Message Discord :
 
