@@ -420,14 +420,19 @@ class DisplayInfo
             case 'visibility':
                 return 'une distance de ' . $value . ' m.';
             default:
-                return 'une ' . $this->getSynonyme('concentration') . ' de ' . $value . ' μg/m3';
-        }
+                $syno = $this->getSynonyme('concentration');
+                if ($syno == ''){
+                    return $value. ' μg/m3';
+                } else {
+                    return 'une ' . $syno . ' de ' . $value . ' μg/m3'; 
+                }
+             }
     }
 
     private function getSynonyme($name)
     {
         $synonymes = [
-            'concentration' => ['quantité', 'mesure', 'concentration', 'mesure', 'quantité'],
+            'concentration' => ['quantité', 'mesure', 'concentration', 'mesure', 'quantité','','','','',''],
             'amélioration' => ['amélioration', 'embellie', 'amélioration'],
             'dégradation' => ['dégradation', 'altération', 'détérioration'],
             'hausse' => ['hausse', 'augmentation', 'élévation', 'hausse'],
@@ -866,8 +871,6 @@ class DisplayInfo
         ];
     }
 
-
-    
 
 
 }

@@ -106,7 +106,7 @@ class airquality extends eqLogic
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
                 //  Refresh forecast 
                 try {
-                    $c = new Cron\CronExpression('5 7 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('5,18 7 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
@@ -144,8 +144,6 @@ class airquality extends eqLogic
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour Refresh alert Pollen', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($specialCron)  . json_encode($e));
                 }
-
-
             }
         }
     }
@@ -1058,9 +1056,9 @@ class airquality extends eqLogic
     public function updateForecastAQI()
     {
         // Verifier la date de dernier maj pour faire ou pas maj
-        $iMinute = $this->getIntervalLastRefresh($this->getCmd(null, 'aqi_max'));
-        log::add('airquality', 'debug', 'Refresh Forecast AQI : Interval = ' . $iMinute . ' min');
-        if ($iMinute > 120) {
+        $interval = $this->getIntervalLastRefresh($this->getCmd(null, 'aqi_max'));
+        log::add('airquality', 'debug', 'Refresh Forecast AQI : Interval = ' . $interval . ' min');
+        if ($interval > 120) {
             $forecastRaw =  $this->getApiData('getForecastAQI');
             $forecast = $forecastRaw[0];
             // $forecastFull = $forecast[1]; // For future message alert
@@ -1098,10 +1096,10 @@ class airquality extends eqLogic
         $cmdXToTest = $this->getCmd(null, 'others_min');
         $interval = $this->getIntervalLastRefresh($cmdXToTest);
         log::add('airquality', 'debug', 'Refresh Forecast Pollen : Test Interval last refresh = ' . $interval . ' min');
-        if ($interval > 1400) {
+        if ($interval > 1300) {
             log::add('airquality', 'debug', 'Refresh Forecast Pollen : Interval > 1400 min (24h)');
             $forecast =  $this->getApiData('getForecastPollen');
-            log::add('airquality', 'debug', 'Forecast Pollen parsed : ' .json_encode($forecast));
+            log::add('airquality', 'debug', 'Forecast Pollen parsed : ' . json_encode($forecast));
             if ( is_array($forecast) || !empty($forecast) ) {
 
                 $this->checkAndUpdateCmd('daysPollen', json_encode($forecast['Alder']['day']));

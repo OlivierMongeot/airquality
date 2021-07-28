@@ -45,6 +45,11 @@
 - Affichage 'Aucun pollen actif' au lieu de 'Pollens actifs 0 / 15'
 - Optimisation / allègement du code 
 
+# 28/07/2021
+
+- ajout mode mobile Follow Me 
+- refactoring 
+
 
 
 
