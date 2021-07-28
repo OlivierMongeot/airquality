@@ -160,16 +160,18 @@ Pour connecter le plugin à Telegram, Discord ou un téléphone(sms), c'est le m
 Ex pour les pollens vers Telegram : 
 - Il faut avoir le plugin Telegram installé auparavant.
 - Le principe :  Vous allez récupérez le message d'alerte toutes les heures, juste après la mise à jour des infos qui est à la minute 0 de chaque heure et l'envoyer vers votre bot Telegram
-- Vous créez un nouveau scénarion Jeedom : 
-- Declenchement -> Programation  :``` 1 * * * * ```     soit 1 minute chaque heure apres le refresh
-- Dans l'onglet Scénarion :  
-                -   Ajouter un bloc SI/ALORS/SINON
-                -   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)
-                -   Pas d’espace entre les '' et un != pas de == (Ce qui va déclencher un message Telegram, seulement si un message est disponible.)
-                -   ALORS -> action  inserez ```#[nom_de_votre_objet][nom_de_votre_equipement_telegram][votre bot]#```
-                -   Puis dans message vous allez cherchez la commande du plugin qui s'appelle : Markdown Pollen
-                -   Cela donne : ```#[nom_de_votre_objet][nom_de_votre_equipement_pollen][Markdown Pollen]#```
-                -   Option : vide 
+ 
+## Créez un nouveau scénarion Jeedom :
+
+- Declenchement -> Programation  :``` 1 * * * * ```     soit à la minute 1 chaque heure apres le refresh
+- Dans l'onglet Scénario :  
+-   Ajouter un bloc SI/ALORS/SINON
+-   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)
+-   Pas d’espace entre les '' et un != pas de == (Ce qui va déclencher un message Telegram, seulement si un message est disponible.)
+-   ALORS -> action  inserez ```#[nom_de_votre_objet][nom_de_votre_equipement_telegram][votre bot]#```
+-   Puis dans message vous allez cherchez la commande du plugin qui s'appelle : Markdown Pollen
+-   Cela donne : ```#[nom_de_votre_objet][nom_de_votre_equipement_pollen][Markdown Pollen]#```
+-   Option : vide 
 
 Cela devrait marcher, le cas échéant, faites moi remonter vos problèmes.
 
