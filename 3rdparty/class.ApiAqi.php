@@ -235,7 +235,7 @@ class ApiAqi
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
 
             if ( $response[2] == '429'){
-                message::add('Ambee',__('Quota journalier données pollen dépassé, vous pouvez passer à la version premium de l\'API',__FILE__));
+                message::add('Ambee',__('Quota journalier données pollen dépassé',__FILE__));
                 log::add('airquality', 'debug', 'Quota journalier données pollen dépassé');
 
             } else  if ($response[2] == '401'){
@@ -265,18 +265,17 @@ class ApiAqi
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
       
         if ($response[2] == '429') {
-            message::add('Ambee', __('Quota journalier données pollen dépassé pour les prévisions', __FILE__));
+            message::add('Ambee', __('Quota journalier données pollen dépassé', __FILE__));
         } else if ($response[2] == '401') {
             message::add('Ambee', __('Clef API fournie non valide', __FILE__));
         } else if ($response[2] == '403') {
-            message::add('Ambee', __('Clef API n\'a pas les bonnes permission ', __FILE__));
+            message::add('Ambee', __('Clef API n\'a pas les bonnes permission', __FILE__));
         } else if ($response[2] == '404') {
-            message::add('Ambee', __('La source demandé n\'existe pas ', __FILE__));
+            message::add('Ambee', __('La source demandé n\'existe pas', __FILE__));
         } else if ($response[2] == '200') {     
             $data = json_decode($response[0]);
-            log::add('airquality', 'debug', 'Pollen forecast Longitude: '. $longitude . ' & Latitude: '. $latitude);
+            log::add('airquality', 'debug', 'Pollen forecast for Longitude: '. $longitude . ' & Latitude: '. $latitude);
             log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
-            log::add('airquality', 'debug', 'Return Pollen Forecast');
             return $data->data;
         } else {
             throw new Exception('No data pollen response - Http code : ' . $response[2]);

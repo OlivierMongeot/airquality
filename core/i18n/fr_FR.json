@@ -192,6 +192,8 @@
         "Les coordonnées sont vides":"Les coordonnées sont vides",
         "Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées":"Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées",
         "Quota journalier données pollen dépassé":"Quota journalier données pollen dépassé",
-        "Quota journalier données pollen dépassé pour les prévisions":"Quota journalier données pollen dépassé pour les prévisions"
+        "Clef API fournie non valide":"'Clef API fournie non valide",
+        "Clef API n'a pas les bonnes permission":"Clef API n'a pas les bonnes permission",
+        "La source demandé n'existe pas ":"La source demandé n'existe pas"
     }
 }

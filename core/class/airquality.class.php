@@ -666,7 +666,7 @@ class airquality extends eqLogic
                     }
                 }
             }
-            $tabUnityValue  = array_column($tabUnitReplace, 1);
+            $tabUnityValue = array_column($tabUnitReplace, 1);
             $tabUnityHtml = array_column($tabUnitReplace, 0);
             array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
 
@@ -733,7 +733,6 @@ class airquality extends eqLogic
             $replace['#animation#'] = 'active';
             $replace['#classCaroussel#'] = '';
         }
-
 
         if ($this->getConfiguration('elements') == 'polution') {
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
@@ -1094,8 +1093,8 @@ class airquality extends eqLogic
         $cmdXToTest = $this->getCmd(null, 'others_min');
         $interval = $this->getIntervalLastRefresh($cmdXToTest);
         log::add('airquality', 'debug', 'Refresh Forecast Pollen : Test Interval last refresh = ' . $interval . ' min');
-        if ($interval > 1300) {
-            log::add('airquality', 'debug', 'Refresh Forecast Pollen : Interval > 1400 min (24h)');
+        if ($interval > 240) {
+            log::add('airquality', 'debug', 'Refresh Forecast Pollen : Interval > 240 min (6h)');
             $forecast =  $this->getApiData('getForecastPollen');
             log::add('airquality', 'debug', 'Forecast Pollen parsed : ' . json_encode($forecast));
             if ( is_array($forecast) || !empty($forecast) ) {
@@ -1137,7 +1136,7 @@ class airquality extends eqLogic
                 log::add('airquality', 'debug', 'Cas Forecast  !array ou []');
             }
         } else {
-            log::add('airquality', 'debug', 'Test date de dernière collecte forecast Pollen < 1400 min test jour : pas de refresh');
+            log::add('airquality', 'debug', 'Test date de dernière collecte forecast Pollen < 240 min test jour : pas de refresh');
         }
     }
 
