@@ -375,7 +375,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        // $this->emptyCacheWidget(); //vide le cache. Pour le dev
+        $this->emptyCacheWidget(); //vide le cache. Pour le dev
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
         $display = new DisplayInfo;

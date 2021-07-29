@@ -405,6 +405,14 @@ class DisplayInfo
             $messageInMore = __("<b> - " . $typeName . "</b> " . $this->getSynonyme('stable') . " " . $this->getSynonyme('niveau') . " " .  $newCategory, __FILE__);
             $messageInMore .= $this->getSynonyme(' avec ') . $this->makeEndMessage($newData, $type);
         }
+
+
+        if ($type == 'visibility'){
+            $message = str_replace('bonne','bon',$message);
+            $messageInMore = str_replace('bonne', 'bon', $messageInMore);
+        }
+
+
         return [$message, $messageInMore, $importance];
     }
 
@@ -439,7 +447,7 @@ class DisplayInfo
             'stable' => ['stable', 'constant', 'stabilisé', 'stable'],
             'niveau' => ['au niveau', 'au palier', 'à l\'échelon', 'au niveau'],
             'reste' => ['reste', 'se stabilise', 'stable', 'stable'],
-            ' à cause d\'' => [' avec ', ' avec ', ' en raison d\''],
+            ' à cause d\'' => [' avec ', ' avec ','. Mesure : '],
             ' avec ' => [' avec ', ' avec ', ' avec ', ' grâce à '],
             'baisse' => ['baisse', 'diminution'],
             'petite' => ['petite', 'légère', 'légère', 'petite']
