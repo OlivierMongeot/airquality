@@ -1,0 +1,33 @@
+Check Intervale derniere Collecte pour [Home][Pollen][Others Mini prévision]  : 23 m 14 h et 0 jours
+[2021-08-03 07:05:03][DEBUG] : Refresh Forecast Pollen : Test Interval last refresh = 863 min
+[2021-08-03 07:05:03][DEBUG] : Refresh Forecast Pollen : Interval > 240 min (6h)
+[2021-08-03 07:05:03][DEBUG] : Mode dynamic_mode concerning [Home][Pollen]
+[2021-08-03 07:05:03][DEBUG] : [Home][Pollen] -> Start API getForecastPollen Calling for City :
+
+ Illkirch-Graffenstaden - Long :7.716863999999999 Lat :48.5359616
+
+[2021-08-03 07:05:03][DEBUG] : getForecastPollen Methode Start
+[2021-08-03 07:05:03][DEBUG] : Call API Forecast Pollen
+[2021-08-03 07:05:16][DEBUG] : Pollen forecast for Longitude: 7.716863999999999 & Latitude: 48.5359616
+[2021-08-03 07:05:16][DEBUG] : Data Pollen Forecast : ["{\"message\":\"Data not available!\",\"data\":[]}","",200]
+[2021-08-03 07:05:16][DEBUG] : Forecast Pollen parsed : []
+[2021-08-03 07:05:16][DEBUG] : Refresh Forecast Pollen finish
+
+
+{"message":"success","lat":48.583,"lng":7.743,"data":[{"Count":{"
+
+
+
+# city_mode  Par ville
+city country_code city-longitude city-latitude
+
+# long_lat_mode Par longitude & latitude
+ longitude  latitude city-llm
+
+# dynamic_mode Géolocalisation du navigateur
+geoLongitude geoLatitude geoCity
+
+# server_mode  Géolocalisation du serveur Jeedom
+Global var
+
+# follow_me

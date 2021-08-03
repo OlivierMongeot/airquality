@@ -230,8 +230,10 @@ class ApiAqi
      */
     public function getAmbee($longitude = 7.7, $latitude = 48.5)
     {
-
-        $url = "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
+        $longitude = (float)trim(round($longitude, 3));
+        $latitude =  (float)trim(round($latitude, 3));
+        log::add('airquality', 'debug', 'Call Pollen laltest For longitude: '.$longitude . ' / latitude: '.$latitude);
+        $url = "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=".$latitude."&lng=".$longitude ;
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
 
             if ( $response[2] == '429'){
@@ -260,8 +262,11 @@ class ApiAqi
      */
     public function callApiForecastPollen($longitude , $latitude)
     {
-        log::add('airquality', 'debug', 'Call API Forecast Pollen');
-        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=" . trim(round($latitude, 2)) . "&lng=" . trim(round($longitude, 2));
+
+        $longitude = (float)trim(round($longitude, 3));
+        $latitude =  (float)trim(round($latitude, 3));
+        log::add('airquality', 'debug', 'Call API Forecast Pollen for Longitude: '.$longitude . ' & Latitude: '. $latitude);
+        $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=".$latitude."&lng=".$longitude;
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
       
         if ($response[2] == '429') {
@@ -274,7 +279,7 @@ class ApiAqi
             message::add('Ambee', __('La source demandé n\'existe pas', __FILE__));
         } else if ($response[2] == '200') {     
             $data = json_decode($response[0]);
-            log::add('airquality', 'debug', 'Pollen forecast for Longitude: '. $longitude . ' & Latitude: '. $latitude);
+            
             log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
             return $data->data;
         } else {

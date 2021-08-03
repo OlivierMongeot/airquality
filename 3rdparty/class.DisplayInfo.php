@@ -409,7 +409,9 @@ class DisplayInfo
 
         if ($type == 'visibility'){
             $message = str_replace('bonne','bon',$message);
+            $message = str_replace('mauvaise','mauvais', $message );
             $messageInMore = str_replace('bonne', 'bon', $messageInMore);
+            $messageInMore = str_replace('mauvaise','mauvais', $messageInMore);
         }
 
 
@@ -440,14 +442,14 @@ class DisplayInfo
     private function getSynonyme($name)
     {
         $synonymes = [
-            'concentration' => ['quantité', 'mesure', 'concentration', 'mesure', 'quantité','','','','',''],
+            'concentration' => ['quantité', 'mesure', 'concentration', 'mesure', 'quantité','','','','','','',''],
             'amélioration' => ['amélioration', 'embellie', 'amélioration'],
             'dégradation' => ['dégradation', 'altération', 'détérioration'],
             'hausse' => ['hausse', 'augmentation', 'élévation', 'hausse'],
             'stable' => ['stable', 'constant', 'stabilisé', 'stable'],
             'niveau' => ['au niveau', 'au palier', 'à l\'échelon', 'au niveau'],
             'reste' => ['reste', 'se stabilise', 'stable', 'stable'],
-            ' à cause d\'' => [' avec ', ' avec ','. Mesure : '],
+            ' à cause d\'' => [' avec ', ' avec '],
             ' avec ' => [' avec ', ' avec ', ' avec ', ' grâce à '],
             'baisse' => ['baisse', 'diminution'],
             'petite' => ['petite', 'légère', 'légère', 'petite']
@@ -465,7 +467,7 @@ class DisplayInfo
     /**
      * Création messages : analyse si bascule de tranche 
      */
-    public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $city = '')
+    public function getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $city )
     {
         $message = [];
         $messageInMore = [];
@@ -654,10 +656,10 @@ class DisplayInfo
             message::add('Message Pollen', $stringMess);
         }
 
-        $telegramMessage = $this->formatPollensForTelegram($message, $city = '');
+        $telegramMessage = $this->formatPollensForTelegram($message, $city);
         $markdownMessage = $this->formatPollenMarkDown($message);
         $smsMessage = $this->formatPollensForSms($message);
-        log::add('airquality', 'debug', 'Markdown Message Pollen' . json_encode( $stringMess));
+        log::add('airquality', 'debug', 'Markdown Message Pollen' . json_encode( $message));
         return [$stringMess, $telegramMessage, $smsMessage, $markdownMessage];
     }
 
@@ -666,15 +668,17 @@ class DisplayInfo
     {
         $message = '';
         $messageMore = '';
+        //Hausse
         if ($newData > $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
             if ($newCategory !== $oldCategory) {
-                $message = __('- <b>' . $typeName . "</b>  en " . $this->getSynonyme('hausse') . " au niveau ", __FILE__) . $newCategory .
+                $message = '- <b>' . $typeName . "</b>  en " . $this->getSynonyme('hausse') . " au niveau " . $newCategory .
                     ' avec ' . $newData . ' part/m³ ';
             } else if ($oldCategory != 'risque très haut') {
-                $messageMore = __(' - <b>' . $typeName . "</b> en légère " . $this->getSynonyme('hausse') . ", reste " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__) . ' avec ' . $newData . ' part/m³ ';
+                $messageMore = ' - <b>' . $typeName . "</b> en légère " . $this->getSynonyme('hausse') . ", reste " . $this->getSynonyme('niveau') . " " . $newCategory . ' avec ' . $newData . ' part/m³ ';
             }
+        //Baisse
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
@@ -683,6 +687,7 @@ class DisplayInfo
             } else if ($oldCategory != 'risque bas') {
                 $messageMore = __("- <b>" . $typeName . "</b> légère " . $this->getSynonyme('baisse') . " mais reste " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__) . " avec " . $newData . " part/m³ ";
             }
+        // Stable
         } else {
             // pour le dev uniquement 
             $newCategory = $this->getLevelPollen($newData, $type);
@@ -792,7 +797,7 @@ class DisplayInfo
         }
     }
 
-    private function formatPollensForTelegram($messages, $city = '')
+    private function formatPollensForTelegram($messages, $city)
     {
         $arrayMessage[] = "&#127804; <b>Alerte Pollen - ". $city . "</b> " ." \n" . " ";
         $findLetters = [
@@ -877,6 +882,14 @@ class DisplayInfo
             ':expressionless:' => 'correct', ':warning:' => 'élevé', ':persevere:' => 'mauvais', ':scream:' => 'très', ':imp:' => 'extrême', ':relaxed:' => 'modéré',
             ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon'
         ];
+    }
+
+    public function analyseForecast($forecast){
+
+        $message ='toto';
+
+
+        return $message;
     }
 
 

@@ -90,7 +90,7 @@ var getCoordinates = (cityName, cityCode) => {
             } else {
                 console.log("Ajax succes : Longitude et Latitude = " + data.result)
                 let html = '<div class="form-group searchMode city_mode"><label class="col-sm-3 control-label">{{Longitude}}</label><div class="col-sm-4">'
-                html += '<input value="' + data.result[0] + '" disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />'
+                html += '<input type="number" value="' + data.result[0] + '" disabled="disabled" id="city-longitude" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_longitude" />'
                 html += '</div>'
                 if (data.result[1] != 0) {
                     html += '<i class="fas fa-check"></i>'
@@ -98,7 +98,7 @@ var getCoordinates = (cityName, cityCode) => {
                     html += '<i class="fas fa-times"></i>'
                 }
                 html += '</div><div class="form-group searchMode city_mode">	<label class="col-sm-3 control-label">{{Latitude}}</label><div class="col-sm-4">'
-                html += '<input value="' + data.result[1] + '" id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />'
+                html += '<input type="number" value="' + data.result[1] + '" id="city-latitude" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city_latitude" />'
                 html += '</div>'
                 if (data.result[0] != 0) {
                     html += '<i class="fas fa-check"></i>'

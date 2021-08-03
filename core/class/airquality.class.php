@@ -184,7 +184,6 @@ class airquality extends eqLogic
         $this->setIsVisible(1);
     }
 
-
     public function preUpdate()
     {
         if ($this->getIsEnable()) {
@@ -337,13 +336,11 @@ class airquality extends eqLogic
                
             }
             $refresh->setEqLogic_id($this->getId())
-            
                 ->setLogicalId('refresh_alert_pollen')
                 ->setType('action')
                 ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupPollen;
-
         }
 
         foreach ($setup as $command) {
@@ -433,7 +430,7 @@ class airquality extends eqLogic
                     $index = $nameCmd . '_alert_level';
                     $maxAlertLevel = $setupAlert[$index];
                     $valueCurrent = $isObjet ? $cmd->execCmd() : '';
-                    // is it synchro
+                    // is it synchro : alert & display
                     $indexSync = $nameCmd . '_synchro';
                     $isSynchro = $setupAlert[$indexSync];
 
@@ -778,6 +775,7 @@ class airquality extends eqLogic
             
         } else if ($this->getConfiguration('searchMode') == 'follow_me') {
             $city =  config::byKey('DynCity', 'airquality');
+            
         } else if ($this->getConfiguration('searchMode') == 'server_mode') {
             $city = config::byKey('info::city');
         }
@@ -981,7 +979,9 @@ class airquality extends eqLogic
                 $paramAlertPollen = $this->getParamAlertPollen();
                 $oldData = $this->getCurrentValues();
                 $display = new DisplayInfo;
-                $messagesPollens =  $display->getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $this->getCurrentCityName());
+                $city = $this->getCurrentCityName();
+                log::add('airquality','debug','City For Pollen Message : '.$city);
+                $messagesPollens =  $display->getAllMessagesPollen($oldData, $dataPollen, $paramAlertPollen, $city);
                 $this->checkAndUpdateCmd('messagePollen', $messagesPollens[0]);
                 $telegramMess = !empty($messagesPollens[0]) ? $messagesPollens[1] : '';
                 $this->checkAndUpdateCmd('telegramPollen', $telegramMess);
