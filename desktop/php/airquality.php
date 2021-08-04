@@ -230,7 +230,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                             <br />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
+                                <label class="col-sm-3 control-label">{{Animation du carrousel}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="animation_aqi">
                                         <option value="disable_anim">{{Désactiver}}</option>
@@ -255,7 +255,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
                                         <?php
                                         if (config::byKey('apikey', 'airquality') !== '') {
-                                            echo '<option value="polution">{{Polluants (AQI, Ozone, PM}}2.5{{, PM}}<sub>10</sub>{{, Monoxyde de carbone,...)}}</option>';
+                                            echo '<option value="polution">{{Polluants (AQI, Ozone, PM}}2.5{{, PM}}<sub>10</sub>{{, CO,...)}}</option>';
                                         } else {
                                             echo '<option disabled="disabled" value="no-api-key">{{AQI : Veuiller renseigner la clef Openwheather avant utilisation}}</option>';
                                         }
@@ -292,28 +292,28 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
                             <div class="form-group elements polution">
                                 <div class="container">
-                                    <h5>Code Couleur utilisé pour l'AQI et les polluants</h5>
+                                    <h5>{{Code couleur utilisé pour l'AQI et les polluants}}</h5>
                                 </div>
                                 <br>
                                 <div class="container">
                                     <div>
                                         <input type="color" name="body" disabled value="#662D91">
-                                        <label for="body">Extrême</label>
+                                        <label for="body">{{Extrême}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#B00000">
-                                        <label for="body">Très mauvais</label>
+                                        <label for="body">{{Très mauvais}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#E79C00">
-                                        <label for="body">Mauvais</label>
+                                        <label for="body">{{Mauvais}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#EFE800">
-                                        <label for="body">Dégradé</label>
+                                        <label for="body">{{Dégradé}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#00BD01">
-                                        <label for="body">Correct</label>
+                                        <label for="body">{{Correct}}</label>
                                         <br><br>
                                         <input type="color" name="head" disabled value="#00AEEC">
-                                        <label for="head">Bon</label>
+                                        <label for="head">{{Bon}}</label>
                                     </div>
                                     <br>
                                     <br>
@@ -322,22 +322,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <!--  -->
                             <div class="form-group elements pollen">
                                 <div class="container">
-                                    <h6>{{Code Couleur Pollen utilisé dans le plugin}}</h6>
+                                    <h6>{{Code couleur pollen utilisé dans le plugin}}</h6>
                                 </div>
                                 <br>
                                 <div class="container">
                                     <div>
                                         <input type="color" name="body" disabled value="#B00000">
-                                        <label for="body">Risque très haut</label>
+                                        <label for="body">{{Risque très haut}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#E79C00">
-                                        <label for="body">Risque haut</label>
+                                        <label for="body">{{Risque haut}}</label>
                                         <br><br>
                                         <input type="color" name="body" disabled value="#EFE800">
-                                        <label for="body">Risque modéré</label>
+                                        <label for="body">{{Risque modéré}}</label>
                                         <br><br>
                                         <input type="color" name="head" disabled value="#00BD01">
-                                        <label for="head">Risque bas</label>
+                                        <label for="head">{{Risque bas}}</label>
                                     </div>
                                     <br>
                                     <br>
@@ -718,14 +718,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             onchange="this.previousElementSibling.value = this.value" id="chenopod" class="input-range aqi eqLogicAttr" orient="horizontal"
                                             name="chenopod" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
                                     <br>
-                                    <label for="mugwort_alert_level">{{Armoises }}</label>
+                                    <label for="mugwort_alert_level">{{Armoise}}</label>
                                             <style> .output-mugwort::after { content: " part/m³";} </style>
                                             <output class='output-mugwort pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
                                             <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
                                             onchange="this.previousElementSibling.value = this.value" id="mugwort" class="input-range aqi eqLogicAttr" orient="horizontal"
                                             name="mugwort" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
                                     <br>
-                                    <label for="nettle_alert_level">{{Ortie }}</label>
+                                    <label for="nettle_alert_level">{{Ortie}}</label>
                                             <style> .output-nettle::after { content: " part/m³";} </style>
                                             <output class='output-nettle pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output> 
                                             <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
@@ -739,7 +739,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             onchange="this.previousElementSibling.value = this.value" id="ragweed" class="input-range aqi eqLogicAttr" orient="horizontal"
                                             name="ragweed" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
                                     <br>
-                                    <label for="others_alert_level">{{Autres Pollens d'origine inconnue}}</label>
+                                    <label for="others_alert_level">{{Autres pollens d'origine inconnue}}</label>
                                             <style> .output-others::after { content: " part/m³";} </style>
                                             <output class='output-others pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
                                             <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
@@ -756,7 +756,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                 <div class="col-lg-5" style="padding:15px 35px">
                     <legend>
-                        <span style="text-align:left">Options des alertes</span>
+                        <span style="text-align:left">{{Options des alertes}}</span>
                     </legend>
                     <br /><br />
                     <div class="container">
