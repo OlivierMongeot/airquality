@@ -206,13 +206,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Longitude }}</label>
                                 <div class="col-sm-6">
-                                    <input id="longitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
+                                    <input id="longitude" type="number" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLongitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label">{{Latitude}}</label>
                                 <div class="col-sm-6">
-                                    <input id="latitude" type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
+                                    <input id="latitude" type="number" disabled="disabled" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="geoLatitude" />
                                 </div>
                             </div>
                             <div class="form-group searchMode dynamic_mode">

@@ -325,11 +325,11 @@ class DisplayInfo
         $oldAqi = $oldData['aqi'];
         if ($paramAlertAqi['aqi_alert_level'] <= $newAqi && $newAqi != $oldAqi || $message != []) {
             if ($newAqi > $oldAqi) {
-                $message[] = __('- Dégradation de l\'AQI à l\'indice ', __FILE__) . $newAqi;
+                $message[] = "- ".__("Dégradation de l'AQI à l'indice", __FILE__)." " . $newAqi;
             } else if ($newAqi < $oldAqi) {
-                $message[] = __('- Amélioration de l\'AQI à l\'indice ', __FILE__) . $newAqi;
+                $message[] = "- ".__("Amélioration de l'AQI à l'indice", __FILE__)." " . $newAqi;
             } else {
-                $message[] = __('- AQI stable à l\'indice ', __FILE__) . $newAqi;
+                $message[] = "- ".__("AQI stable à l'indice", __FILE__)." " . $newAqi;
             }
             $importance['aqi'] = $newAqi;
         }
@@ -358,52 +358,55 @@ class DisplayInfo
         $messageInMore = '';
 
         switch ($type) {
-            case 'visibility':
-                $increase =  $this->getSynonyme('dégradation');
-                $decrease =  $this->getSynonyme('amélioration');
-                break;
+            // case 'visibility':
+            //     $increase =  $this->getSynonyme('dégradation');
+            //     $decrease =  $this->getSynonyme('amélioration');
+            //     break;
             case 'uv':
                 $increase = 'baisse';
                 $decrease = $this->getSynonyme('hausse');
                 break;
             default:
-                $decrease = $this->getSynonyme('dégradation');
-                $increase = $this->getSynonyme('amélioration');
+                $decrease = __($this->getSynonyme('dégradation'),__FILE__);
+                $increase = __($this->getSynonyme('amélioration'),__FILE__);
                 break;
         }
 
         [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
         [$oldCategory] = $this->getLevelAQI($oldData, $type);
-
+        log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
             if ($newCategory != $oldCategory) {
-                $message = __("- <b>" . $typeName . "</b> " . $decrease .  " " . $this->getSynonyme('niveau'), __FILE__) . " " . $newCategory;
-                $message .= $this->getSynonyme(' à cause d\'') . $this->makeEndMessage($newData, $type);
-            } else if ($oldCategory != 'extrême' && $oldCategory != 'très mauvaise') {
-                $messageInMore = __("- <b>" . $typeName . "</b>" . " " . $this->getSynonyme('petite') . " " . strtolower($decrease) . ", " . $this->getSynonyme('reste') . " " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__);
-                $messageInMore .= ' avec ' . $this->makeEndMessage($newData, $type);
+                $message = "- <b>" . $typeName . "</b> " . $decrease .  " " . __($this->getSynonyme('au niveau'),__FILE__) . " " . $newCategory;
+                $message .= " " . __('avec', __FILE__) . " " . $this->makeEndMessage($newData, $type);
+            } else if ($oldCategory != __('extrême',__FILE__) && $oldCategory != __('très mauvaise',__FILE__)) {
+                $messageInMore = "- <b>" . $typeName . "</b>" . " " . __($this->getSynonyme('petite'), __FILE__) . " " . strtolower($decrease) . ", " .  __($this->getSynonyme('stable'),__FILE__) . " " . __($this->getSynonyme('au niveau'),__FILE__) . " " . $newCategory;
+                $messageInMore .= " " . __('avec', __FILE__) . " " . $this->makeEndMessage($newData, $type);
             } else {
-                $messageInMore = __("- <b>" . $typeName . "</b> " . $this->getSynonyme('petite') . " " . $decrease . ", " . $this->getSynonyme('reste') . " " . $this->getSynonyme('niveau') . " maximum " . $newCategory, __FILE__);
-                $messageInMore .= ' avec ' . $this->makeEndMessage($newData, $type);
+                $messageInMore = "- <b>" . $typeName . "</b> " . __($this->getSynonyme('petite'), __FILE__) . " " . $decrease . ", " .  __($this->getSynonyme('stable'),__FILE__) . " " . __($this->getSynonyme('au niveau'),__FILE__) . " maximum " . $newCategory;
+                $messageInMore .= " " . __('avec', __FILE__) . " " . $this->makeEndMessage($newData, $type);
             }
             // Cas 2 : Baisse de l'AQI
         } else if ($newData < $oldData) {
             if ($newCategory != $oldCategory) {
-                $message = __("- <b>" . $typeName . "</b> " . $increase . " " . $this->getSynonyme('niveau'), __FILE__) . " " . $newCategory;
-                $message .=  $this->getSynonyme(' avec ') . $this->makeEndMessage($newData, $type);
-            } else if ($newCategory != 'bon' && $newCategory != 'bonne' && $newCategory != 'faible') {
+                $message = "- <b>" . $typeName . "</b> " . $increase . " " . __($this->getSynonyme('au niveau'),__FILE__) . " " . $newCategory;
+                $message .= " " . __('avec', __FILE__) . " " . $this->makeEndMessage($newData, $type);
 
-                $messageInMore = __("- <b>" . $typeName . "</b> " . $this->getSynonyme('petite') . " " . $increase . ", " . $this->getSynonyme('reste') . " " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__);
-                $messageInMore .= ' avec ' . $this->makeEndMessage($newData, $type);
+            } else if ($newCategory != __('bon',__FILE__) && $newCategory != __('bonne',__FILE__) && $newCategory != __('faible',__FILE__)) {
+
+                $messageInMore = "- <b>" . $typeName . "</b> " . __($this->getSynonyme('petite'), __FILE__) .
+                 " " . $increase . ", " .  __($this->getSynonyme('stable'),__FILE__) . " " .__($this->getSynonyme('au niveau'),__FILE__) .
+                  " " . $newCategory;
+                $messageInMore .= " ". __('avec', __FILE__) ." ". $this->makeEndMessage($newData, $type);
             } else {
-                $messageInMore = __("- <b>" . $typeName . "</b> " . $this->getSynonyme('petite') . " " . $increase . ", " . $this->getSynonyme('reste') . " au meilleur niveau", __FILE__);
-                $messageInMore .= ' avec ' . $this->makeEndMessage($newData, $type);
+                $messageInMore = "- <b>" . $typeName . "</b> " .  __($this->getSynonyme('petite'), __FILE__) . " " . $increase . ", " . __($this->getSynonyme('reste au meilleur niveau'),__FILE__) . " ";
+                $messageInMore .= " ". __('avec', __FILE__)." ". $this->makeEndMessage($newData, $type);
             }
             // Cas 3 : niveau stable
         } else {
-            $messageInMore = __("<b> - " . $typeName . "</b> " . $this->getSynonyme('stable') . " " . $this->getSynonyme('niveau') . " " .  $newCategory, __FILE__);
-            $messageInMore .= $this->getSynonyme(' avec ') . $this->makeEndMessage($newData, $type);
+            $messageInMore = __("<b> - " . $typeName . "</b> " . __($this->getSynonyme('stable'),__FILE__) . " " . __($this->getSynonyme('au niveau'),__FILE__) . " " .  $newCategory, __FILE__);
+            $messageInMore .= " ". __('avec', __FILE__) ." " . $this->makeEndMessage($newData, $type);
         }
 
 
@@ -426,15 +429,15 @@ class DisplayInfo
     {
         switch ($type) {
             case 'uv':
-                return 'un indice de ' . $value;
+                return __('un indice de',__FILE__) ." ". $value;
             case 'visibility':
-                return 'une distance de ' . $value . ' m.';
+                return __('une distance de',__FILE__) ." ". $value . ' m.';
             default:
-                $syno = $this->getSynonyme('concentration');
-                if ($syno == ''){
+                $quantity = __($this->getSynonyme('une concentration de'),__FILE__);
+                if ($quantity == ''){
                     return $value. ' μg/m3';
                 } else {
-                    return 'une ' . $syno . ' de ' . $value . ' μg/m3'; 
+                    return  $quantity. " " . $value . ' μg/m3'; 
                 }
              }
     }
@@ -442,17 +445,21 @@ class DisplayInfo
     private function getSynonyme($name)
     {
         $synonymes = [
-            'concentration' => ['quantité', 'mesure', 'concentration', 'mesure', 'quantité','','','','','','',''],
+            'une concentration de' => ['une quantité de', 'une mesure de', 'une concentration de', 'une mesure de', 'une quantité de','','','','',''],
             'amélioration' => ['amélioration', 'embellie', 'amélioration'],
             'dégradation' => ['dégradation', 'altération', 'détérioration'],
             'hausse' => ['hausse', 'augmentation', 'élévation', 'hausse'],
-            'stable' => ['stable', 'constant', 'stabilisé', 'stable'],
-            'niveau' => ['au niveau', 'au palier', 'à l\'échelon', 'au niveau'],
-            'reste' => ['reste', 'se stabilise', 'stable', 'stable'],
-            ' à cause d\'' => [' avec ', ' avec '],
+            'stable' => ['stable', 'constant', 'stabilisé','se stabilise', 'stable','reste'],
             ' avec ' => [' avec ', ' avec ', ' avec ', ' grâce à '],
             'baisse' => ['baisse', 'diminution'],
-            'petite' => ['petite', 'légère', 'légère', 'petite']
+            'petite' => ['petite', 'légère', 'légère', 'petite'],
+            'en hausse' => ['en hausse', 'en augmentation'],
+            'en baisse' => ['en baisse', 'en diminution'],
+            'au niveau' => ['au niveau', 'au palier', 'à l\'échelon', 'au niveau'],
+            'en légère hausse' =>  ['en légère hausse', 'en légère augmentation', 'en légère élévation',  'en légère hausse'],
+            'reste au niveau' => ['reste au niveau', 'reste au palier', 'reste à l\'échelon', 'reste au niveau'],
+            'légère baisse' => ['légère baisse', 'petite diminution', 'petite baisse'],
+            'reste au meilleur niveau' => ['reste au meilleur niveau', 'reste au meilleur palier', 'reste au meilleur échelon', 'reste au meilleur niveau'],
         ];
         if (isset($synonymes[$name])) {
             $tab = $synonymes[$name];
@@ -479,7 +486,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -491,7 +498,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -503,7 +510,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
         // Birch
@@ -514,7 +521,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
         // Cypress
@@ -525,7 +532,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -537,7 +544,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -549,7 +556,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -561,7 +568,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -573,7 +580,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -585,7 +592,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -597,9 +604,10 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
+
         // Mugwort
         $newMugwort = isset($dataPollen[0]->Species->Weed->Mugwort) ? $dataPollen[0]->Species->Weed->Mugwort : -1;
         $oldMugwort = $oldData['mugwort'];
@@ -608,7 +616,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -620,7 +628,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
         // Ragweed 
@@ -631,7 +639,7 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
             } else if (!empty($mess[1])) {
-                $messageInmore[] = $mess[1];
+                $messageInMore[] = $mess[1];
             }
         }
 
@@ -648,7 +656,7 @@ class DisplayInfo
         }
 
         if ($paramAlertPollen['alert_details'] == 1) {
-            $message = array_merge($message, $messageInmore);
+            $message = array_merge($message, $messageInMore);
         }
 
         $stringMess = implode(' - ', $message);
@@ -668,30 +676,41 @@ class DisplayInfo
     {
         $message = '';
         $messageMore = '';
+     
         //Hausse
         if ($newData > $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
+            log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
             if ($newCategory !== $oldCategory) {
-                $message = '- <b>' . $typeName . "</b>  en " . $this->getSynonyme('hausse') . " au niveau " . $newCategory .
-                    ' avec ' . $newData . ' part/m³ ';
+                $message = '- <b>' . __($typeName , __FILE__) . "</b> " . __($this->getSynonyme('en hausse'),__FILE__) . " " .__($this->getSynonyme('au niveau'),__FILE__) ." " . $newCategory .
+                    " " . __('avec', __FILE__) . " " . $newData . " part/m³ ";
+
             } else if ($oldCategory != 'risque très haut') {
-                $messageMore = ' - <b>' . $typeName . "</b> en légère " . $this->getSynonyme('hausse') . ", reste " . $this->getSynonyme('niveau') . " " . $newCategory . ' avec ' . $newData . ' part/m³ ';
+                $messageMore = ' - <b>' .  __($typeName , __FILE__) . "</b> " . __($this->getSynonyme('en légère hausse'),__FILE__) . ", " . __($this->getSynonyme('reste au niveau'),__FILE__) . " " . $newCategory .  " ".__('avec',__FILE__)." " . $newData . " part/m³ ";
             }
         //Baisse
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
+            log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
             if ($newCategory !== $oldCategory) {
-                $message = "<b>" . $typeName . "</b> en " . $this->getSynonyme('baisse') . " au niveau " . $newCategory . " avec " . $newData . " part/m³ ";
+                $message = "<b>" . __($typeName , __FILE__) . "</b> " . $this->getSynonyme('en baisse') ." " .__($this->getSynonyme('au niveau'),__FILE__) ." " . $newCategory . " ".__('avec',__FILE__)." " . $newData . " part/m³ ";
             } else if ($oldCategory != 'risque bas') {
-                $messageMore = __("- <b>" . $typeName . "</b> légère " . $this->getSynonyme('baisse') . " mais reste " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__) . " avec " . $newData . " part/m³ ";
+                $messageMore = "- <b>" .  __($typeName , __FILE__) . "</b> " . $this->getSynonyme('légère baisse') . ", " . __($this->getSynonyme('reste au niveau'),__FILE__) . " " . $newCategory .  " ".__('avec',__FILE__)." " . $newData . " part/m³ ";
             }
-        // Stable
+            else if ($oldCategory == 'risque bas'){
+                $messageMore = "- <b>" .  __($typeName , __FILE__) . "</b> " . $this->getSynonyme('légère baisse') . ", " . __($this->getSynonyme('reste au meilleur niveau'),__FILE__) . " " . $newCategory .  " ".__('avec',__FILE__)." " . $newData . " part/m³ ";
+            }
+         // Stable
         } else {
             // pour le dev uniquement 
             $newCategory = $this->getLevelPollen($newData, $type);
-            $messageMore = __(' - <b>' . $typeName . "</b> : " . $this->getSynonyme('stable') . " " . $this->getSynonyme('niveau') . " " . $newCategory, __FILE__) . ' avec ' . $newData . ' part/m³ ';
+            log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' Stable ');
+            $messageMore = ' - <b>' .  __($typeName , __FILE__) . "</b> " . __($this->getSynonyme('stable'),__FILE__) 
+            . " " .__($this->getSynonyme('au niveau'),__FILE__) ." "
+            . $newCategory . " ". __('avec', __FILE__) ." " 
+            . $newData . " part/m³ ";
         }
         return [$message,  $messageMore];
     }
@@ -743,7 +762,7 @@ class DisplayInfo
     private function formatAqiForSms($messages)
     {
         if (!empty($messages)) {
-            $arrayMessage[] = "-- Alerte AQI -- \n";
+            $arrayMessage[] = "-- ".__('Alerte',__FILE__)." AQI -- \n";
             foreach ($messages as $message) {
                 $message = str_replace('³', '3', $message);
                 $message = str_replace('²', '2', $message);
@@ -780,7 +799,7 @@ class DisplayInfo
     private function formatAqiForTelegram($messages, $city = '')
     {
         if (!empty($messages)) {
-            $arrayMessage[] = "&#127757; <b>Alerte AQI - ". $city . "</b> " . " \n ";
+            $arrayMessage[] = "&#127757; <b>".__('Alerte',__FILE__)." AQI - ". $city . "</b> " . " \n ";
             foreach ($messages as $message) {
                 $icon = '';
                 foreach ($this->getIconsWithStatus() as $key => $value) {
@@ -799,7 +818,7 @@ class DisplayInfo
 
     private function formatPollensForTelegram($messages, $city)
     {
-        $arrayMessage[] = "&#127804; <b>Alerte Pollen - ". $city . "</b> " ." \n" . " ";
+        $arrayMessage[] = "&#127804; <b>".__('Alerte',__FILE__)." Pollen - ". $city . "</b> " ." \n" . " ";
         $findLetters = [
             '&#127808;' => 'bas', '&#128545;' => 'haut', '&#128520;' => 'très', '&#127803;' => 'modéré'
         ];
@@ -818,7 +837,7 @@ class DisplayInfo
 
     private function formatPollensForSms($messages)
     {
-        $arrayMessage[] = "-- Alerte Pollen -- \n";
+        $arrayMessage[] = "-- ".__('Alerte',__FILE__)." Pollen -- \n";
         foreach ($messages as $message) {
             $arrayMessage[] = strip_tags($message) . " \n";
         }
@@ -830,7 +849,7 @@ class DisplayInfo
      */
     private function formatPollenMarkDown($messages)
     {
-        $arrayMessage[] = ":blossom: **Alerte Pollen** :herb:" . " ";
+        $arrayMessage[] = ":blossom: **".__('Alerte',__FILE__)." Pollen** :herb:" . " ";
         $findLetters = [
             ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré'
         ];
@@ -855,7 +874,7 @@ class DisplayInfo
     private function formatAqiMarkdown($messages)
     {
         if (!empty($messages)) {
-            $arrayMessage[] = ":earth_africa:  **Alerte AQI** ";
+            $arrayMessage[] = ":earth_africa:  **".__('Alerte',__FILE__)." AQI** ";
             foreach ($messages as $message) {
                 $icon = '';
                 $message = str_replace('<b>', '**', $message);

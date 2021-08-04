@@ -228,12 +228,13 @@ class ApiAqi
     /**
      * Appel Pollen latest GetAmbee
      */
-    public function getAmbee($longitude = 7.7, $latitude = 48.5)
+    public function getAmbee($longitude, $latitude)
     {
         $longitude = (float)trim(round($longitude, 3));
         $latitude =  (float)trim(round($latitude, 3));
         log::add('airquality', 'debug', 'Call Pollen laltest For longitude: '.$longitude . ' / latitude: '.$latitude);
         $url = "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=".$latitude."&lng=".$longitude ;
+        log::add('airquality','debug','URL Pollen Latest : '. $url);
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
 
             if ( $response[2] == '429'){
@@ -263,10 +264,11 @@ class ApiAqi
     public function callApiForecastPollen($longitude , $latitude)
     {
 
-        $longitude = (float)trim(round($longitude, 3));
-        $latitude =  (float)trim(round($latitude, 3));
+        $longitude = (float)trim(round($longitude, 4));
+        $latitude =  (float)trim(round($latitude, 4));
         log::add('airquality', 'debug', 'Call API Forecast Pollen for Longitude: '.$longitude . ' & Latitude: '. $latitude);
         $url = "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat=".$latitude."&lng=".$longitude;
+        log::add('airquality','debug','URL Forecast Pollen  : '. $url);
         $response = $this->curlApi($url, $this->ambeeApiKey, 'ambee');
       
         if ($response[2] == '429') {
@@ -279,19 +281,24 @@ class ApiAqi
             message::add('Ambee', __('La source demandé n\'existe pas', __FILE__));
         } else if ($response[2] == '200') {     
             $data = json_decode($response[0]);
-            
-            log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
-            return $data->data;
+
+            if ( isset($data->message) && $data->data == [] ){
+                log::add('airquality', 'debug', 'Data Pollen Forecast not available');
+            } else if (property_exists($data, 'data')){
+                log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
+                return $data->data;
+            }
+          
         } else {
             throw new Exception('No data pollen response - Http code : ' . $response[2]);
         }
         // Test
         // $response = file_get_contents(dirname(__DIR__) . '/core/dataModel/pollen2f.json', 1);     
         // return json_decode($response);
+       
     }
 
 
-    
 
 
     /**
