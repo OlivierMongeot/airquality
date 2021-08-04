@@ -282,8 +282,8 @@ class ApiAqi
         } else if ($response[2] == '200') {     
             $data = json_decode($response[0]);
 
-            if ( isset($data->message) && $data->data == [] ){
-                log::add('airquality', 'debug', 'Data Pollen Forecast not available');
+            if (isset($data->message) && $data->data == []){
+                log::add('airquality', 'debug', 'Data Pollen Forecast not available !!');
             } else if (property_exists($data, 'data')){
                 log::add('airquality', 'debug', 'Data Pollen Forecast : ' . json_encode($response));
                 return $data->data;

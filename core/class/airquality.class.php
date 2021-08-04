@@ -59,9 +59,9 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
-                // AQI Pollution refresh forecast 2x / jours 
+                // AQI Pollution refresh forecast 3x / jours 
                 try {
-                    $c = new Cron\CronExpression('55 5,13 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('55 5,13,17 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
@@ -107,7 +107,7 @@ class airquality extends eqLogic
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
                 //  Refresh forecast 
                 try {
-                    $c = new Cron\CronExpression('5,20 8 * * *', new Cron\FieldFactory);
+                    $c = new Cron\CronExpression('5,20 7 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');

@@ -358,23 +358,22 @@ class DisplayInfo
         $messageInMore = '';
 
         switch ($type) {
-            // case 'visibility':
-            //     $increase =  $this->getSynonyme('dégradation');
-            //     $decrease =  $this->getSynonyme('amélioration');
-            //     break;
+            case 'visibility':
+                $increase =  __($this->getSynonyme('dégradation'),__FILE__);
+                $decrease =  __($this->getSynonyme('amélioration'),__FILE__);
+                break;
             case 'uv':
                 $increase = 'baisse';
-                $decrease = $this->getSynonyme('hausse');
+                $decrease = __($this->getSynonyme('hausse'),__FILE__);
                 break;
             default:
                 $decrease = __($this->getSynonyme('dégradation'),__FILE__);
                 $increase = __($this->getSynonyme('amélioration'),__FILE__);
-                break;
         }
 
         [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
         [$oldCategory] = $this->getLevelAQI($oldData, $type);
-        log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+        // log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
             if ($newCategory != $oldCategory) {
@@ -676,12 +675,11 @@ class DisplayInfo
     {
         $message = '';
         $messageMore = '';
-     
         //Hausse
         if ($newData > $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
-            log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+            // log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
             if ($newCategory !== $oldCategory) {
                 $message = '- <b>' . __($typeName , __FILE__) . "</b> " . __($this->getSynonyme('en hausse'),__FILE__) . " " .__($this->getSynonyme('au niveau'),__FILE__) ." " . $newCategory .
                     " " . __('avec', __FILE__) . " " . $newData . " part/m³ ";

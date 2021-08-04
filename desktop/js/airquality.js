@@ -50,7 +50,6 @@ $('#validate_dyn_mode').on('click', () => {
     function maPosition(position) {
         document.getElementById("latitude").value = position.coords.latitude;
         document.getElementById("longitude").value = position.coords.longitude;
-        // getCity(position.coords.latitude, position.coords.longitude, 'geoCity')
         getCity(position.coords.longitude, position.coords.latitude, 'geoCity')
     }
     function noLocation() {
