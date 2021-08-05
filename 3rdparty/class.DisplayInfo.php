@@ -363,7 +363,7 @@ class DisplayInfo
                 $decrease =  __($this->getSynonyme('amélioration'),__FILE__);
                 break;
             case 'uv':
-                $increase = 'baisse';
+                $increase =  __('baisse', __FILE__);
                 $decrease = __($this->getSynonyme('hausse'),__FILE__);
                 break;
             default:

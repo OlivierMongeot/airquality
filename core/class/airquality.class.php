@@ -870,7 +870,6 @@ class airquality extends eqLogic
     }
 
 
-
     /**
      * Lance l'update des données live pollution ou pollen 
      */
@@ -1088,7 +1087,7 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('pm25_max', json_encode($forecast['pm2_5']['max']));
             $this->refreshWidget();
         } else {
-            log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 120 min, veuiller patienter svp');
+            log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 120 min, veuillez patienter svp');
         }
     }
 
