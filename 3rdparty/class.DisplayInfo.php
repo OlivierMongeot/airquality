@@ -676,10 +676,12 @@ class DisplayInfo
         $message = '';
         $messageMore = '';
         //Hausse
+        // log::add('airquality', 'debug', '----------Make Message Pollen ----------------------');
+        // log::add('airquality', 'debug', 'New Data : ' . $newData . ' Old Data : ' . $oldData . ' For: ' . $typeName);
         if ($newData > $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
-            // log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+            // log::add('airquality', 'debug', 'Get Level Message Pollen for type: ' . $type . ' New Cat: ' . $newCategory . ' > OldCat: ' . $oldCategory);
             if ($newCategory !== $oldCategory) {
                 $message = '- <b>' . __($typeName , __FILE__) . "</b> " . __($this->getSynonyme('en hausse'),__FILE__) . " " .__($this->getSynonyme('au niveau'),__FILE__) ." " . $newCategory .
                     " " . __('avec', __FILE__) . " " . $newData . " part/m³ ";
@@ -691,7 +693,7 @@ class DisplayInfo
         } else if ($newData < $oldData) {
             $newCategory = $this->getLevelPollen($newData, $type);
             $oldCategory = $this->getLevelPollen($oldData, $type);
-            log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+            // log::add('airquality', 'debug', 'Make Message Pollen type: ' . $type . ' New Cat: ' . $newCategory . ' < OldCat: ' . $oldCategory);
             if ($newCategory !== $oldCategory) {
                 $message = "<b>" . __($typeName , __FILE__) . "</b> " . $this->getSynonyme('en baisse') ." " .__($this->getSynonyme('au niveau'),__FILE__) ." " . $newCategory . " ".__('avec',__FILE__)." " . $newData . " part/m³ ";
             } else if ($oldCategory != 'risque bas') {
@@ -790,7 +792,9 @@ class DisplayInfo
         $iconsBad =  $this->getBadIcon();
         return  [
             '&#127795;' => 'correct', '&#128549;' => 'élevé', $iconsBad => 'mauvais', '&#128545;' => 'très', '&#128520;' => 'extrême', '&#128551;' => 'modéré',
-            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;' => 'nul', '&#127752;' => 'faible', $iconsGood => 'bon'
+            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;' => 'nul', '&#127752;' => 'faible', $iconsGood => 'bon',
+            $iconsGood => 'good',  $iconsBad => 'bad',  '&#128529;' => 'degraded', '&#128551;' => 'moderate', '&#128545;' => 'very', '&#128520;' => 'extreme',
+            '&#127752;' => 'low'
         ];
     }
 
@@ -818,7 +822,7 @@ class DisplayInfo
     {
         $arrayMessage[] = "&#127804; <b>".__('Alerte',__FILE__)." Pollen - ". $city . "</b> " ." \n" . " ";
         $findLetters = [
-            '&#127808;' => 'bas', '&#128545;' => 'haut', '&#128520;' => 'très', '&#127803;' => 'modéré'
+            '&#127808;' => 'bas', '&#128545;' => 'haut', '&#128520;' => 'très', '&#127803;' => 'modéré', '&#128545;' => 'very',  '&#127752;' => 'low', '&#128551;' => 'moderate'
         ];
         foreach ($messages as $message) {
             $icon = '';
@@ -849,7 +853,8 @@ class DisplayInfo
     {
         $arrayMessage[] = ":blossom: **".__('Alerte',__FILE__)." Pollen** :herb:" . " ";
         $findLetters = [
-            ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré'
+            ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré',
+            ':four_leaf_clover:' => 'low', ':maple_leaf:' => 'high', ':rage:' => 'very', ':sunflower:' => 'moderate'
         ];
         foreach ($messages as $message) {
             $icon = '';
@@ -880,6 +885,7 @@ class DisplayInfo
                 $message = strip_tags($message);
                 foreach ($this->getIconsMarkdownWithStatus() as $key => $value) {
                     $match = (str_replace($value, '', $message) != $message);
+                    log::add('airquality', 'debug', 'Value matched for Icon : ' . $value);
                     if ($match) {
                         $icon = $key;
                     }
@@ -897,15 +903,15 @@ class DisplayInfo
     {
         return  [
             ':expressionless:' => 'correct', ':warning:' => 'élevé', ':persevere:' => 'mauvais', ':scream:' => 'très', ':imp:' => 'extrême', ':relaxed:' => 'modéré',
-            ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon'
+            ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon',
+            ':ok_hand:' => 'low', ':relaxed:' => 'moderate', ':persevere:' => 'high',  ':imp:' => 'very',  ':persevere:' => 'bad',  ':disappointed:' => 'degraded',
+            ':sweat_drops:' => 'good'
         ];
     }
 
     public function analyseForecast($forecast){
 
-        $message ='toto';
-
-
+        $message = 'toto';
         return $message;
     }
 

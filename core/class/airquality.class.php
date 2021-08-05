@@ -33,7 +33,6 @@ class airquality extends eqLogic
     {
         foreach (self::byType(__CLASS__, true) as $airQuality) {
             if ($airQuality->getConfiguration('elements') == 'pollen') {
-                // log::add('airquality', 'debug', 'Pollen disabled update / please decomment line 36 airquality.class');
                 $airQuality->updatePollen();
             }
         }
@@ -52,7 +51,6 @@ class airquality extends eqLogic
                 try {
                     $c = new Cron\CronExpression('0,30 * * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
-                        // log::add('airquality', 'debug', 'Polution update Disable');
                         $airQuality->updatePollution();
                     }
                 } catch (Exception $e) {
@@ -107,7 +105,8 @@ class airquality extends eqLogic
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
                 //  Refresh forecast 
                 try {
-                    $c = new Cron\CronExpression('5,20 7 * * *', new Cron\FieldFactory);
+                    // Plusieurs tentatives suite à de nombreux echecs : bridé si response API OK
+                    $c = new Cron\CronExpression('5,17,27,34 7 * * *', new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
@@ -824,7 +823,6 @@ class airquality extends eqLogic
      */
     private function getApiData(string $apiName)
     {
-
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
         [$lon, $lat] = $this->getCurrentLonLat();
@@ -855,7 +853,7 @@ class airquality extends eqLogic
     public static function getCoordinates($city, $country_code, $state_code = null)
     {
         $api = new ApiAqi;
-        log::add('airquality', 'debug', 'Get new Coordinate Ajax ');
+        log::add('airquality', 'debug', 'Get new Coordinate Ajax for config -By City- or -Follow Me-');
         return $api->callApiGeoLoc($city, $country_code, $state_code = null);
     }
 
@@ -865,7 +863,7 @@ class airquality extends eqLogic
      */
     public static function setNewGeoloc($longitude, $latitude)
     {
-        log::add('airquality', 'debug', 'Save Latitude et Longitude en config generale');
+        log::add('airquality', 'debug', 'Save latitude et longitude en config generale pour mode Follow Me');
         config::save('DynLatitude', $latitude, 'airquality');
         config::save('DynLongitude', $longitude, 'airquality');
         return [$latitude, $longitude];
@@ -962,6 +960,7 @@ class airquality extends eqLogic
             log::add('airquality', 'debug', 'Interval > 15 : Start Refresh Pollen latest');
             $dataAll = $this->getApiData('getAmbee');
             if (isset($dataAll->data)) {
+                $oldData = $this->getCurrentValues();
                 $dataPollen = $dataAll->data;
                 $this->checkAndUpdateCmd('tree_risk', $dataPollen[0]->Risk->tree_pollen);
                 $this->checkAndUpdateCmd('weed_risk', $dataPollen[0]->Risk->weed_pollen);
@@ -987,7 +986,6 @@ class airquality extends eqLogic
                 $this->checkAndUpdateCmd('others', isset($dataPollen[0]->Species->Others) ? $dataPollen[0]->Species->Others : '');
                 $this->checkAndUpdateCmd('updatedAt', $dataPollen[0]->updatedAt);
                 $paramAlertPollen = $this->getParamAlertPollen();
-                $oldData = $this->getCurrentValues();
                 $display = new DisplayInfo;
                 $city = $this->getCurrentCityName();
                 log::add('airquality', 'debug', 'City For Pollen Message : ' . $city);
