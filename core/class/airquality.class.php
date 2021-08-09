@@ -52,7 +52,7 @@ class airquality extends eqLogic
                     $minute = (int)trim(config::byKey('cron_aqi_minute', 'airquality'));
                     if (empty($minute)) {
                         log::add('airquality', 'debug', 'Minute de la cron de l aqi non définie');
-                        $minute = rand(1, 59);
+                        $minute = rand(2, 58);
                         config::save('cron_aqi_minute', $minute, 'airquality');
                     }
                     $thirtyMinMore = $minute + 30;
@@ -72,9 +72,9 @@ class airquality extends eqLogic
                 // AQI Pollution refresh forecast 3x / jours 
                 try {
 
-                    $minForecast = (int)$thirtyMinMore - 3;
+                    $minForecast = (int)$thirtyMinMore - 1;
                     $cronForecast = $minForecast ." 5,13 * * *";
-                    // log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
+                    log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
@@ -125,7 +125,7 @@ class airquality extends eqLogic
                     $minute = (int)trim(config::byKey('cron_pollen_minute', 'airquality'));
                     if (empty($minute)) {
                         log::add('airquality', 'debug', 'Minute de la cron de pollen non définie');
-                        $minute = rand(1, 59);
+                        $minute = rand(2, 58);
                         config::save('cron_pollen_minute', $minute, 'airquality');
                     }
 
@@ -153,7 +153,7 @@ class airquality extends eqLogic
                         $twentyMinMore = $twentyMinMore - 60;
                     }
 
-                    $cronForecast = $minute + 2 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
+                    $cronForecast = $minute + 1 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
                     // log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
 
@@ -349,7 +349,7 @@ class airquality extends eqLogic
             $setup = SetupAqi::$setupAqi;
 
             //SetUp a time bettween 0 and 5 min for refresh to not all Jeedom call api in same time  
-            $minute = rand(1, 59);
+            $minute = rand(2, 58);
             config::save('cron_aqi_minute', $minute, 'airquality');
         }
 
@@ -396,7 +396,7 @@ class airquality extends eqLogic
 
             $setup = SetupAqi::$setupPollen;
 
-            $minute = rand(1, 59);
+            $minute = rand(2, 58);
             config::save('cron_pollen_minute', $minute, 'airquality');
         }
 
