@@ -144,7 +144,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             echo '<option disabled="disabled" value="server_mode">{{Localisation Jeedom non renseigné dans la configuration générale}}</option>';
                                         }
                                         ?>
-                                         <option value="follow_me">{{Mobile Follow Me (https requis)}}</option>
+                                        <option value="follow_me">{{Mobile Follow Me (https requis)}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -281,7 +281,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <label style="margin-top:7px;" class="col-sm-3 control-label">{{Afficher à partir de}}</label>
                                 <div class="col-sm-6">
                                     <div class="range-slider aqi">
-                                        <style> .output-pollen::after { content: " part/m³"; } </style><output class='output-pollen' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                        <style>
+                                            .output-pollen::after {
+                                                content: " part/m³";
+                                            }
+                                        </style><output class='output-pollen' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
                                         <input type="range" min="0" max="40" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" class="input-range aqi eqLogicAttr" orient="horizontal" name="pollen" id="pollen" data-l1key="configuration" data-l2key="pollen_alert_level"></input>
                                     </div>
                                 </div>
@@ -317,6 +321,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                     <br>
                                     <br>
+
                                 </div>
                             </div>
                             <!--  -->
@@ -634,117 +639,147 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 background: #ccc;
                                 outline: none;
                                 writing-mode: bt-lr;
-                               }
+                            }
                         </style>
 
                         <div class="container range-container pollen" style=" width: 90%;">
 
                             <div class="form-group elements pollen">
                                 <div class="range-slider aqi">
-                                    <label for="poaceae_alert_level" >{{Graminées / Poacées}}</label>
-                                            <style> .output-poaceae::after { content: " part/m³";} </style>
-                                            <output class='output-poaceae pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" 
-                                            onchange="this.previousElementSibling.value = this.value" id="poaceae" class="input-range aqi eqLogicAttr" orient="horizontal" 
-                                            name="poaceae" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
+                                    <label for="poaceae_alert_level">{{Graminées / Poacées}}</label>
+                                    <style>
+                                        .output-poaceae::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-poaceae pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="poaceae" class="input-range aqi eqLogicAttr" orient="horizontal" name="poaceae" id="poaceae_alert_level" data-l1key="configuration" data-l2key="poaceae_alert_level"></input>
                                     <br>
-                                    <label for="elm_alert_level" >{{Orme}}</label>
-                                            <style> .output-elm::after { content: " part/m³";} </style>
-                                            <output class='output-elm pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="elm" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="elm" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
+                                    <label for="elm_alert_level">{{Orme}}</label>
+                                    <style>
+                                        .output-elm::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-elm pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="elm" class="input-range aqi eqLogicAttr" orient="horizontal" name="elm" id="elm_alert_level" data-l1key="configuration" data-l2key="elm_alert_level"></input>
                                     <br>
-                                    <label for="alder_alert_level" >{{Auln}}</label>
-                                            <style> .output-alder::after { content: " part/m³";} </style>
-                                            <output class='output-alder pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="alder" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="alder" id="alder_alert_level" data-l1key="configuration" data-l2key="alder_alert_level"></input>
+                                    <label for="alder_alert_level">{{Auln}}</label>
+                                    <style>
+                                        .output-alder::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-alder pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="alder" class="input-range aqi eqLogicAttr" orient="horizontal" name="alder" id="alder_alert_level" data-l1key="configuration" data-l2key="alder_alert_level"></input>
                                     <br>
-                                    <label for="birch_alert_level" >{{Bouleau}}</label>
-                                            <style> .output-birch::after { content: " part/m³";} </style>
-                                            <output class='output-birch pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="birch" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="birch" id="birch_alert_level" data-l1key="configuration" data-l2key="birch_alert_level"></input>
+                                    <label for="birch_alert_level">{{Bouleau}}</label>
+                                    <style>
+                                        .output-birch::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-birch pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="birch" class="input-range aqi eqLogicAttr" orient="horizontal" name="birch" id="birch_alert_level" data-l1key="configuration" data-l2key="birch_alert_level"></input>
                                     <br>
-                                    <label for="cypress_alert_level" >{{Cyprès}}</label>
-                                            <style> .output-cypress::after { content: " part/m³";} </style>
-                                            <output class='output-cypress pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="cypress" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="cypress" id="cypress_alert_level" data-l1key="configuration" data-l2key="cypress_alert_level"></input>
+                                    <label for="cypress_alert_level">{{Cyprès}}</label>
+                                    <style>
+                                        .output-cypress::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-cypress pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="cypress" class="input-range aqi eqLogicAttr" orient="horizontal" name="cypress" id="cypress_alert_level" data-l1key="configuration" data-l2key="cypress_alert_level"></input>
                                     <br>
-                                    <label for="oak_alert_level" >{{Chêne}}</label>
-                                            <style> .output-oak::after { content: " part/m³";} </style>
-                                            <output class='output-oak pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="oak" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="oak" id="oak_alert_level" data-l1key="configuration" data-l2key="oak_alert_level"></input>
+                                    <label for="oak_alert_level">{{Chêne}}</label>
+                                    <style>
+                                        .output-oak::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-oak pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="oak" class="input-range aqi eqLogicAttr" orient="horizontal" name="oak" id="oak_alert_level" data-l1key="configuration" data-l2key="oak_alert_level"></input>
                                     <br>
-                                    <label for="hazel_alert_level" >{{Noisetier}}</label>
-                                            <style> .output-hazel::after { content: " part/m³";} </style>
-                                            <output class='output-hazel pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="hazel" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="hazel" id="hazel_alert_level" data-l1key="configuration" data-l2key="hazel_alert_level"></input>
+                                    <label for="hazel_alert_level">{{Noisetier}}</label>
+                                    <style>
+                                        .output-hazel::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-hazel pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="hazel" class="input-range aqi eqLogicAttr" orient="horizontal" name="hazel" id="hazel_alert_level" data-l1key="configuration" data-l2key="hazel_alert_level"></input>
                                     <br>
-                                    <label for="pine_alert_level" >{{Pin}}</label>
-                                            <style> .output-pine::after { content: " part/m³";} </style>
-                                            <output class='output-pine pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="pine" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="pollen" id="pine_alert_level" data-l1key="configuration" data-l2key="pine_alert_level"></input>
+                                    <label for="pine_alert_level">{{Pin}}</label>
+                                    <style>
+                                        .output-pine::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-pine pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="pine" class="input-range aqi eqLogicAttr" orient="horizontal" name="pollen" id="pine_alert_level" data-l1key="configuration" data-l2key="pine_alert_level"></input>
                                     <br>
-                                    <label for="plane_alert_level" >{{Platane}}</label>
-                                            <style> .output-plane::after { content: " part/m³";} </style>
-                                            <output class='output-plane pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="plane" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="plane" id="plane_alert_level" data-l1key="configuration" data-l2key="plane_alert_level"></input>
+                                    <label for="plane_alert_level">{{Platane}}</label>
+                                    <style>
+                                        .output-plane::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-plane pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="plane" class="input-range aqi eqLogicAttr" orient="horizontal" name="plane" id="plane_alert_level" data-l1key="configuration" data-l2key="plane_alert_level"></input>
                                     <br>
                                     <label for="poplar_alert_level">{{Peuplier}}</label>
-                                            <style> .output-poplar::after { content: " part/m³";} </style>
-                                            <output class='output-poplar pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="poplar" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="poplar" id="poplar_alert_level" data-l1key="configuration" data-l2key="poplar_alert_level"></input>
+                                    <style>
+                                        .output-poplar::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-poplar pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="poplar" class="input-range aqi eqLogicAttr" orient="horizontal" name="poplar" id="poplar_alert_level" data-l1key="configuration" data-l2key="poplar_alert_level"></input>
                                     <br>
-                                    <label for="chenopod_alert_level" >{{Chénopodes}}</label>
-                                            <style> .output-chenopod::after { content: " part/m³";} </style>
-                                            <output class='output-chenopod pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="chenopod" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="chenopod" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
+                                    <label for="chenopod_alert_level">{{Chénopodes}}</label>
+                                    <style>
+                                        .output-chenopod::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-chenopod pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="chenopod" class="input-range aqi eqLogicAttr" orient="horizontal" name="chenopod" id="chenopod_alert_level" data-l1key="configuration" data-l2key="chenopod_alert_level"></input>
                                     <br>
                                     <label for="mugwort_alert_level">{{Armoise}}</label>
-                                            <style> .output-mugwort::after { content: " part/m³";} </style>
-                                            <output class='output-mugwort pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="mugwort" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="mugwort" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
+                                    <style>
+                                        .output-mugwort::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-mugwort pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="mugwort" class="input-range aqi eqLogicAttr" orient="horizontal" name="mugwort" id="mugwort_alert_level" data-l1key="configuration" data-l2key="mugwort_alert_level"></input>
                                     <br>
                                     <label for="nettle_alert_level">{{Ortie}}</label>
-                                            <style> .output-nettle::after { content: " part/m³";} </style>
-                                            <output class='output-nettle pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output> 
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="nettle" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="nettle" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
+                                    <style>
+                                        .output-nettle::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-nettle pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="nettle" class="input-range aqi eqLogicAttr" orient="horizontal" name="nettle" id="nettle_alert_level" data-l1key="configuration" data-l2key="nettle_alert_level"></input>
                                     <br>
                                     <label for="ragweed_alert_level">{{Ambroisie}}</label>
-                                            <style> .output-ragweed::after { content: " part/m³";} </style>
-                                            <output class='output-ragweed pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="ragweed" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="ragweed" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
+                                    <style>
+                                        .output-ragweed::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-ragweed pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="ragweed" class="input-range aqi eqLogicAttr" orient="horizontal" name="ragweed" id="ragweed_alert_level" data-l1key="configuration" data-l2key="ragweed_alert_level"></input>
                                     <br>
                                     <label for="others_alert_level">{{Autres pollens d'origine inconnue}}</label>
-                                            <style> .output-others::after { content: " part/m³";} </style>
-                                            <output class='output-others pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
-                                            <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value"
-                                            onchange="this.previousElementSibling.value = this.value" id="others" class="input-range aqi eqLogicAttr" orient="horizontal"
-                                            name="others" id="others_alert_level" data-l1key="configuration" data-l2key="others_alert_level"></input>
+                                    <style>
+                                        .output-others::after {
+                                            content: " part/m³";
+                                        }
+                                    </style>
+                                    <output class='output-others pull-right' style="color: var(--linkHover-color) !important;margin-bottom:10px;"></output>
+                                    <input type="range" min="1" max="250" oninput="this.previousElementSibling.value = this.value" onchange="this.previousElementSibling.value = this.value" id="others" class="input-range aqi eqLogicAttr" orient="horizontal" name="others" id="others_alert_level" data-l1key="configuration" data-l2key="others_alert_level"></input>
                                     <br>
                                 </div>
                             </div>
