@@ -50,6 +50,11 @@
 - ajout mode mobile Follow Me 
 - refactoring 
 
+# 9/08/2021 
+
+- Déclenchement des refreshs aléatoire fixé à la sauvegarde suite aux mails reçu de Ambee pour décaller les calls des utilisateurs
+
+
 
 
 

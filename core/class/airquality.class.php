@@ -1,8 +1,4 @@
 <?php
-// Setup Error : only dev 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
 
 /* This file is part of Jeedom.
  *
@@ -20,6 +16,10 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
+
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
 
@@ -32,13 +32,13 @@ class airquality extends eqLogic
 
     public static function cron()
     {
-
+        // Assignation d'une minute de refresh aléatoire suite mail Ambee
         foreach (self::byType('airquality') as $airQuality) {
 
-            //AQI CRON
+            //AQI
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'polution') {
 
-                // Cron Pollution Toutes demi heure 
+                // Pollution Current Toutes demi-heure 
                 try {
                     $minutePollution = (int)trim(config::byKey('cron_aqi_minute', 'airquality'));
                     if (empty($minutePollution)) {
@@ -60,7 +60,7 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
-                // AQI Pollution refresh forecast 3x / jours 
+                // Pollution forecast 2x jours 
                 try {
 
                     $minForecast = (int)$thirtyMinMore - 1;
@@ -83,7 +83,7 @@ class airquality extends eqLogic
                 } catch (Exception $e) {
                     log::add('airquality', 'debug', __('Expression cron non valide pour Pollution refresh forecast', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
-                // Delete Alert Pollution after x min 
+                // Delete Alert Pollution message after x min 
                 try {
                     $specialCron =  $airQuality->getConfiguration('alertAqiCronTwoMin');
                     if (empty($specialCron)) {
@@ -107,11 +107,9 @@ class airquality extends eqLogic
                 }
             }
 
-
-            // Pollen CRON
+            // Pollen
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
-
-                // Cron Pollen Toutes  heure 
+                //  Pollen current toutes heures
                 try {
                     $minutePollen = (int)trim(config::byKey('cron_pollen_minute', 'airquality'));
                     if (empty($minutePollen)) {
@@ -119,11 +117,9 @@ class airquality extends eqLogic
                         $minutePollen = rand(2, 58);
                         config::save('cron_pollen_minute', $minutePollen, 'airquality');
                     }
-
                     $crontabPollen = $minutePollen . " * * * *";
                     // log::add('airquality', 'debug', 'Cron pollen current : ' . $crontabPollen);
                     $c = new Cron\CronExpression($crontabPollen, new Cron\FieldFactory);
-
                     if ($c->isDue()) {
                         $airQuality->updatePollen();
                     }
@@ -131,10 +127,9 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollen', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
-
-                //  Refresh forecast Pollen
+                //   Forecast Pollen
                 try {
-                    // Plusieurs tentatives suite à de nombreux echecs : bridé si response API OK
+                    // 3 tentatives programmés  suite à de nombreux echecs de call + action en cas d'échec uniquement gèrer par le bridage de temps
                     $tenMinMore = $minutePollen + 10;
                     if ($tenMinMore > 59) {
                         $tenMinMore = $tenMinMore - 60;
@@ -143,7 +138,6 @@ class airquality extends eqLogic
                     if ($twentyMinMore > 59) {
                         $twentyMinMore = $twentyMinMore - 60;
                     }
-
                     $cronForecast = $minutePollen + 1 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
                     // log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
@@ -152,7 +146,6 @@ class airquality extends eqLogic
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_pollen_forecast');
                             if (is_object($refresh)) {
-                                // log::add('airquality', 'debug', 'Refresh forecast pollen update disable');
                                 $refresh->execCmd();
                             } else {
                                 log::add('airquality', 'debug', 'Impossible de trouver la commande refresh pour ' . $airQuality->getHumanName());
@@ -273,12 +266,10 @@ class airquality extends eqLogic
             if (is_object($cmdXCheckNull) && $cmdXCheckNull->execCmd() == null) {
                 $cmd = $this->getCmd(null, 'refresh');
                 if (is_object($cmd)) {
-                    // log::add('airquality', 'debug', 'refresh disable at start décommenter line 235 airquality.class');
                     $cmd->execCmd();
                 }
                 $cmd = $this->getCmd(null, 'refresh_pollen_forecast');
                 if (is_object($cmd)) {
-                    // log::add('airquality', 'debug', 'refresh forecast pollen disable at start décommenter line 259 airquality.class');
                     $cmd->execCmd();
                 }
             }
@@ -339,7 +330,7 @@ class airquality extends eqLogic
 
             $setup = SetupAqi::$setupAqi;
 
-            //SetUp a time bettween 0 and 5 min for refresh to not all Jeedom call api in same time  
+            //SetUp a time bettween 2 and 58 min for refresh : to not all Jeedom box call api in same time  
             $minute = rand(2, 58);
             config::save('cron_aqi_minute', $minute, 'airquality');
         }
@@ -420,7 +411,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        $this->emptyCacheWidget(); //vide le cache. Pour le dev
+        // $this->emptyCacheWidget(); //vide le cache
         $version = jeedom::versionAlias($_version);
         $activePollenCounter = 0;
         $display = new DisplayInfo;
@@ -789,7 +780,6 @@ class airquality extends eqLogic
 
         $minPollen = config::byKey('cron_pollen_minute', 'airquality');
         $replace['#updatetimepollen#'] = "Mise à jour à la minute $minPollen de chaque heure";
-
 
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
         $replace['#mini_slide#'] =  $elementHtml->getLayer();

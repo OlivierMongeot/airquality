@@ -754,8 +754,6 @@ class DisplayInfo
             }
         }
 
-
-
         return [$message,  $messageMore, $messageHigh];
     }
 
@@ -953,12 +951,13 @@ class DisplayInfo
         ];
     }
 
-
+    /**
+     * en standby
+     */
     public function analyseForecast($forecast)
     {
         $message = 'toto';
         return $message;
     }
-
 
 }
