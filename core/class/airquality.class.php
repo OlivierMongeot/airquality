@@ -74,7 +74,7 @@ class airquality extends eqLogic
 
                     $minForecast = (int)$thirtyMinMore - 1;
                     $cronForecast = $minForecast ." 5,13 * * *";
-                    log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
+                    // log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
@@ -122,16 +122,16 @@ class airquality extends eqLogic
 
                 // Cron Pollen Toutes  heure 
                 try {
-                    $minute = (int)trim(config::byKey('cron_pollen_minute', 'airquality'));
-                    if (empty($minute)) {
+                    $minutePollen = (int)trim(config::byKey('cron_pollen_minute', 'airquality'));
+                    if (empty($minutePollen)) {
                         log::add('airquality', 'debug', 'Minute de la cron de pollen non définie');
-                        $minute = rand(2, 58);
-                        config::save('cron_pollen_minute', $minute, 'airquality');
+                        $minutePollen = rand(2, 58);
+                        config::save('cron_pollen_minute', $minutePollen, 'airquality');
                     }
 
-                    $crontab = $minute . " * * * *";
-                    // log::add('airquality', 'debug', 'Cron pollen current : ' . $crontab);
-                    $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
+                    $crontabPollen = $minutePollen . " * * * *";
+                    log::add('airquality', 'debug', 'Cron pollen current : ' . $crontabPollen);
+                    $c = new Cron\CronExpression($crontabPollen, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
                         $airQuality->updatePollen();
@@ -144,17 +144,17 @@ class airquality extends eqLogic
                 //  Refresh forecast Pollen
                 try {
                     // Plusieurs tentatives suite à de nombreux echecs : bridé si response API OK
-                    $tenMinMore = $minute + 10;
+                    $tenMinMore = $minutePollen + 10;
                     if ($tenMinMore > 59) {
                         $tenMinMore = $tenMinMore - 60;
                     }
-                    $twentyMinMore = $minute + 20;
+                    $twentyMinMore = $minutePollen + 20;
                     if ($twentyMinMore > 59) {
                         $twentyMinMore = $twentyMinMore - 60;
                     }
 
-                    $cronForecast = $minute + 1 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
-                    // log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
+                    $cronForecast = $minutePollen + 1 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
+                    log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
@@ -1025,8 +1025,8 @@ class airquality extends eqLogic
     {
 
         $iMinutes = $this->getIntervalLastRefresh($this->getCmd(null, 'grass_pollen'));
-        if ($iMinutes > 15) {
-            log::add('airquality', 'debug', 'Interval > 15 : Start Refresh Pollen latest');
+        if ($iMinutes > 55) {
+            log::add('airquality', 'debug', 'Interval > 55 : Start Refresh Pollen latest');
             $dataAll = $this->getApiData('getAmbee');
             if (isset($dataAll->data)) {
                 $oldData = $this->getCurrentValues();

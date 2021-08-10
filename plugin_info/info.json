@@ -7,7 +7,7 @@
 	},
 	"licence" : "AGPL",
 	"author" : "Olivrius",
-	"require" : "4.1.22",
+	"require" : "4.1.0",
 	"category" : "weather",
 	"changelog" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/changelog.md",
 	"documentation" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/index.md",
