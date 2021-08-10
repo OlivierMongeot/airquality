@@ -1016,7 +1016,7 @@ class airquality extends eqLogic
     {
 
         $iMinutes = $this->getIntervalLastRefresh($this->getCmd(null, 'grass_pollen'));
-        if ($iMinutes > 51) {
+        if ($iMinutes > 50) {
             log::add('airquality', 'debug', 'Interval > 50 : Start Refresh Pollen latest');
             $dataAll = $this->getApiData('getAmbee');
             if (isset($dataAll->data)) {
