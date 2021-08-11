@@ -16,9 +16,9 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -28,7 +28,6 @@ class airquality extends eqLogic
 {
 
     public static $_widgetPossibility = ['custom' => true, 'custom::layout' => false];
-
 
     public static function cron()
     {
@@ -51,6 +50,7 @@ class airquality extends eqLogic
                         $thirtyMinMore = $thirtyMinMore - 60;
                     }
                     $crontab = $minutePollution . "," . $thirtyMinMore . " * * * *";
+                    log::add('airquality', 'debug', 'Cron refresh de l aqi : ' . $crontab);
                     $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
@@ -130,6 +130,7 @@ class airquality extends eqLogic
                 //   Forecast Pollen
                 try {
                     // 3 tentatives programmés  suite à de nombreux echecs de call + action en cas d'échec uniquement gèrer par le bridage de temps
+
                     $tenMinMore = $minutePollen + 10;
                     if ($tenMinMore > 59) {
                         $tenMinMore = $tenMinMore - 60;
@@ -245,7 +246,6 @@ class airquality extends eqLogic
 
     public function postSave()
     {
-
         if ($this->getIsEnable() && $this->getConfiguration('elements') == 'polution') {
             $cmdXCheckNull =  $this->getCmd(null, 'co');
 
@@ -1064,7 +1064,6 @@ class airquality extends eqLogic
     {
 
         // Verifier la date de dernier maj pour faire ou pas maj
-
         $cmToTest = $this->getCmd(null, 'co');
         $iMinute = 6;
         if (is_object($cmToTest)) {
@@ -1191,7 +1190,7 @@ class airquality extends eqLogic
                 $this->refreshWidget();
                 log::add('airquality', 'debug', 'Refresh Forecast Pollen finish');
             } else {
-                log::add('airquality', 'debug', 'Cas Forecast != [] ou [] vide : pas de refrsh des data');
+                log::add('airquality', 'debug', 'Cas Forecast != [] ou [] vide : pas de refresh des data');
             }
         } else {
             log::add('airquality', 'debug', 'Test date de dernière collecte forecast Pollen < 240 min test jour : pas de refresh');
