@@ -64,8 +64,11 @@ class airquality extends eqLogic
                 try {
 
                     $minForecast = (int)$thirtyMinMore - 1;
+                    if ($minForecast < 0) {
+                        $minForecast = -$minForecast;
+                    }
                     $cronForecast = $minForecast ." 5,13 * * *";
-                    // log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
+                    log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
                     $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
