@@ -50,7 +50,7 @@ class airquality extends eqLogic
                         $thirtyMinMore = $thirtyMinMore - 60;
                     }
                     $crontab = $minutePollution . "," . $thirtyMinMore . " * * * *";
-                    log::add('airquality', 'debug', 'Cron refresh de l aqi : ' . $crontab);
+                    // log::add('airquality', 'debug', 'Cron refresh de l aqi : ' . $crontab);
                     $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
@@ -67,9 +67,9 @@ class airquality extends eqLogic
                     if ($minForecast < 0) {
                         $minForecast = -$minForecast;
                     }
-                    $cronForecast = $minForecast ." 5,13 * * *";
-                    log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
-                    $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
+                    $cronForecast = $minForecast . " 5,13 * * *";
+                    // log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
+                    $c = new Cron\CronExpression($cronForecast, new Cron\FieldFactory);
                     if ($c->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_forecast');
@@ -142,9 +142,9 @@ class airquality extends eqLogic
                     if ($twentyMinMore > 59) {
                         $twentyMinMore = $twentyMinMore - 60;
                     }
-                    $cronForecast = $minutePollen + 1 .",".$tenMinMore.",".$twentyMinMore." 7 * * *";
+                    $cronForecast = $minutePollen + 1 . "," . $tenMinMore . "," . $twentyMinMore . " 7 * * *";
                     // log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
-                    $c = new Cron\CronExpression( $cronForecast, new Cron\FieldFactory);
+                    $c = new Cron\CronExpression($cronForecast, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
                         try {
@@ -219,13 +219,19 @@ class airquality extends eqLogic
 
     public function preInsert()
     {
+        log::add('airquality', 'debug', 'Start Function preInsert');
         $this->setCategory('heating', 1);
         $this->setIsEnable(1);
         $this->setIsVisible(1);
+        //SetUp a time bettween 2 and 58 min for refresh : to not all Jeedom box call api in same time  
+        $minute = rand(2, 58);
+        config::save('cron_aqi_minute', $minute, 'airquality');
+        log::add('airquality', 'debug', 'Set New Cron aqi minute PostUpdate : ' . $minute. ' for' . $airQuality->getHumanName());
     }
 
     public function preUpdate()
     {
+        log::add('airquality', 'debug', 'Start Function preUpdate pour ' . $this->getHumanName());
         if ($this->getIsEnable()) {
             switch ($this->getConfiguration('searchMode')) {
                 case 'city_mode':
@@ -283,7 +289,11 @@ class airquality extends eqLogic
     public function preSave()
     {
         $this->setDisplay("width", "265px");
-        $this->setDisplay("height", "375px");
+        if ($this->getConfiguration('data_forecast') == 'disable') {
+            $this->setDisplay("height", "225px");
+        } else {
+                $this->setDisplay("height", "375px");
+        }
     }
 
 
@@ -332,10 +342,6 @@ class airquality extends eqLogic
                 ->setSubType('other')->save();
 
             $setup = SetupAqi::$setupAqi;
-
-            //SetUp a time bettween 2 and 58 min for refresh : to not all Jeedom box call api in same time  
-            $minute = rand(2, 58);
-            config::save('cron_aqi_minute', $minute, 'airquality');
         }
 
         //Pollen 
@@ -487,13 +493,24 @@ class airquality extends eqLogic
                         $unitreplace['#history#'] =  $isObjet ? 'history cursor' : '';
                         $unitreplace['#info-modalcmd#'] = $isObjet ?  'info-modal' . $cmd->getLogicalId() . $this->getId() : '';
                         $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite() : '';
-                        $maxCmd = $this->getCmd(null, $nameCmd . '_max');
-                        $unitreplace['#max#'] = (is_object($maxCmd) && !empty($maxCmd->execCmd())) ? $maxCmd->execCmd() : "[0,0,0]";
-                        $minCmd = $this->getCmd(null, $nameCmd . '_min');
-                        $unitreplace['#min#'] = (is_object($minCmd) && !empty($minCmd->execCmd())) ? $minCmd->execCmd() : "[0,0,0]";
-                        $unitreplace['#color#'] =  ($isObjet && !empty($icone->getColor())) ?  $icone->getColor() : '#333333';
-                        $labels = $this->getCmd(null, 'days');
-                        $unitreplace['#labels#'] = (is_object($labels) && !empty($labels->execCmd())) ? $labels->execCmd() :  "['no','-','data']";
+                       //forecast Display 
+                       if ($this->getConfiguration('data_forecast') != 'disable') {
+                            $maxCmd = $this->getCmd(null, $nameCmd . '_max');
+                            $unitreplace['#max#'] = (is_object($maxCmd) && !empty($maxCmd->execCmd())) ? $maxCmd->execCmd() : "[0,0,0]";
+                            $minCmd = $this->getCmd(null, $nameCmd . '_min');
+                            $unitreplace['#min#'] = (is_object($minCmd) && !empty($minCmd->execCmd())) ? $minCmd->execCmd() : "[0,0,0]";
+                            $unitreplace['#color#'] =  ($isObjet && !empty($icone->getColor())) ?  $icone->getColor() : '#333333';
+                            $labels = $this->getCmd(null, 'days');
+                            $unitreplace['#labels#'] = (is_object($labels) && !empty($labels->execCmd())) ? $labels->execCmd() :  "['no','-','data']";
+                            $unitreplace['#height0#'] = '';
+                       } else {
+                        $unitreplace['#labels#'] = "['0','0','0']";
+                        $unitreplace['#max#'] = "[0,0,0]";
+                        $unitreplace['#min#'] =  "[0,0,0]";
+                        $unitreplace['#color#'] = '#333333';
+                        $unitreplace['#height0#'] = 'style="height:0"';
+                       }
+                       // Fin Forecast 
                         [$levelRiskAQI, $indiceLevel] = $display->getElementRiskAqi($icone->getColor());
                         $unitreplace['#level-particule#'] =  $isObjet ?  $levelRiskAQI : '';
                         if ($indiceLevel >= 3) {
@@ -603,7 +620,6 @@ class airquality extends eqLogic
                         $counterMain++;
                     }
                     $headerReplace['#main_pollen_value#'] = $value;
-
 
                     $newIcon = $iconePollen->getIcon($nameCmd, $value, $cmd->getId(), false);
                     $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
@@ -775,10 +791,10 @@ class airquality extends eqLogic
         $minaqi = config::byKey('cron_aqi_minute', 'airquality');
         // log::add('airquality', 'debug', 'Minute cron Setup AQI : ' . $minaqi);
         $min30aqi =   ((int)$minaqi + 30 > 59) ? (int)$minaqi - 30 : (int)$minaqi + 30;
-        if($min30aqi > (int)$minaqi) {
-            $replace['#updatetimeaqi#'] = "Mise à jour à la minute ".  $minaqi ." et ". $min30aqi." de chaque heure";
+        if ($min30aqi > (int)$minaqi) {
+            $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $minaqi . " et " . $min30aqi . " de chaque heure";
         } else {
-            $replace['#updatetimeaqi#'] = "Mise à jour à la minute ".  $min30aqi ." et ". $minaqi." de chaque heure";
+            $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $min30aqi . " et " . $minaqi . " de chaque heure";
         }
 
         $minPollen = config::byKey('cron_pollen_minute', 'airquality');

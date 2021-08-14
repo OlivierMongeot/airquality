@@ -250,6 +250,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                             <br>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Afficher les prévivsions}}</label>
+                                <div class="col-sm-6">
+                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="data_forecast">
+                                        <option value="actived">{{Activer}}</option>
+                                        <option value="disable">{{Désactiver}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Elements à afficher}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="elements">
