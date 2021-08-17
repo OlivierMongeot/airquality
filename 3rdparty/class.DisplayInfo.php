@@ -832,11 +832,9 @@ class DisplayInfo
     {
         $iconsGood =  $this->getGoodIcon();
         $iconsBad =  $this->getBadIcon();
-        return  [
-            '&#127795;' => 'correct', '&#128549;' => 'élevé', '&#128549;' => 'haut', $iconsBad => 'mauvais', '&#128545;' => 'très', '&#128520;' => 'extrême', '&#128551;' => 'modéré',
-            '&#128550;' => 'moyenne', '&#128529;' => 'dégradé', '&#127749;' => 'nul', '&#127752;' => 'faible', $iconsGood => 'bon',
-            $iconsGood => 'good',  $iconsBad => 'bad',  '&#128529;' => 'degraded', '&#128551;' => 'moderate', '&#128545;' => 'very', '&#128520;' => 'extreme',
-            '&#127752;' => 'low'
+        return ['correct' => '&#127795;',  'élevé'  =>'&#128549;', 'haut' => '&#128549;', 'mauvais' => $iconsBad , 'très' => '&#128545;', 'extrême' => '&#128520;',
+            'modéré' => '&#128551;', 'moyenne' => '&#128550;', 'dégradé' => '&#128529;', 'nul' => '&#127749;', 'faible' => '&#127752;', 'bon' => $iconsGood,
+            'degraded' => '&#128529;', 'moderate' => '&#128551;', 'very' => '&#128545;', 'extreme' => '&#128520;', 'low' => '&#127752;', 'good' => $iconsGood        
         ];
     }
 
@@ -846,7 +844,9 @@ class DisplayInfo
             $arrayMessage[] = "&#127757; <b>".__('Alerte',__FILE__)." AQI - ". $city . "</b> " . " \n ";
             foreach ($messages as $message) {
                 $icon = '';
-                foreach ($this->getIconsWithStatus() as $key => $value) {
+                $icons = $this->getIconsWithStatus();
+                log::add('airquality', 'debug', 'Message : ' . $message);
+                foreach ( $icons as $value => $key) {
                     $match = (str_replace($value, '', $message) != $message);
                     if ($match) {
                         $icon = $key;
@@ -889,14 +889,14 @@ class DisplayInfo
     }
 
     /**
-     *  Format for discord
+     *  Format Pollen for discord
      */
     private function formatPollenMarkDown($messages)
     {
         $arrayMessage[] = ":blossom: **".__('Alerte',__FILE__)." Pollen** :herb:" . " ";
         $findLetters = [
             ':four_leaf_clover:' => 'bas', ':maple_leaf:' => 'haut', ':rage:' => 'très', ':sunflower:' => 'modéré',
-            ':four_leaf_clover:' => 'low', ':maple_leaf:' => 'high', ':rage:' => 'very', ':sunflower:' => 'moderate'
+            // ':four_leaf_clover:' => 'low', ':maple_leaf:' => 'high', ':rage:' => 'very', ':sunflower:' => 'moderate'
         ];
         foreach ($messages as $message) {
             $icon = '';
@@ -916,6 +916,9 @@ class DisplayInfo
         return implode(' ', $arrayMessage);
     }
 
+   /**
+     *  Format AQI for discord
+     */
     private function formatAqiMarkdown($messages)
     {
         if (!empty($messages)) {
@@ -925,7 +928,8 @@ class DisplayInfo
                 $message = str_replace('<b>', '**', $message);
                 $message = str_replace('</b>', '**', $message);
                 $message = strip_tags($message);
-                foreach ($this->getIconsMarkdownWithStatus() as $key => $value) {
+                foreach ($this->getIconsMarkdownWithStatus() as $value => $key) {
+
                     $match = (str_replace($value, '', $message) != $message);
                     // log::add('airquality', 'debug', 'Value matched for ' . $key . ' Icon : ' . $value);
                     if ($match) {
@@ -941,23 +945,22 @@ class DisplayInfo
         }
     }
 
+    /**
+     * Retourne tableau d'icones pour discord
+     */
     private function getIconsMarkdownWithStatus()
     {
-        return  [
-            ':expressionless:' => 'correct', ':warning:' => 'élevé', ':persevere:' => 'mauvais', ':scream:' => 'très', ':imp:' => 'extrême', ':relaxed:' => 'modéré',
-            ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon',
-            ':ok_hand:' => 'low', ':relaxed:' => 'moderate', ':persevere:' => 'high',  ':imp:' => 'very',  ':persevere:' => 'bad',  ':disappointed:' => 'degraded',
-            ':sweat_drops:' => 'good'
-        ];
-    }
-
-    /**
-     * en standby
-     */
-    public function analyseForecast($forecast)
-    {
-        $message = 'toto';
-        return $message;
+        // return  [
+        //     ':expressionless:' => 'correct', ':warning:' => 'élevé', ':persevere:' => 'mauvais', ':scream:' => 'très', ':imp:' => 'extrême', ':relaxed:' => 'modéré',
+        //     ':hushed:' => 'moyenne', ':disappointed:' => 'dégradé', ':zzz:' => 'nul', ':ok_hand:' => 'faible', ':sweat_drops:' => 'bon',
+        //     ':ok_hand:' => 'low', ':relaxed:' => 'moderate', ':persevere:' => 'high',  ':imp:' => 'very',  ':persevere:' => 'bad',  ':disappointed:' => 'degraded',
+        //     ':sweat_drops:' => 'good'
+        // ];
+        return [
+            'correct' => ':expressionless:', 'élevé' => ':warning:', 'mauvais' => ':persevere:', 'très' => ':scream:', 'extrême' => ':imp:', 'modéré' => ':relaxed:',
+            'moyenne' => ':hushed:', 'dégradé' => ':disappointed:', 'nul' => ':zzz:', 'faible' => ':ok_hand:', 'bon' => ':sweat_drops:',
+            'low' => ':ok_hand:', 'moderate' => ':relaxed:', 'high' => ':persevere:', 'very' => ':imp:', 'bad' => ':persevere:', 'degraded' => ':disappointed:',
+            'good' => ':sweat_drops:'];
     }
 
 }
