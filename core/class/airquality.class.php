@@ -740,7 +740,7 @@ class airquality extends eqLogic
                          
                         }
 
-                        // Affichage central pour Others à la fin/(double passage) car double affichage
+                        // Affichage central pour Others à la fin/(double passage boucle) car double affichage
                         if ($nameCmd == 'others') {
                             $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
                             $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
