@@ -720,6 +720,7 @@ class airquality extends eqLogic
                     } else
                         // Cas Pollen à ZERO 
                         if ($this->getConfiguration('pollen_alert_level') == 0 && $cmd->execCmd() == 0) {
+                            log::add('airquality', 'debug', 'Name Cmd Pollen ZERO : '.$cmd->getName(). ' - '.  $cmd->getLogicalId());
                             $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
                             $pollenZeroReplace['#icone#'] = $isObjet ? $newIcon : '';
                             $pollenZeroReplace['#id#'] = $isObjet ? $this->getId() : '';
@@ -730,38 +731,51 @@ class airquality extends eqLogic
                             $pollenZeroReplace['#info-modalcmd#'] =  $isObjet ? 'info-modal' . $cmd->getLogicalId() . $this->getId() : '';
                             $pollenZeroReplace['#message#'] = __('Aucune Détection', __FILE__);
                             $templateZero = getTemplate('core', $version, 'elementPollenZero', 'airquality');
+                            if ($this->getConfiguration('data_forecast') != 'disable') {
+                                $pollenZeroReplace['#height#'] =  'min-height:75px;';
+                            } else {
+                                $pollenZeroReplace['#height#'] = '';
+                            }
                             $tabZero[] = template_replace($pollenZeroReplace, $templateZero);
+                         
                         }
 
-
-                    // Affichage central pour Others à la fin/(double passage) car double affichage
-                    if ($nameCmd == 'others') {
-                        $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
-                        $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
-                        $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
-                        $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
-                        $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
-                        $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
-                        $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
-                        $headerReplace['#main_risk#'] =  $isObjet ? $display->getElementRiskPollen($iconePollen->getColor($cmd->execCmd(), $nameCmd)) : '';
-                        $value = $isObjet ? $cmd->execCmd() : '';
-                        $tabHeaderOne = template_replace($headerReplace, $headerTemplate);
-                        $tabHeader[] = [$tabHeaderOne, $value];
-                    }
+                        // Affichage central pour Others à la fin/(double passage) car double affichage
+                        if ($nameCmd == 'others') {
+                            $headerReplace['#main_pollen_value#'] =  $isObjet ? $cmd->execCmd() : '';
+                            $headerReplace['#id#'] =  $isObjet ? $this->getId() : '';
+                            $headerReplace['#main_cmd_pollen_id#'] =   $isObjet ? $cmd->getId() : '';
+                            $headerReplace['#main_pollen_name#'] =  $isObjet ? __($cmd->getName(), __FILE__) : '';
+                            $newIcon = $iconePollen->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId(), false);
+                            $headerReplace['#icone__pollen#'] = $isObjet ?  $newIcon : '';
+                            $headerReplace['#list_main_pollen#'] =  $isObjet ?  $display->getListPollen($nameCmd) : '';
+                            $headerReplace['#main_risk#'] =  $isObjet ? $display->getElementRiskPollen($iconePollen->getColor($cmd->execCmd(), $nameCmd)) : '';
+                            $value = $isObjet ? $cmd->execCmd() : '';
+                            $tabHeaderOne = template_replace($headerReplace, $headerTemplate);
+                            $tabHeader[] = [$tabHeaderOne, $value];
+                        }
                 }
             }
             $tabUnityValue = array_column($tabUnitReplace, 1);
             $tabUnityHtml = array_column($tabUnitReplace, 0);
             array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
 
+
             $counterPollenZero = 0;
             if (isset($tabZero)) {
-                $newArray = array_chunk($tabZero, 3);
+                if ($this->getConfiguration('data_forecast') != 'disable') {
+                    $newArray = array_chunk($tabZero,3);
+                } else {
+                       $newArray = array_chunk($tabZero, 1);
+                }
                 foreach ($newArray as $arr) {
                     $tabUnityHtml[] = implode('', $arr);
                     $counterPollenZero++;
                 }
             }
+
+
+
             if (!$alert) {
                 if ($activePollenCounter == 0) {
                     // Vérifier si pollen principaux présent dans la reponse API
@@ -923,7 +937,6 @@ class airquality extends eqLogic
         log::add('airquality', 'debug', $this->getHumanName() . ' -> Start API ' . $apiName . ' Calling for City : ' . $city . ' - Long :' . $lon . ' Lat :' . $lat);
         return $api->$apiName($lon, $lat);
     }
-
 
 
     /**
