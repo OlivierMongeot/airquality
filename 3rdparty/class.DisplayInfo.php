@@ -666,11 +666,10 @@ class DisplayInfo
             if (!empty($mess[0])) {
                 $message[] = $mess[0];
                 if (!empty($mess[2])) {
-                    // log::add('airquality', 'debug', 'Message High' . $mess[2]);
+                    log::add('airquality', 'debug', 'Message High' . $mess[2]);
                     $message[] = $mess[2];
                 }
-            } else if (!empty($mess[1])) {
-                
+            } else if (!empty($mess[1])) {   
                 $messageInmore[] = $mess[1];
             }
         }
@@ -690,7 +689,6 @@ class DisplayInfo
         log::add('airquality', 'debug', 'Markdown Message Pollen' . json_encode( $message));
         return [$stringMess, $telegramMessage, $smsMessage, $markdownMessage];
     }
-
 
     private function makeMessagePollen($newData, $oldData, $type, $typeName)
     {

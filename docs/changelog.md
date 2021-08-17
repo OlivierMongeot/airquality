@@ -1,10 +1,8 @@
 # Changelog AQI & Pollen
 
-
 # 26/06/2021
 
 - Version pre-beta du plugin pour tests
-
 
 # 12/07/2021
 
@@ -53,6 +51,13 @@
 # 9/08/2021 
 
 - Déclenchement des refreshs aléatoire fixé à la sauvegarde suite aux mails reçu de Ambee pour décaler les calls des utilisateurs
+
+# 17/08/2021 
+
+- Possibilité de ne pas afficher les forecasts pour un affichage plus simple 
+- Debug affichage icones telegram
+
+
 
 
 
