@@ -16,13 +16,12 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
-
 
 class airquality extends eqLogic
 {
@@ -60,7 +59,7 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__) . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
                 // Pollution forecast 2x jours si enable
-                if ($airQuality->getConfiguration('data_forecast') == 'enable') {
+                if ($airQuality->getConfiguration('data_forecast') == 'actived') {
                     try {
                         $minForecast = (int)$thirtyMinMore - 1;
                         if ($minForecast < 0) {
@@ -134,7 +133,7 @@ class airquality extends eqLogic
                 }
 
                 // Pollen forecast 1x jours si enable
-                if ($airQuality->getConfiguration('data_forecast') == 'enable') {
+                if ($airQuality->getConfiguration('data_forecast') == 'actived') {
 
                     try {
                         // 3 tentatives programmés  suite à de nombreux echecs de call + action en cas d'échec uniquement gèrer par le bridage de temps

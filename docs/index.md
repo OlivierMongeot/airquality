@@ -50,9 +50,11 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par trois API gratuites: Openwheather, Ambee et navigator.geolocation(HTML)
 
-Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, le plugin est conçu pour être aux limites du gratuit, c'est à dire 100 appels/jour.
+Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, le plugin est conçu pour être aux limites du gratuit, c'est à dire 100 appels/jour. 
 
 Ce qui veux dire que les prévisons de pollens sont mises à jour une fois par jour seulement, j'ai choisi 7h du matin, car seulement 24h sont en fait disponibles. Ce qui veux dire que pour le troisième jour de prévision, les infos vont jusqu'a 7h00 du matin et donc sont suceptiblent dévoluer en s'affinant.
+
+
 
 <img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
@@ -165,7 +167,7 @@ Ex pour les pollens vers Telegram :
  
 ## Créez un nouveau scénarion Jeedom :
 
-- Declenchement -> Programation  : ``` 1 * * * * ```     soit à la minute 1 chaque heure apres le refresh
+- Declenchement -> Programation  : ``` */2 * * * * ```     soit toute les 2 minutes (la durée de vie d'un message)
 - Dans l'onglet Scénario :  
 -   Ajouter un bloc SI/ALORS/SINON
 -   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)
