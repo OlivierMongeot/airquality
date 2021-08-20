@@ -50,10 +50,11 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par trois API gratuites: Openwheather, Ambee et navigator.geolocation(HTML)
 
-Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, le plugin est conçu pour être aux limites du gratuit, c'est à dire 100 appels/jour. 
+Elles sont gratuites dans une certaine limite d'appels par jour. Dans l'applis, pour Ambee, le plugin est conçu pour être aux limites du gratuit, c'est à dire 100 appels/jour. Cepandant, certains utilisateurs on reçu un courrier de la Sté Ambee, leur stipulant que la version gratuite sera limité dans le temps.
+Il faudrait alors basculer vers leur abonnement payant.  
 
-Ce qui veux dire que les prévisons de pollens sont mises à jour une fois par jour seulement, j'ai choisi 7h du matin, car seulement 24h sont en fait disponibles. Ce qui veux dire que pour le troisième jour de prévision, les infos vont jusqu'a 7h00 du matin et donc sont suceptiblent dévoluer en s'affinant.
 
+Les prévisons de pollens sont mises à jour une fois par jour seulement, j'ai choisi 7h du matin, car seulement 24h sont en fait disponibles. Ce qui veux dire que pour le troisième jour de prévision, les infos vont jusqu'a 7h00 du matin et donc sont suceptiblent dévoluer en s'affinant.
 
 
 <img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
@@ -119,9 +120,7 @@ Les pollens non détéctés (à zéro) sont affichés à part dans un tableau à
   <img height="70" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.JPG">
 </p>
 
-
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
-
 
 # Important
 
