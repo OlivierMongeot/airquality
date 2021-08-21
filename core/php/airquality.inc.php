@@ -35,9 +35,6 @@ if (!class_exists('CreateHtmlAqi')){
 if (!class_exists('IconesAqi')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.IconesAqi.php';
 }
-if (!class_exists('IconesPollen')){
-    require_once dirname(__FILE__) . '/../../3rdparty/class.IconesPollen.php';
-}
 if (!class_exists('DisplayInfo')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
 }
