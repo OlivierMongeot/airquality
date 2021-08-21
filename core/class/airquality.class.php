@@ -49,7 +49,7 @@ class airquality extends eqLogic
                         $thirtyMinMore = $thirtyMinMore - 60;
                     }
                     $crontab = $minutePollution . "," . $thirtyMinMore . " * * * *";
-                    // log::add('airquality', 'debug', 'Cron refresh de l aqi : ' . $crontab);
+                    log::add('airquality', 'debug', 'Cron refresh de l aqi current : ' . $crontab);
                     $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
@@ -66,7 +66,7 @@ class airquality extends eqLogic
                             $minForecast = -$minForecast;
                         }
                         $cronForecast = $minForecast . " 5,13 * * *";
-                        // log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
+                        log::add('airquality', 'debug', 'Cron Forecast aqi : ' . $cronForecast);
                         $c = new Cron\CronExpression($cronForecast, new Cron\FieldFactory);
                         if ($c->isDue()) {
                             try {
@@ -114,6 +114,7 @@ class airquality extends eqLogic
 
             // Pollen
             if ($airQuality->getIsEnable() == 1 && $airQuality->getConfiguration('elements') == 'pollen') {
+          
                 //  Pollen current toutes heures
                 try {
                     $minutePollen = (int)trim(config::byKey('cron_pollen_minute', 'airquality'));
@@ -123,7 +124,7 @@ class airquality extends eqLogic
                         config::save('cron_pollen_minute', $minutePollen, 'airquality');
                     }
                     $crontabPollen = $minutePollen . " * * * *";
-                    // log::add('airquality', 'debug', 'Cron pollen current : ' . $crontabPollen);
+                    log::add('airquality', 'debug', 'Cron pollen current : ' . $crontabPollen);
                     $c = new Cron\CronExpression($crontabPollen, new Cron\FieldFactory);
                     if ($c->isDue()) {
                         $airQuality->updatePollen();
@@ -146,7 +147,7 @@ class airquality extends eqLogic
                             $twentyMinMore = $twentyMinMore - 60;
                         }
                         $cronForecast = $minutePollen + 1 . "," . $tenMinMore . "," . $twentyMinMore . " 7 * * *";
-                        // log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
+                        log::add('airquality', 'debug', 'Cron forecast Pollen  : ' . $cronForecast);
                         $c = new Cron\CronExpression($cronForecast, new Cron\FieldFactory);
 
                         if ($c->isDue()) {
