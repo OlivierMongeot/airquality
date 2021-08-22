@@ -39,5 +39,4 @@ if (!class_exists('DisplayInfo')){
     require_once dirname(__FILE__) . '/../../3rdparty/class.DisplayInfo.php';
 }
 
-
 ?>
