@@ -237,7 +237,6 @@ class airquality extends eqLogic
 
         $commands = SetupAqi::$setupAqi;
 
-
         foreach ($commands as $command) {
             $cmdInfo = $this->getCmd(null, $command['name']);
             if (!is_object($cmdInfo)) {
@@ -261,7 +260,6 @@ class airquality extends eqLogic
     }
 
 
-
     public function toHtml($_version = 'dashboard')
     {
         $replace = $this->preToHtml($_version);
@@ -272,7 +270,6 @@ class airquality extends eqLogic
         $version = jeedom::versionAlias($_version);
         $display = new DisplayInfo;
         $tabUnitReplace = [];
-
 
         $counterActivePolluant = 0;
         $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
@@ -447,7 +444,6 @@ class airquality extends eqLogic
         } else {
             $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $min30aqi . " et " . $minaqi . " de chaque heure";
         }
-
 
         $replace['#info-tooltips#'] = __("Cliquez pour + d'info", __FILE__);
         $replace['#mini_slide#'] =  $elementHtml->getLayer();

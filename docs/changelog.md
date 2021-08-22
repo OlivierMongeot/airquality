@@ -57,6 +57,10 @@
 - Possibilité de ne pas afficher les forecasts pour un affichage plus simple 
 - Debug affichage icones telegram
 
+# 22/08/21
+
+- Suppresion Pollen suite changement API Ambee
+
 
 
 

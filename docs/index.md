@@ -23,7 +23,7 @@ Regardez le bouton 'Alertes' sur la page de configuration de votre équipement, 
 
 ## Mobilité
 
-<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenmobile.JPG" class="img-responsive" alt="Pollen">Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/mobileaqi.JPG" class="img-responsive" alt="Pollen">Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 <br/>
 Cela vous permet d'avoir les infos locales partout où vous vous trouver (dans les limites des possibilités des API).
 
@@ -50,7 +50,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par des API gratuites: Openwheather et navigator.geolocation(HTML)
 
-<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollenzero.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
+<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
 Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
 
@@ -101,10 +101,6 @@ En cliquant sur les moyennes vous accèder au graphique représentant ces donné
 Le graphique du bas donne le mini et maxi prévu par jour de la semaine pour chaque élément analysé.
 
 Pour l'AQI, tous les polluants sont affichés par défault, il vous suffit de désactiver l'option "Afficher" dans la partie Commandes de votre équipement pour ne plus l'afficher.   
-
-<p align="center">
-  <img height="70" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/displaypollenrange.JPG">
-</p>
 
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 

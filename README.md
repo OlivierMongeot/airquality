@@ -1,6 +1,6 @@
-# Plugin Jeedom Air Quality & Pollen
+# Plugin Jeedom Air Quality
 
-<img align="right" height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">Air Quality & Pollen plugin display air quality & pollens informations where you want in the world.  
+<img align="right" height="400" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/pollen_mo.JPG">Air Quality plugin display air quality informations where you want in the world.  
 
 It works with the **Jeedom** soft and it's compatible with Version 4.
 
