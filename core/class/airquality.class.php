@@ -16,9 +16,9 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
