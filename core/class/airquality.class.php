@@ -30,43 +30,36 @@ class airquality extends eqLogic
 
     public static function cron()
     {
-        // Assignation d'une minute de refresh aléatoire suite mail Ambee
+        // Assignation d'une minute de refresh aléatoire pour éviter saturation server gratuit OpenWeatherMap (cf problem getAmbee)
         foreach (self::byType('airquality') as $airQuality) {
 
-            //AQI
             if ($airQuality->getIsEnable() == 1) {
 
                 // Pollution Current Toutes demi-heure 
                 try {
                     $minutePollution = (int)trim(config::byKey('cron_aqi_minute', 'airquality'));
-                    if (empty($minutePollution)) {
-                        log::add('airquality', 'debug', 'Minute de la cron de l aqi non définie');
-                        $minutePollution = rand(2, 58);
-                        config::save('cron_aqi_minute', $minutePollution, 'airquality');
-                    }
                     $thirtyMinMore = $minutePollution + 30;
                     if ($thirtyMinMore > 59) {
                         $thirtyMinMore = $thirtyMinMore - 60;
                     }
                     $crontab = $minutePollution . "," . $thirtyMinMore . " * * * *";
-                    log::add('airquality', 'debug', 'Cron refresh de l aqi current : ' . $crontab);
+                    // log::add('airquality', 'debug', 'Cron refresh de l aqi current : ' . $crontab);
                     $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
 
                     if ($c->isDue()) {
                         $airQuality->updatePollution();
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution', __FILE__). ' Expression = ' . $crontab. ' pour '  . $airQuality->getHumanName() . ' : ' . json_encode($e));
+                    log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution current', __FILE__). ' Expression = ' . $crontab. ' pour '  . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
-                // Pollution forecast 2x jours si enable
+
+                // Forecast : 2x jours si enable à 6h et 13h 
                 if ($airQuality->getConfiguration('data_forecast') == 'actived') {
                     try {
                         $minForecast = abs((int)$thirtyMinMore - 1);
                         $cronForecast = $minForecast . " 6,13 * * *";
-                      
                         $c = new Cron\CronExpression($cronForecast, new Cron\FieldFactory);
                         if ($c->isDue()) {
-                           
                             try {
                                 $refresh = $airQuality->getCmd(null, 'refresh_forecast');
                                 if (is_object($refresh)) {
@@ -144,7 +137,6 @@ class airquality extends eqLogic
         $this->setCategory('heating', 1);
         $this->setIsEnable(1);
         $this->setIsVisible(1);
-
         //SetUp a time bettween 2 and 58 min for refresh : to not all Jeedom box call api in same time  
         $minute = rand(2, 58);
         config::save('cron_aqi_minute', $minute, 'airquality');
@@ -459,7 +451,6 @@ class airquality extends eqLogic
             $replace['#classCaroussel#'] = '';
         }
 
-
         return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
     }
 
@@ -482,7 +473,7 @@ class airquality extends eqLogic
     public static function postConfig_apikey()
     {
         if (config::byKey('apikey', 'airquality') == '') {
-            throw new Exception('Au moins une clef OpenWeather est requise pour faire marcher le plugin');
+            throw new Exception('Une clef OpenWeather est requise pour faire marcher le plugin');
         }
     }
 

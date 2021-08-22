@@ -50,7 +50,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par des API gratuites: Openwheather et navigator.geolocation(HTML)
 
-<img align="right" height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
+<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
 Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
 
