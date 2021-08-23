@@ -259,7 +259,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br>
-    
+
                             <br />
                             <!-- <div class="form-group searchMode dynamic_mode">
                                 <label class="col-sm-3 control-label"></label>
@@ -268,12 +268,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <br> -->
-                           
+
                         </div>
                         <!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
                         <div class="col-lg-6">
                             <legend><i class="fas fa-info"></i> {{Informations}}</legend>
-                            <div class="form-group elements polution">
+                            <div class="form-group">
                                 <div class="container">
                                     <h5>{{Code couleur utilisé pour l'AQI et les polluants}}</h5>
                                 </div>
@@ -349,8 +349,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <br />
                     <div class="container range-container aqi" style="width: 90%;">
 
-                        <div class="form-group elements polution col-lg-12">
-                            <!-- <div class="col-lg-6"> -->
+                        <div class="form-group">
 
                             <!-- table  -->
                             <table class="table table-bordered table-condensed" style="text-align:center">
@@ -559,7 +558,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             </select>
                                         </td>
                                         <td>
-                                            <!-- <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="uv_synchro" checked/> -->
                                         </td>
                                     </tr>
 
@@ -576,21 +574,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             </select>
                                         </td>
                                         <td>
-                                            <!-- <input type="checkbox" class="eqLogicAttr" data-l1key="visibility_synchro" checked /> -->
                                         </td>
                                     </tr>
-
-
-
                                 </tbody>
                             </table>
-
-                            <!-- </div> -->
-                      
+                        </div>
                     </div>
                 </div>
-
-
 
                 <div class="col-lg-5" style="padding:15px 35px">
                     <legend>

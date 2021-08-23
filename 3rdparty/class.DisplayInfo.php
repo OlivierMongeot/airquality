@@ -325,7 +325,7 @@ class DisplayInfo
 
         [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
         [$oldCategory] = $this->getLevelAQI($oldData, $type);
-        // log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+        log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
             if ($newCategory != $oldCategory) {
@@ -389,7 +389,7 @@ class DisplayInfo
                 } else {
                     return  $quantity. " " . $value . ' μg/m3'; 
                 }
-             }
+            }
     }
 
     private function getSynonyme($name)

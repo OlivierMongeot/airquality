@@ -2,7 +2,7 @@
 	"id" : "airquality",
 	"name" : "Air Quality",
 	"description" : {
-		"fr_FR": "Ce plugin affiche les concentrations de polluants dans l'air qui vous entoure, il indique également les prévisons sur 5 jours ainsi que des alertes",
+		"fr_FR": "Ce plugin affiche les concentrations de polluants dans l'air partout dans le monde, il indique également les prévisons sur 5 jours ainsi que des alertes",
 		"en_US": "This plugin displays the concentrations of pollutants, it also shows the forecasts on 5 days and give alerts"
 	},
 	"licence" : "AGPL",
