@@ -429,7 +429,6 @@ class airquality extends eqLogic
             $replace['#padding#'] = '0px';
         }
         $minaqi = config::byKey('cron_aqi_minute', 'airquality');
-        // log::add('airquality', 'debug', 'Minute cron Setup AQI : ' . $minaqi);
         $min30aqi =   ((int)$minaqi + 30 > 59) ? (int)$minaqi - 30 : (int)$minaqi + 30;
         if ($min30aqi > (int)$minaqi) {
             $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $minaqi . " et " . $min30aqi . " de chaque heure";
