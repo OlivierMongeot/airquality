@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -29,7 +26,7 @@ class airquality extends eqLogic
 
     public static function cron()
     {
-        // Assignation d'une minute de refresh aléatoire pour éviter saturation server gratuit OpenWeatherMap (cf problem getAmbee)
+        // Assignation d'une minute de refresh aléatoire pour éviter 'saturation' server gratuit OpenWeatherMap (cf problem getAmbee)
         foreach (self::byType('airquality') as $airQuality) {
 
             if ($airQuality->getIsEnable() == 1) {
@@ -52,7 +49,7 @@ class airquality extends eqLogic
                     log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution current', __FILE__). ' Expression = ' . $crontab. ' pour '  . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
-                // Forecast : 2x jours si enable à 6h et 13h 
+                // Forecast : 2x jours si activé à 6h et 13h 
                 if ($airQuality->getConfiguration('data_forecast') == 'actived') {
                     try {
                         $minForecast = abs((int)$thirtyMinMore - 1);
@@ -102,6 +99,9 @@ class airquality extends eqLogic
         }
     }
 
+    /**
+     * Retourne le delta en minute par rapport à la dernière mise à jour
+     */
     public function getIntervalLastRefresh($cmdXToTest)
     {
         if (is_object($cmdXToTest)) {
@@ -167,9 +167,6 @@ class airquality extends eqLogic
 
     public function postSave()
     {
-
-        $cmdXCheckNull =  $this->getCmd(null, 'co');
-        if (is_object($cmdXCheckNull) && $cmdXCheckNull->execCmd() == null) {
             $cmd = $this->getCmd(null, 'refresh');
             if (is_object($cmd)) {
                 $cmd->execCmd();
@@ -178,7 +175,6 @@ class airquality extends eqLogic
             if (is_object($cmd)) {
                 $cmd->execCmd();
             }
-        }
     }
 
 
@@ -391,6 +387,7 @@ class airquality extends eqLogic
                 }
             }
         }
+
         if (!isset($alert) || !$alert) {
             if ($counterActivePolluant == 0) {
                 $active_aqi_label = __("Pas d'alerte", __FILE__);
@@ -427,6 +424,7 @@ class airquality extends eqLogic
             $replace['#stateRefreshDesktop#'] = '';
             $replace['#padding#'] = '0px';
         }
+        
         $minaqi = config::byKey('cron_aqi_minute', 'airquality');
         $min30aqi =   ((int)$minaqi + 30 > 59) ? (int)$minaqi - 30 : (int)$minaqi + 30;
         if ($min30aqi > (int)$minaqi) {
