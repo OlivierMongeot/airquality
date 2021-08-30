@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -167,6 +170,8 @@ class airquality extends eqLogic
 
     public function postSave()
     {
+        $cmdXCheckNull =  $this->getCmd(null, 'co');
+        if (is_object($cmdXCheckNull) && $cmdXCheckNull->execCmd() == null) {
             $cmd = $this->getCmd(null, 'refresh');
             if (is_object($cmd)) {
                 $cmd->execCmd();
@@ -175,8 +180,8 @@ class airquality extends eqLogic
             if (is_object($cmd)) {
                 $cmd->execCmd();
             }
+        }
     }
-
 
     public function preSave()
     {
@@ -278,6 +283,7 @@ class airquality extends eqLogic
                 $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
                 [$uvLevel, $indiceLevel] = $display->getUVLevel($cmd->execCmd());
+                $replace['#history#'] =  $isObjet ? 'history cursor' : '';
                 $replace['#uv_level#'] = $isObjet ?  $uvLevel : '';
                 if ($indiceLevel >= 3) {
                     $counterActivePolluant++;
@@ -291,6 +297,7 @@ class airquality extends eqLogic
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
                 [$visibilityLevel, $indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
                 $replace['#visibility_level#'] =  $isObjet ? $visibilityLevel : '';
+                $replace['#history#'] =  $isObjet ? 'history cursor' : '';
                 if ($indiceLevel >= 2) {
                     $counterActivePolluant++;
                 }
@@ -609,6 +616,7 @@ class airquality extends eqLogic
             $value = is_object($cmd) ? $cmd->execCmd() : '';
             $dataArray[$logicId] = $value;
         }
+        log::add('airquality', 'debug', 'Old data Values : ' . json_encode($dataArray));
         return $dataArray;
     }
 
@@ -625,8 +633,8 @@ class airquality extends eqLogic
         if (is_object($cmToTest)) {
             $iMinute = $this->getIntervalLastRefresh($cmToTest);
         }
-        if ($iMinute > 5) {
-            log::add('airquality', 'debug', 'Interval OK Refresh Pollution latest');
+        if ($iMinute > 1) {
+            log::add('airquality', 'debug', 'Interval OK Refresh > 1 min Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();
             $data = $this->getApiData('getAQI');
@@ -642,6 +650,7 @@ class airquality extends eqLogic
             $dataOneCall = $this->getApiData('getOneCallAQI');
             $this->checkAndUpdateCmd('uv', $dataOneCall->uvi);
             $this->checkAndUpdateCmd('visibility', $dataOneCall->visibility);
+         
             $display = new DisplayInfo;
             $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
             $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
@@ -651,12 +660,14 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('smsPollution',  $smsMess);
             $markdownMessage = !empty($messagesPollution[0]) ? $messagesPollution[3] : '';
             $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
+         
             $this->refreshWidget();
+         
             if (!empty($messagesPollution[0])) {
                 $this->setMinutedAction('alertAqiCronTwoMin', 2);
             }
         } else {
-            log::add('airquality', 'debug', 'Dernier AQI latest Update < 5 min, veuiller patienter svp');
+            log::add('airquality', 'debug', 'Dernier AQI latest Update < 1 min, veuiller patienter svp');
         }
     }
 
