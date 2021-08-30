@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -170,6 +170,7 @@ class airquality extends eqLogic
 
     public function postSave()
     {
+        log::add('airquality', 'debug', 'Start Function postSave pour ' . $this->getHumanName());
         $cmdXCheckNull =  $this->getCmd(null, 'co');
         if (is_object($cmdXCheckNull) && $cmdXCheckNull->execCmd() == null) {
             $cmd = $this->getCmd(null, 'refresh');
@@ -196,7 +197,7 @@ class airquality extends eqLogic
 
     public function postUpdate()
     {
-
+        log::add('airquality', 'debug', 'Start Function postUpdate pour ' . $this->getHumanName());
         $refreshForecast = $this->getCmd(null, 'refresh_forecast');
         if (!is_object($refreshForecast)) {
             $refreshForecast = new airqualityCmd();
@@ -616,7 +617,7 @@ class airquality extends eqLogic
             $value = is_object($cmd) ? $cmd->execCmd() : '';
             $dataArray[$logicId] = $value;
         }
-        log::add('airquality', 'debug', 'Old data Values : ' . json_encode($dataArray));
+        // log::add('airquality', 'debug', 'Old data Values : ' . json_encode($dataArray));
         return $dataArray;
     }
 
@@ -633,7 +634,7 @@ class airquality extends eqLogic
         if (is_object($cmToTest)) {
             $iMinute = $this->getIntervalLastRefresh($cmToTest);
         }
-        if ($iMinute > 1) {
+        if ($iMinute > 0) {
             log::add('airquality', 'debug', 'Interval OK Refresh > 1 min Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();
