@@ -33,7 +33,6 @@ class airquality extends eqLogic
         foreach (self::byType('airquality') as $airQuality) {
 
             if ($airQuality->getIsEnable() == 1) {
-
                 // Pollution Current Toutes demi-heure 
                 try {
                     $minutePollution = (int)trim(config::byKey('cron_aqi_minute', 'airquality'));
@@ -44,7 +43,6 @@ class airquality extends eqLogic
                     $crontab = $minutePollution . "," . $thirtyMinMore . " * * * *";
                     // log::add('airquality', 'debug', 'Cron refresh de l aqi current : ' . $crontab);
                     $c = new Cron\CronExpression($crontab, new Cron\FieldFactory);
-
                     if ($c->isDue()) {
                         $airQuality->updatePollution();
                     }
@@ -103,7 +101,7 @@ class airquality extends eqLogic
     }
 
     /**
-     * Retourne le delta en minute par rapport à la dernière mise à jour
+     * Retourne le delta par rapport à la dernière mise à jour en minute
      */
     public function getIntervalLastRefresh($cmdXToTest)
     {
@@ -139,10 +137,10 @@ class airquality extends eqLogic
         $this->setCategory('heating', 1);
         $this->setIsEnable(1);
         $this->setIsVisible(1);
-        //SetUp a time bettween 2 and 58 min for refresh : to not all Jeedom box call api in same time  
+        //SetUp a time bettween 2 and 58 min for refresh at start : to not all Jeedom box call api in same time  
         $minute = rand(2, 58);
         config::save('cron_aqi_minute', $minute, 'airquality');
-        log::add('airquality', 'debug', 'Set New Cron aqi minute PreInsert : ' . $minute . ' for pollution');
+        log::add('airquality', 'debug', 'Set New Cron aqi minute at start  : minute ' . $minute . ' for pollution');
     }
 
     public function preUpdate()
@@ -259,7 +257,7 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        // $this->emptyCacheWidget(); //vide le cache
+        $this->emptyCacheWidget(); //vide le cache
         $version = jeedom::versionAlias($_version);
         $display = new DisplayInfo;
         $tabUnitReplace = [];
@@ -332,7 +330,7 @@ class airquality extends eqLogic
                     $unitreplace['#history#'] =  $isObjet ? 'history cursor' : '';
                     $unitreplace['#info-modalcmd#'] = $isObjet ?  'info-modal' . $cmd->getLogicalId() . $this->getId() : '';
                     $unitreplace['#unity#'] =  $isObjet ? $cmd->getUnite() : '';
-                    //forecast Display 
+                    //Forecast Display 
                     if ($this->getConfiguration('data_forecast') != 'disable') {
                         $maxCmd = $this->getCmd(null, $nameCmd . '_max');
                         $unitreplace['#max#'] = (is_object($maxCmd) && !empty($maxCmd->execCmd())) ? $maxCmd->execCmd() : "[0,0,0]";
@@ -395,7 +393,7 @@ class airquality extends eqLogic
                 }
             }
         }
-
+        // Message statique d'alert
         if (!isset($alert) || !$alert) {
             if ($counterActivePolluant == 0) {
                 $active_aqi_label = __("Pas d'alerte", __FILE__);
@@ -411,11 +409,11 @@ class airquality extends eqLogic
                 $replace['#message#'] = $htmlActivePollen;
             }
         }
+        // Classement par valeur
         $tabUnityValue  = array_column($tabUnitReplace, 1);
         $tabUnityHtml = array_column($tabUnitReplace, 0);
         array_multisort($tabUnityValue, SORT_DESC, $tabUnityHtml);
         $elementHtml = new CreateHtmlAqi($tabUnityHtml, $this->getId(), 1, $version);
-
 
         // Global  ----------------
         if ($this->getConfiguration('searchMode') == 'follow_me') {
@@ -433,9 +431,9 @@ class airquality extends eqLogic
             $replace['#padding#'] = '0px';
         }
         
-        $minaqi = config::byKey('cron_aqi_minute', 'airquality');
-        $min30aqi =   ((int)$minaqi + 30 > 59) ? (int)$minaqi - 30 : (int)$minaqi + 30;
-        if ($min30aqi > (int)$minaqi) {
+        $minaqi = (int)(config::byKey('cron_aqi_minute', 'airquality'));
+        $min30aqi =   (($minaqi + 30) > 59) ? $minaqi - 30 : $minaqi + 30;
+        if ($min30aqi > $minaqi) {
             $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $minaqi . " et " . $min30aqi . " de chaque heure";
         } else {
             $replace['#updatetimeaqi#'] = "Mise à jour à la minute " .  $min30aqi . " et " . $minaqi . " de chaque heure";
@@ -458,6 +456,9 @@ class airquality extends eqLogic
         return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'airquality', __CLASS__)));
     }
 
+    /**
+     * Set a cron for stop message in $delay min 
+     */
     private function setMinutedAction($configName, $delay = 2)
     {
         $now = new \DateTime();
@@ -634,8 +635,8 @@ class airquality extends eqLogic
         if (is_object($cmToTest)) {
             $iMinute = $this->getIntervalLastRefresh($cmToTest);
         }
-        if ($iMinute > 0) {
-            log::add('airquality', 'debug', 'Interval OK Refresh > 1 min Pollution latest');
+        if ($iMinute > 1) {
+            log::add('airquality', 'debug', 'Interval OK Refresh > 2 min Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();
             $data = $this->getApiData('getAQI');
@@ -668,7 +669,7 @@ class airquality extends eqLogic
                 $this->setMinutedAction('alertAqiCronTwoMin', 2);
             }
         } else {
-            log::add('airquality', 'debug', 'Dernier AQI latest Update < 1 min, veuiller patienter svp');
+            log::add('airquality', 'debug', 'Dernier AQI latest Update < 2 min, veuiller patienter svp');
         }
     }
 

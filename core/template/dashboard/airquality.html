@@ -35,14 +35,10 @@
     }
 
     #airquality-min#uid# {
-            margin-top: 35px;
+        margin-top: 35px;
         }
 
-    .aqi-#id#-space {
-        margin-top: 5px;
-    }
-
-    .aqi-#id#-aqi, .aqi-#id#-value,
+    .aqi-#id#-space, .aqi-#id#-aqi, .aqi-#id#-value,
     .aqi-#id#-label, .contain-minmax-#id#{
         margin-top: 5px;
     }
@@ -57,25 +53,29 @@
         display: none;
     }
 
-    .display-aqi {
+    .display-aqi#id# {
         font-size: 12px; line-height: 12px;
          /* Uniquement en V4 pour Theme White */
         /* color: var(--link-color) !important; */
     }
 
+    .display-aqi-name#id# {
+        font-size: 1.7rem!important;
+    }
+
     #airquality-min#uid# {
     margin-top: 15px;
-}
+    }
 
+    .visibility_#id#{
+        margin-top:3px;
+    }
 
-
-/* @supports (-ms-ime-align:auto) { */
     .aqi-icone{
         scale: 1;
         min-width: 30px;
         min-height: 30px;
     }
-/* } */
 
 @-moz-document url-prefix() {
     .aqi-icone{
@@ -91,20 +91,20 @@
     <div class="header-#id#-container">
         <div class="#history# tooltips  header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
             <div title="#info-tooltips#" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
-            <div class="display-aqi aqi-#id#-label-aqi state">#uv_name#</div>
-            <div class="display-aqi aqi-#id#-aqi state">#uv#</div>
-            <div class="display-aqi aqi-#id#-aqi state">#uv_level#</div>
+            <div class="display-aqi#id# aqi-#id#-label-aqi state">#uv_name#</div>
+            <div class="display-aqi#id# aqi-#id#-aqi state">#uv#</div>
+            <div class="display-aqi#id# aqi-#id#-aqi state">#uv_level#</div>
         </div>
         <div class="#history# tooltips header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
             <div title="#info-tooltips#" id="info-modal-aqi#id#"  style="max-width:60px;" class="aqi-#id#-image tooltips cursor">#icone_aqi#</div>
-            <div title="#updateAt#" style="font-size: 1.8rem;" class="display-aqi aqi-#id#-aqi state tooltips">#aqi_name# #aqi#</div>
-            <div style="font-size: 1.2rem;" class="display-aqi aqi-#id#-space state">#aqiinfo#</div>
+            <div title="#updateAt#"  class="aqi-#id#-aqi state tooltips display-aqi-name#id#">#aqi_name# #aqi#</div>
+            <div class="display-aqi#id# aqi-#id#-space state">#aqiinfo#</div>
         </div>
         <div class="#history# tooltips header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
             <div  title="#info-tooltips#" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
-            <div style="margin-top:3px;" class="display-aqi state">#visibility_name#</div>
-            <div title="#visibility#  m" class="display-aqi aqi-#id#-aqi state">#visibility#</div>
-            <div class="display-aqi aqi-#id#-aqi state">#visibility_level#</div>
+            <div  class="visibility_#id# display-aqi#id# state">#visibility_name#</div>
+            <div title="#visibility#  m" class="display-aqi#id# aqi-#id#-aqi state">#visibility#</div>
+            <div class="display-aqi#id# aqi-#id#-aqi state">#visibility_level#</div>
         </div>    
     </div>
     #message# 
@@ -121,12 +121,6 @@
             <i class="fas fa-chevron-right"></i>
         </a>
     </div>
-    <!-- <footer>
-        <div class="state" id="lon_lat_refresh#id#">
-        <div> #button#</div>  
-        <div>#long_lat#</div> 
-       </div>
-    </footer> -->
     
 </div>
 <script>
@@ -224,59 +218,6 @@
         });
 
 
-//     $('#lon_lat_refresh#id#').on('click', function () {
 
-// //          setLocation(5.2219,43.1742) //marseille
-// //          setLocation(-99.133178,19.43263) //mexico
-// //          setLocation(-33.8688,18.4239) //melbourne
-// //          setLocation(18.4239,-33.8688) //melbourne
-//             if (navigator.geolocation) {
-//                 // console.log('Check New Location')
-//                 navigator.geolocation.getCurrentPosition(maPositionDesktop, noLocationDesktop, { timeout: 10000, enableHighAccuracy: true });
-//             }
-
-//             function maPositionDesktop(position) {
-//                 setLocationDesktop(position.coords.longitude, position.coords.latitude)
-//                 console.log('Get Location from browser for Desktop : latitude : ' + position.coords.latitude + ' longitude : ' + position.coords.longitude);
-//             }
-//             function noLocationDesktop() {
-//                 console.log("Could not find location from Browser Desktop");
-//             }
-           
-//             function setLocationDesktop(longitude, latitude) {
-//                 $.ajax({
-//                     type: "POST",
-//                     url: "plugins/airquality/core/ajax/airquality.ajax.php",
-//                     data: { action: "setDynGeoloc", longitude: longitude, latitude: latitude },
-//                     dataType: 'json',
-//                     error: function (request, status, error) { handleAjaxError(request, status, error); },
-//                     success: function (data) {
-//                         console.log('setLocation() success mobile : data = ' + data.result)
-//                         // AJAX IN AJAX
-//                         $.ajax({
-//                             type: "POST",
-//                             url: "plugins/airquality/core/ajax/airquality.ajax.php",
-//                             data: { action: "getcity", longitude: longitude, latitude: latitude, save: true },
-//                             dataType: 'json',
-//                             error: function (request, status, error) { handleAjaxError(request, status, error); },
-//                             success: function (data) {
-//                                 console.log('Requete succes : Ville trouvée mode Mobile et enregsitrement de : ' + data.result)
-//                                 // Lancer refresh du widget
-//                                 let cmdRefresh = $('.cmd-widget[data-cmd_id=#refresh_id#]')
-//                                 let id = cmdRefresh.data('cmd_id')
-//                                 jeedom.cmd.execute({ id: id });
-//                                 if (data.state != 'ok') {
-//                                     console.log('erreur AJAX : ' + data.result);
-//                                 }
-//                             }
-//                         });
-//                         // AJAX IN first AJAX END
-//                         if (data.state != 'ok') {
-//                             console.log('erreur AJAX : ' + data.result);
-//                         }
-//                     }
-//                 });
-//             }
-//         });
 </script>
 </div>
