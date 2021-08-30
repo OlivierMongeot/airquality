@@ -193,7 +193,7 @@ background-color: #background-color#; color: #color#; width: #width#; height:aut
                 error: function (request, status, error) { handleAjaxError(request, status, error); },
                 success: function (data) {
                     console.log('setLocation() success mobile : data = ' + data.result)
-                    // AJAX IN AJAX For record new city
+                    // AJAX IN AJAX for record new city
                     $.ajax({
                         type: "POST",
                         url: "plugins/airquality/core/ajax/airquality.ajax.php",
