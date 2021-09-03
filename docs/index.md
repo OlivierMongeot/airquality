@@ -2,7 +2,7 @@
 
 <br/>
 
-<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
+<img align="right" height="350" src="https://i.ibb.co/BGJKWz0/31ceeefa2aeb41d003ac90d26575c64e22a5a6d4.jpg" class="img-responsive" alt="Pollen">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
