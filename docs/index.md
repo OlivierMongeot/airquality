@@ -22,14 +22,14 @@ Des messages d'alertes sont crées en fonctions des changements des données les
 Regardez le bouton 'Alertes' sur la page de configuration de votre équipement, c'est là que vous pouvez tout régler.
 
 ## Mobilité
-
-<img align="left" height="350" src="https://i.ibb.co/GC5DwVL/mobileaqi.jpg" class="img-responsive" alt="Pollen">Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+<!-- <img align="left" height="350" src="https://i.ibb.co/GC5DwVL/mobileaqi.jpg" class="img-responsive" alt="mobile"> -->
+![Mobile AQI](https://i.ibb.co/GC5DwVL/mobileaqi.jpg){: height="300px" style="float:left; padding-right:10px" }Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 <br/><br/>
 Cela vous permet d'avoir les infos locales partout où vous vous trouver (dans les limites des possibilités des API).
 
 Avec cette option, le bouton refresh du desktop de l'équipement est désactivé, pour laisser la main à la page mobile.  
 
-<br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
 ## Historisation
 
