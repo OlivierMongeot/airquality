@@ -2,7 +2,7 @@
 
 <br/>
 
-<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/alerte.JPG" class="img-responsive" alt="Pollen">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
+<img align="right" height="350" src="https://i.ibb.co/BGJKWz0/31ceeefa2aeb41d003ac90d26575c64e22a5a6d4.jpg" class="img-responsive" alt="Pollen">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
@@ -22,14 +22,14 @@ Des messages d'alertes sont crées en fonctions des changements des données les
 Regardez le bouton 'Alertes' sur la page de configuration de votre équipement, c'est là que vous pouvez tout régler.
 
 ## Mobilité
-
-<img align="left" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/mobileaqi.JPG" class="img-responsive" alt="Pollen">Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
+<!-- <img align="left" height="350" src="https://i.ibb.co/GC5DwVL/mobileaqi.jpg" class="img-responsive" alt="mobile"> -->
+![Mobile AQI](https://i.ibb.co/GC5DwVL/mobileaqi.jpg){: height="300px" style="float:left; padding-right:10px" }Une option est disponible, le 'FollowMe', cela fonctionne avec la wep app mobile de Jeedom, un bouton vous géolocalise et permet de mettre à jour les données en fonction (fonctionne en https uniquement).
 <br/><br/>
 Cela vous permet d'avoir les infos locales partout où vous vous trouver (dans les limites des possibilités des API).
 
 Avec cette option, le bouton refresh du desktop de l'équipement est désactivé, pour laisser la main à la page mobile.  
 
-<br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
 
 ## Historisation
 
@@ -42,7 +42,7 @@ Cela historise aussi les données et donne accès la représentation graphique c
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
 <br/><br/>
 <p align="center">
-  <img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/tendance.JPG" class="img-responsive" alt="Pollen">
+  <img height="60" src="https://i.ibb.co/qJrVDrp/tendance.jpg" class="img-responsive" alt="Pollen">
 </p>
 <br/>
 
@@ -50,7 +50,7 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par des API gratuites: Openwheather et navigator.geolocation(HTML)
 
-<img align="right" height="350" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/badwheather.JPG" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
+<img align="right" height="350" src="https://i.ibb.co/wJ8xsb6/alerte.jpg" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
 
 Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
 
@@ -115,7 +115,7 @@ Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (
 Vous pouvez régler les alertes par polluant dans la configuration : 
 
 <p align="center">
-<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/plancherAqi.JPG">
+<img height="300" src="https://i.ibb.co/w0Kvdvw/plancher-aqi.jpg">
 </p>
 
 # Note
@@ -152,13 +152,11 @@ Cela devrait marcher, le cas échéant, faites moi remonter vos problèmes.
 Exemple Message Telegram :
 
 <p align="center">
-<img height="300" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/telegram.jpg">
+<img height="300" src="https://i.ibb.co/wckqpsh/messenger.jpg">
 </p>
-
 
 Exemple Message Discord :
 
 <p align="center">
-<img height="60" src="https://github.com/OlivierMongeot/airquality/blob/Master/docs/photos/discord.JPG">
+<img height="60" src="https://i.ibb.co/58XLpjr/discord.jpg">
 </p>
-
