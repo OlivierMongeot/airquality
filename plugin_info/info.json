@@ -10,7 +10,7 @@
 	"require" : "3.3.55",
 	"category" : "weather",
 	"changelog" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/changelog.md",
-	"documentation" : "https://github.com/OlivierMongeot/airquality/blob/Master/docs/index.md",
+	"documentation" : "https://oliviermongeot.github.io/airquality/",
 	"language" : ["fr_FR","en_US"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"]
 }
