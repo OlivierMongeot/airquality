@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-// error_reporting(E_ALL);
-// ini_set('ignore_repeated_errors', TRUE);
-// ini_set('display_errors', TRUE);
+error_reporting(E_ALL);
+ini_set('ignore_repeated_errors', TRUE);
+ini_set('display_errors', TRUE);
+ini_set('log_errors', TRUE); // Error/Exception file logging engine.
+ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
+
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -281,7 +284,11 @@ class airquality extends eqLogic
                 $replace[$commandName] = $isObjet ?  __($cmd->getName(), __FILE__) : '';
                 $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                [$uvLevel, $indiceLevel] = $display->getUVLevel($cmd->execCmd());
+                // [$uvLevel, $indiceLevel] = $display->getUVLevel($cmd->execCmd());
+                $arrayUvLevel = $display->getUVLevel($cmd->execCmd());
+                $uvLevel = $arrayUvLevel[0];
+                $indiceLevel = $arrayUvLevel[1];
+
                 $replace['#history#'] =  $isObjet ? 'history cursor' : '';
                 $replace['#uv_level#'] = $isObjet ?  $uvLevel : '';
                 if ($indiceLevel >= 3) {
@@ -294,7 +301,11 @@ class airquality extends eqLogic
                 $replace[$commandName] = $isObjet ? __($cmd->getName(), __FILE__) : '';
                 $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                [$visibilityLevel, $indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
+                // [$visibilityLevel, $indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
+                $arrayVisibilityLevel = $display->getVisibilityLevel($cmd->execCmd());
+                $visibilityLevel = $arrayVisibilityLevel[0];
+                $indiceLevel = $arrayVisibilityLevel[1];
+
                 $replace['#visibility_level#'] =  $isObjet ? $visibilityLevel : '';
                 $replace['#history#'] =  $isObjet ? 'history cursor' : '';
                 if ($indiceLevel >= 2) {
@@ -348,7 +359,13 @@ class airquality extends eqLogic
                         $unitreplace['#height0#'] = 'style="height:0"';
                     }
                     // Fin Forecast 
-                    [$levelRiskAQI, $indiceLevel] = $display->getElementRiskAqi($icone->getColor());
+                    // [$levelRiskAQI, $indiceLevel] = $display->getElementRiskAqi($icone->getColor());
+                    $arrayLevelRiskAQI = $display->getElementRiskAqi($icone->getColor());
+                    $levelRiskAQI = $arrayLevelRiskAQI[0];
+                    $indiceLevel = $arrayLevelRiskAQI[1];
+
+
+
                     $unitreplace['#level-particule#'] =  $isObjet ?  $levelRiskAQI : '';
                     if ($indiceLevel >= 3) {
                         $counterActivePolluant++;
@@ -417,7 +434,11 @@ class airquality extends eqLogic
 
         // Global  ----------------
         if ($this->getConfiguration('searchMode') == 'follow_me') {
-            [$lon, $lat] = $this->getCurrentLonLat();
+            // [$lon, $lat] = $this->getCurrentLonLat();
+            $arrayCurrentLL = $this->getCurrentLonLat();
+            $lon = $arrayCurrentLL[0];
+            $lat = $arrayCurrentLL[1];
+
             $replace['#button#'] = '<span><i class="fas fa-map-marker-alt fa-lg"></i></span> ' . $this->getCurrentCityName();
             $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
             $replace['#height_footer#'] = 'height:50px';
@@ -533,7 +554,10 @@ class airquality extends eqLogic
     {
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
-        [$lon, $lat] = $this->getCurrentLonLat();
+        // [$lon, $lat] = $this->getCurrentLonLat();
+        $arratLonLat = $this->getCurrentLonLat();
+        $lon = $arratLonLat[0];
+        $lat = $arratLonLat[1];
         log::add('airquality', 'debug', $this->getHumanName() . ' -> Start API ' . $apiName . ' Calling for City : ' . $city . ' - Long :' . $lon . ' Lat :' . $lat);
         return $api->$apiName($lon, $lat);
     }

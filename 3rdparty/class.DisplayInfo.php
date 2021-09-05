@@ -323,8 +323,16 @@ class DisplayInfo
                 $increase = __($this->getSynonyme('amélioration'),__FILE__);
         }
 
-        [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
-        [$oldCategory] = $this->getLevelAQI($oldData, $type);
+        // [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
+
+        $arrayLevelAqi = $this->getLevelAQI($newData, $type);
+        $newCategory = $arrayLevelAqi[0];
+        $importance = $arrayLevelAqi[1];
+
+        // [$oldCategory] = $this->getLevelAQI($oldData, $type);
+
+        $arrayLevelAqi = $this->getLevelAQI($oldData, $type);
+        $oldCategory = $arrayLevelAqi[0];
         log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
@@ -442,13 +450,19 @@ class DisplayInfo
                     case 'o3':
                     case 'so2':
                     case 'nh3':
-                        [$aqiLevel] = $this->getElementRiskAqi($color);
+                        
+                        $arrayAqiLevel = $this->getElementRiskAqi($color);
+                        $aqiLevel = $arrayAqiLevel[0];
                         return [strtolower($aqiLevel), $indexLevel];
                     case 'uv':
-                        [$uvLevel] = $this->getUVLevel($value);
+                       
+                        $arrayUvLevel = $this->getUVLevel($value);
+                        $uvLevel = $arrayUvLevel[0];
                         return [str_replace('Élevé', 'élevé', strtolower($uvLevel)), $indexLevel];
                     case 'visibility':
-                        [$visibilityLevel] = $this->getVisibilityLevel($value);
+                        
+                        $arrayVisibilityLevel = $this->getVisibilityLevel($value);
+                        $visibilityLevel = $arrayVisibilityLevel[0];
                         return  [strtolower($visibilityLevel), $indexLevel];
                 }
             }
