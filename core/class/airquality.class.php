@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
-ini_set('log_errors', TRUE); // Error/Exception file logging engine.
-ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
+// ini_set('log_errors', TRUE); // Error/Exception file logging engine.
+// ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
 
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
