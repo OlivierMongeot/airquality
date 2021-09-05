@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
-ini_set('log_errors', TRUE); // Error/Exception file logging engine.
-ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
+// ini_set('log_errors', TRUE); // Error/Exception file logging engine.
+// ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
 
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
@@ -189,9 +189,9 @@ class airquality extends eqLogic
     {
         $this->setDisplay("width", "265px");
         if ($this->getConfiguration('data_forecast') == 'disable') {
-            $this->setDisplay("height", "225px");
+            $this->setDisplay("height", "235px");
         } else {
-            $this->setDisplay("height", "375px");
+            $this->setDisplay("height", "400px");
         }
     }
 
@@ -659,7 +659,7 @@ class airquality extends eqLogic
         if (is_object($cmToTest)) {
             $iMinute = $this->getIntervalLastRefresh($cmToTest);
         }
-        if ($iMinute > 1) {
+        if ($iMinute > 2) {
             log::add('airquality', 'debug', 'Interval OK Refresh > 2 min Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();
@@ -705,7 +705,7 @@ class airquality extends eqLogic
         // Verifier la date de dernier maj pour faire ou pas maj
         $interval = $this->getIntervalLastRefresh($this->getCmd(null, 'aqi_max'));
         log::add('airquality', 'debug', 'Refresh Forecast AQI : Interval = ' . $interval . ' min');
-        if ($interval > 120) {
+        if ($interval > 10) {
             $forecastRaw =  $this->getApiData('getForecastAQI');
             $forecast = $forecastRaw[0];
             // $forecastFull = $forecast[1]; // For future message alert
@@ -730,7 +730,7 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('pm25_max', json_encode($forecast['pm2_5']['max']));
             $this->refreshWidget();
         } else {
-            log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 120 min, veuillez patienter svp');
+            log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 10 min, veuillez patienter svp');
         }
     }
 

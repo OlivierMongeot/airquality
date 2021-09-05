@@ -37,7 +37,12 @@
             height: 170,
             width: 235,
             alignTicks: true,
-            borderWidth:0
+            borderWidth:0,
+            backgroundColor: 'transparent',
+            plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
         },
         exporting: {
             enabled: false
@@ -54,7 +59,10 @@
                 overflow: 'justify',
                 style: { fontSize: '10px' },
                 x: 14,
-                y: 15
+                y: 15,
+                style: {
+                color: 'currentColor'
+            }
             },
             min: 0,
             categories: #labels#,
@@ -78,26 +86,33 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 2
-           
+            margin: 2,
+            style: {
+                color: 'currentColor'
+            },
+            itemStyle: {
+            color: 'currentColor'
+        }
         },
         tooltip: {
             shared: true,
             padding: 3,
        },
         plotOptions: {
-
+            backgroundColor: 'transparent',
             column: {
                 pointPadding: 0.20,
                 borderWidth: 0
              },
             series: {
+               
                 lineWidth: 5,
                 marker: {
                     lineWidth: 0
                 },
                 borderRadius: 2,
-                pointWidth: 10
+                pointWidth: 10,
+                
             }
         },
         series: [
