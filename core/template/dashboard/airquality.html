@@ -89,10 +89,10 @@
 </style>
 <div class="aqi-#id#-container">
     <div class="header-#id#-container">
-        <div class="#history# tooltips  header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#uvid#">
+        <div class="tooltips header-#id#-min ">
             <div title="#info-tooltips#" id="info-modal#uvid#" class="cursor aqi-#id#-image tooltips">#icone_uv#</div>
             <div class="display-aqi#id# aqi-#id#-label-aqi state">#uv_name#</div>
-            <div class="display-aqi#id# aqi-#id#-aqi state">#uv#</div>
+            <div class="#history# display-aqi#id# aqi-#id#-aqi state cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#uvid#">#uv#</div>
             <div class="display-aqi#id# aqi-#id#-aqi state">#uv_level#</div>
         </div>
         <div class="#history# tooltips header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#aqiid#">    
@@ -100,10 +100,10 @@
             <div title="#updateAt#"  class="aqi-#id#-aqi state tooltips display-aqi-name#id#">#aqi_name# #aqi#</div>
             <div class="display-aqi#id# aqi-#id#-space state">#aqiinfo#</div>
         </div>
-        <div class="#history# tooltips header-#id#-min cmd noRefresh" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">
+        <div class="header-#id#-min">
             <div  title="#info-tooltips#" id="info-modal#visibilityid#" class="cursor aqi-#id#-image tooltips">#icone_visibility#</div>
             <div  class="visibility_#id# display-aqi#id# state">#visibility_name#</div>
-            <div title="#visibility#  m" class="display-aqi#id# aqi-#id#-aqi state">#visibility#</div>
+            <div title="#visibility# m" class="#history# cmd noRefresh display-aqi#id# aqi-#id#-aqi state" data-type="info" data-subtype="other" data-cmd_id="#visibilityid#">#visibility#</div>
             <div class="display-aqi#id# aqi-#id#-aqi state">#visibility_level#</div>
         </div>    
     </div>

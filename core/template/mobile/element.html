@@ -22,8 +22,9 @@
         </div>
     </div>
     <!-- Graphique bas  -->
-    <div id="container_#name#_#id#">
+    <div #hidden# id="container_#name#_#id#">
     </div>
+    <br>
 </div>
 
 <script>
@@ -34,7 +35,12 @@
             height: 160,
             width: 320,
             alignTicks: true,
-              borderWidth:0
+            borderWidth:0,
+            backgroundColor: 'transparent',
+            plotBackgroundColor: null,
+            plotBackgroundImage: null,
+            plotBorderWidth: 0,
+            plotShadow: false
         },
         exporting: {
             enabled: false
@@ -75,7 +81,13 @@
             verticalAlign: 'bottom',
             borderWidth: 0,
             padding: 2,
-            margin: 0
+            margin: 0,
+            style: {
+                color: 'black'
+            },
+            itemStyle: {
+                 color: 'black'
+            }
         },
         tooltip: {
             shared: true,
@@ -102,7 +114,7 @@
                 lineWidth: '4px',
                 marker: { radius: 2 },
                 data: #min#,
-                color: 'currentColor'
+                color: 'currentColor',
             }, {
                 name: '#display-name#' + ' max',
                 lineWidth: '4px',

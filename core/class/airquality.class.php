@@ -189,9 +189,9 @@ class airquality extends eqLogic
     {
         $this->setDisplay("width", "265px");
         if ($this->getConfiguration('data_forecast') == 'disable') {
-            $this->setDisplay("height", "235px");
+            $this->setDisplay("height", "225px");
         } else {
-            $this->setDisplay("height", "400px");
+            $this->setDisplay("height", "390px");
         }
     }
 
@@ -284,7 +284,6 @@ class airquality extends eqLogic
                 $replace[$commandName] = $isObjet ?  __($cmd->getName(), __FILE__) : '';
                 $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                // [$uvLevel, $indiceLevel] = $display->getUVLevel($cmd->execCmd());
                 $arrayUvLevel = $display->getUVLevel($cmd->execCmd());
                 $uvLevel = $arrayUvLevel[0];
                 $indiceLevel = $arrayUvLevel[1];
@@ -301,7 +300,6 @@ class airquality extends eqLogic
                 $replace[$commandName] = $isObjet ? __($cmd->getName(), __FILE__) : '';
                 $newIcon = $icone->getIcon($nameCmd, $cmd->execCmd(), $cmd->getId());
                 $replace[$nameIcon] = $isObjet ? $newIcon : '';
-                // [$visibilityLevel, $indiceLevel] = $display->getVisibilityLevel($cmd->execCmd());
                 $arrayVisibilityLevel = $display->getVisibilityLevel($cmd->execCmd());
                 $visibilityLevel = $arrayVisibilityLevel[0];
                 $indiceLevel = $arrayVisibilityLevel[1];
@@ -351,21 +349,19 @@ class airquality extends eqLogic
                         $labels = $this->getCmd(null, 'days');
                         $unitreplace['#labels#'] = (is_object($labels) && !empty($labels->execCmd())) ? $labels->execCmd() :  "['no','-','data']";
                         $unitreplace['#height0#'] = '';
+                        $unitreplace['#hidden#'] = '';
                     } else {
                         $unitreplace['#labels#'] = "['0','0','0']";
                         $unitreplace['#max#'] = "[0,0,0]";
                         $unitreplace['#min#'] =  "[0,0,0]";
                         $unitreplace['#color#'] = '#333333';
                         $unitreplace['#height0#'] = 'style="height:0"';
+                        $unitreplace['#hidden#'] = 'hidden';
                     }
                     // Fin Forecast 
-                    // [$levelRiskAQI, $indiceLevel] = $display->getElementRiskAqi($icone->getColor());
                     $arrayLevelRiskAQI = $display->getElementRiskAqi($icone->getColor());
                     $levelRiskAQI = $arrayLevelRiskAQI[0];
                     $indiceLevel = $arrayLevelRiskAQI[1];
-
-
-
                     $unitreplace['#level-particule#'] =  $isObjet ?  $levelRiskAQI : '';
                     if ($indiceLevel >= 3) {
                         $counterActivePolluant++;
@@ -434,11 +430,9 @@ class airquality extends eqLogic
 
         // Global  ----------------
         if ($this->getConfiguration('searchMode') == 'follow_me') {
-            // [$lon, $lat] = $this->getCurrentLonLat();
             $arrayCurrentLL = $this->getCurrentLonLat();
             $lon = $arrayCurrentLL[0];
             $lat = $arrayCurrentLL[1];
-
             $replace['#button#'] = '<span><i class="fas fa-map-marker-alt fa-lg"></i></span> ' . $this->getCurrentCityName();
             $replace['#long_lat#'] = 'Lat ' . $display->formatValueForDisplay($lat, null, 4) . '° - Lon ' . $display->formatValueForDisplay($lon, null, 4) . '°';
             $replace['#height_footer#'] = 'height:50px';
@@ -642,7 +636,6 @@ class airquality extends eqLogic
             $value = is_object($cmd) ? $cmd->execCmd() : '';
             $dataArray[$logicId] = $value;
         }
-        // log::add('airquality', 'debug', 'Old data Values : ' . json_encode($dataArray));
         return $dataArray;
     }
 
@@ -708,7 +701,6 @@ class airquality extends eqLogic
         if ($interval > 10) {
             $forecastRaw =  $this->getApiData('getForecastAQI');
             $forecast = $forecastRaw[0];
-            // $forecastFull = $forecast[1]; // For future message alert
             $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
             $this->checkAndUpdateCmd('no2_min', json_encode($forecast['no2']['min']));
             $this->checkAndUpdateCmd('no2_max', json_encode($forecast['no2']['max']));
