@@ -344,13 +344,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                 <div class="col-lg-7" style="padding:10px 35px">
                     <legend>
-                        <span> Plancher de déclenchement des alertes</span>
+                        <span>{{Réglage des alertes}}</span>
                     </legend>
                     <br />
                     <div class="container range-container aqi" style="width: 90%;">
-
                         <div class="form-group">
-
                             <!-- table  -->
                             <table class="table table-bordered table-condensed" style="text-align:center">
                                 <thead>
