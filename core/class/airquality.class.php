@@ -509,7 +509,7 @@ class airquality extends eqLogic
         } else if ($this->getConfiguration('searchMode') == 'dynamic_mode') {
             $city = $this->getConfiguration('geoCity');
         } else if ($this->getConfiguration('searchMode') == 'follow_me') {
-            $city =  config::byKey('DynCity', 'airquality');
+            $city = config::byKey('DynCity', 'airquality');
         } else if ($this->getConfiguration('searchMode') == 'server_mode') {
             $city = config::byKey('info::city');
         }
@@ -671,7 +671,6 @@ class airquality extends eqLogic
             $dataOneCall = $this->getApiData('getOneCallAQI');
             $this->checkAndUpdateCmd('uv', $dataOneCall->uvi);
             $this->checkAndUpdateCmd('visibility', $dataOneCall->visibility);
-         
             $display = new DisplayInfo;
             $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
             $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
@@ -691,7 +690,7 @@ class airquality extends eqLogic
     }
 
     /**
-     * Appel API Forecast AQI + Update des Commands 
+     * Appel API Forecast AQI + Update des Commandes 
      */
     public function updateForecastAQI()
     {
