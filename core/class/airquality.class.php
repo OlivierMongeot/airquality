@@ -79,11 +79,12 @@ class airquality extends eqLogic
 
                 // Delete Alert Pollution message after x min 
                 try {
-                    $specialCron =  $airQuality->getConfiguration('alertAqiCronTwoMin');
-                    if (empty($specialCron)) {
-                        $specialCron = '0 0 1 1 *';
+                    $id = $airQuality->getId();
+                    $cronAlertStop = config::byKey('airquality_cron_' . $id, 'airquality');
+                    if (empty($cronAlertStop)) {
+                        $cronAlertStop = '0 0 1 1 *';
                     }
-                    $cManual = new Cron\CronExpression($specialCron, new Cron\FieldFactory);
+                    $cManual = new Cron\CronExpression($cronAlertStop, new Cron\FieldFactory);
                     if ($cManual->isDue()) {
                         try {
                             $refresh = $airQuality->getCmd(null, 'refresh_alert_aqi');
@@ -486,7 +487,10 @@ class airquality extends eqLogic
         }
         $cron =  $minuteEnd . ' ' . $hour . ' * * *';
         log::add('airquality', 'debug', 'Set cron + ' . $delay . ' - ' . $cron . ' to stop message alert for equipement ' . $this->getName());
-        $this->setConfiguration($configName, $cron)->save();
+
+        // $this->setConfiguration($configName, $cron)->save();
+        $id = $this->getId();
+        config::save('airquality_cron_'.$id, $cron, 'airquality');
     }
 
 

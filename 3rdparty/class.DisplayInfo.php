@@ -333,7 +333,7 @@ class DisplayInfo
 
         $arrayLevelAqi = $this->getLevelAQI($oldData, $type);
         $oldCategory = $arrayLevelAqi[0];
-        log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+        // log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
             if ($newCategory != $oldCategory) {

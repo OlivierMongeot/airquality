@@ -65,6 +65,10 @@
 
 - Adapatation Jeedom V3.3
 
+# 07/09/21 
+
+- Change: set Alert Save cron en config général
+
 
 
 
