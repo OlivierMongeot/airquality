@@ -261,11 +261,10 @@ class airquality extends eqLogic
         if (!is_array($replace)) {
             return $replace;
         }
-        $this->emptyCacheWidget(); //vide le cache
+        // $this->emptyCacheWidget(); //vide le cache
         $version = jeedom::versionAlias($_version);
         $display = new DisplayInfo;
         $tabUnitReplace = [];
-
         $counterActivePolluant = 0;
         $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
         $icone = new IconesAqi;
@@ -475,8 +474,9 @@ class airquality extends eqLogic
     /**
      * Set a cron for stop message in $delay min 
      */
-    private function setMinutedAction($configName, $delay = 2)
+    private function setMinutedAction()
     {
+        $delay = 2;
         $now = new \DateTime();
         $hour = $now->format('H');
         $minute = $now->format('i');
@@ -486,9 +486,7 @@ class airquality extends eqLogic
             $hour = $hour + 1;
         }
         $cron =  $minuteEnd . ' ' . $hour . ' * * *';
-        log::add('airquality', 'debug', 'Set cron + ' . $delay . ' - ' . $cron . ' to stop message alert for equipement ' . $this->getName());
-
-        // $this->setConfiguration($configName, $cron)->save();
+        log::add('airquality', 'debug', 'Set cron +' . $delay . ' min - CRON = ' . $cron . ' to stop message alert for equipement ' . $this->getName());
         $id = $this->getId();
         config::save('airquality_cron_'.$id, $cron, 'airquality');
     }
@@ -552,10 +550,10 @@ class airquality extends eqLogic
     {
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
-        // [$lon, $lat] = $this->getCurrentLonLat();
-        $arratLonLat = $this->getCurrentLonLat();
-        $lon = $arratLonLat[0];
-        $lat = $arratLonLat[1];
+       
+        $arrayLonLat = $this->getCurrentLonLat();
+        $lon = $arrayLonLat[0];
+        $lat = $arrayLonLat[1];
         log::add('airquality', 'debug', $this->getHumanName() . ' -> Start API ' . $apiName . ' Calling for City : ' . $city . ' - Long :' . $lon . ' Lat :' . $lat);
         return $api->$apiName($lon, $lat);
     }
@@ -685,7 +683,7 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
             $this->refreshWidget();
             if (!empty($messagesPollution[0])) {
-                $this->setMinutedAction('alertAqiCronTwoMin', 2);
+                $this->setMinutedAction();
             }
         } else {
             log::add('airquality', 'debug', 'Dernier AQI latest Update < 2 min, veuiller patienter svp');
