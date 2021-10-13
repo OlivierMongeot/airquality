@@ -69,6 +69,10 @@
 
 - Change: set Alert Save cron en config général
 
+# 13/1021 
+
+- Mise à jour de la doc
+
 
 
 

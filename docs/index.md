@@ -2,7 +2,7 @@
 
 <br/>
 
-<img align="right" height="350" src="https://i.ibb.co/BGJKWz0/31ceeefa2aeb41d003ac90d26575c64e22a5a6d4.jpg" class="img-responsive" alt="Pollen">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
+<img align="right" height="350" src="https://i.ibb.co/BGJKWz0/31ceeefa2aeb41d003ac90d26575c64e22a5a6d4.jpg" class="img-responsive" alt="Pollution">Le plugin Air Quality vous informe sur la qualité de l'air presque partout dans le monde.
 
 Il s'adresse essentiellement aux personnes allergiques, asthmatiques, sensibles et sportifs, mais aussi à tous ceux qui prennent attention à l'air qu'il respire. 
 
@@ -42,7 +42,7 @@ Cela historise aussi les données et donne accès la représentation graphique c
 Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les paramétrages.
 <br/><br/>
 <p align="center">
-  <img height="60" src="https://i.ibb.co/qJrVDrp/tendance.jpg" class="img-responsive" alt="Pollen">
+  <img height="60" src="https://i.ibb.co/qJrVDrp/tendance.jpg" class="img-responsive" alt="Pollution">
 </p>
 <br/>
 
@@ -50,11 +50,9 @@ Vous pouvez activer ou pas l'ensemble en activant le bouton ci-dessous dans les 
 
 Les données sont récupérées par des API gratuites: Openwheather et navigator.geolocation(HTML)
 
-<img align="right" height="350" src="https://i.ibb.co/wJ8xsb6/alerte.jpg" class="img-responsive" alt="Pollen">C'est un choix fait pour ne pas atteindre la limite de 100 appels/jour de l'API Ambee et donc que le plugin reste gratuit à l'usage. 
-
-Pour OpenWheather, la limite d'appel par jour est beaucoup plus haut, donc pas de soucis de quota. 
-
-J'ai mis en place, un systeme de bridage qui vous empêche des rafraichissements trop important des données car l'API est gratuite mais dans une certaine limite.
+<img align="right" height="350" src="https://i.ibb.co/wJ8xsb6/alerte.jpg" class="img-responsive" alt="Pollution">
+ 
+J'ai mis en place, un systeme de bridage qui vous empêche des rafraichissements trop rapproché des données car l'API est gratuite mais dans une certaine limite.
 
 Cela fonctionne  presque partout dans le monde et vous pouvez l'utilisez en vous géolocalisant automatiquement.
 
@@ -86,12 +84,8 @@ Pour la localisation 'Par ville', vous devez vérifier que la ville est bien tro
 'Par longitude & latitude', pareil, vous devez vérifier que les coordonnées que vous entrez soient valables.
 
 Vous pouvez également activer, le glissement automatique du carroussel, pour cela mettez Animation en 'activer' 
-
-Ensuite choisissez Polluant ou Pollen. 
-
-Vous pouvez créer plusieurs équipement pour plusieurs villes pour les données AQI. Par contre, pour les pollens, en faisant cela, vous dépassez directement le quota journalier. 
-
-Vous devrez alors choisir une version payante de l'API Ambee.
+ 
+Vous pouvez créer plusieurs équipement pour plusieurs villes.
 
 
 ## Utilisation
@@ -100,7 +94,7 @@ En cliquant sur les moyennes vous accèder au graphique représentant ces donné
 
 Le graphique du bas donne le mini et maxi prévu par jour de la semaine pour chaque élément analysé.
 
-Pour l'AQI, tous les polluants sont affichés par défault, il vous suffit de désactiver l'option "Afficher" dans la partie Commandes de votre équipement pour ne plus l'afficher.   
+Tous les polluants sont affichés par défault, il vous suffit de désactiver l'option "Afficher" dans la partie Commandes de votre équipement pour ne plus l'afficher dans le slide.  
 
 Il existe une version mobile qui reprend pratiquement exactement la vue du dashboard.  
 
@@ -110,7 +104,6 @@ L'AQI en Europe est désormais calculée de 1 (Bon) à 6 (Extrèmement mauvais)
 
 J'ai utilisé les code couleur officiel pour l'affichage : [voir ici](https://fr.wikipedia.org/wiki/Indice_de_qualit%C3%A9_de_l%27air)
 
-Pour les pollens les niveaux de danger principaux sont donnés par l'API Ambee (de 1 Risque nul à 4 Risque très élevé).
 
 Vous pouvez régler les alertes par polluant dans la configuration : 
 
@@ -133,21 +126,25 @@ Pour connecter le plugin à Telegram, Discord ou un téléphone(sms), c'est le m
 
 Ex pour vers Telegram : 
 - Il faut avoir le plugin Telegram installé auparavant.
-- Le principe :  Vous allez récupérez le message d'alerte toutes les demie heures, donc on vérifie si un message est présent toute les 2 min (durée de vie d'un message) et on l'envoie vers son bot Telegram
+- Le principe :  Vous allez essayer de récupérez le message d'alerte toutes les demi-heures, donc on vérifie si un message est présent toute les 2 min (durée de vie d'un message) et on l'envoie vers son bot Telegram. 
+- En réglant le niveau des alertes vous déclenchez ou pas des messages. 
+- Donc, si vous régler les niveaux sur "Dégradé", vous n'aurez des messages que si cet élément est au moins dégradé. 
  
 ## Créez un nouveau scénarion Jeedom :
 
 - Declenchement -> Programation  : ``` */2 * * * * ```     soit toute les 2 minutes (la durée de vie d'un message)
 - Dans l'onglet Scénario :  
 -   Ajouter un bloc SI/ALORS/SINON
--   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollen][Alerte Pollen]# !='' ``` (cherchez avec la recherche simplifié)
+-   Insérez un SI : ``` #[nom_de_votre_objet][nom_de_votre_equipement_pollution][Alerte Pollution]# !='' ``` (cherchez avec la recherche simplifié)
 -   Pas d’espace entre les '' et un != pas de == (Ce qui va déclencher un message Telegram, seulement si un message est disponible.)
 -   ALORS -> action  inserez ```#[nom_de_votre_objet][nom_de_votre_equipement_telegram][votre bot]#```
--   Puis dans message vous allez cherchez la commande du plugin qui s'appelle : Markdown Pollen
--   Cela donne : ```#[nom_de_votre_objet][nom_de_votre_equipement_pollen][Markdown Pollen]#```
+-   Puis dans message vous allez cherchez la commande du plugin qui s'appelle : Telegram Pollution
+-   Cela donne : ```#[nom_de_votre_objet][nom_de_votre_equipement_pollution][Telegram Pollution]#```
 -   Option : vide 
 
 Cela devrait marcher, le cas échéant, faites moi remonter vos problèmes.
+
+Pour les messages Discord, c'est le même principe, sauf que vous devez récupérer la commande : Markdown Pollution 
 
 Exemple Message Telegram :
 
