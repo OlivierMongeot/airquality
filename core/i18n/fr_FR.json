@@ -33,7 +33,7 @@
         "Ville": "Ville",
         "Code pays à 2 chiffres": "Code pays",
         "Affichage": "Affichage",
-        "Animation du carrousel": "Animation du carrousel",
+        "Animation du caroussel": "Animation du caroussel",
         "Mini, Maxi, Moyenne, Tendance, Statistiques": "Mini, Maxi, Moyenne, Tendance, Statistiques",
         "Afficher à partir de": "Afficher à partir de",
         "Désactiver": "Désactiver",
@@ -75,14 +75,14 @@
     },
     "plugins\/airquality\/core\/ajax\/airquality.ajax.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
-        "Aucune methode correspondante à : ": "Aucune methode correspondante à : "
+        "Aucune methode correspondante à : ": "Aucune méthode correspondante à : "
     },
     "plugins\/airquality\/core\/class\/airquality.class.php": {
-        "La ville ou le code pays ne peuvent être vide": "La ville ou le code pays ne peuvent être vide",
-        "La longitude ou la latitude ne peuvent être vide": "La longitude ou la latitude ne peuvent être vide",
-        "Probleme de localisation par le navigateur": "Probleme de localisation par le navigateur",
+        "La ville ou le code pays ne peuvent être vide": "La ville ou le code pays ne peuvent être vides",
+        "La longitude ou la latitude ne peuvent être vide": "La longitude ou la latitude ne peuvent être vides",
+        "Probleme de localisation par le navigateur": "Problème de localisation par le navigateur",
         "Les coordonnées sont vides, testez la ville dans la configuration":"Les coordonnées sont vides, testez la ville dans la configuration",
-        "Probleme de localisation dynamique":"Probleme de localisation dynamique",
+        "Probleme de localisation dynamique":"Problème de localisation dynamique",
         "Impossible de trouver la commande refresh pour ":"Impossible de trouver la commande refresh pour ",
         "Erreur pour ":"Erreur pour ",
         "Expression cron non valide pour ":"Expression cron non valide pour ",
@@ -197,7 +197,7 @@
         "Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées":"Pas de lieu trouvé par l'API Reverse Geoloc avec ces coordonnées",
         "Quota journalier données pollen dépassé":"Quota journalier données pollen dépassé",
         "Clef API fournie non valide":"'Clef API fournie non valide",
-        "Clef API n'a pas les bonnes permission":"Clef API n'a pas les bonnes permission",
-        "La source demandé n'existe pas ":"La source demandé n'existe pas"
+        "Clef API n'a pas les bonnes permission":"Clef API n'a pas les bonnes permissions",
+        "La source demandé n'existe pas ":"La source demandée n'existe pas"
     }
 }
