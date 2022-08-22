@@ -230,7 +230,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                             <br />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Animation du carrousel}}</label>
+                                <label class="col-sm-3 control-label">{{Animation du caroussel}}</label>
                                 <div class="col-sm-6">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="animation_aqi">
                                         <option value="disable_anim">{{Désactiver}}</option>
