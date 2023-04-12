@@ -654,38 +654,41 @@ class airquality extends eqLogic
         if (is_object($cmToTest)) {
             $iMinute = $this->getIntervalLastRefresh($cmToTest);
         }
-        if ($iMinute > 2) {
-            log::add('airquality', 'debug', 'Interval OK Refresh > 2 min Pollution latest');
+        if ($iMinute > 1) {
+            log::add('airquality', 'debug', 'Interval OK Refresh > 1 min Pollution latest');
             $paramAlertAqi = $this->getParamAlertAqi();
             $oldData = $this->getCurrentValues();
             $data = $this->getApiData('getAQI');
-            $this->checkAndUpdateCmd('aqi', $data->main->aqi);
-            $this->checkAndUpdateCmd('no2', $data->components->no2);
-            $this->checkAndUpdateCmd('no', $data->components->no);
-            $this->checkAndUpdateCmd('co', $data->components->co);
-            $this->checkAndUpdateCmd('o3', $data->components->o3);
-            $this->checkAndUpdateCmd('so2', $data->components->so2);
-            $this->checkAndUpdateCmd('nh3', $data->components->nh3);
-            $this->checkAndUpdateCmd('pm25', $data->components->pm2_5);
-            $this->checkAndUpdateCmd('pm10', $data->components->pm10);
+            $this->checkAndUpdateCmd('aqi',  is_object($data) ? $data->main->aqi : 0);
+            $this->checkAndUpdateCmd('no2', is_object($data) ? $data->components->no2 : 0);
+            $this->checkAndUpdateCmd('no', is_object($data) ?$data->components->no : 0);
+            $this->checkAndUpdateCmd('co', is_object($data) ?$data->components->co : 0);
+            $this->checkAndUpdateCmd('o3', is_object($data) ?$data->components->o3 : 0);
+            $this->checkAndUpdateCmd('so2',is_object($data) ? $data->components->so2 : 0);
+            $this->checkAndUpdateCmd('nh3', is_object($data) ?$data->components->nh3 : 0);
+            $this->checkAndUpdateCmd('pm25', is_object($data) ?$data->components->pm2_5 : 0);
+            $this->checkAndUpdateCmd('pm10', is_object($data) ?$data->components->pm10 : 0);
             $dataOneCall = $this->getApiData('getOneCallAQI');
-            $this->checkAndUpdateCmd('uv', $dataOneCall->uvi);
-            $this->checkAndUpdateCmd('visibility', $dataOneCall->visibility);
+            $this->checkAndUpdateCmd('uv', is_object($dataOneCall) ? $dataOneCall->uvi : 0 );
+            $this->checkAndUpdateCmd('visibility', is_object($dataOneCall) ? $dataOneCall->visibility : 0);
             $display = new DisplayInfo;
-            $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
-            $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
-            $telegramMess = !empty($messagesPollution[0]) ? $messagesPollution[1] : '';
-            $this->checkAndUpdateCmd('telegramPollution', $telegramMess);
-            $smsMess = !empty($messagesPollution[0]) ? $messagesPollution[2] : '';
-            $this->checkAndUpdateCmd('smsPollution',  $smsMess);
-            $markdownMessage = !empty($messagesPollution[0]) ? $messagesPollution[3] : '';
-            $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
-            $this->refreshWidget();
-            if (!empty($messagesPollution[0])) {
-                $this->setMinutedAction();
+            if(is_object($data)){
+                $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
+                $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
+                $telegramMess = !empty($messagesPollution[0]) ? $messagesPollution[1] : '';
+                $this->checkAndUpdateCmd('telegramPollution', $telegramMess);
+                $smsMess = !empty($messagesPollution[0]) ? $messagesPollution[2] : '';
+                $this->checkAndUpdateCmd('smsPollution',  $smsMess);
+                $markdownMessage = !empty($messagesPollution[0]) ? $messagesPollution[3] : '';
+                $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
+                $this->refreshWidget();
+                if (!empty($messagesPollution[0])) {
+                    $this->setMinutedAction();
+                }
             }
+          
         } else {
-            log::add('airquality', 'debug', 'Dernier AQI latest Update < 2 min, veuiller patienter svp');
+            log::add('airquality', 'debug', 'Dernier AQI latest Update < 1 min, veuiller patienter svp');
         }
     }
 

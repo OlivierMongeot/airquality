@@ -119,12 +119,15 @@ class ApiAqi
         $url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" . $latitude . "&lon=" . $longitude;
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
         if ($response[1]) {
-            throw new Exception('No Pollution data yet : ' . $response[1]. 'HTTP responseCode =' .$response[2]);
+            // throw new Exception('No Pollution data yet : ' . $response[1]. 'HTTP responseCode =' .$response[2]);
+             log::add('airquality', 'debug', 'No Pollution data yet : '.$response[1]);
+             message::add('Error HTTP code = ',  json_decode($response[2]));
         } else {
             $data = json_decode($response[0]);
             $result = $data->list[0];
             if ($result == [] || $result == null) {
-                throw new Exception('No pollution data with these coordinates');
+                message::add('No pollution data with these coordinates');
+                log::add('airquality', 'debug', 'No pollution data with these coordinates');
             } else {
                 log::add('airquality', 'debug', 'Data AQI latest : '. json_encode($data->list[0]));
                 return $data->list[0];
@@ -138,14 +141,35 @@ class ApiAqi
      public function getOneCallAQI($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/3.0/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
-        $response = $this->curlApi($url, $this->apiKey, 'openwheather');
+        $response = $this->curlApi($url,
+        // '1525454546455451dfdfdf5vdf565',
+         $this->apiKey,
+          'openwheather');
         $data = json_decode($response[0]);
 
+        log::add('airquality', 'debug', 'Response 0 OneCallapi : '. ($response[0]));
+        log::add('airquality', 'debug', 'Response 1 OneCallapi : '. ($response[1]));
+        log::add('airquality', 'debug', 'Response 2 OneCallapi : '. ($response[2]));
+
+        // if(json_decode($response[2]) == 401 ){
+        //     $decodedResponse0 = json_decode($response[0]);
+        //      message::add('OneCall Api Openweather',  ($decodedResponse0->message));
+        //      return [];
+        // }
+        if(json_decode($response[2]) !== 200 ){
+            $decodedResponse0 = json_decode($response[0]);
+             message::add('OneCall Api Openweather',  ($decodedResponse0->message));
+             return [];
+        }
+
+
         if ($response[1] != null) {
-            throw new Exception('No UV data and visibility at this time : ' . $response[1]. ' - HttpResponsecode : ' . $response[2]);
+             message::add('Erreur',$response[1]. ' - HttpResponsecode : ' . $response[2]);
+            return [];
         } else {
             if ($data == [] || $data == null) {
-                throw new Exception('No UV data and visibility with these coordinates');
+                  message::add('Erreur','No UV data and visibility with these coordinates');
+                 return [];
             } else {
                 log::add('airquality', 'debug', 'Data OneCallapi : '. json_encode($data->current));
                 return $data->current;
