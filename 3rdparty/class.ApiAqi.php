@@ -137,7 +137,7 @@ class ApiAqi
      */
      public function getOneCallAQI($longitude, $latitude)
     {
-        $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
+        $url = "http://api.openweathermap.org/data/3.0/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
         $data = json_decode($response[0]);
 
