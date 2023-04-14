@@ -648,6 +648,10 @@ class airquality extends eqLogic
     public function updatePollution()
     {
 
+        // Recuperer le parametrage de l'api Onecall : 2.5 ou 3.0
+        $apiVersionOneCall = $this->getConfiguration('getOneCallAQI30') === 'true'  ?  'getOneCallAQI30' : 'getOneCallAQI';
+        log::add('airquality', 'debug', 'Call API OneCall Version : '.$apiVersionOneCall );
+
         // Verifier la date de dernier maj pour faire ou pas maj
         $cmToTest = $this->getCmd(null, 'co');
         $iMinute = 6;
@@ -668,7 +672,7 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('nh3', is_object($data) ?$data->components->nh3 : 0);
             $this->checkAndUpdateCmd('pm25', is_object($data) ?$data->components->pm2_5 : 0);
             $this->checkAndUpdateCmd('pm10', is_object($data) ?$data->components->pm10 : 0);
-            $dataOneCall = $this->getApiData('getOneCallAQI');
+            $dataOneCall = $this->getApiData($apiVersionOneCall);
             $this->checkAndUpdateCmd('uv', is_object($dataOneCall) ? $dataOneCall->uvi : 0 );
             $this->checkAndUpdateCmd('visibility', is_object($dataOneCall) ? $dataOneCall->visibility : 0);
             $display = new DisplayInfo;

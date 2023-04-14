@@ -260,15 +260,21 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             </div>
                             <br>
 
-                            <br />
-                            <!-- <div class="form-group searchMode dynamic_mode">
-                                <label class="col-sm-3 control-label"></label>
-                                <div class="col-sm-7">
-                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="long_lat_view" />{{Activer Follow me}}</label>
+                            <legend><i class="fas fa-cogs"></i> {{API Openweather OneCall}}</legend>
+                                  
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Utiliser l'api OneCall 3.0}}
+                                </label>
+                                 <div class="col-sm-6">
+                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="getOneCallAQI30">
+                                        <option value="false">{{Non}}</option>
+                                        <option value="true">{{Oui}}</option>
+                                    </select>
                                 </div>
                             </div>
-                            <br> -->
-
+                            <br>
+                            <br />
+                    
                         </div>
                         <!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
                         <div class="col-lg-6">

@@ -130,10 +130,54 @@ class ApiAqi
         }
     }
 
-    /**
-     * Appel API OneCall OpenWheather pour UV et Visibilité
+     /**
+     * Appel API OneCall 2.5 OpenWheather pour UV et Visibilité
      */
     public function getOneCallAQI($longitude, $latitude)
+    {
+        $url = "http://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
+        $response = $this->curlApi(
+            $url,
+            // '1525454546455451dfdfdf5vdf565',
+            $this->apiKey,
+            'openwheather'
+        );
+        $data = json_decode($response[0]);
+
+        log::add('airquality', 'debug', 'Response 0 OneCallapi : ' . ($response[0]));
+        log::add('airquality', 'debug', 'Response 1 OneCallapi : ' . ($response[1]));
+        log::add('airquality', 'debug', 'Response 2 OneCallapi : ' . ($response[2]));
+
+        // if(json_decode($response[2]) == 401 ){
+        //     $decodedResponse0 = json_decode($response[0]);
+        //      message::add('OneCall Api Openweather',  ($decodedResponse0->message));
+        //      return [];
+        // }
+        if (json_decode($response[2]) !== 200) {
+            $decodedResponse0 = json_decode($response[0]);
+            message::add('OneCall Api Openweather', ($decodedResponse0->message));
+            return [];
+        }
+
+
+        if ($response[1] != null) {
+            message::add('Erreur', $response[1] . ' - HttpResponsecode : ' . $response[2]);
+            return [];
+        } else {
+            if ($data == [] || $data == null) {
+                message::add('Erreur', 'No UV data and visibility with these coordinates');
+                return [];
+            } else {
+                log::add('airquality', 'debug', 'Data OneCallapi : ' . json_encode($data->current));
+                return $data->current;
+            }
+        }
+    }
+
+    /**
+     * Appel API OneCall 3.0 OpenWheather pour UV et Visibilité
+     */
+    public function getOneCallAQI30($longitude, $latitude)
     {
         $url = "http://api.openweathermap.org/data/3.0/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi(
