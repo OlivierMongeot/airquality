@@ -16,11 +16,11 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('ignore_repeated_errors', TRUE);
-ini_set('display_errors', TRUE);
-ini_set('log_errors', TRUE); // Error/Exception file logging engine.
-ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
+// error_reporting(E_ALL);
+// ini_set('ignore_repeated_errors', TRUE);
+// ini_set('display_errors', TRUE);
+// ini_set('log_errors', TRUE); // Error/Exception file logging engine.
+// ini_set('error_log', __DIR__ . '/../../../../plugins/airquality/errors.log'); // Logging file path
 
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 require dirname(__FILE__) . '/../../core/php/airquality.inc.php';
@@ -50,7 +50,7 @@ class airquality extends eqLogic
                         $airQuality->updatePollution();
                     }
                 } catch (Exception $e) {
-                    log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution current', __FILE__). ' Expression = ' . $crontab. ' pour '  . $airQuality->getHumanName() . ' : ' . json_encode($e));
+                    log::add('airquality', 'debug', __('Expression cron non valide pour update Pollution current', __FILE__) . ' Expression = ' . $crontab . ' pour '  . $airQuality->getHumanName() . ' : ' . json_encode($e));
                 }
 
                 // Forecast : 2x jours si activé à 6h et 13h 
@@ -268,17 +268,17 @@ class airquality extends eqLogic
         $counterActivePolluant = 0;
         $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
         $icone = new IconesAqi;
-        
+
         foreach ($this->getCmd('info') as $cmd) {
-          
-            $nameCmd = $cmd->getLogicalId(); 
+
+            $nameCmd = $cmd->getLogicalId();
             // log::add('airquality', 'debug', ' -> $cmd ' . json_encode($nameCmd));
             $nameIcon = '#icone_' . $nameCmd . '#';
             $commandValue =  '#' . $nameCmd . '#';
             $commandNameId =  '#' . $nameCmd . 'id#';
             $commandName = '#' . $nameCmd . '_name#';
             $info = '#' . $nameCmd . 'info#';
-            $isObjet = is_object($cmd);     
+            $isObjet = is_object($cmd);
 
             if ($nameCmd == 'uv') {
                 $value = $isObjet ? $cmd->execCmd() : '';
@@ -420,8 +420,6 @@ class airquality extends eqLogic
                 $htmlActivePollen .= ' class="cmd noRefresh tooltips"  data-type="info" data-subtype="other" data-cmd_id="' . $cmd->getId() . '">';
                 $htmlActivePollen .=  $active_aqi_label . ' </div>';
                 $replace['#message#'] = $htmlActivePollen;
-                
-
             } else {
                 $active_aqi_label = __('Indices en alerte', __FILE__);
                 $htmlActivePollen = '<div title="' . $updatedAt . '" style="text-align: center; font-size:110%; margin:10px 0px;"';
@@ -430,7 +428,7 @@ class airquality extends eqLogic
                 $replace['#message#'] = $htmlActivePollen;
             }
 
-            $this->checkAndUpdateCmd('counterAlertIndex', json_encode([$counterActivePolluant, 11 ]));
+            $this->checkAndUpdateCmd('counterAlertIndex', json_encode([$counterActivePolluant, 11]));
         }
         // Classement par valeur
         $tabUnityValue  = array_column($tabUnitReplace, 1);
@@ -455,7 +453,7 @@ class airquality extends eqLogic
             $replace['#stateRefreshDesktop#'] = '';
             $replace['#padding#'] = '0px';
         }
-        
+
         $minaqi = (int)(config::byKey('cron_aqi_minute', 'airquality'));
         $min30aqi =   (($minaqi + 30) > 59) ? $minaqi - 30 : $minaqi + 30;
         if ($min30aqi > $minaqi) {
@@ -498,7 +496,7 @@ class airquality extends eqLogic
         $cron =  $minuteEnd . ' ' . $hour . ' * * *';
         log::add('airquality', 'debug', 'Set cron +' . $delay . ' min - CRON = ' . $cron . ' to stop message alert for equipement ' . $this->getName());
         $id = $this->getId();
-        config::save('airquality_cron_'.$id, $cron, 'airquality');
+        config::save('airquality_cron_' . $id, $cron, 'airquality');
     }
 
 
@@ -560,7 +558,7 @@ class airquality extends eqLogic
     {
         $api = new ApiAqi();
         $city = $this->getCurrentCityName();
-       
+
         $arrayLonLat = $this->getCurrentLonLat();
         $lon = $arrayLonLat[0];
         $lat = $arrayLonLat[1];
@@ -675,24 +673,24 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('no', is_object($data) ? $data->components->no : 0);
             $this->checkAndUpdateCmd('co', is_object($data) ? $data->components->co : 0);
             $this->checkAndUpdateCmd('o3', is_object($data) ? $data->components->o3 : 0);
-            $this->checkAndUpdateCmd('so2',is_object($data) ? $data->components->so2 : 0);
+            $this->checkAndUpdateCmd('so2', is_object($data) ? $data->components->so2 : 0);
             $this->checkAndUpdateCmd('nh3', is_object($data) ? $data->components->nh3 : 0);
             $this->checkAndUpdateCmd('pm25', is_object($data) ? $data->components->pm2_5 : 0);
             $this->checkAndUpdateCmd('pm10', is_object($data) ? $data->components->pm10 : 0);
             // Recuperation parametrage de l'api Onecall : 2.5 ou 3.0
             $apiVersionOneCall = $this->getConfiguration('getOneCallAQI30') === 'true'  ?  'getOneCallAQI30' : 'getOneCallAQI';
-            log::add('airquality', 'debug', 'Call API OneCall Version : '.$apiVersionOneCall );
+            log::add('airquality', 'debug', 'Call API OneCall Version : ' . $apiVersionOneCall);
 
             $dataOneCall = $this->getApiData($apiVersionOneCall);
-            $this->checkAndUpdateCmd('uv', is_object($dataOneCall) ? $dataOneCall->uvi : 0 );
+            $this->checkAndUpdateCmd('uv', is_object($dataOneCall) ? $dataOneCall->uvi : 0);
             $this->checkAndUpdateCmd('visibility', is_object($dataOneCall) ? $dataOneCall->visibility : 0);
-         
+
             $display = new DisplayInfo;
 
 
-        
 
-            if(is_object($data)){
+
+            if (is_object($data)) {
                 $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
                 $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
                 $telegramMess = !empty($messagesPollution[0]) ? $messagesPollution[1] : '';
@@ -707,7 +705,6 @@ class airquality extends eqLogic
                     $this->setMinutedAction();
                 }
             }
-          
         } else {
             log::add('airquality', 'debug', 'Dernier AQI latest Update < 1 min, veuiller patienter svp');
         }
@@ -723,32 +720,31 @@ class airquality extends eqLogic
         log::add('airquality', 'debug', 'Refresh Forecast AQI : Interval = ' . $interval . ' min');
         if ($interval > 10) {
             $forecastRaw =  $this->getApiData('getForecastAQI');
-            if(!empty($forecastRaw)){
-            $forecast = $forecastRaw[0];
-            if(is_array($forecast)){
-            $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
-            $this->checkAndUpdateCmd('no2_min', json_encode($forecast['no2']['min']));
-            $this->checkAndUpdateCmd('no2_max', json_encode($forecast['no2']['max']));
-            $this->checkAndUpdateCmd('no_min', json_encode($forecast['no']['min']));
-            $this->checkAndUpdateCmd('no_max', json_encode($forecast['no']['max']));
-            $this->checkAndUpdateCmd('so2_min', json_encode($forecast['so2']['min']));
-            $this->checkAndUpdateCmd('so2_max', json_encode($forecast['so2']['max']));
-            $this->checkAndUpdateCmd('co_min', json_encode($forecast['co']['min']));
-            $this->checkAndUpdateCmd('co_max', json_encode($forecast['co']['max']));
-            $this->checkAndUpdateCmd('nh3_min', json_encode($forecast['nh3']['min']));
-            $this->checkAndUpdateCmd('nh3_max', json_encode($forecast['nh3']['max']));
-            $this->checkAndUpdateCmd('aqi_min', json_encode($forecast['aqi']['min']));
-            $this->checkAndUpdateCmd('aqi_max', json_encode($forecast['aqi']['max']));
-            $this->checkAndUpdateCmd('pm10_min', json_encode($forecast['pm10']['min']));
-            $this->checkAndUpdateCmd('pm10_max', json_encode($forecast['pm10']['max']));
-            $this->checkAndUpdateCmd('o3_min', json_encode($forecast['o3']['min']));
-            $this->checkAndUpdateCmd('o3_max', json_encode($forecast['o3']['max']));
-            $this->checkAndUpdateCmd('pm25_min', json_encode($forecast['pm2_5']['min']));
-            $this->checkAndUpdateCmd('pm25_max', json_encode($forecast['pm2_5']['max']));
-            $this->refreshWidget();
+            if (!empty($forecastRaw)) {
+                $forecast = $forecastRaw[0];
+                if (is_array($forecast)) {
+                    $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
+                    $this->checkAndUpdateCmd('no2_min', json_encode($forecast['no2']['min']));
+                    $this->checkAndUpdateCmd('no2_max', json_encode($forecast['no2']['max']));
+                    $this->checkAndUpdateCmd('no_min', json_encode($forecast['no']['min']));
+                    $this->checkAndUpdateCmd('no_max', json_encode($forecast['no']['max']));
+                    $this->checkAndUpdateCmd('so2_min', json_encode($forecast['so2']['min']));
+                    $this->checkAndUpdateCmd('so2_max', json_encode($forecast['so2']['max']));
+                    $this->checkAndUpdateCmd('co_min', json_encode($forecast['co']['min']));
+                    $this->checkAndUpdateCmd('co_max', json_encode($forecast['co']['max']));
+                    $this->checkAndUpdateCmd('nh3_min', json_encode($forecast['nh3']['min']));
+                    $this->checkAndUpdateCmd('nh3_max', json_encode($forecast['nh3']['max']));
+                    $this->checkAndUpdateCmd('aqi_min', json_encode($forecast['aqi']['min']));
+                    $this->checkAndUpdateCmd('aqi_max', json_encode($forecast['aqi']['max']));
+                    $this->checkAndUpdateCmd('pm10_min', json_encode($forecast['pm10']['min']));
+                    $this->checkAndUpdateCmd('pm10_max', json_encode($forecast['pm10']['max']));
+                    $this->checkAndUpdateCmd('o3_min', json_encode($forecast['o3']['min']));
+                    $this->checkAndUpdateCmd('o3_max', json_encode($forecast['o3']['max']));
+                    $this->checkAndUpdateCmd('pm25_min', json_encode($forecast['pm2_5']['min']));
+                    $this->checkAndUpdateCmd('pm25_max', json_encode($forecast['pm2_5']['max']));
+                    $this->refreshWidget();
+                }
             }
-            }
-           
         } else {
             log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 10 min, veuillez patienter svp');
         }
@@ -779,7 +775,6 @@ class airqualityCmd extends cmd
             log::add('airquality', 'debug', '---------------------------------------------------');
             log::add('airquality', 'debug', 'Refresh equipement ' . $this->getEqLogic()->getHumanName());
             $this->getEqLogic()->updatePollution();
-           
         }
 
         if ($this->getLogicalId() == 'refresh_forecast') {
