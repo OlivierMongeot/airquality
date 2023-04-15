@@ -67,11 +67,11 @@ class ApiAqi
     {
         $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . $city . "," . $country_code . "," . $state_code . "&limit=1";
         $response = $this->curlApi($url, $this->apiKey, 'openwheather');
-       
+
         log::add('airquality', 'debug', 'callApiGeoLoc coordinates: ' . $response[0]);
         log::add('airquality', 'debug', 'callApiGeoLoc : ' . ($response[1]));
         log::add('airquality', 'debug', 'callApiGeoLoc Response : ' . ($response[2]));
-        
+
         $coordinates = json_decode($response[0]);
         // if ($response[1]) {
         //     return (__('Impossible de récupérer les coordonnées de cette ville', __FILE__));
@@ -128,7 +128,7 @@ class ApiAqi
 
         if (json_decode($response[2]) !== 200) {
             $decodedResponse0 = json_decode($response[0]);
-            message::add('API OneCall 2.5 Openweather', ($decodedResponse0->message));
+            message::add('One Call API Openweather', ($decodedResponse0->message));
             return [];
         }
 
@@ -151,7 +151,7 @@ class ApiAqi
         }
     }
 
-     /**
+    /**
      * Appel API OneCall 2.5 OpenWheather pour UV et Visibilité
      */
     public function getOneCallAQI($longitude, $latitude)
@@ -170,7 +170,7 @@ class ApiAqi
 
         if (json_decode($response[2]) !== 200) {
             $decodedResponse0 = json_decode($response[0]);
-            message::add('API OneCall 2.5 Openweather', ($decodedResponse0->message));
+            message::add('One Call API Openweather', ($decodedResponse0->message));
             return [];
         }
 
@@ -197,7 +197,6 @@ class ApiAqi
         $url = "http://api.openweathermap.org/data/3.0/onecall?lat=" . $latitude . "&lon=" . $longitude . "&exclude=hourly,daily";
         $response = $this->curlApi(
             $url,
-            // '1525454546455451dfdfdf5vdf565',
             $this->apiKey,
             'openwheather'
         );
@@ -209,7 +208,7 @@ class ApiAqi
 
         if (json_decode($response[2]) !== 200) {
             $decodedResponse0 = json_decode($response[0]);
-            message::add('OneCall 3.0 Api Openweather', ($decodedResponse0->message));
+            message::add('One Call API Openweather', ($decodedResponse0->message));
             return [];
         }
 
@@ -236,7 +235,7 @@ class ApiAqi
         $polluants = ['co', 'no', 'o3', 'no2', 'so2', 'nh3', 'aqi', 'pm10', 'pm2_5'];
         $dataList = $this->callApiForecastAQI($longitude, $latitude);
 
-        if(empty($dataList)){
+        if (empty($dataList)) {
             return [];
         }
 
@@ -269,10 +268,10 @@ class ApiAqi
 
         $data = json_decode($response[0]);
         if ($response[1] != '') {
-            message::add('Error : No Forecast AQI data available ');
+            message::add('Error Api Forecast AQI', 'No Forecast AQI data available ');
         } else {
             if ($data == [] || $data == null) {
-               message::add('Error : No Forecast AQI data available ');
+                message::add('Error Api Forecast AQI', 'No Forecast AQI data available ');
             } else {
                 if (property_exists($data, 'list')) {
                     log::add('airquality', 'debug', 'Cell AQI forecast with Longitude: ' . $longitude . ' & Latitude: ' . $latitude);
@@ -301,7 +300,6 @@ class ApiAqi
     }
 
 
-
     /**
      * Combine les données sur 5 jours par jour + recupération du nom du jour de la semaine avec le timestamp
      */
@@ -319,7 +317,6 @@ class ApiAqi
         }
         return $newTabAqiDay;
     }
-
 
     /**
      * Unuse 
