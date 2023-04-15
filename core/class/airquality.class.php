@@ -420,6 +420,8 @@ class airquality extends eqLogic
                 $htmlActivePollen .= ' class="cmd noRefresh tooltips"  data-type="info" data-subtype="other" data-cmd_id="' . $cmd->getId() . '">';
                 $htmlActivePollen .=  $active_aqi_label . ' </div>';
                 $replace['#message#'] = $htmlActivePollen;
+                
+
             } else {
                 $active_aqi_label = __('Indices en alerte', __FILE__);
                 $htmlActivePollen = '<div title="' . $updatedAt . '" style="text-align: center; font-size:110%; margin:10px 0px;"';
@@ -427,6 +429,8 @@ class airquality extends eqLogic
                 $htmlActivePollen .=  $active_aqi_label . '&nbsp;&nbsp;' . $counterActivePolluant . ' / 11 </div>';
                 $replace['#message#'] = $htmlActivePollen;
             }
+
+            $this->checkAndUpdateCmd('counterAlertIndex', json_encode([$counterActivePolluant, 11 ]));
         }
         // Classement par valeur
         $tabUnityValue  = array_column($tabUnitReplace, 1);
@@ -654,8 +658,6 @@ class airquality extends eqLogic
     public function updatePollution()
     {
 
-       
-     
 
         // Verifier la date de dernier maj pour faire ou pas maj
         $cmToTest = $this->getCmd(null, 'co');
@@ -670,13 +672,13 @@ class airquality extends eqLogic
             $data = $this->getApiData('getAQI');
             $this->checkAndUpdateCmd('aqi',  is_object($data) ? $data->main->aqi : 0);
             $this->checkAndUpdateCmd('no2', is_object($data) ? $data->components->no2 : 0);
-            $this->checkAndUpdateCmd('no', is_object($data) ?$data->components->no : 0);
-            $this->checkAndUpdateCmd('co', is_object($data) ?$data->components->co : 0);
-            $this->checkAndUpdateCmd('o3', is_object($data) ?$data->components->o3 : 0);
+            $this->checkAndUpdateCmd('no', is_object($data) ? $data->components->no : 0);
+            $this->checkAndUpdateCmd('co', is_object($data) ? $data->components->co : 0);
+            $this->checkAndUpdateCmd('o3', is_object($data) ? $data->components->o3 : 0);
             $this->checkAndUpdateCmd('so2',is_object($data) ? $data->components->so2 : 0);
-            $this->checkAndUpdateCmd('nh3', is_object($data) ?$data->components->nh3 : 0);
-            $this->checkAndUpdateCmd('pm25', is_object($data) ?$data->components->pm2_5 : 0);
-            $this->checkAndUpdateCmd('pm10', is_object($data) ?$data->components->pm10 : 0);
+            $this->checkAndUpdateCmd('nh3', is_object($data) ? $data->components->nh3 : 0);
+            $this->checkAndUpdateCmd('pm25', is_object($data) ? $data->components->pm2_5 : 0);
+            $this->checkAndUpdateCmd('pm10', is_object($data) ? $data->components->pm10 : 0);
             // Recuperation parametrage de l'api Onecall : 2.5 ou 3.0
             $apiVersionOneCall = $this->getConfiguration('getOneCallAQI30') === 'true'  ?  'getOneCallAQI30' : 'getOneCallAQI';
             log::add('airquality', 'debug', 'Call API OneCall Version : '.$apiVersionOneCall );
@@ -686,7 +688,10 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('visibility', is_object($dataOneCall) ? $dataOneCall->visibility : 0);
          
             $display = new DisplayInfo;
-        //  visibility_level
+
+
+        
+
             if(is_object($data)){
                 $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
                 $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
@@ -696,6 +701,7 @@ class airquality extends eqLogic
                 $this->checkAndUpdateCmd('smsPollution',  $smsMess);
                 $markdownMessage = !empty($messagesPollution[0]) ? $messagesPollution[3] : '';
                 $this->checkAndUpdateCmd('markdownPollution', $markdownMessage);
+                $this->checkAndUpdateCmd('lastMessagePollution', $telegramMess);
                 $this->refreshWidget();
                 if (!empty($messagesPollution[0])) {
                     $this->setMinutedAction();

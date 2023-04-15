@@ -76,9 +76,11 @@
 # 15/04/23 
 
 - Ajout de l'api OneCall V3 obligatoire pour les nouveaux client Openweather
-- Traductions manquantes
-- Meilleur Gestion des erreurs des call API
-- Corection de Bug Mineurs
+- Traductions manquantes 
+- Meilleur gestion des erreurs des calls API
+- Corection de bug mineurs
+- ajout cmd info : Dernier message publié 
+- ajout cmd info : Nombre d'indices en alerte 
 
 
 

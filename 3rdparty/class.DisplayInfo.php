@@ -448,7 +448,7 @@ class DisplayInfo
     {
         $allranges = SetupAqi::$aqiRange;
         $ranges = $allranges[$type];
-        log::add('airquality', 'debug', 'fct getLevelAQI Ranges : ' . json_encode($ranges). ' / Type '. $type);
+        // log::add('airquality', 'debug', 'fct getLevelAQI Ranges : ' . json_encode($ranges). ' / Type '. $type);
         $indexLevel = 0;
         foreach ($ranges as $color => $range) {
             $indexLevel++;

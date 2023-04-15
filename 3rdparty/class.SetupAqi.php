@@ -37,7 +37,9 @@ class  SetupAqi
         ['name' => 'messagePollution', 'title' => 'Alerte Pollution', 'unit' => '', 'subType' => 'string', 'order' => 29, 'display' => 'none'],
         ['name' => 'smsPollution', 'title' => 'SMS Pollution', 'unit' => '', 'subType' => 'string', 'order' => 30, 'display' => 'none'],
         ['name' => 'telegramPollution', 'title' => 'Telegram Pollution', 'unit' => '', 'subType' => 'string', 'order' => 31, 'display' => 'none'],
-        ['name' => 'markdownPollution', 'title' => 'Markdown Pollution', 'unit' => '', 'subType' => 'string', 'order' => 32, 'display' => 'none']
+        ['name' => 'markdownPollution', 'title' => 'Markdown Pollution', 'unit' => '', 'subType' => 'string', 'order' => 32, 'display' => 'none'],
+        ['name' => 'lastMessagePollution', 'title' => 'Last Message', 'unit' => '', 'subType' => 'string', 'order' => 33, 'display' => 'none'],
+        ['name' => 'counterAlertIndex', 'title' => 'Counter Alert Index', 'unit' => '', 'subType' => 'string', 'order' => 34, 'display' => 'none']
     ];
 
  
