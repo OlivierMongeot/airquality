@@ -268,14 +268,17 @@ class airquality extends eqLogic
         $counterActivePolluant = 0;
         $elementTemplate = getTemplate('core', $version, 'element', 'airquality');
         $icone = new IconesAqi;
+        
         foreach ($this->getCmd('info') as $cmd) {
-            $nameCmd = $cmd->getLogicalId();
+          
+            $nameCmd = $cmd->getLogicalId(); 
+            // log::add('airquality', 'debug', ' -> $cmd ' . json_encode($nameCmd));
             $nameIcon = '#icone_' . $nameCmd . '#';
             $commandValue =  '#' . $nameCmd . '#';
             $commandNameId =  '#' . $nameCmd . 'id#';
             $commandName = '#' . $nameCmd . '_name#';
             $info = '#' . $nameCmd . 'info#';
-            $isObjet = is_object($cmd);
+            $isObjet = is_object($cmd);     
 
             if ($nameCmd == 'uv') {
                 $value = $isObjet ? $cmd->execCmd() : '';
@@ -359,7 +362,10 @@ class airquality extends eqLogic
                         $unitreplace['#hidden#'] = 'hidden';
                     }
                     // Fin Forecast 
+
+
                     $arrayLevelRiskAQI = $display->getElementRiskAqi($icone->getColor());
+
                     $levelRiskAQI = $arrayLevelRiskAQI[0];
                     $indiceLevel = $arrayLevelRiskAQI[1];
                     $unitreplace['#level-particule#'] =  $isObjet ?  $levelRiskAQI : '';
@@ -648,9 +654,8 @@ class airquality extends eqLogic
     public function updatePollution()
     {
 
-        // Recuperer le parametrage de l'api Onecall : 2.5 ou 3.0
-        $apiVersionOneCall = $this->getConfiguration('getOneCallAQI30') === 'true'  ?  'getOneCallAQI30' : 'getOneCallAQI';
-        log::add('airquality', 'debug', 'Call API OneCall Version : '.$apiVersionOneCall );
+       
+     
 
         // Verifier la date de dernier maj pour faire ou pas maj
         $cmToTest = $this->getCmd(null, 'co');
@@ -672,10 +677,16 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('nh3', is_object($data) ?$data->components->nh3 : 0);
             $this->checkAndUpdateCmd('pm25', is_object($data) ?$data->components->pm2_5 : 0);
             $this->checkAndUpdateCmd('pm10', is_object($data) ?$data->components->pm10 : 0);
+            // Recuperation parametrage de l'api Onecall : 2.5 ou 3.0
+            $apiVersionOneCall = $this->getConfiguration('getOneCallAQI30') === 'true'  ?  'getOneCallAQI30' : 'getOneCallAQI';
+            log::add('airquality', 'debug', 'Call API OneCall Version : '.$apiVersionOneCall );
+
             $dataOneCall = $this->getApiData($apiVersionOneCall);
             $this->checkAndUpdateCmd('uv', is_object($dataOneCall) ? $dataOneCall->uvi : 0 );
             $this->checkAndUpdateCmd('visibility', is_object($dataOneCall) ? $dataOneCall->visibility : 0);
+         
             $display = new DisplayInfo;
+        //  visibility_level
             if(is_object($data)){
                 $messagesPollution = $display->getAllMessagesPollution($oldData, $data, $dataOneCall, $paramAlertAqi, $this->getCurrentCityName());
                 $this->checkAndUpdateCmd('messagePollution', ($messagesPollution[0]));
@@ -706,7 +717,9 @@ class airquality extends eqLogic
         log::add('airquality', 'debug', 'Refresh Forecast AQI : Interval = ' . $interval . ' min');
         if ($interval > 10) {
             $forecastRaw =  $this->getApiData('getForecastAQI');
+            if(!empty($forecastRaw)){
             $forecast = $forecastRaw[0];
+            if(is_array($forecast)){
             $this->checkAndUpdateCmd('days', json_encode($forecast['no2']['day']));
             $this->checkAndUpdateCmd('no2_min', json_encode($forecast['no2']['min']));
             $this->checkAndUpdateCmd('no2_max', json_encode($forecast['no2']['max']));
@@ -727,6 +740,9 @@ class airquality extends eqLogic
             $this->checkAndUpdateCmd('pm25_min', json_encode($forecast['pm2_5']['min']));
             $this->checkAndUpdateCmd('pm25_max', json_encode($forecast['pm2_5']['max']));
             $this->refreshWidget();
+            }
+            }
+           
         } else {
             log::add('airquality', 'debug', 'Dernier Forecast AQI Update < 10 min, veuillez patienter svp');
         }
@@ -757,6 +773,7 @@ class airqualityCmd extends cmd
             log::add('airquality', 'debug', '---------------------------------------------------');
             log::add('airquality', 'debug', 'Refresh equipement ' . $this->getEqLogic()->getHumanName());
             $this->getEqLogic()->updatePollution();
+           
         }
 
         if ($this->getLogicalId() == 'refresh_forecast') {

@@ -59,7 +59,7 @@
 
 # 22/08/21
 
-- Suppresion Pollen suite changement API Ambee
+- Suppression Pollen suite changement API Ambee
 
 # 05/09/21
 
@@ -69,9 +69,16 @@
 
 - Change: set Alert Save cron en config général
 
-# 13/1021 
+# 12/1021 
 
 - Mise à jour de la doc
+
+# 15/04/23 
+
+- Ajout de l'api OneCall V3 obligatoire pour les nouveaux client Openweather
+- Traductions manquantes
+- Meilleur Gestion des erreurs des call API
+- Corection de Bug Mineurs
 
 
 

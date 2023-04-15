@@ -49,6 +49,8 @@ class DisplayInfo
                 return __("Très mauvais", __FILE__);
             case 6:
                 return __("Extrême", __FILE__);
+            default : 
+                return __("Extrême", __FILE__);
         }
     }
 
@@ -69,6 +71,8 @@ class DisplayInfo
                 return [__("Très mauvais", __FILE__), 5];
             case '#662D91':
                 return [__("Extrême", __FILE__), 6];
+            default :
+                return [__("Extrême", __FILE__), 6];
         }
     }
 
@@ -87,6 +91,8 @@ class DisplayInfo
             return [__('Très élevé', __FILE__), 4];
         } else if ($value >= 11) {
             return [__('Extrême', __FILE__), 5];
+        } else {
+            return [__('Extrême', __FILE__), 5];
         }
     }
 
@@ -95,6 +101,7 @@ class DisplayInfo
      */
     public function getVisibilityLevel($level)
     {
+        // log::add('airquality', 'debug','fct: getVisibilityLevel ' . json_encode($level));
         switch ($level) {
             case $level >= 0  && $level < 700:
                 return [__('Très Mauvaise', __FILE__), 4];
@@ -104,6 +111,8 @@ class DisplayInfo
                 return [__('Moyenne', __FILE__), 2];
             case $level >= 8000:
                 return [__('Bonne', __FILE__), 1];
+            default :
+                return [__('Très Mauvaise', __FILE__), 4];
         }
     }
 
@@ -139,6 +148,8 @@ class DisplayInfo
                 return  __('Samedi', __FILE__);
             case 7:
                 return __('Dimanche', __FILE__);
+            default :
+                return __('Vendredi', __FILE__);
         }
     }
 
@@ -261,7 +272,7 @@ class DisplayInfo
             $importance['uv'] =  $mess[2];
         }
         // Visibility
-        $newVisibility =  is_object($newDataOc) && $newDataOc->visibility ?  $newDataOc->visibility : 0;
+        $newVisibility = (is_object($newDataOc) && $newDataOc->visibility ) ?  $newDataOc->visibility : 0;
         $oldVisibility = $oldData['visibility'];
         if ($paramAlertAqi['visibility_alert_level'] >= $newVisibility || $oldVisibility < $newVisibility) {
             $mess = $this->makeMessageAqi($newVisibility, $oldVisibility, 'visibility', 'Visibilité');
@@ -326,14 +337,15 @@ class DisplayInfo
         // [$newCategory, $importance] = $this->getLevelAQI($newData, $type);
 
         $arrayLevelAqi = $this->getLevelAQI($newData, $type);
+        // log::add('airquality', 'debug', 'array Level Aqi: ' . json_encode($arrayLevelAqi). ' for Type : ' . $type);
         $newCategory = $arrayLevelAqi[0];
         $importance = $arrayLevelAqi[1];
 
         // [$oldCategory] = $this->getLevelAQI($oldData, $type);
-
+        // log::add('airquality', 'debug', 'oldData Aqi: ' . json_encode($oldData));
         $arrayLevelAqi = $this->getLevelAQI($oldData, $type);
         $oldCategory = $arrayLevelAqi[0];
-        // log::add('airquality', 'debug', 'Make Message AQI type: ' . $type . ' New Cat: ' . $newCategory . ' OldCat: ' . $oldCategory);
+       
         // Cas 1 : hausse de l'AQI
         if ($newData > $oldData) {
             if ($newCategory != $oldCategory) {
@@ -436,6 +448,7 @@ class DisplayInfo
     {
         $allranges = SetupAqi::$aqiRange;
         $ranges = $allranges[$type];
+        log::add('airquality', 'debug', 'fct getLevelAQI Ranges : ' . json_encode($ranges). ' / Type '. $type);
         $indexLevel = 0;
         foreach ($ranges as $color => $range) {
             $indexLevel++;
@@ -463,6 +476,8 @@ class DisplayInfo
                         $arrayVisibilityLevel = $this->getVisibilityLevel($value);
                         $visibilityLevel = $arrayVisibilityLevel[0];
                         return  [strtolower($visibilityLevel), $indexLevel];
+                    default : 
+                       return  [0,0];
                 }
             }
         }
