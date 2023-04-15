@@ -58,6 +58,11 @@ Cela fonctionne  presque partout dans le monde et vous pouvez l'utilisez en vous
 
 Les normes utilisées sont ceux de l'Agence européenne pour l'environnement 2021.
 
+Le plugin utilise l'API One Call de Openweather. Depuis novembre 2022, une nouvelle version, nommée One Call 3.0 est disponible. Openwheater demande une souscription avec CB pour les nouveaux inscrits. 
+Perso, j'ai pris une CB virtuelle de ma banque avec 1 euro dessus. Cependant, le plugin ne consome que 50 call par jour donc cela reste gratuit. 
+
+De plus, vous pouvez bloquez le nombre max de call sur l'interface de gestion d'Openweather.  Les 1000 premiers call sont gratuits, il y a de la marge...  
+
 <br/>
 
 # Configuration principale du plugin
